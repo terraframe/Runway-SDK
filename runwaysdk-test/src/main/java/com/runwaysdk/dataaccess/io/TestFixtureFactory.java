@@ -18,6 +18,9 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -2061,6 +2064,14 @@ public class TestFixtureFactory
     return value;
   }
 
+  
+  public static Polygon getPolygon2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(30, 30), new Coordinate(30, 20), new Coordinate(20, 20), new Coordinate(30, 30) });
+    return value;
+  }
+  
   public static Point getPoint()
   {
     GeometryFactory factory = new GeometryFactory();
@@ -2068,6 +2079,13 @@ public class TestFixtureFactory
     return value;
   }
 
+  public static Point getPoint2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(107.9903, 31.7392));
+    return value;
+  }
+  
   public static LineString getLineString()
   {
     GeometryFactory factory = new GeometryFactory();
@@ -2096,4 +2114,15 @@ public class TestFixtureFactory
 
     return value;
   }
+
+  public static Calendar getDate()
+  {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+    cal.clear();
+    cal.set(2019, 3, 15);
+
+    return cal;
+  }
+
 }

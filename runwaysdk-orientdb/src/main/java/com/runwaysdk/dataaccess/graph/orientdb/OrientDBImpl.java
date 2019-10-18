@@ -744,11 +744,11 @@ public class OrientDBImpl implements GraphDB
               Shape shape = OShapeFactory.INSTANCE.fromDoc(doc);
               Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
 
-              attribute.setValue(geometry);
+              attribute.setValueInternal(geometry);
             }
             else
             {
-              attribute.setValue(value);
+              attribute.setValueInternal(value);
             }
           }
         }

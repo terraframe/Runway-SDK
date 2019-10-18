@@ -159,11 +159,22 @@ public class VertexObjectDAOTest
 
     try
     {
+      // Test create
       vertexDAO.apply();
 
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = "Updated Value";
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
@@ -191,11 +202,22 @@ public class VertexObjectDAOTest
 
     try
     {
+      // Test create
       vertexDAO.apply();
 
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Integer(10);
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
@@ -230,6 +252,16 @@ public class VertexObjectDAOTest
       Assert.assertNotNull(test);
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Long(10);
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -260,6 +292,16 @@ public class VertexObjectDAOTest
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Float(10F);
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
@@ -294,6 +336,16 @@ public class VertexObjectDAOTest
       Assert.assertNotNull(test);
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Double(10D);
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -326,6 +378,16 @@ public class VertexObjectDAOTest
       Assert.assertNotNull(test);
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = Boolean.FALSE;
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -344,10 +406,7 @@ public class VertexObjectDAOTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-    cal.clear();
-    cal.set(2019, 3, 15);
+    Calendar cal = TestFixtureFactory.getDate();
 
     Date value = cal.getTime();
 
@@ -362,6 +421,19 @@ public class VertexObjectDAOTest
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      cal = TestFixtureFactory.getDate();
+      cal.set(Calendar.DAY_OF_MONTH, 1);
+
+      value = cal.getTime();
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
@@ -396,6 +468,16 @@ public class VertexObjectDAOTest
       Assert.assertNotNull(test);
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Date();
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -426,6 +508,16 @@ public class VertexObjectDAOTest
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = new Date();
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
@@ -461,6 +553,16 @@ public class VertexObjectDAOTest
       Assert.assertNotNull(test);
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = TestFixtureFactory.getPoint2();
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -492,6 +594,16 @@ public class VertexObjectDAOTest
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+
+      // Test update
+      value = TestFixtureFactory.getPolygon2();
+
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
