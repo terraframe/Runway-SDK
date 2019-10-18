@@ -2064,7 +2064,7 @@ public class TestFixtureFactory
   public static Point getPoint()
   {
     GeometryFactory factory = new GeometryFactory();
-    Point value = factory.createPoint(new Coordinate(191232, 243118));
+    Point value = factory.createPoint(new Coordinate(104.9903, 39.7392));
     return value;
   }
 

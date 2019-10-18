@@ -1,8 +1,8 @@
 package com.runwaysdk.dataaccess.graph;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public interface GraphDB
 {
@@ -240,7 +240,7 @@ public interface GraphDB
    * 
    * @return Name of the database column type
    */
-  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute);
+  public String getDbColumnType(MdAttributeConcreteDAOIF mdAttribute);
 
   /**
    * Adds an attribute of the given name and type.

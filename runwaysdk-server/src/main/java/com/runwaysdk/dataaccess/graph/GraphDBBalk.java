@@ -1,8 +1,8 @@
 package com.runwaysdk.dataaccess.graph;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 /**
  * This class implements the Balk pattern for instances where no graph database
@@ -233,7 +233,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute)
+  public String getDbColumnType(MdAttributeConcreteDAOIF mdAttribute)
   {
     return "String";
   }

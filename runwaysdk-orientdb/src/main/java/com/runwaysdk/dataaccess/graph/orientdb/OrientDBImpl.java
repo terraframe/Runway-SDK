@@ -3,6 +3,8 @@ package com.runwaysdk.dataaccess.graph.orientdb;
 import java.util.Iterator;
 import java.util.UUID;
 
+import org.locationtech.spatial4j.shape.Shape;
+
 import com.orientechnologies.orient.core.db.ODatabasePool;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
@@ -15,8 +17,10 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.OVertex;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
+import com.orientechnologies.spatial.shape.OShapeFactory;
 import com.orientechnologies.spatial.shape.OShapeType;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.graph.MdVertexInfo;
@@ -41,13 +45,14 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class OrientDBImpl implements GraphDB
 {
@@ -591,7 +596,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute)
+  public String getDbColumnType(MdAttributeConcreteDAOIF mdAttribute)
   {
     if (mdAttribute instanceof MdAttributeIntegerDAOIF)
     {
@@ -672,17 +677,7 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.newVertex(dbClassName);
 
-    Attribute[] attributes = graphObjectDAO.getAttributeArray();
-
-    for (Attribute attribute : attributes)
-    {
-      MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
-      String columnName = mdAttribute.getColumnName();
-
-      Object value = attribute.getObjectValue();
-
-      vertex.setProperty(columnName, value);
-    }
+    this.populateVertex(graphObjectDAO, vertex);
 
     ORecord record = vertex.save();
 
@@ -697,15 +692,7 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.load((ORID) graphObjectDAO.getRID());
 
-    Attribute[] attributes = graphObjectDAO.getAttributeArray();
-
-    for (Attribute attribute : attributes)
-    {
-      MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
-      String columnName = mdAttribute.getColumnName();
-
-      vertex.setProperty(columnName, attribute.getObjectValue());
-    }
+    this.populateVertex(graphObjectDAO, vertex);
 
     vertex.save();
   }
@@ -749,9 +736,21 @@ public class OrientDBImpl implements GraphDB
 
           if (value != null)
           {
-            attribute.setValue(value);
-          }
+            if (mdAttribute instanceof MdAttributeGeometryDAOIF)
+            {
+              OResult result = (OResult) value;
+              ODocument doc = result.toElement().getRecord();
 
+              Shape shape = OShapeFactory.INSTANCE.fromDoc(doc);
+              Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+
+              attribute.setValue(geometry);
+            }
+            else
+            {
+              attribute.setValue(value);
+            }
+          }
         }
 
         vertexDAO.setIsNew(false);
@@ -763,5 +762,38 @@ public class OrientDBImpl implements GraphDB
     }
 
     return null;
+  }
+
+  protected void populateVertex(GraphObjectDAO graphObjectDAO, OVertex vertex)
+  {
+    Attribute[] attributes = graphObjectDAO.getAttributeArray();
+
+    for (Attribute attribute : attributes)
+    {
+      MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttribute();
+
+      if (mdAttribute instanceof MdAttributeGeometryDAOIF)
+      {
+        Geometry value = (Geometry) attribute.getObjectValue();
+        String columnName = mdAttribute.getColumnName();
+
+        if (value != null)
+        {
+          ODocument document = OShapeFactory.INSTANCE.toDoc(value);
+
+          vertex.setProperty(columnName, document);
+        }
+        else
+        {
+          vertex.setProperty(columnName, null);
+        }
+      }
+      else
+      {
+        String columnName = mdAttribute.getColumnName();
+
+        vertex.setProperty(columnName, attribute.getObjectValue());
+      }
+    }
   }
 }
