@@ -2135,6 +2135,46 @@ public class ObjectCache
     return ( (MdClassStrategy) mdClassStrategy ).getChildMdRelationshipDAOids(mdBusinessDAOid);
   }
 
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * parent.
+   * 
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  public static Set<String> getParentMdEdgeDAOids(String mdVertexDAOid)
+  {
+    CacheStrategy mdClassStrategy = (MdClassStrategy) strategyMap.get(MdClassInfo.CLASS);
+
+    if (mdClassStrategy == null)
+    {
+      String errMsg = "No cache collection for [" + MdClassInfo.CLASS + "] defined.";
+      throw new MetadataException(errMsg);
+    }
+
+    return ( (MdClassStrategy) mdClassStrategy ).getParentMdEdgeDAOids(mdVertexDAOid);
+  }
+
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * child.
+   * 
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  public static Set<String> getChildMdEdgeDAOids(String mdVertexDAOid)
+  {
+    CacheStrategy mdClassStrategy = (MdClassStrategy) strategyMap.get(MdClassInfo.CLASS);
+
+    if (mdClassStrategy == null)
+    {
+      String errMsg = "No cache collection for [" + MdClassInfo.CLASS + "] defined.";
+      throw new MetadataException(errMsg);
+    }
+
+    return ( (MdClassStrategy) mdClassStrategy ).getChildMdEdgeDAOids(mdVertexDAOid);
+  }
+  
   public static MdFormDAOIF getMdFormDAOgetMdFormDAO(String type)
   {
     MdFormStrategy mdFormStrategy = (MdFormStrategy) strategyMap.get(MdFormInfo.CLASS);
