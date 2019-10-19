@@ -3,8 +3,6 @@ package com.runwaysdk.dataaccess.graph.orientdb;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -21,10 +19,10 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.record.ODirection;
 import com.orientechnologies.orient.core.record.OEdge;
+import com.orientechnologies.orient.core.record.OElement;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.record.impl.ODocument;
-import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
@@ -514,8 +512,7 @@ public class OrientDBImpl implements GraphDB
 
             if (oClassIndexType != null)
             {
-              String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0,
-                  30);
+              String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0, 30);
 
               oClass.createIndex(indexName, oClassIndexType, oProperty.getName());
 
@@ -735,10 +732,10 @@ public class OrientDBImpl implements GraphDB
     OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    OVertex vertex = db.load((ORID) graphObjectDAO.getRID());
-    if (vertex != null)
+    OElement element = db.load((ORID) graphObjectDAO.getRID());
+    if (element != null)
     {
-      vertex.delete();
+      element.delete();
     }
   }
 
@@ -757,9 +754,18 @@ public class OrientDBImpl implements GraphDB
     {
       if (rs.hasNext())
       {
-        OVertex row = (OVertex) rs.next().toElement();
+        OResult result = rs.next();
 
-        return this.buildDAO(mdVertexDAOIF, row);
+        if (result.isElement())
+        {
+          OElement element = result.toElement();
+
+          return this.buildDAO(mdVertexDAOIF, element);
+        }
+        else
+        {
+          throw new UnsupportedOperationException("Unexpected result type");
+        }
       }
 
     }
@@ -843,7 +849,7 @@ public class OrientDBImpl implements GraphDB
     return list;
   }
 
-  protected VertexObjectDAOIF buildDAO(MdVertexDAOIF mdVertexDAOIF, OVertex vertex)
+  protected VertexObjectDAOIF buildDAO(MdVertexDAOIF mdVertexDAOIF, OElement vertex)
   {
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAOIF);
 
@@ -872,8 +878,8 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
-// Heads up: clean up
-//    vertexDAO.setIsNew(false);
+    // Heads up: clean up
+    // vertexDAO.setIsNew(false);
     vertexDAO.setRID(vertex.getIdentity());
 
     return vertexDAO;

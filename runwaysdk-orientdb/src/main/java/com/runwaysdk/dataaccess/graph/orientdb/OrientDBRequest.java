@@ -25,24 +25,24 @@ public class OrientDBRequest implements GraphRequest
   @Override
   public void beginTransaction()
   {
-//    if (!this.dbSession.isActiveOnCurrentThread())
-//    {
-////      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
-//      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
-//
-//      this.dbSession.activateOnCurrentThread();
-//      
-//      this.dbSession.begin();
-//
-//      if (database != null)
-//      {
-//        database.activateOnCurrentThread();
-//      }
-//    }
-//    else
-//    {
-//      this.dbSession.begin();
-//    }
+    if (!this.dbSession.isActiveOnCurrentThread())
+    {
+//      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
+      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
+
+      this.dbSession.activateOnCurrentThread();
+      
+      this.dbSession.begin();
+
+      if (database != null)
+      {
+        database.activateOnCurrentThread();
+      }
+    }
+    else
+    {
+      this.dbSession.begin();
+    }
     
     this.dbSession.begin();
   }
@@ -50,27 +50,27 @@ public class OrientDBRequest implements GraphRequest
   @Override
   public void commit()
   {
-//    if (!this.dbSession.isActiveOnCurrentThread())
-//    {
-////      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
-//      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
-//
-//      this.dbSession.activateOnCurrentThread();
-//      
-//      this.dbSession.commit();
-//
-//      if (database != null)
-//      {
-//        database.activateOnCurrentThread();
-//      }
-//    }
-//    else
-//    {
-//      this.dbSession.commit();
-//    }
+    if (!this.dbSession.isActiveOnCurrentThread())
+    {
+//      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
+      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
+
+      this.dbSession.activateOnCurrentThread();
+      
+      this.dbSession.commit();
+
+      if (database != null)
+      {
+        database.activateOnCurrentThread();
+      }
+    }
+    else
+    {
+      this.dbSession.commit();
+    }
 //  
 //System.out.println("Heads up: Graph: Commit GraphRequest: "+this.isDDLRequest+" "+dbSession);
-    this.dbSession.commit();
+//    this.dbSession.commit();
 //System.out.println("COMPLETED");
   }
   // ODatabaseRecordThreadLocal.instance().set(db)
@@ -79,27 +79,27 @@ public class OrientDBRequest implements GraphRequest
   @Override
   public void rollback()
   {
-//    if (!this.dbSession.isActiveOnCurrentThread())
-//    { 
-////      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
-////      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
-////      
-////      this.dbSession.activateOnCurrentThread();
-//
-//      this.dbSession.rollback();
-//
-////      if (database != null)
-////      {
-////        database.activateOnCurrentThread();
-////      }
-//    }
-//    else
-//    {
-//      this.dbSession.rollback();
-//    }
+    if (!this.dbSession.isActiveOnCurrentThread())
+    { 
+//      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().get();
+      ODatabaseDocument database = (ODatabaseDocument) ODatabaseRecordThreadLocal.instance().getIfDefined();
+//      
+      this.dbSession.activateOnCurrentThread();
+
+      this.dbSession.rollback();
+
+      if (database != null)
+      {
+        database.activateOnCurrentThread();
+      }
+    }
+    else
+    {
+      this.dbSession.rollback();
+    }
 // 
 //System.out.println("Heads up: Graph: Rollback GraphRequest: "+this.isDDLRequest+" "+dbSession);
-    this.dbSession.rollback();
+//    this.dbSession.rollback();
 //System.out.println("COMPLETED");
   }
     

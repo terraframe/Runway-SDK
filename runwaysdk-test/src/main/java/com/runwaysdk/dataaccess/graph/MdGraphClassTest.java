@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -83,28 +84,26 @@ public class MdGraphClassTest
   @BeforeClass
   public static void classSetUp()
   {
+    LocalProperties.setSkipCodeGenAndCompile(true);
 
     // MdVertexDAOIF mdVertex = MdVertexDAO.getMdVertexDAO(VERTEX_CLASS_1);
     //
     // System.out.println("!!!!HEADS UP!!!!!");
     // mdVertex.definesAttributes().forEach(a -> a.definesAttribute());
 
-    deleteVertexClass(VERTEX_CLASS_1);
+    deleteEdgeClass(EDGE_CLASS);
 
     deleteVertexClass(VERTEX_CLASS_2);
 
-    deleteEdgeClass(EDGE_CLASS);
+    deleteVertexClass(VERTEX_CLASS_1);
+
   }
 
   @Request
   @AfterClass
   public static void classTearDown()
   {
-    deleteVertexClass(VERTEX_CLASS_1);
-
-    deleteVertexClass(VERTEX_CLASS_2);
-
-    deleteEdgeClass(EDGE_CLASS);
+    LocalProperties.setSkipCodeGenAndCompile(false);
   }
 
   @Request
@@ -118,6 +117,10 @@ public class MdGraphClassTest
   @After
   public void tearDown() throws Exception
   {
+    deleteEdgeClass(EDGE_CLASS);
+
+    deleteVertexClass(VERTEX_CLASS_2);
+
     deleteVertexClass(VERTEX_CLASS_1);
   }
 
@@ -546,7 +549,7 @@ public class MdGraphClassTest
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
     mdVertexDAO.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    
+
     mdVertexDAO.apply();
 
     return mdVertexDAO;
