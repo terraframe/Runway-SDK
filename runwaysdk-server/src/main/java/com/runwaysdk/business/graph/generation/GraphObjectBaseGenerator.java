@@ -31,7 +31,7 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " " + CommonGenerationUtil.GET + attributeName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + m.javaType(false) + ") this.getObjectValue(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().writeLine("return (" + m.javaType(false) + ") this.getValue(" + m.definesAttribute().toUpperCase() + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
