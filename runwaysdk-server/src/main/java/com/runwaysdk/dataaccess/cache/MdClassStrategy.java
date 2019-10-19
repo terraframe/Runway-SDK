@@ -27,14 +27,20 @@ import java.util.Set;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
 
 public class MdClassStrategy extends MetaDataObjectStrategy
@@ -66,15 +72,26 @@ public class MdClassStrategy extends MetaDataObjectStrategy
   private Map<String, MdEntityDAO> mdEntityTableNameMap;
   
   /**
-   * key: MdBusiness oid.  Value: MdRelationship ids where MdBusiness participates as a parent.
+   * key: {@link MdBusinessDAOIF} oid.  Value: Set of {@link MdRelationshipDAOIF} ids where MdBusiness participates as a parent.
    */
   private Map<String, Set<String>> mdBusinessParentMdRelationships;
 
 
   /**
-   * key: MdBusiness oid.  Value: MdRelationship ids where MdBusiness participates as a child.
+   * key:{@link MdBusinessDAOIF} oid.  Value: Set of {@link MdRelationshipDAOIF} ids where MdBusiness participates as a child.
    */
   private Map<String, Set<String>> mdBusinessChildMdRelationships;
+  
+  /**
+   * key: {@link MdVertexDAOIF} oid.  Value: Set of {@link MdRelationshipDAOIF} ids where MdBusiness participates as a parent.
+   */
+  private Map<String, Set<String>> mdVertexParentMdEdges;
+
+
+  /**
+   * key: {@link MdVertexDAOIF} oid.  Value: Set of {@link MdRelationshipDAOIF} ids where MdBusiness participates as a child.
+   */
+  private Map<String, Set<String>> mdVertexChildMdEdges;
 
 
   /**
@@ -89,13 +106,16 @@ public class MdClassStrategy extends MetaDataObjectStrategy
   {
     super(classType);
 
-    this.mdClassTypeMap = new HashMap<String, MdClassDAO>();
-    this.mdClassRootIdMap = new HashMap<String, MdClassDAO>();
+    this.mdClassTypeMap                  = new HashMap<String, MdClassDAO>();
+    this.mdClassRootIdMap                = new HashMap<String, MdClassDAO>();
 
-    this.mdEntityTableNameMap = new HashMap<String, MdEntityDAO>();
+    this.mdEntityTableNameMap            = new HashMap<String, MdEntityDAO>();
     
     this.mdBusinessParentMdRelationships = new HashMap<String, Set<String>>();
-    this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
+    this.mdBusinessChildMdRelationships  = new HashMap<String, Set<String>>();
+    
+    this.mdVertexParentMdEdges           = new HashMap<String, Set<String>>();
+    this.mdVertexChildMdEdges            = new HashMap<String, Set<String>>();
   }
 
   /**
@@ -268,6 +288,43 @@ public class MdClassStrategy extends MetaDataObjectStrategy
     }
   }
 
+
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in which
+   * the <code>MdVertexDAOIF</code> with the given oid participates as a parent.
+   *
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  protected synchronized Set<String> getParentMdEdgeDAOids(String mdVertexsDAOid)
+  {
+    if (this.mdVertexParentMdEdges.containsKey(mdVertexsDAOid))
+    {
+      return this.mdVertexParentMdEdges.get(mdVertexsDAOid);
+    }
+    else
+    {
+      return new HashSet<String>();
+    }
+  }
+
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in which
+   * the <code>MdVertexDAOIF</code> with the given oid participates as a child.
+   *
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  protected synchronized Set<String> getChildMdEdgeDAOids(String mdVertexDAOid)
+  {
+    if (this.mdVertexChildMdEdges.containsKey(mdVertexDAOid))
+    {
+      return this.mdVertexChildMdEdges.get(mdVertexDAOid);
+    }
+    else
+    {
+      return new HashSet<String>();
+    }
+  }
+  
   /**
    * Places the given EntityDAO into the cache.
    *
@@ -328,6 +385,37 @@ public class MdClassStrategy extends MetaDataObjectStrategy
         }
         childRelationshipSet.add(mdRelationshipDAO.getOid());
       }
+      else if (mdClassDAO instanceof MdEdgeDAO)
+      {
+        MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) mdClassDAO;
+        
+        String parentMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.PARENT_MD_VERTEX).getValue();
+        Set<String> parentEdgeSet;
+        if (this.mdVertexParentMdEdges.containsKey(parentMdVertexId))
+        {
+          parentEdgeSet = this.mdVertexParentMdEdges.get(parentMdVertexId);
+        }
+        else
+        {
+          parentEdgeSet = new HashSet<String>();
+          this.mdVertexParentMdEdges.put(parentMdVertexId, parentEdgeSet);
+        }
+        parentEdgeSet.add(mdEdgeDAO.getOid());
+        
+        String childMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.CHILD_MD_VERTEX).getValue();
+        Set<String> childEdgeSet;
+        if (this.mdVertexChildMdEdges.containsKey(childMdVertexId))
+        {
+          childEdgeSet = this.mdVertexChildMdEdges.get(childMdVertexId);
+        }
+        else
+        {
+          childEdgeSet = new HashSet<String>();
+          this.mdVertexChildMdEdges.put(childMdVertexId, childEdgeSet);
+        }
+        childEdgeSet.add(mdEdgeDAO.getOid());
+        
+      }
     }
   }
 
@@ -382,6 +470,30 @@ public class MdClassStrategy extends MetaDataObjectStrategy
         this.mdBusinessParentMdRelationships.remove(mdBusinessDAO.getOid());
         this.mdBusinessChildMdRelationships.remove(mdBusinessDAO.getOid());
       }
+    }
+    
+    if (mdClassDAO instanceof MdEdgeDAO)
+    {
+      MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) mdClassDAO;
+
+      String parentMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.PARENT_MD_VERTEX).getValue();
+      if (this.mdVertexParentMdEdges.containsKey(parentMdVertexId))
+      {
+        this.mdVertexParentMdEdges.get(parentMdVertexId).remove(mdEdgeDAO.getOid());
+      }
+
+      String childMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.CHILD_MD_VERTEX).getValue();
+      if (this.mdVertexChildMdEdges.containsKey(childMdVertexId))
+      {
+        this.mdVertexChildMdEdges.get(childMdVertexId).remove(mdEdgeDAO.getOid());
+      }
+    }
+    else if (mdClassDAO instanceof MdVertexDAO)
+    {
+      MdVertexDAO mdVertexDAO = (MdVertexDAO) mdClassDAO;
+
+      this.mdVertexParentMdEdges.remove(mdVertexDAO.getOid());
+      this.mdVertexChildMdEdges.remove(mdVertexDAO.getOid());
     }
   }
 

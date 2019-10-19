@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.graph;
 
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -38,6 +40,7 @@ import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -147,11 +150,6 @@ public class MdGraphClassTest
     IndexTypes indexType = GraphDBService.getInstance().getIndexType(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("The wrong type of index is defined", IndexTypes.UNIQUE_INDEX, indexType);
 
-    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(VERTEX_CLASS_1);
-
-    // Print the attributes. This will be moved into its own test.
-    vertexDAO.printAttributes();
-
     mdVertexDAO.delete();
 
     classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
@@ -165,26 +163,44 @@ public class MdGraphClassTest
     MdVertexDAO parentMdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdVertexDAO childMdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_2);
 
+    MdEdgeDAO mdEdgeDAO = createEdgeClass(EDGE_CLASS_NAME, parentMdVertexDAO.getOid(), childMdVertexDAO.getOid());
+    String dbClassName = mdEdgeDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    
     try
     {
-      MdEdgeDAO mdEdgeDAO = createEdgeClass(EDGE_CLASS_NAME, parentMdVertexDAO.getOid(), childMdVertexDAO.getOid());
-
-      String dbClassName = mdEdgeDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
-      GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
       boolean classDefined = GraphDBService.getInstance().isEdgeClassDefined(graphRequest, dbClassName);
 
       Assert.assertEquals("Edge class was not defined", true, classDefined);
-
-      mdEdgeDAO.delete();
-
-      classDefined = GraphDBService.getInstance().isEdgeClassDefined(graphRequest, dbClassName);
-      Assert.assertEquals("Edge class still exists in the database", false, classDefined);
+      
+      Set<String> parentEdgeIDs = ObjectCache.getParentMdEdgeDAOids(parentMdVertexDAO.getOid());
+      Assert.assertEquals("Metadata did not properly store an edge class", 1, parentEdgeIDs.size());
+      Assert.assertEquals("Metadata did not properly store an edge class", true, parentEdgeIDs.contains(mdEdgeDAO.getOid()));
+      
+      Set<String> childEdgeIDs = ObjectCache.getChildMdEdgeDAOids(childMdVertexDAO.getOid());
+      
+      Assert.assertEquals("Metadata did not properly store an edge class", 1, childEdgeIDs.size());
+      Assert.assertEquals("Metadata did not properly store an edge class", true, childEdgeIDs.contains(mdEdgeDAO.getOid()));
     }
     finally
     {
+      mdEdgeDAO.delete();
+      
       parentMdVertexDAO.delete();
       childMdVertexDAO.delete();
     }
+    
+    boolean classDefined = GraphDBService.getInstance().isEdgeClassDefined(graphRequest, dbClassName);
+    Assert.assertEquals("Edge class still exists in the database", false, classDefined);
+    
+    Set<String> parentEdgeIDs = ObjectCache.getParentMdEdgeDAOids(parentMdVertexDAO.getOid());
+    Assert.assertEquals("Metadata did not properly store an edge class", 0, parentEdgeIDs.size());
+    Assert.assertEquals("Metadata did not properly store an edge class", false, parentEdgeIDs.contains(mdEdgeDAO.getOid()));
+    
+    Set<String> childEdgeIDs = ObjectCache.getChildMdEdgeDAOids(childMdVertexDAO.getOid());
+    
+    Assert.assertEquals("Metadata did not properly store an edge class", 0, childEdgeIDs.size());
+    Assert.assertEquals("Metadata did not properly store an edge class", false, childEdgeIDs.contains(mdEdgeDAO.getOid()));
   }
 
   @Request
