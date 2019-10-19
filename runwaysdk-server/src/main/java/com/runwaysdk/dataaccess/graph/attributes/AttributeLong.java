@@ -26,7 +26,7 @@ public class AttributeLong extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeLong(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeLong(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Long value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

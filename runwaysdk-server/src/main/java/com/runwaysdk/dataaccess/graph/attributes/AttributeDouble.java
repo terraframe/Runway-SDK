@@ -26,7 +26,7 @@ public class AttributeDouble extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeDouble(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeDouble(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Double value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

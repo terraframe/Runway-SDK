@@ -26,8 +26,8 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   /**
    * 
    */
-  private static final long serialVersionUID = 765877467852678882L;
-  
+  private static final long        serialVersionUID      = 765877467852678882L;
+
   /**
    * Map of Attribute objects the component has. They are of a name-value pair
    * relation. <br/>
@@ -45,12 +45,14 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    * Indicates if this is a new instance. If it is new, then the records that
    * represent this component have not been created.
    */
-  private boolean                  isNew = false;
+  private boolean                  isNew                = false;
   
-  private boolean                  isAppliedToDB = false;
-  
+  private boolean                  isAppliedToDB        = false;
+
   private MdGraphClassDAOIF        mdGraphClassDAOIF;
-  
+
+  private Object                   rid;
+
   /**
    * The default constructor, does not set any attributes
    */
@@ -76,25 +78,29 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     this.mdGraphClassDAOIF = mdGraphClassDAOIF;
     this.linkAttributes();
   }
-  
-  
+
   /**
-   * Returns a {@link MdGraphClassDAOIF}  that defines this Component's class.
+   * Returns a {@link MdGraphClassDAOIF} that defines this Component's class.
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    *
-   * @return a {@link MdGraphClassDAOIF}   that defines this Component's class.
+   * @return a {@link MdGraphClassDAOIF} that defines this Component's class.
    */
   @Override
   public MdGraphClassDAOIF getMdClassDAO()
   {
     return mdGraphClassDAOIF;
   }
-  
+
   /**
-   * Returns a boolean that indicates if this is a new instance (i.e. has not been committed to the database).
+   * Returns a boolean that indicates if this is a new instance (i.e. has not
+   * been committed to the database).
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    *
    * @return a boolean that indicates if this is a new instance
    */
@@ -105,14 +111,27 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
-   * Do not call this method unless you know what you are doing.  Sets the new state of the object.
+   * Do not call this method unless you know what you are doing. Sets the new
+   * state of the object.
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    */
   @Override
   public void setIsNew(boolean isNew)
   {
     this.isNew = isNew;
+  }
+
+  public void setRID(Object rid)
+  {
+    this.rid = rid;
+  }
+
+  public Object getRID()
+  {
+    return rid;
   }
 
   /**
@@ -144,7 +163,6 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     this.problemNotificationId = problemNotificationId;
   }
-  
 
   /**
    * Iterates over the map of Attributes, setting <b>this</b> as their
@@ -170,7 +188,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     this.componentType = graphType;
   }
-  
+
   /**
    * Returns true if this instance has been written to the database. It does not
    * indicate if it has been committed to the database.
@@ -256,17 +274,17 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     Collection<Attribute> values = this.attributeMap.values();
     return this.attributeMap.values().toArray(new AttributeIF[values.size()]);
-// Heads up: clean up
-//    AttributeIF[] array = new Attribute[this.attributeMap.size()];
-//    int index = 0;
-//
-//    for (AttributeIF attribute : this.attributeMap.values())
-//    {
-//      array[index] = attribute;
-//      index++;
-//    }
-//
-//    return array;
+    // Heads up: clean up
+    // AttributeIF[] array = new Attribute[this.attributeMap.size()];
+    // int index = 0;
+    //
+    // for (AttributeIF attribute : this.attributeMap.values())
+    // {
+    // array[index] = attribute;
+    // index++;
+    // }
+    //
+    // return array;
   }
 
   /**
@@ -276,9 +294,10 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    */
   public Attribute[] getAttributeArray()
   {
-    return (Attribute[]) getAttributeArrayIF();
+    Collection<Attribute> values = this.attributeMap.values();
+
+    return this.attributeMap.values().toArray(new Attribute[values.size()]);
   }
-  
 
   /**
    * Returns a {@link MdGraphDAOIF} that defines this object's class.
@@ -293,7 +312,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     return MdGraphClassDAO.getMdGraphClassDAO(this.getType());
   }
-  
+
   /**
    * Returns a LinkedList of MdAttributeIF objects representing metadata for
    * each attribute of this object's class.
@@ -309,7 +328,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     return this.getMdClassDAO().getAllDefinedMdAttributes();
   }
-  
+
   /**
    * Returns the attribute object of the given name.
    * 
@@ -342,7 +361,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     attribute.validate(attribute.getValue());
   }
-  
+
   /**
    * Sets the attribute of the given name with the given value.
    * 
@@ -350,7 +369,8 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    * <b>Precondition:</b> name != null <br/>
    * <b>Precondition:</b> !name.trim().equals("") <br/>
    * <b>Precondition:</b> value != null <br/>
-   * <b>Precondition:</b> Attribute name is valid for this EntityDAO's class <br/>
+   * <b>Precondition:</b> Attribute name is valid for this EntityDAO's class
+   * <br/>
    * <b>Postcondition:</b> Attribute is set with the given value
    * 
    * <br/>
@@ -369,8 +389,8 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     if (value instanceof String)
     {
-      String stringValue = (String)value;
-      
+      String stringValue = (String) value;
+
       if (name.equals(GraphClassInfo.TYPE))
       {
         this.componentType = stringValue;
@@ -381,7 +401,6 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     attribute.setValue(value);
   }
-  
 
   /**
    * Finalizes attributes, such as required attributes.
@@ -392,7 +411,17 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     return this.save();
   }
-  
+
+  public void delete()
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    if (!this.isNew)
+    {
+      GraphDBService.getInstance().delete(request, this);
+    }
+  }
+
   /**
    * This is a hook method for aspects so that the transient object apply can be
    * managed by transaction management.
@@ -414,6 +443,19 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
       }
     }
 
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    if (this.isNew)
+    {
+      GraphDBService.getInstance().insert(request, this);
+    }
+    else
+    {
+      GraphDBService.getInstance().update(request, this);
+    }
+
+    this.isNew = false;
+
     return this.getOid();
   }
 
@@ -434,11 +476,12 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
       attributeArray[i].setCommitState();
     }
   }
- 
+
   /**
-   * Returns a <code>Map</code> of Attribute objects for the given {@link MdGraphClassDAOIF},
-   * not including attributes that are inherited from other classes.  If a default value is defined for the
-   * attribute, it is assigned to the attribute.
+   * Returns a <code>Map</code> of Attribute objects for the given
+   * {@link MdGraphClassDAOIF}, not including attributes that are inherited from
+   * other classes. If a default value is defined for the attribute, it is
+   * assigned to the attribute.
    * 
    * <br/>
    * <b>Precondition:</b> mdGraphClassDAOIF != null
@@ -464,7 +507,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     return attributeMap;
   }
-  
+
   public static Attribute createAttributeForGraphObject(MdGraphClassDAOIF mdGraphClassDAOIF, MdAttributeConcreteDAOIF mdAttribute)
   {
     Attribute attribute;
@@ -473,64 +516,71 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     // Check for sessionDefaultValue
 
-//    // New enumeration attributes need a unique oid so they can map to the
-//    // MdEnumerationIF.getDatabaseTableName() table
-//    if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
-//    {
-//      String setOid = ServerIDGenerator.nextID();
-//      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
-//
-//      AttributeEnumeration attributeEnumeration = (AttributeEnumeration) attribute;
-//
-//      if (!attrDefaultValue.equals(""))
-//      {
-//        attributeEnumeration.setDefaultValue(attrDefaultValue);
-//      }
-//    }
-//    else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
-//    {
-//      String setOid = ServerIDGenerator.nextID();
-//      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
-//
-//      AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
-//
-//      if (!attrDefaultValue.equals(""))
-//      {
-//        attributeMultiReference.setDefaultValue(attrDefaultValue);
-//      }
-//    }
-//    else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
-//    {
-//      String setOid = ServerIDGenerator.nextID();
-//      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
-//
-//      AttributeMultiReference attributeMultiReference = (AttributeMultiReference) attribute;
-//
-//      if (!attrDefaultValue.equals(""))
-//      {
-//        attributeMultiReference.setDefaultValue(attrDefaultValue);
-//      }
-//    }
-//    else if (mdAttribute instanceof MdAttributeStructDAOIF)
-//    {
-//      MdStructDAOIF mdStructIF = ( (MdAttributeStructDAO) mdAttribute ).getMdStructDAOIF();
-//      StructDAO structDAO = StructDAO.newInstance(mdStructIF.definesType());
-//
-//      attribute = AttributeFactory.createAttribute(mdAttribute.getKey(), mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), attrDefaultValue);
-//      ( (AttributeStruct) attribute ).setStructDAO(structDAO);
-//    }
+    // // New enumeration attributes need a unique oid so they can map to the
+    // // MdEnumerationIF.getDatabaseTableName() table
+    // if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
+    // {
+    // String setOid = ServerIDGenerator.nextID();
+    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
+    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
+    //
+    // AttributeEnumeration attributeEnumeration = (AttributeEnumeration)
+    // attribute;
+    //
+    // if (!attrDefaultValue.equals(""))
+    // {
+    // attributeEnumeration.setDefaultValue(attrDefaultValue);
+    // }
+    // }
+    // else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
+    // {
+    // String setOid = ServerIDGenerator.nextID();
+    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
+    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
+    //
+    // AttributeMultiReference attributeMultiReference =
+    // (AttributeMultiReference) attribute;
+    //
+    // if (!attrDefaultValue.equals(""))
+    // {
+    // attributeMultiReference.setDefaultValue(attrDefaultValue);
+    // }
+    // }
+    // else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
+    // {
+    // String setOid = ServerIDGenerator.nextID();
+    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
+    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
+    //
+    // AttributeMultiReference attributeMultiReference =
+    // (AttributeMultiReference) attribute;
+    //
+    // if (!attrDefaultValue.equals(""))
+    // {
+    // attributeMultiReference.setDefaultValue(attrDefaultValue);
+    // }
+    // }
+    // else if (mdAttribute instanceof MdAttributeStructDAOIF)
+    // {
+    // MdStructDAOIF mdStructIF = ( (MdAttributeStructDAO) mdAttribute
+    // ).getMdStructDAOIF();
+    // StructDAO structDAO = StructDAO.newInstance(mdStructIF.definesType());
+    //
+    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
+    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(),
+    // attrDefaultValue);
+    // ( (AttributeStruct) attribute ).setStructDAO(structDAO);
+    // }
     if (mdAttribute instanceof MdAttributeUUIDDAOIF)
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
-      attribute.setValueInternal(UUID.randomUUID());
+      attribute.setValueInternal(UUID.randomUUID().toString());
     }
     else
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
-      attribute.setValueInternal(attrDefaultValue);
+//      attribute.setValueInternal(attrDefaultValue);
     }
     return attribute;
   }
-  
-  
 }

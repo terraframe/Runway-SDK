@@ -26,7 +26,7 @@ public class AttributeInteger extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeInteger(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeInteger(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Integer value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

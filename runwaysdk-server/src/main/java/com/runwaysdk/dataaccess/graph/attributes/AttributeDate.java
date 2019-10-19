@@ -28,7 +28,7 @@ public class AttributeDate extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeDate(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeDate(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Date value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

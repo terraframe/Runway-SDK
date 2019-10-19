@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.database.AbstractInstantiationException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
-public class VertexObjectDAO extends GraphObjectDAO
+public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 {
   /**
    * 
@@ -26,7 +28,8 @@ public class VertexObjectDAO extends GraphObjectDAO
   }
 
   /**
-   * Constructs a {@link VertexObjectDAO} from the given hashtable of Attributes.
+   * Constructs a {@link VertexObjectDAO} from the given hashtable of
+   * Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -39,31 +42,117 @@ public class VertexObjectDAO extends GraphObjectDAO
   {
     super(attributeMap, mdVertexDAOIF);
   }
-  
+
   /**
-   * Returns a {@link MdVertexDAOIF}  that defines this Component's class.
+   * Returns a {@link MdVertexDAOIF} that defines this Component's class.
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    *
-   * @return a {@link MdVertexDAOIF}   that defines this Component's class.
+   * @return a {@link MdVertexDAOIF} that defines this Component's class.
    */
   @Override
   public MdVertexDAOIF getMdClassDAO()
   {
-    return (MdVertexDAOIF)super.getMdClassDAO();
+    return (MdVertexDAOIF) super.getMdClassDAO();
   }
-  
+
+  public void addChild(VertexObjectDAOIF child, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.addChild(child, mdEdge);
+  }
+
+  public void addChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().addEdge(request, this, child, mdEdge);
+  }
+
+  public void removeChild(VertexObjectDAOIF child, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.removeChild(child, mdEdge);
+  }
+
+  public void removeChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().removeEdge(request, this, child, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getChildren(String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    return this.getChildren(mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getChildren(MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().getChildren(request, this, mdEdge);
+  }
+
+  public void addParent(VertexObjectDAOIF parent, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.addParent(parent, mdEdge);
+  }
+
+  public void addParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().addEdge(request, parent, this, mdEdge);
+  }
+
+  public void removeParent(VertexObjectDAOIF parent, String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    this.removeParent(parent, mdEdge);
+  }
+
+  public void removeParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    GraphDBService.getInstance().removeEdge(request, parent, this, mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getParents(String edgeType)
+  {
+    MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
+
+    return this.getParents(mdEdge);
+  }
+
+  public List<VertexObjectDAOIF> getParents(MdEdgeDAOIF mdEdge)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().getParents(request, this, mdEdge);
+  }
+
   public static VertexObjectDAO newInstance(String vertexType)
   {
     // get the meta data for the given class
     MdVertexDAOIF mdVertexDAOIF = MdVertexDAO.getMdVertexDAO(vertexType);
-    
+
     return newInstance(mdVertexDAOIF);
   }
-  
+
   /**
-   * Returns a new {@link VertexObjectDAO} instance of the given class name. Default values
-   * are assigned attributes if specified by the metadata.
+   * Returns a new {@link VertexObjectDAO} instance of the given class name.
+   * Default values are assigned attributes if specified by the metadata.
    * 
    * <br/>
    * <b>Precondition:</b> type != null <br/>
@@ -71,7 +160,7 @@ public class VertexObjectDAO extends GraphObjectDAO
    * 
    * @param mdVertexDAOIF
    *          Class name of the new BusinessDAO to instantiate
-   * @return new  {@link VertexObjectDAO} of the given type
+   * @return new {@link VertexObjectDAO} of the given type
    * @throws DataAccessException
    *           if the given class name is abstract
    * @throws DataAccessException
@@ -84,21 +173,29 @@ public class VertexObjectDAO extends GraphObjectDAO
       String errMsg = "Class [" + mdVertexDAOIF.definesType() + "] is abstract and cannot be instantiated";
       throw new AbstractInstantiationException(errMsg, mdVertexDAOIF);
     }
-    
+
     Hashtable<String, Attribute> attributeMap = new Hashtable<String, Attribute>();
-    
+
     // get list of all classes in inheritance relationship
     List<MdVertexDAOIF> superMdVertexList = mdVertexDAOIF.getSuperClasses();
     superMdVertexList.forEach(md -> attributeMap.putAll(GraphObjectDAO.createRecordsForEntity(md)));
-    
+
     VertexObjectDAO vertexObjectDAO = new VertexObjectDAO(attributeMap, mdVertexDAOIF);
-    
+
     attributeMap.values().forEach(a -> a.setContainingComponent(vertexObjectDAO));
-    
+
     vertexObjectDAO.setIsNew(true);
+
     vertexObjectDAO.setAppliedToDB(false);
-    
+
     return vertexObjectDAO;
   }
-  
+
+  public static VertexObjectDAOIF get(MdVertexDAO mdVertexDAO, String oid)
+  {
+    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+    return GraphDBService.getInstance().get(request, mdVertexDAO, oid);
+  }
+
 }

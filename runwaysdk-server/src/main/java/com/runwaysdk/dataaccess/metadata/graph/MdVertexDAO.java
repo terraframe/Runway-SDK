@@ -7,6 +7,10 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.GeneratorIF;
+import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
+import com.runwaysdk.business.graph.generation.JavaArtifactMdGraphClassCommand;
+import com.runwaysdk.business.graph.generation.VertexObjectBaseGenerator;
+import com.runwaysdk.business.graph.generation.VertexObjectStubGenerator;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.RelationshipTypes;
@@ -28,7 +32,7 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 {
-  
+
   /**
    * 
    */
@@ -41,7 +45,6 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     super();
   }
-  
 
   /**
    * Constructs a {@link MdVertexDAO} from the given hashtable of Attributes.
@@ -69,8 +72,9 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   }
 
   /**
-   * Returns a new {@link MdVertexDAO}. Some attributes will contain default values, as
-   * defined in the attribute metadata. Otherwise, the attributes will be blank.
+   * Returns a new {@link MdVertexDAO}. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    * 
    * @return instance of {@link MdVertexDAO}.
    */
@@ -78,7 +82,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return (MdVertexDAO) BusinessDAO.newInstance(MdVertexInfo.CLASS);
   }
-  
+
   /**
    * Returns true if this class is the root class of a hierarchy, false
    * otherwise.
@@ -101,11 +105,11 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   }
 
   /**
-   * Returns the {@link MdVertexDAOIF} that is the root of the hierarchy that this type
-   * belongs to. returns a reference to itself if it is the root.
+   * Returns the {@link MdVertexDAOIF} that is the root of the hierarchy that
+   * this type belongs to. returns a reference to itself if it is the root.
    * 
-   * @return {@link MdVertexDAOIF}  that is the root of the hierarchy that this type belongs
-   *         to. returns a reference to itself if it is the root.
+   * @return {@link MdVertexDAOIF} that is the root of the hierarchy that this
+   *         type belongs to. returns a reference to itself if it is the root.
    */
   @Override
   public MdVertexDAOIF getRootMdClassDAO()
@@ -114,7 +118,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   }
 
   /**
-   * @see MdVertexDAOIF#getSubClasses() 
+   * @see MdVertexDAOIF#getSubClasses()
    */
   @Override
   public List<MdVertexDAOIF> getSubClasses()
@@ -129,9 +133,9 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 
     return mdViewList;
   }
-  
+
   /**
-   * @see MdVertexDAOIF#getAllConcreteSubClasses() 
+   * @see MdVertexDAOIF#getAllConcreteSubClasses()
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -139,7 +143,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return (List<? extends MdVertexDAOIF>) super.getAllConcreteSubClasses();
   }
-  
+
   /**
    * @see MdVertexDAOIF#getAllSubClasses().
    */
@@ -150,9 +154,8 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     return (List<? extends MdVertexDAOIF>) super.getAllSubClasses();
   }
 
-  
   /**
-   * @see MdVertexDAOIF#getSuperClass() 
+   * @see MdVertexDAOIF#getSuperClass()
    */
   public MdVertexDAOIF getSuperClass()
   {
@@ -166,24 +169,23 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
       return null;
     }
   }
-  
+
   /**
-   * @see MdVertexDAOIF#getSuperClasses() 
+   * @see MdVertexDAOIF#getSuperClasses()
    */
   @SuppressWarnings("unchecked")
   public List<MdVertexDAOIF> getSuperClasses()
   {
     return (List<MdVertexDAOIF>) super.getSuperClasses();
   }
-  
-  
+
   @Override
   public boolean isAbstract()
   {
     AttributeBooleanIF attributeBoolean = (AttributeBooleanIF) this.getAttributeIF(MdTransientInfo.ABSTRACT);
     return AttributeBoolean.getBooleanValue(attributeBoolean);
   }
-  
+
   /**
    * Returns true if the type can be extended, false otherwise.
    *
@@ -194,7 +196,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return true;
   }
-  
+
   /**
    *
    */
@@ -207,14 +209,14 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     if (this.isNew() && !applied)
     {
       // Inheritance relationship will be imported if this object is imported
-      if (this.createInheritanceRelationship()  && !this.isImport())
+      if (this.createInheritanceRelationship() && !this.isImport())
       {
         // extend the new class with the given super class
         MdVertexDAO superMdVertex = this.getSuperClass().getBusinessDAO();
         superMdVertex.addSubMdVertex(this);
       }
 
-    }   
+    }
     // !this.isNew() || applied
     else if (this.getAttribute(EntityInfo.KEY).isModified())
     {
@@ -223,7 +225,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 
     return oid;
   }
-  
+
   /**
    * Deletes all child classes.
    * 
@@ -245,7 +247,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
       }
     }
   }
-  
+
   /**
    * 
    */
@@ -259,7 +261,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().deleteVertexClass(graphRequest, graphDDLRequest, dbClassName);
 
-    GraphDDLCommand command = new GraphDDLCommand(doItAction,  undoItAction, false);
+    GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, false);
     command.doIt();
   }
 
@@ -272,10 +274,10 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().deleteVertexClass(graphRequest, graphDDLRequest, dbClassName);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName);
 
-    GraphDDLCommand command = new GraphDDLCommand(doItAction,  undoItAction, true);
+    GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, true);
     command.doIt();
   }
-  
+
   /**
    * Creates the relationship such that this class becomes superclass of the
    * given class.
@@ -289,8 +291,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     newChildRelDAO.setKey(childMdVertexDAOIF.getKey());
     newChildRelDAO.save(true);
   }
-  
-  
+
   /**
    * Updates the key on the inheritance relationship.
    * 
@@ -300,7 +301,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   protected void updateInheritanceRelationshipKey()
   {
     List<RelationshipDAOIF> parentInheritances = this.getParents(RelationshipTypes.VERTEX_INHERITANCE.getType());
-    
+
     for (RelationshipDAOIF parentInheritanceDAOIF : parentInheritances)
     {
       RelationshipDAO parentInheritanceDAO = parentInheritanceDAOIF.getRelationshipDAO();
@@ -316,8 +317,8 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   public static MdVertexDAOIF get(String oid)
   {
     return (MdVertexDAOIF) BusinessDAO.get(oid);
-  } 
- 
+  }
+
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
@@ -325,17 +326,19 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return (MdVertexDAO) super.getBusinessDAO();
   }
-  
+
   /**
-   * Returns an {@link MdVertexDAOIF} instance of the metadata for the given type.
+   * Returns an {@link MdVertexDAOIF} instance of the metadata for the given
+   * type.
    * 
    * <br/>
    * <b>Precondition:</b> vertexType != null <br/>
    * <b>Precondition:</b> !vertexType.trim().equals("") <br/>
    * <b>Precondition:</b> vertexType is a valid class defined in the database
    * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdVertexDAOIF} instance of the metadata for the
-   * given class ({@link MdVertexDAOIF}().definesType().equals(vertexType)
+   * <b>Postcondition:</b> Returns a {@link MdVertexDAOIF} instance of the
+   * metadata for the given class
+   * ({@link MdVertexDAOIF}().definesType().equals(vertexType)
    * 
    * @param vertexType
    * @return {@link MdVertexDAOIF} instance of the metadata for the given type.
@@ -344,16 +347,18 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return ObjectCache.getMdVertexDAO(vertexType);
   }
-  
+
   public String toString()
   {
     return '[' + this.definesType() + " definition]";
   }
-  
+
   /**
-   * Returns a list of all generators used to generate source for this {@link MdVertexDAOIF}.
+   * Returns a list of all generators used to generate source for this
+   * {@link MdVertexDAOIF}.
    * 
-   * @return list of all generators used to generate source for this {@link MdVertexDAOIF}.
+   * @return list of all generators used to generate source for this
+   *         {@link MdVertexDAOIF}.
    */
   @Override
   public List<GeneratorIF> getGenerators()
@@ -365,7 +370,10 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
     {
       return list;
     }
-    
+
+    list.add(new VertexObjectBaseGenerator(this));
+    list.add(new VertexObjectStubGenerator(this));
+
     return list;
   }
 
@@ -382,21 +390,14 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   @Override
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
-    Command command = null;
+    if (this.isNew())
+    {
+      return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.CREATE);
+    }
 
-//    if (this.isNew())
-//    {
-//      command = new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.CREATE, conn);
-//
-//    }
-//    else
-//    {
-//      command = new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.UPDATE, conn);
-//    }
-
-    return command;
+    return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.UPDATE);
   }
-  
+
   /**
    * Returns a command object that deletes Java artifacts for this type.
    * 
@@ -407,10 +408,9 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
   {
-//    return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE, conn);
-    return null;
+    return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE);
   }
-  
+
   /**
    * Returns a command object that cleans Java artifacts for this type.
    * 
@@ -422,8 +422,6 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   @Override
   public Command getCleanJavaArtifactCommand(Connection conn)
   {
-//    return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN, conn);
-    
-    return null;
+    return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN);
   }
 }

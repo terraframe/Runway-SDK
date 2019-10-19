@@ -28,7 +28,7 @@ public class AttributePoint extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributePoint(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributePoint(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Point value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

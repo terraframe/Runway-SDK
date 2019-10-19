@@ -19,61 +19,63 @@ import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 public abstract class Attribute implements AttributeIF
 {
-  
+
   /**
    * 
    */
-  private static final long serialVersionUID = -94524589150108217L;
-  
+  private static final long          serialVersionUID = -94524589150108217L;
 
   /**
    * Canonical name of the attribute. <br>
    * <b>invariant </b> name != null <br>
    * <b>invariant </b> !name.trim().equals("")
    */
-  final private String name;
-  
-  
+  final private String               name;
+
   /**
-   * The {@link GraphObjectDAO}  that contains this Attribute. Not defined on creation, but set by the
-   * containing {@link GraphObjectDAO. <br>
+   * The {@link GraphObjectDAO} that contains this Attribute. Not defined on
+   * creation, but set by the containing {@link GraphObjectDAO. <br>
    * <b>invariant </b> graphObjectDAO != null
    */
-  private GraphObjectDAO    containingGraphObjectDAO;
-  
+  private GraphObjectDAO             containingGraphObjectDAO;
+
   /**
    * Qualified name of the class that defines this attribute. <br>
    * <b>invariant </b> definingGraphClass != null <br>
    * <b>invariant </b> !definingGraphClass.equals("")
    */
-  final private String definingGraphClass;
+  final private String               definingGraphClass;
 
   protected MdAttributeConcreteDAOIF mdAttributeDAOIF;
-  
+
   /**
    * Value of the attribute. <br>
    * <b>invariant </b> value != null
    */
-  protected Object       value;
-  
+  protected Object                   value;
+
   /**
-   * Indicates if the value of this Attribute has been modified since it was last applied
-   * to the database.
+   * Indicates if the value of this Attribute has been modified since it was
+   * last applied to the database.
    */
-  private boolean    isModified = false;
-  
+  private boolean                    isModified       = false;
+
   /**
-   * Creates an attribute with the given name and initializes the value to blank.
+   * Creates an attribute with the given name and initializes the value to
+   * blank.
    *
    * <br>
    * <b>Precondition: </b> definingGraphClass != null <br>
    * <b>Precondition: </b> !definingGraphClass().equals("") <br>
-   * <b>Precondition: </b> definingGraphClass is the name of a class that defines an attribute with
-   * this name
+   * <b>Precondition: </b> definingGraphClass is the name of a class that
+   * defines an attribute with this name
    *
-   * @param name name of the attribute
-   * @param mdAttributeDAOIF defining metadata.
-   * @param definingGraphClass name of the class that defines this attribute
+   * @param name
+   *          name of the attribute
+   * @param mdAttributeDAOIF
+   *          defining metadata.
+   * @param definingGraphClass
+   *          name of the class that defines this attribute
    */
   protected Attribute(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
   {
@@ -84,30 +86,36 @@ public abstract class Attribute implements AttributeIF
     this.value = null;
     this.containingGraphObjectDAO = null;
   }
-  
-  
+
   /**
-   * Creates an attribute with the given name and initializes the value to the given
-   * value.
+   * Creates an attribute with the given name and initializes the value to the
+   * given value.
    *
    * <br>
    * <b>Precondition: </b> definingGraphClass != null <br>
    * <b>Precondition: </b> !definingGraphClass.trim().equals("") <br>
-   * <b>Precondition: </b> definingGraphClass represents a class that defines an attribute with
-   * this name <br>
+   * <b>Precondition: </b> definingGraphClass represents a class that defines an
+   * attribute with this name <br>
    * <b>Precondition: </b> value != null
    *
-   * @param name name of the attribute
-   * @param mdAttributeDAOIF defining metadata.
-   * @param definingGraphClass name of the class that defines this attribute
-   * @param value initial value of the attribute
+   * @param name
+   *          name of the attribute
+   * @param mdAttributeDAOIF
+   *          defining metadata.
+   * @param definingGraphClass
+   *          name of the class that defines this attribute
+   * @param value
+   *          initial value of the attribute
    */
   protected Attribute(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Object value)
   {
     this(mdAttributeDAOIF, definingGraphClass);
+
     this.value = value;
+
+    this.validate(this.value);
   }
-  
+
   /**
    * @see AttributeIF#getName()
    */
@@ -115,7 +123,7 @@ public abstract class Attribute implements AttributeIF
   public String getName()
   {
     return this.name;
-  } 
+  }
 
   /**
    * @see AttributeIF#getDisplayLabel(Locale)
@@ -134,8 +142,7 @@ public abstract class Attribute implements AttributeIF
   {
     return this.getMdAttribute().getDisplayLabels();
   }
-  
-  
+
   /**
    * @see AttributeIF#isModified()
    */
@@ -152,7 +159,8 @@ public abstract class Attribute implements AttributeIF
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    *
-   * @param isModified true if the attribute has been modified false otherwise.
+   * @param isModified
+   *          true if the attribute has been modified false otherwise.
    */
   public void setModified(boolean isModified)
   {
@@ -160,14 +168,15 @@ public abstract class Attribute implements AttributeIF
   }
 
   /**
-   * Sets the state of the attribute object after a transaction has been committed/
+   * Sets the state of the attribute object after a transaction has been
+   * committed/
    *
    */
   public void setCommitState()
   {
     this.setModified(false);
   }
-  
+
   /**
    * @see AttributeIF#getContainingComponent()
    */
@@ -176,8 +185,7 @@ public abstract class Attribute implements AttributeIF
   {
     if (this.containingGraphObjectDAO == null)
     {
-      String error = "Attribute [" + name + "]'s Contianing Component is null. It is the component's "
-          + "responsiblity to call setContainingComponent() for all of its attributes.";
+      String error = "Attribute [" + name + "]'s Contianing Component is null. It is the component's " + "responsiblity to call setContainingComponent() for all of its attributes.";
       throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(ComponentInfo.CLASS));
     }
     return this.containingGraphObjectDAO;
@@ -195,7 +203,7 @@ public abstract class Attribute implements AttributeIF
   {
     this.containingGraphObjectDAO = containingGraphObjectDAO;
   }
-  
+
   /**
    * @see AttributeIF#getDefiningClassType()
    */
@@ -213,7 +221,7 @@ public abstract class Attribute implements AttributeIF
   {
     return this.value.toString();
   }
-  
+
   /**
    * @see AttributeIF#getObjectValue()
    */
@@ -222,7 +230,7 @@ public abstract class Attribute implements AttributeIF
   {
     return this.value;
   }
-  
+
   /**
    * @see AttributeIF#getRawValue()
    */
@@ -231,32 +239,33 @@ public abstract class Attribute implements AttributeIF
   {
     return this.getValue();
   }
-  
+
   /**
-   * Most, but not all, attributes are represented as strings.  For some, they
+   * Most, but not all, attributes are represented as strings. For some, they
    * are represented as objects. Object will be cast into the appropriate type.
-   *  Precondition object is of expected type.
+   * Precondition object is of expected type.
    */
   public void setValue(Object value)
   {
     this.validate(value);
-        
+
     // If the new value is the same as the old one, skip it
-    if (!this.value.equals(value))
+    if (this.value == null || !this.value.equals(value))
     {
       this.value = value;
     }
   }
-   
+
   /**
    * For internal use only as it bypasses validation.
+   * 
    * @param value
    */
   public void setValueInternal(Object value)
   {
     this.value = value;
   }
-  
+
   /**
    * Check to see if the given value is valid {@link GraphObjectDAO}.
    *
@@ -264,72 +273,85 @@ public abstract class Attribute implements AttributeIF
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    *
-   * @param valueToValidate The value to be checked if its required in the the defining
-   *           {@link GraphObjectDAO}
-   * @param  {@link MdAttributeDAOIF} The Metatdata TransientDAO that defines the Attribute
+   * @param valueToValidate
+   *          The value to be checked if its required in the the defining
+   *          {@link GraphObjectDAO}
+   * @param {@link
+   *          MdAttributeDAOIF} The Metatdata TransientDAO that defines the
+   *          Attribute
    *
-   * @throws EmptyValueProblem if this attribute is required for its defining {@link GraphObjectDAO}
-   *           but contains an empty value.
+   * @throws EmptyValueProblem
+   *           if this attribute is required for its defining
+   *           {@link GraphObjectDAO} but contains an empty value.
    */
   public void validate(Object valueToValidate)
   {
     this.validateSystem();
-    
+
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttribute();
     this.validateMutable(mdAttributeIF);
     this.validateRequired(value, mdAttributeIF);
   }
-  
-  /**
-   * Checks if this attribute is required for its defining {@link GraphObjectDAO}.
-   *
-   * <br>
-   * <b>Precondition: </b> true <br>
-   * <b>Postcondition: </b> true
-   *
-   * @param valueToValidate The value to be checked if its required in the the defining
-   *           {@link GraphObjectDAO}
-   * @param  {@link MdAttributeDAOIF} The Metatdata TransientDAO that defines the Attribute
-   *
-   * @throws EmptyValueProblem if this attribute is required for its defining {@link GraphObjectDAO}
-   *           but contains an empty value.
-   */
-  public abstract void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF);
-//  {
-//    //  make sure a value is provided if a value is required
-//    if ( mdAttributeIF.isRequired() && valueToValidate.trim().equals(""))
-//    {
-//      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType()
-//          + "] requires a value";
-//      EmptyValueProblem problem =
-//        new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-//      problem.throwIt();
-//    }
-//  } 
 
   /**
-   * Checks if this attribute is required for its defining {@link GraphObjectDAO}.
+   * Checks if this attribute is required for its defining
+   * {@link GraphObjectDAO}.
    *
    * <br>
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    *
-   * @param valueToValidate The value to be checked if its required in the the defining
+   * @param valueToValidate
+   *          The value to be checked if its required in the the defining
+   *          {@link GraphObjectDAO}
+   * @param {@link
+   *          MdAttributeDAOIF} The Metatdata TransientDAO that defines the
+   *          Attribute
+   *
+   * @throws EmptyValueProblem
+   *           if this attribute is required for its defining
+   *           {@link GraphObjectDAO} but contains an empty value.
+   */
+  public abstract void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF);
+  // {
+  // // make sure a value is provided if a value is required
+  // if ( mdAttributeIF.isRequired() && valueToValidate.trim().equals(""))
+  // {
+  // String error = "Attribute [" + getName() + "] on type [" +
+  // getDefiningClassType()
+  // + "] requires a value";
+  // EmptyValueProblem problem =
+  // new
+  // EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(),
+  // mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+  // problem.throwIt();
+  // }
+  // }
+
+  /**
+   * Checks if this attribute is required for its defining
+   * {@link GraphObjectDAO}.
+   *
+   * <br>
+   * <b>Precondition: </b> true <br>
+   * <b>Postcondition: </b> true
+   *
+   * @param valueToValidate
+   *          The value to be checked if its required in the the defining
    *          BusinessDAO.
    *
-   * @throws {@link SystemAttributeProblem} if this attribute is required for its defining {@link GraphObjectDAO}
-   *           but contains an empty value.
+   * @throws {@link
+   *           SystemAttributeProblem} if this attribute is required for its
+   *           defining {@link GraphObjectDAO} but contains an empty value.
    */
   protected void validateSystem()
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttribute();
-    //  make sure a value is provided if a value is required
-    if ( mdAttributeIF.isSystem())
+    // make sure a value is provided if a value is required
+    if (mdAttributeIF.isSystem())
     {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType()
-          + "] is a system attribute and cannot be modified.";
-      SystemAttributeProblem problem =
-        new SystemAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] is a system attribute and cannot be modified.";
+      SystemAttributeProblem problem = new SystemAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
       problem.throwIt();
     }
   }
@@ -341,28 +363,27 @@ public abstract class Attribute implements AttributeIF
    * <b>Precondition: </b> true <br>
    * <b>Postcondition: </b> true
    *
-   * @param mdAttribute The Metatdata BusinessDAO that defines the Attribute
+   * @param mdAttribute
+   *          The Metatdata BusinessDAO that defines the Attribute
    *
-   * @throws ImmutableAttributeProblem if this attribute is immutable, and the containing
-   *           component is not new
+   * @throws ImmutableAttributeProblem
+   *           if this attribute is immutable, and the containing component is
+   *           not new
    */
   protected void validateMutable(MdAttributeConcreteDAOIF mdAttribute)
   {
-    if ( !mdAttribute.isImmutable() || this.containingGraphObjectDAO.isNew() || ServerProperties.getAllowModificationOfMdAttribute())
+    if (!mdAttribute.isImmutable() || this.containingGraphObjectDAO.isNew() || ServerProperties.getAllowModificationOfMdAttribute())
     {
       return;
     }
     else
     {
-      String error = "Cannot change the immutable attribute [" + getName() + "] on type ["
-          + getDefiningClassType() + "]";
-      ImmutableAttributeProblem problem =
-        new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
+      String error = "Cannot change the immutable attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
+      ImmutableAttributeProblem problem = new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
       problem.throwIt();
     }
   }
 
-  
   /**
    * @see AttributeIF#getMdAttribute()
    */
@@ -371,8 +392,7 @@ public abstract class Attribute implements AttributeIF
   {
     return this.mdAttributeDAOIF;
   }
-  
-  
+
   /**
    * @see AttributeIF#getMdAttributeConcrete()
    */
@@ -403,7 +423,7 @@ public abstract class Attribute implements AttributeIF
   public void removeReferences(GraphObjectDAO graphClassDAO, boolean businessContext)
   {
   }
-  
+
   /**
    * Initializes any references to this attribute. Many attribute classes have
    * nothing to initialize.
@@ -414,7 +434,7 @@ public abstract class Attribute implements AttributeIF
   public void initReferences(MdAttributeConcreteDAOIF mdAttribute)
   {
   }
-  
+
   /**
    * Updates any references to this attribute. Many attribute classes aren't
    * referenced by anything.
@@ -426,7 +446,6 @@ public abstract class Attribute implements AttributeIF
   {
   }
 
-  
   @Override
   public String toString()
   {
@@ -444,6 +463,5 @@ public abstract class Attribute implements AttributeIF
     // However, it behavior is overwritten in some of its children
     // classes.
   }
-  
-  
+
 }

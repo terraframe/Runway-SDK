@@ -26,7 +26,7 @@ public class AttributeFloat extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeFloat(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeFloat(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Float value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

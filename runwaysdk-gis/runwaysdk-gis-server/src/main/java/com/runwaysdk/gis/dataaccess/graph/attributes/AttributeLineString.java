@@ -28,7 +28,7 @@ public class AttributeLineString extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeLineString(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeLineString(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, LineString value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

@@ -29,7 +29,7 @@ public class AttributeDateTime extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeDateTime(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeDateTime(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, Date value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }

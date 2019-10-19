@@ -18,6 +18,9 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -223,6 +226,14 @@ import com.runwaysdk.system.gis.geo.UniversalView;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.vault.VaultDAO;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Defines some utility methods to build test fixtures for the test cases.
@@ -1707,7 +1718,7 @@ public class TestFixtureFactory
 
   public static MdEdgeDAO createMdEdge(String parentOid, String childOid, String name)
   {
-    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance(); 
+    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
     mdEdge.setValue(MdEdgeInfo.NAME, name);
     mdEdge.setValue(MdEdgeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdEdge Set Test");
@@ -2045,4 +2056,73 @@ public class TestFixtureFactory
       }
     }
   }
+
+  public static Polygon getPolygon()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20), new Coordinate(10, 10) });
+    return value;
+  }
+
+  
+  public static Polygon getPolygon2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(30, 30), new Coordinate(30, 20), new Coordinate(20, 20), new Coordinate(30, 30) });
+    return value;
+  }
+  
+  public static Point getPoint()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(104.9903, 39.7392));
+    return value;
+  }
+
+  public static Point getPoint2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(107.9903, 31.7392));
+    return value;
+  }
+  
+  public static LineString getLineString()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    LineString value = factory.createLineString(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20) });
+    return value;
+  }
+
+  public static MultiPoint getMultiPoint()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiPoint value = factory.createMultiPoint(new Point[] { TestFixtureFactory.getPoint() });
+    return value;
+  }
+
+  public static MultiPolygon getMultiPolygon()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiPolygon value = factory.createMultiPolygon(new Polygon[] { TestFixtureFactory.getPolygon() });
+    return value;
+  }
+
+  public static MultiLineString getMultiLineString()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiLineString value = factory.createMultiLineString(new LineString[] { TestFixtureFactory.getLineString() });
+
+    return value;
+  }
+
+  public static Calendar getDate()
+  {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+    cal.clear();
+    cal.set(2019, 3, 15);
+
+    return cal;
+  }
+
 }

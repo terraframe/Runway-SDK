@@ -14,6 +14,7 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
@@ -35,7 +36,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     super();
   }
-  
+
   /**
    * Constructs a {@link MdEdgeDAO} from the given hashtable of Attributes.
    * 
@@ -51,7 +52,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     super(attributeMap, type);
   }
-  
+
   /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
@@ -60,11 +61,11 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return new MdEdgeDAO(attributeMap, MdEdgeInfo.CLASS);
   }
-  
-  
+
   /**
-   * Returns a new {@link MdEdgeDAO}. Some attributes will contain default values, as
-   * defined in the attribute metadata. Otherwise, the attributes will be blank.
+   * Returns a new {@link MdEdgeDAO}. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    * 
    * @return instance of {@link MdVertexDAO}.
    */
@@ -72,8 +73,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return (MdEdgeDAO) BusinessDAO.newInstance(MdEdgeInfo.CLASS);
   }
-  
-  
+
   /**
    * Always returns true because Edge classes do not inherit from one another
    * otherwise.
@@ -86,31 +86,31 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return true;
   }
-  
+
   /**
-   * Returns the {@link MdEdgeDAOIF} that is the root of the hierarchy that this type
-   * belongs to. returns a reference to itself if it is the root.
+   * Returns the {@link MdEdgeDAOIF} that is the root of the hierarchy that this
+   * type belongs to. returns a reference to itself if it is the root.
    * 
-   * @return {@link MdEdgeDAOIF}  that is the root of the hierarchy that this type belongs
-   *         to. returns a reference to itself if it is the root.
+   * @return {@link MdEdgeDAOIF} that is the root of the hierarchy that this
+   *         type belongs to. returns a reference to itself if it is the root.
    */
   @Override
   public MdEdgeDAOIF getRootMdClassDAO()
   {
     return (MdEdgeDAOIF) super.getRootMdClassDAO();
   }
-  
+
   /**
-   * @see MdEdgeDAOIF#getSubClasses() 
+   * @see MdEdgeDAOIF#getSubClasses()
    */
   @Override
   public List<MdEdgeDAOIF> getSubClasses()
   {
     return new LinkedList<MdEdgeDAOIF>();
   }
-  
+
   /**
-   * @see MdEdgeDAOIF#getAllConcreteSubClasses() 
+   * @see MdEdgeDAOIF#getAllConcreteSubClasses()
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -118,7 +118,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return (List<? extends MdEdgeDAOIF>) super.getAllConcreteSubClasses();
   }
-  
+
   /**
    * @see MdEdgeDAOIF#getAllSubClasses().
    */
@@ -130,70 +130,69 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   }
 
   /**
-   * @see MdEdgeDAOIF#getSuperClass() 
+   * @see MdEdgeDAOIF#getSuperClass()
    */
   public MdEdgeDAOIF getSuperClass()
   {
     return null;
   }
-  
+
   /**
-   * @see MdEdgeDAOIF#getSuperClasses() 
+   * @see MdEdgeDAOIF#getSuperClasses()
    */
   @SuppressWarnings("unchecked")
   public List<MdEdgeDAOIF> getSuperClasses()
   {
     return (List<MdEdgeDAOIF>) super.getSuperClasses();
   }
-  
+
   @Override
   public boolean isAbstract()
   {
     return false;
   }
-  
+
   @Override
   public boolean isExtendable()
   {
     return false;
   }
-  
-// Nothing special happening here yet.
-//  /**
-//   *
-//   */
-//  public String save(boolean validateRequired)
-//  { 
-//    boolean applied = this.isAppliedToDB();
-//
-//    String oid = super.save(validateRequired);
-//
-//
-//    return oid;
-//  }
-   
+
+  // Nothing special happening here yet.
+  // /**
+  // *
+  // */
+  // public String save(boolean validateRequired)
+  // {
+  // boolean applied = this.isAppliedToDB();
+  //
+  // String oid = super.save(validateRequired);
+  //
+  //
+  // return oid;
+  // }
 
   @Override
   protected void createClassInDB()
   {
     String edgeClass = this.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
-    
+
     MdVertexDAOIF parentMdVertex = MdVertexDAO.get(this.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX).getValue());
     String parentVertexClass = parentMdVertex.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
-    
+
     MdVertexDAOIF childMdVertex = MdVertexDAO.get(this.getAttributeIF(MdEdgeInfo.CHILD_MD_VERTEX).getValue());
     String childVertexClass = childMdVertex.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
-    
+
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
-    
+
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, parentVertexClass, childVertexClass);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().deleteEdgeClass(graphRequest, graphDDLRequest, edgeClass);
 
-    GraphDDLCommand command = new GraphDDLCommand(doItAction,  undoItAction, false);
+    GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, false);
     command.doIt();
   }
-  
+
   @Override
   protected void deleteClassInDB()
   {
@@ -211,7 +210,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().deleteEdgeClass(graphRequest, graphDDLRequest, edgeClass);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, parentVertexClass, childVertexClass);
 
-    GraphDDLCommand command = new GraphDDLCommand(doItAction,  undoItAction, true);
+    GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, true);
     command.doIt();
   }
 
@@ -222,8 +221,8 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   public static MdEdgeDAOIF get(String oid)
   {
     return (MdEdgeDAOIF) BusinessDAO.get(oid);
-  } 
- 
+  }
+
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
@@ -231,7 +230,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return (MdEdgeDAO) super.getBusinessDAO();
   }
-  
+
   /**
    * Returns an {@link MdEdgeDAOIF} instance of the metadata for the given type.
    * 
@@ -240,8 +239,9 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
    * <b>Precondition:</b> !edgeType.trim().equals("") <br/>
    * <b>Precondition:</b> edgeType is a valid class defined in the database
    * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdEdgeDAOIF} instance of the metadata for the
-   * given class ({@link MdEdgeDAOIF}().definesType().equals(edgeType)
+   * <b>Postcondition:</b> Returns a {@link MdEdgeDAOIF} instance of the
+   * metadata for the given class
+   * ({@link MdEdgeDAOIF}().definesType().equals(edgeType)
    * 
    * @param edgeType
    * @return {@link MdEdgeDAOIF} instance of the metadata for the given type.
@@ -250,16 +250,18 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     return ObjectCache.getMdEdgeDAO(edgeType);
   }
-  
+
   public String toString()
   {
     return '[' + this.definesType() + " definition]";
   }
-  
+
   /**
-   * Returns a list of all generators used to generate source for this {@link MdEdgeDAOIF}.
+   * Returns a list of all generators used to generate source for this
+   * {@link MdEdgeDAOIF}.
    * 
-   * @return list of all generators used to generate source for this {@link MdEdgeDAOIF}.
+   * @return list of all generators used to generate source for this
+   *         {@link MdEdgeDAOIF}.
    */
   @Override
   public List<GeneratorIF> getGenerators()
@@ -271,7 +273,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
     {
       return list;
     }
-    
+
     return list;
   }
 
@@ -290,15 +292,17 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     Command command = null;
 
-//    if (this.isNew())
-//    {
-//      command = new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.CREATE, conn);
-//
-//    }
-//    else
-//    {
-//      command = new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.UPDATE, conn);
-//    }
+    // if (this.isNew())
+    // {
+    // command = new JavaArtifactMdViewCommand(this,
+    // JavaArtifactMdTypeCommand.Operation.CREATE, conn);
+    //
+    // }
+    // else
+    // {
+    // command = new JavaArtifactMdViewCommand(this,
+    // JavaArtifactMdTypeCommand.Operation.UPDATE, conn);
+    // }
 
     return command;
   }
@@ -313,7 +317,8 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
    */
   public Command getDeleteJavaArtifactCommand(Connection conn)
   {
-//    return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE, conn);
+    // return new JavaArtifactMdViewCommand(this,
+    // JavaArtifactMdTypeCommand.Operation.DELETE, conn);
     return null;
   }
 
@@ -328,9 +333,29 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   @Override
   public Command getCleanJavaArtifactCommand(Connection conn)
   {
-//    return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN, conn);
-    
+    // return new JavaArtifactMdViewCommand(this,
+    // JavaArtifactMdTypeCommand.Operation.CLEAN, conn);
+
     return null;
+  }
+
+  /**
+   * Returns the metadata object that defines the type of objects that are
+   * parents in this relationship.
+   * 
+   * @return the metadata object that defines the type of objects that are
+   *         parents in this relationship.
+   */
+  public MdVertexDAOIF getParentMdVertex()
+  {
+    AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX);
+    return (MdVertexDAOIF) attributeReference.dereference();
+  }
+
+  public MdVertexDAOIF getChildMdVertex()
+  {
+    AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdEdgeInfo.CHILD_MD_VERTEX);
+    return (MdVertexDAOIF) attributeReference.dereference();
   }
 
 }

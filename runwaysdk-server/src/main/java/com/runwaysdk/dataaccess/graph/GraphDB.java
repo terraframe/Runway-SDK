@@ -1,7 +1,11 @@
 package com.runwaysdk.dataaccess.graph;
 
+import java.util.List;
+
 import com.runwaysdk.constants.IndexTypes;
-import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 
 public interface GraphDB
 {
@@ -239,7 +243,7 @@ public interface GraphDB
    * 
    * @return Name of the database column type
    */
-  public String getDbColumnType(MdAttributeConcreteDAO mdAttribute);
+  public String getDbColumnType(MdAttributeConcreteDAOIF mdAttribute);
 
   /**
    * Adds an attribute of the given name and type.
@@ -266,4 +270,44 @@ public interface GraphDB
    * @return
    */
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
+
+  /**
+   * Inserts a new object
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void insert(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  /**
+   * Update an existing dao
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void update(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  /**
+   * Delete an existing dao
+   * 
+   * @param graphRequest
+   *          Request
+   * @param graphObjectDAO
+   *          dao
+   */
+  public void delete(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO);
+
+  public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertexDAOIF, String oid);
+
+  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
+
+  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
+
+  public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
+
+  public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
 }
