@@ -1,6 +1,8 @@
 package com.runwaysdk.dataaccess.metadata.graph;
 
 import java.sql.Connection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,6 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
-import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 
 public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 {
@@ -433,11 +434,18 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     List<MdEdgeDAOIF> mdRelationships = new LinkedList<MdEdgeDAOIF>();
 
-    // for (String mdRelationshipDAOid :
-    // ObjectCache.getChildMdEdgeDAOids(this.getOid()))
-    // {
-    // mdRelationships.add(MdEdgeDAO.get(mdRelationshipDAOid));
-    // }
+    for (String mdRelationshipDAOid : ObjectCache.getChildMdEdgeDAOids(this.getOid()))
+    {
+      mdRelationships.add(MdEdgeDAO.get(mdRelationshipDAOid));
+    }
+
+    Collections.sort(mdRelationships, new Comparator<MdEdgeDAOIF>()
+    {
+      public int compare(MdEdgeDAOIF o1, MdEdgeDAOIF o2)
+      {
+        return o1.getTypeName().compareTo(o2.getTypeName());
+      }
+    });
 
     return mdRelationships;
   }
@@ -445,8 +453,22 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   @Override
   public List<MdEdgeDAOIF> getParentMdEdges()
   {
-    // TODO Auto-generated method stub
-    return null;
+    List<MdEdgeDAOIF> mdRelationships = new LinkedList<MdEdgeDAOIF>();
+
+    for (String mdRelationshipDAOid : ObjectCache.getParentMdEdgeDAOids(this.getOid()))
+    {
+      mdRelationships.add(MdEdgeDAO.get(mdRelationshipDAOid));
+    }
+
+    Collections.sort(mdRelationships, new Comparator<MdEdgeDAOIF>()
+    {
+      public int compare(MdEdgeDAOIF o1, MdEdgeDAOIF o2)
+      {
+        return o1.getTypeName().compareTo(o2.getTypeName());
+      }
+    });
+
+    return mdRelationships;
   }
 
 }
