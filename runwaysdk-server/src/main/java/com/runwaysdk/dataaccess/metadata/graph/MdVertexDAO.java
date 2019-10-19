@@ -19,6 +19,8 @@ import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -29,6 +31,7 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 
 public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 {
@@ -424,4 +427,26 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   {
     return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN);
   }
+
+  @Override
+  public List<MdEdgeDAOIF> getChildMdEdges()
+  {
+    List<MdEdgeDAOIF> mdRelationships = new LinkedList<MdEdgeDAOIF>();
+
+    // for (String mdRelationshipDAOid :
+    // ObjectCache.getChildMdEdgeDAOids(this.getOid()))
+    // {
+    // mdRelationships.add(MdEdgeDAO.get(mdRelationshipDAOid));
+    // }
+
+    return mdRelationships;
+  }
+
+  @Override
+  public List<MdEdgeDAOIF> getParentMdEdges()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

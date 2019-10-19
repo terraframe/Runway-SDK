@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.graph.orientdb;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -771,6 +772,37 @@ public class OrientDBImpl implements GraphDB
     }
 
     return null;
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
+  {
+    List<VertexObjectDAOIF> results = new LinkedList<VertexObjectDAOIF>();
+
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+
+    try (OResultSet rs = db.query(statement, parameters))
+    {
+      if (rs.hasNext())
+      {
+        OResult result = rs.next();
+
+        if (result.isElement())
+        {
+          OElement element = result.toElement();
+
+          results.add(this.buildDAO(mdVertex, element));
+        }
+        else
+        {
+          throw new UnsupportedOperationException("Unexpected result type");
+        }
+      }
+    }
+
+    return results;
   }
 
   @Override

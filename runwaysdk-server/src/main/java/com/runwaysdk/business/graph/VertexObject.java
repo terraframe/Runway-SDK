@@ -139,7 +139,12 @@ public class VertexObject extends GraphObject
     return list;
   }
 
-  public static VertexObject get(MdVertexDAO mdVertexDAO, String oid)
+  public static VertexObject get(String type, String oid)
+  {
+    return VertexObject.get(MdVertexDAO.getMdVertexDAO(type), oid);
+  }
+
+  public static VertexObject get(MdVertexDAOIF mdVertexDAO, String oid)
   {
     VertexObjectDAOIF dao = VertexObjectDAO.get(mdVertexDAO, oid);
 
@@ -151,7 +156,7 @@ public class VertexObject extends GraphObject
     return null;
   }
 
-  private static VertexObject instantiate(VertexObjectDAO vertexDAO)
+  public static VertexObject instantiate(VertexObjectDAO vertexDAO)
   {
     MdVertexDAOIF mdVertexDAO = vertexDAO.getMdClassDAO();
 

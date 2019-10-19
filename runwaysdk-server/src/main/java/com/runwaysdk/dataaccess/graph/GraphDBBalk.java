@@ -2,6 +2,7 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -303,6 +304,12 @@ public class GraphDBBalk implements GraphDB
 
   @Override
   public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<VertexObjectDAOIF>();
+  }
+
+  @Override
+  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
   {
     return new LinkedList<VertexObjectDAOIF>();
   }

@@ -32,13 +32,14 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   {
     super();
   }
-  
-  
+
   /**
-   * Constructs a {@link MdGraphClassDAO} from the given hashtable of Attributes.
+   * Constructs a {@link MdGraphClassDAO} from the given hashtable of
+   * Attributes.
    *
-   * <br/><b>Precondition:</b> attributeMap != null
-   * <br/><b>Precondition:</b> type != null <br/>
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null <br/>
    *
    *
    * @param attributeMap
@@ -48,9 +49,9 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   {
     super(attributeMap, type);
   }
-  
+
   /**
-   * @see MdGraphClassDAOIF#getRootMdClassDAO() 
+   * @see MdGraphClassDAOIF#getRootMdClassDAO()
    */
   @Override
   public MdGraphClassDAOIF getRootMdClassDAO()
@@ -59,13 +60,13 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   }
 
   /**
-   * @see MdGraphClassDAOIF#getSubClasses() 
+   * @see MdGraphClassDAOIF#getSubClasses()
    */
   @Override
   public abstract List<? extends MdGraphClassDAOIF> getSubClasses();
 
   /**
-   * @see MdGraphClassDAOIF#getAllConcreteSubClasses() 
+   * @see MdGraphClassDAOIF#getAllConcreteSubClasses()
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -73,9 +74,9 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   {
     return (List<? extends MdGraphClassDAOIF>) super.getAllConcreteSubClasses();
   }
-  
+
   /**
-   * @see MdGraphClassDAOIF#getAllSubClasses() 
+   * @see MdGraphClassDAOIF#getAllSubClasses()
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -84,14 +85,13 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
     return (List<? extends MdVertexDAOIF>) super.getAllSubClasses();
   }
 
-  
   /**
-   * @see MdGraphClassDAOIF#getSuperClass() 
+   * @see MdGraphClassDAOIF#getSuperClass()
    */
   public abstract MdGraphClassDAOIF getSuperClass();
-  
+
   /**
-   * @see MdGraphClassDAOIF#getSuperClasses() 
+   * @see MdGraphClassDAOIF#getSuperClasses()
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   {
     return (List<MdGraphClassDAOIF>) super.getSuperClasses();
   }
-  
+
   /**
    * Returns a list of <code>MdAttributeDAOIF</code> objects that this
    * <code>MdClassDAOIF</code> defines.
@@ -110,30 +110,31 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   @SuppressWarnings("unchecked")
   public List<? extends MdAttributeConcreteDAOIF> definesAttributes()
   {
-    return (List<? extends MdAttributeConcreteDAOIF>)super.definesAttributes();
+    return (List<? extends MdAttributeConcreteDAOIF>) super.definesAttributes();
   }
-  
-  
+
   /**
-   * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given
+   * type.
    * 
    * <br/>
    * <b>Precondition:</b> graphClassType != null <br/>
    * <b>Precondition:</b> !graphClassType.trim().equals("") <br/>
-   * <b>Precondition:</b> graphClassType is a valid class defined in the database
-   * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdGraphClassDAOIF} instance of the metadata for the
-   * given class (MdGraphClassDAOIF().definesType().equals(graphClassType)
+   * <b>Precondition:</b> graphClassType is a valid class defined in the
+   * database <br/>
+   * <b>Postcondition:</b> Returns a {@link MdGraphClassDAOIF} instance of the
+   * metadata for the given class
+   * (MdGraphClassDAOIF().definesType().equals(graphClassType)
    * 
    * @param graphClassType
-   * @return {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   * @return {@link MdGraphClassDAOIF} instance of the metadata for the given
+   *         type.
    */
   public static MdGraphClassDAOIF getMdGraphClassDAO(String transientType)
   {
     return ObjectCache.getMdGraphClassDAO(transientType);
   }
-  
-  
+
   /**
    *
    */
@@ -156,23 +157,23 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
         dbClassNameAttr.setValue(dbClassNameAttr.getValue().toLowerCase());
       }
     }
-    
+
     String oid = super.save(validateRequired);
 
     if (this.isNew() && !applied)
     {
       this.createClassInDB();
-      
+
       // Define default attributes.
-      if (this.isRootOfHierarchy()  && !this.isImport())
+      if (this.isRootOfHierarchy() && !this.isImport())
       {
         this.createDefaultAttributes();
       }
     }
-    
+
     return oid;
   }
-  
+
   /**
    * 
    * @param businessContext
@@ -203,17 +204,16 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
 
     this.deleteClassInDB();
   }
-  
-  
+
   protected void createDefaultAttributes()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(ComponentInfo.CLASS);
-    
-    MdAttributeDAO oidMdAttribute = (MdAttributeDAO)mdBusinessIF.definesAttribute(ComponentInfo.OID).getBusinessDAO();  
-    
+
+    MdAttributeDAO oidMdAttribute = (MdAttributeDAO) mdBusinessIF.definesAttribute(ComponentInfo.OID).getBusinessDAO();
+
     this.copyAttribute(oidMdAttribute);
   }
-    
+
   /**
    * Creates the class in the graph database.
    */
@@ -223,8 +223,7 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
    * Deletes the class from the graph database.
    */
   protected abstract void deleteClassInDB();
-  
-  
+
   /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
@@ -233,60 +232,35 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   {
     return (MdGraphClassDAO) super.getBusinessDAO();
   }
-  
-  
-
-  
-/*  
-  @Override
-  public List<GeneratorIF> getGenerators()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
 
   @Override
-  public boolean isAbstract()
+  public String getDBClassName()
   {
-    // TODO Auto-generated method stub
-    return false;
+    return this.getAttribute(MdGraphClassInfo.DB_CLASS_NAME).getValue();
   }
 
-  @Override
-  public boolean isExtendable()
-  {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-
-  @Override
-  public boolean isRootOfHierarchy()
-  {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Command getCreateUpdateJavaArtifactCommand(Connection conn)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Command getDeleteJavaArtifactCommand(Connection conn)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Command getCleanJavaArtifactCommand(Connection conn)
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-*/
+  /*
+   * @Override public List<GeneratorIF> getGenerators() { // TODO Auto-generated
+   * method stub return null; }
+   * 
+   * 
+   * @Override public boolean isAbstract() { // TODO Auto-generated method stub
+   * return false; }
+   * 
+   * @Override public boolean isExtendable() { // TODO Auto-generated method
+   * stub return false; }
+   * 
+   * 
+   * @Override public boolean isRootOfHierarchy() { // TODO Auto-generated
+   * method stub return false; }
+   * 
+   * @Override public Command getCreateUpdateJavaArtifactCommand(Connection
+   * conn) { // TODO Auto-generated method stub return null; }
+   * 
+   * @Override public Command getDeleteJavaArtifactCommand(Connection conn) { //
+   * TODO Auto-generated method stub return null; }
+   * 
+   * @Override public Command getCleanJavaArtifactCommand(Connection conn) { //
+   * TODO Auto-generated method stub return null; }
+   */
 }

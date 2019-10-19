@@ -2,6 +2,8 @@ package com.runwaysdk.business.graph;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -12,6 +14,8 @@ import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -713,4 +717,36 @@ public class VertexObjectTest
     Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
+  @Request
+  @Test
+  public void testQuery()
+  {
+    String attributeName = mdCharacterAttribute.definesAttribute();
+
+    String value = "Test Value";
+
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
+    vertex.setValue(attributeName, value);
+
+    try
+    {
+      // Test create
+      vertex.apply();
+
+      String stm = "SELECT FROM " + mdVertexDAO.getDBClassName() + " WHERE " + mdCharacterAttribute.getColumnName() + " = :name";
+
+      TreeMap<String, Object> parameters = new TreeMap<String, Object>();
+      parameters.put("name", value);
+
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+
+      List<VertexObject> results = GraphDBService.getInstance().query(request, mdVertexDAO, stm, parameters);
+
+      Assert.assertEquals(1, results.size());
+    }
+    finally
+    {
+      vertex.delete();
+    }
+  }
 }
