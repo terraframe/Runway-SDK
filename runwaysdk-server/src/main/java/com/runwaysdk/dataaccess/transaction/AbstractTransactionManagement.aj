@@ -136,6 +136,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     || execution (* com.runwaysdk.dataaccess.RelationshipDAO+.save(..))
     || execution (* com.runwaysdk.dataaccess.RelationshipDAO+.delete(..))
     || execution (* com.runwaysdk.dataaccess.TransientDAO+.apply())
+    || execution (* com.runwaysdk.dataaccess.graph.GraphObjectDAO+.apply())
 
 // Business Transaction
     || execution (* com.runwaysdk.business.Entity+.apply())

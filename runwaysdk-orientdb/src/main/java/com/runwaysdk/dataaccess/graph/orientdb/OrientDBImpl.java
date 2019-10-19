@@ -175,17 +175,22 @@ public class OrientDBImpl implements GraphDB
         // make sure the DDL graph request is current on the active thread.
         db.activateOnCurrentThread();
 
-        OClass oClass = db.getClass(className);
-
-        if (oClass == null)
+        try
         {
-          oClass = db.createVertexClass(className);
-        }
+          OClass oClass = db.getClass(className);
 
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
+          if (oClass == null)
+          {
+            oClass = db.createVertexClass(className);
+          }
+        }
+        finally
+        {
+          // make sure the DML graph request is current on the active thread.
+          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+          db = orientDBRequest.getODatabaseSession();
+          db.activateOnCurrentThread();
+        }
       }
     };
 
@@ -218,27 +223,33 @@ public class OrientDBImpl implements GraphDB
         // make sure the DDL graph request is current on the active thread.
         db.activateOnCurrentThread();
 
-        OClass oClass = db.getClass(edgeClass);
-
-        if (oClass == null)
+        try
         {
-          oClass = db.createEdgeClass(edgeClass);
+          OClass oClass = db.getClass(edgeClass);
 
-          // Add constraints to parent and child vertex classes.
-          // create property myE.out LINK A
-          // create property myE.in LINK B
-          // "SELECT FROM V WHERE name = ? and surnanme = ?"
-          String statement = "CREATE PROPERTY " + edgeClass + ".OUT LINK " + parentVertexClass;
-          db.command(statement);
+          if (oClass == null)
+          {
+            oClass = db.createEdgeClass(edgeClass);
 
-          statement = "CREATE PROPERTY " + edgeClass + ".IN LINK " + childVertexClass;
-          db.command(statement);
+            // Add constraints to parent and child vertex classes.
+            // create property myE.out LINK A
+            // create property myE.in LINK B
+            // "SELECT FROM V WHERE name = ? and surnanme = ?"
+            String statement = "CREATE PROPERTY " + edgeClass + ".OUT LINK " + parentVertexClass;
+            db.command(statement);
+
+            statement = "CREATE PROPERTY " + edgeClass + ".IN LINK " + childVertexClass;
+            db.command(statement);
+          }
+
         }
-
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
+        finally
+        {
+          // make sure the DML graph request is current on the active thread.
+          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+          db = orientDBRequest.getODatabaseSession();
+          db.activateOnCurrentThread();
+        }
       }
     };
 
@@ -266,12 +277,17 @@ public class OrientDBImpl implements GraphDB
         // make sure the DDL graph request is current on the active thread.
         db.activateOnCurrentThread();
 
-        db.getMetadata().getSchema().dropClass(className);
-
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
+        try
+        {
+          db.getMetadata().getSchema().dropClass(className);
+        }
+        finally
+        {
+          // make sure the DML graph request is current on the active thread.
+          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+          db = orientDBRequest.getODatabaseSession();
+          db.activateOnCurrentThread();
+        }
       }
     };
 
@@ -486,42 +502,48 @@ public class OrientDBImpl implements GraphDB
         // make sure the DDL graph request is current on the active thread.
         db.activateOnCurrentThread();
 
-        OClass oClass = db.getClass(className);
-
-        if (oClass != null)
+        try
         {
-          OProperty oProperty = oClass.getProperty(attributeName);
+          OClass oClass = db.getClass(className);
 
-          OClass.INDEX_TYPE oClassIndexType = convertIndexType(indexType);
-
-          if (oClassIndexType != null)
+          if (oClass != null)
           {
-            String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0, 30);
+            OProperty oProperty = oClass.getProperty(attributeName);
 
-            oClass.createIndex(indexName, oClassIndexType, oProperty.getName());
+            OClass.INDEX_TYPE oClassIndexType = convertIndexType(indexType);
 
-            // oProperty.createIndex(oClassIndexType);
-          }
-          // Clear the index if it is set to none.
-          else
-          {
-            Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
-
-            while (i.hasNext())
+            if (oClassIndexType != null)
             {
-              OIndex<?> oIndex = i.next();
+              String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0,
+                  30);
 
-              oIndex.delete();
-              // oIndex.clear();
-              // oIndex.flush();
+              oClass.createIndex(indexName, oClassIndexType, oProperty.getName());
+
+              // oProperty.createIndex(oClassIndexType);
+            }
+            // Clear the index if it is set to none.
+            else
+            {
+              Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+
+              while (i.hasNext())
+              {
+                OIndex<?> oIndex = i.next();
+
+                oIndex.delete();
+                // oIndex.clear();
+                // oIndex.flush();
+              }
             }
           }
         }
-
-        // make sure the DML graph request is current on the active thread.
-        OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-        db = orientDBRequest.getODatabaseSession();
-        db.activateOnCurrentThread();
+        finally
+        {
+          // make sure the DML graph request is current on the active thread.
+          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+          db = orientDBRequest.getODatabaseSession();
+          db.activateOnCurrentThread();
+        }
       }
     };
 
@@ -691,6 +713,7 @@ public class OrientDBImpl implements GraphDB
     ORecord record = vertex.save();
 
     graphObjectDAO.setRID(record.getIdentity());
+    graphObjectDAO.setCommitState();
   }
 
   @Override
@@ -713,7 +736,10 @@ public class OrientDBImpl implements GraphDB
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.load((ORID) graphObjectDAO.getRID());
-    vertex.delete();
+    if (vertex != null)
+    {
+      vertex.delete();
+    }
   }
 
   @Override
@@ -846,8 +872,8 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
-
-    vertexDAO.setIsNew(false);
+// Heads up: clean up
+//    vertexDAO.setIsNew(false);
     vertexDAO.setRID(vertex.getIdentity());
 
     return vertexDAO;

@@ -51,12 +51,19 @@ public class AttributeCharacter extends Attribute
    * <br>
    *
    */
+  @Override
   public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
   {
     String stringValue = (String)valueToValidate;
     
+    boolean blankValue = false;
+    if (stringValue == null || stringValue.trim().equals(""))
+    {
+      blankValue = true;
+    }
+    
     //  make sure a value is provided if a value is required
-    if ( mdAttributeIF.isRequired() && stringValue.trim().equals(""))
+    if ( mdAttributeIF.isRequired() && blankValue)
     {
       String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType()
           + "] requires a value";

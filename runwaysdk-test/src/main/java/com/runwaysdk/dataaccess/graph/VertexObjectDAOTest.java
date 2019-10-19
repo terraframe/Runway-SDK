@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import com.runwaysdk.AttributeCharacterParseException;
 import com.runwaysdk.AttributeIntegerParseException;
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
@@ -22,6 +25,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.AttributeLineStringParseException;
 import com.runwaysdk.gis.AttributeMultiLineStringParseException;
 import com.runwaysdk.gis.AttributeMultiPointParseException;
@@ -82,6 +86,12 @@ public class VertexObjectDAOTest
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
 
+    classSetup_Transaction();
+  }
+  
+  @Transaction
+  private static void classSetup_Transaction()
+  {
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
 
@@ -130,6 +140,7 @@ public class VertexObjectDAOTest
     mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdVertexDAO);
     mdMultiLineStringAttribute.apply();
   }
+
 
   @Request
   @AfterClass

@@ -85,7 +85,10 @@ public class GraphDBService
    */
   public GraphRequest getDDLGraphDBRequest()
   {
-    return this.graphDB.getGraphDBRequest();
+    GraphRequest ddlGraphRequest = this.graphDB.getGraphDBRequest();
+    ddlGraphRequest.setIsDDLRequest();
+    
+    return ddlGraphRequest;
   }
 
   /**

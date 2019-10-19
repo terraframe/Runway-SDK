@@ -19,5 +19,11 @@ public class GraphRequestBalk implements GraphRequest
 
   @Override
   public void close() {}
+  
+  @Override
+  public boolean getIsDDLRequest() { return false; }
+  
+  @Override
+  public void setIsDDLRequest() {}
 
 }

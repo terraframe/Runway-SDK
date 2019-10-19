@@ -255,6 +255,8 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
     attributeMap.values().forEach(a -> a.setContainingComponent(edgeObjectDAO));
 
     edgeObjectDAO.setIsNew(true);
+    
+    edgeObjectDAO.setAppliedToDB(false);
 
     return edgeObjectDAO;
   }

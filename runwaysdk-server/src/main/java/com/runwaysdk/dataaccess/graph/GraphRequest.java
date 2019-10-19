@@ -9,4 +9,8 @@ public interface GraphRequest
   public void rollback();
   
   public void close();
+  
+  public boolean getIsDDLRequest();
+  
+  public void setIsDDLRequest();
 }

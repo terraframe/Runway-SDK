@@ -290,7 +290,14 @@ public abstract class Attribute implements AttributeIF
 
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttribute();
     this.validateMutable(mdAttributeIF);
-    this.validateRequired(value, mdAttributeIF);
+    
+    if (mdAttributeIF.isRequired() && valueToValidate == null)
+    {
+// Heads up: clean up
+System.out.println("Breakpoint");
+    }
+    
+    this.validateRequired(valueToValidate, mdAttributeIF);
   }
 
   /**
