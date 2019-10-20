@@ -65,8 +65,8 @@ import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.util.ClasspathResource;
 
 public class RunwayPatcher
 {
@@ -137,6 +137,7 @@ public class RunwayPatcher
     }
     
     this.ignoreErrors = ignoreErrors;
+    this.timestamps = new TreeSet<Date>();
     
     initialize();
   }
@@ -153,16 +154,6 @@ public class RunwayPatcher
       ordered.add(resource);
 
       map.put(getDate(resource), resource);
-    }
-
-    timestamps = new TreeSet<Date>();
-
-    // Get a list of all the imported versions
-    List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
-
-    for (String timestamp : values)
-    {
-      timestamps.add(new Date(Long.parseLong(timestamp)));
     }
   }
   
@@ -307,6 +298,8 @@ public class RunwayPatcher
   
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
+    refreshTimestamps();
+
     // Only perform the doIt if this file has not already been imported
     if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
     {
@@ -316,7 +309,6 @@ public class RunwayPatcher
 
       // We always want to use the context class loader because it ensures our resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-      InputStream stream = null;
       
       Savepoint sp = null;
       if (ignoreErrors && isTransaction)
@@ -330,10 +322,12 @@ public class RunwayPatcher
         {
           ObjectCache.shutdownGlobalCache();
           
-          stream = resource.getStream();
-          String sql = IOUtils.toString(stream, "UTF-8");
-          
-          Database.executeStatement(sql);
+          try (InputStream stream = resource.openNewStream())
+          {
+            String sql = IOUtils.toString(stream, "UTF-8");
+            
+            Database.executeStatement(sql);
+          }
         }
         else if (resource.getNameExtension().equals("xml"))
         {
@@ -379,10 +373,6 @@ public class RunwayPatcher
         }
         
         try {
-          if (stream != null)
-          {
-            stream.close();
-          }
           schema.close();
         }
         catch (IOException e)
@@ -392,6 +382,19 @@ public class RunwayPatcher
       }
       
       timestamps.add(timestamp);
+    }
+  }
+
+  protected void refreshTimestamps()
+  {
+    timestamps = new TreeSet<Date>();
+
+    // Get a list of all the imported versions
+    List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+
+    for (String value : values)
+    {
+      timestamps.add(new Date(Long.parseLong(value)));
     }
   }
   
