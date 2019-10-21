@@ -21,12 +21,14 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
@@ -46,6 +48,10 @@ public class VertexObjectGeneratorTest
   private static MdEdgeDAO                     mdEdgeDAO;
 
   private static MdBusinessDAO                 mdBusinessDAO;
+
+  private static MdBusinessDAO                 mdEnumMasterDAO;
+
+  private static MdEnumerationDAO              mdEnumerationDAO;
 
   private static MdAttributeCharacterDAO       mdCharacterAttribute;
 
@@ -79,6 +85,8 @@ public class VertexObjectGeneratorTest
 
   private static MdAttributeReferenceDAO       mdReferenceAttribute;
 
+  private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
+
   @Request
   @BeforeClass
   public static void classSetup()
@@ -87,6 +95,12 @@ public class VertexObjectGeneratorTest
 
     mdBusinessDAO = TestFixtureFactory.createMdBusiness1();
     mdBusinessDAO.apply();
+
+    mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
+    mdEnumMasterDAO.apply();
+
+    mdEnumerationDAO = TestFixtureFactory.createMdEnumeation1(mdEnumMasterDAO);
+    mdEnumerationDAO.apply();
 
     mdParentDAO = TestFixtureFactory.createMdVertex("TestParent");
     mdParentDAO.apply();
@@ -144,6 +158,9 @@ public class VertexObjectGeneratorTest
 
     mdReferenceAttribute = TestFixtureFactory.addReferenceAttribute(mdParentDAO, mdBusinessDAO);
     mdReferenceAttribute.apply();
+
+    mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdParentDAO, mdEnumerationDAO);
+    mdEnumerationAttribute.apply();
   }
 
   @Request
@@ -195,10 +212,14 @@ public class VertexObjectGeneratorTest
   public void testGenerateAndCompile()
   {
     LinkedList<MdTypeDAOIF> list = new LinkedList<MdTypeDAOIF>();
+    list.add(mdEnumMasterDAO);
+    list.add(mdEnumerationDAO);
     list.add(mdBusinessDAO);
     list.add(mdParentDAO);
     list.add(mdChildDAO);
 
+    GenerationManager.forceRegenerate(mdEnumMasterDAO);
+    GenerationManager.forceRegenerate(mdEnumerationDAO);
     GenerationManager.forceRegenerate(mdBusinessDAO);
     GenerationManager.forceRegenerate(mdParentDAO);
     GenerationManager.forceRegenerate(mdChildDAO);
@@ -207,11 +228,11 @@ public class VertexObjectGeneratorTest
     compiler.compile(list);
 
     // Assert the files exist
-    Command command = mdParentDAO.getDeleteJavaArtifactCommand(null);
-    command.doIt();
-
-    command = mdChildDAO.getDeleteJavaArtifactCommand(null);
-    command.doIt();
+    mdChildDAO.getDeleteJavaArtifactCommand(null).doIt();
+    mdParentDAO.getDeleteJavaArtifactCommand(null).doIt();
+    mdBusinessDAO.getDeleteJavaArtifactCommand(null).doIt();
+    mdEnumerationDAO.getDeleteJavaArtifactCommand(null).doIt();
+    mdEnumMasterDAO.getDeleteJavaArtifactCommand(null).doIt();
   }
 
 }
