@@ -40,6 +40,7 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
@@ -664,6 +665,10 @@ public class OrientDBImpl implements GraphDB
       return OType.STRING.name();
     }
     else if (mdAttribute instanceof MdAttributeUUIDDAOIF)
+    {
+      return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeReferenceDAOIF)
     {
       return OType.STRING.name();
     }

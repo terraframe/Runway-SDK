@@ -1,8 +1,12 @@
 package com.runwaysdk.business.graph.generation;
 
+import com.runwaysdk.business.Business;
 import com.runwaysdk.business.generation.ClassBaseGenerator;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.generation.CommonGenerationUtil;
 
@@ -36,9 +40,49 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     getWriter().writeLine("");
   }
 
-  protected void addReferenceGetter(MdAttributeDAOIF m)
+  /**
+   * Generates a Getter for the given attribute in the base .java file
+   * 
+   * @param m
+   *          MdAttribute to generate
+   */
+  protected void addReferenceGetter(MdAttributeReferenceDAOIF m)
   {
-    throw new UnsupportedOperationException();
+    VisibilityModifier getterVisibility = m.getGetterVisibility();
+
+    MdBusinessDAOIF referenceMdBusiness = m.getReferenceMdBusinessDAO();
+
+    String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
+    getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " get" + attributeName + "()");
+    getWriter().openBracket();
+
+    getWriter().writeLine("if (getValue(" + m.definesAttribute().toUpperCase() + ") == null)");
+    getWriter().openBracket();
+    getWriter().writeLine("return null;");
+    getWriter().closeBracket();
+
+    getWriter().writeLine("else");
+    getWriter().openBracket();
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      getWriter().writeLine("return " + referenceMdBusiness.definesType() + ".get( (String) this.getValue(" + m.definesAttribute().toUpperCase() + "));");
+    }
+    else
+    {
+      getWriter().writeLine("return " + Business.class.getName() + ".get( (String) this.getValue(" + m.definesAttribute().toUpperCase() + "));");
+    }
+    getWriter().closeBracket();
+
+    getWriter().closeBracket();
+    getWriter().writeLine("");
+
+    // Generate an accessor that returns the reference oid
+    String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.OID);
+    getWriter().writeLine(getterVisibility.getJavaModifier() + " String get" + refAttributeIdName + "()");
+    getWriter().openBracket();
+    getWriter().writeLine("return (String) this.getValue(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
   }
 
   /**
@@ -60,7 +104,16 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
     getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "(" + m.javaType(false) + " value)");
     getWriter().openBracket();
-    getWriter().writeLine("this.setValue(" + m.definesAttribute().toUpperCase() + ", value);");
+
+    if (m instanceof MdAttributeReferenceDAOIF)
+    {
+      getWriter().writeLine("this.setValue(" + m.definesAttribute().toUpperCase() + ", value.getOid());");
+    }
+    else
+    {
+      getWriter().writeLine("this.setValue(" + m.definesAttribute().toUpperCase() + ", value);");
+    }
+
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -73,7 +126,20 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
    */
   protected void addReferenceSetter(MdAttributeDAOIF m)
   {
-    throw new UnsupportedOperationException();
+    // do not generate a setter for a system attribute.
+    if (m.isSystem())
+    {
+      return;
+    }
+
+    VisibilityModifier setterVisibility = m.getSetterVisibility();
+
+    String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
+    getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " oid)");
+    getWriter().openBracket();
+    getWriter().writeLine("this.setValue(" + m.definesAttribute().toUpperCase() + ", oid);");
+    getWriter().closeBracket();
+    getWriter().writeLine("");
   }
 
   /**

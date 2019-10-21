@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -387,7 +387,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       }
       else if (m.getMdAttributeConcrete() instanceof MdAttributeReferenceDAOIF)
       {
-        addReferenceGetter(m);
+        addReferenceGetter((MdAttributeReferenceDAOIF) m);
       }
       else
       {
@@ -405,7 +405,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       if (!GenerationUtil.isSpecialCaseSetter(m))
       {
         addSetter(m);
-        
+
         if (m.getMdAttributeConcrete() instanceof MdAttributeReferenceDAOIF)
         {
           addReferenceSetter(m);
@@ -457,7 +457,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  protected void addReferenceGetter(MdAttributeDAOIF m)
+  protected void addReferenceGetter(MdAttributeReferenceDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -536,9 +536,9 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     {
       return;
     }
-    
+
     VisibilityModifier setterVisibility = m.getSetterVisibility();
-    
+
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
     getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " oid)");
     getWriter().openBracket();
@@ -553,7 +553,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
-  
+
   /**
    * Generates a Validate method for the given attribute in the base .java file
    * 

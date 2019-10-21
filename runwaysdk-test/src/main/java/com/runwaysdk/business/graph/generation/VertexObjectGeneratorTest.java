@@ -24,7 +24,9 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
@@ -42,6 +44,8 @@ public class VertexObjectGeneratorTest
   private static MdVertexDAO                   mdChildDAO;
 
   private static MdEdgeDAO                     mdEdgeDAO;
+
+  private static MdBusinessDAO                 mdBusinessDAO;
 
   private static MdAttributeCharacterDAO       mdCharacterAttribute;
 
@@ -73,11 +77,16 @@ public class VertexObjectGeneratorTest
 
   private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
 
+  private static MdAttributeReferenceDAO       mdReferenceAttribute;
+
   @Request
   @BeforeClass
   public static void classSetup()
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
+
+    mdBusinessDAO = TestFixtureFactory.createMdBusiness1();
+    mdBusinessDAO.apply();
 
     mdParentDAO = TestFixtureFactory.createMdVertex("TestParent");
     mdParentDAO.apply();
@@ -132,6 +141,9 @@ public class VertexObjectGeneratorTest
 
     mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdParentDAO);
     mdMultiLineStringAttribute.apply();
+
+    mdReferenceAttribute = TestFixtureFactory.addReferenceAttribute(mdParentDAO, mdBusinessDAO);
+    mdReferenceAttribute.apply();
   }
 
   @Request
@@ -141,6 +153,7 @@ public class VertexObjectGeneratorTest
     TestFixtureFactory.delete(mdEdgeDAO);
     TestFixtureFactory.delete(mdParentDAO);
     TestFixtureFactory.delete(mdChildDAO);
+    TestFixtureFactory.delete(mdBusinessDAO);
 
     LocalProperties.setSkipCodeGenAndCompile(false);
   }
@@ -182,9 +195,11 @@ public class VertexObjectGeneratorTest
   public void testGenerateAndCompile()
   {
     LinkedList<MdTypeDAOIF> list = new LinkedList<MdTypeDAOIF>();
+    list.add(mdBusinessDAO);
     list.add(mdParentDAO);
     list.add(mdChildDAO);
 
+    GenerationManager.forceRegenerate(mdBusinessDAO);
     GenerationManager.forceRegenerate(mdParentDAO);
     GenerationManager.forceRegenerate(mdChildDAO);
 
