@@ -4,8 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.locationtech.spatial4j.shape.Shape;
 
 import com.orientechnologies.orient.core.db.ODatabasePool;
@@ -37,6 +41,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
@@ -44,6 +49,7 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -54,6 +60,8 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -360,6 +368,12 @@ public class OrientDBImpl implements GraphDB
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
     return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
+  }
+
+  @Override
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required)
+  {
+    return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
   }
 
   @Override
@@ -672,6 +686,10 @@ public class OrientDBImpl implements GraphDB
     {
       return OType.STRING.name();
     }
+    else if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
+    {
+      return OType.STRING.name();
+    }
     else if (mdAttribute instanceof MdAttributePointDAOIF)
     {
       return OShapeType.POINT.name();
@@ -909,6 +927,26 @@ public class OrientDBImpl implements GraphDB
 
           attribute.setValueInternal(geometry);
         }
+        else if (mdAttribute instanceof MdAttributeEnumerationDAO)
+        {
+          try
+          {
+            JSONArray array = new JSONArray(value.toString());
+
+            Set<String> set = new TreeSet<String>();
+
+            for (int i = 0; i < array.length(); i++)
+            {
+              set.add(array.getString(i));
+            }
+
+            attribute.setValueInternal(set);
+          }
+          catch (JSONException e)
+          {
+            throw new ProgrammingErrorException(e);
+          }
+        }
         else
         {
           attribute.setValueInternal(value);
@@ -940,6 +978,22 @@ public class OrientDBImpl implements GraphDB
           ODocument document = OShapeFactory.INSTANCE.toDoc(value);
 
           vertex.setProperty(columnName, document);
+        }
+        else
+        {
+          vertex.setProperty(columnName, null);
+        }
+      }
+      else if (mdAttribute instanceof MdEnumerationDAOIF)
+      {
+        Set<String> value = ( (AttributeEnumeration) attribute ).getObjectValue();
+        String columnName = mdAttribute.getColumnName();
+
+        if (value.size() > 0)
+        {
+          JSONArray array = new JSONArray(value);
+
+          vertex.setProperty(columnName, array.toString());
         }
         else
         {
