@@ -7,7 +7,9 @@ import java.util.TreeSet;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
+import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 
 public class AttributeEnumeration extends Attribute implements AttributeSet
@@ -47,9 +49,21 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   }
 
   @Override
-  public void setValue(Object value)
+  public synchronized void setValue(Object value)
   {
-    throw new UnsupportedOperationException();
+    if (this.getObjectValue().size() == 1 && this.getObjectValue().contains(value))
+    {
+      return;
+    }
+    else
+    {
+      this.validate(value);
+
+      this.clearItems();
+      this.getObjectValue().add((String) value);
+
+      this.setModified(true);
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -66,52 +80,72 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
    *      <b>Precondition: </b> value is of type String <br>
    *
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
   {
-    Set<String> stringValue = (Set<String>) valueToValidate;
-
-    boolean blankValue = false;
-    if (stringValue == null || stringValue.size() == 0)
-    {
-      blankValue = true;
-    }
-
-    // make sure a value is provided if a value is required
-    if (mdAttributeIF.isRequired() && blankValue)
-    {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
-    }
+//    Set<String> stringValue = (Set<String>) valueToValidate;
+//
+//    boolean blankValue = false;
+//    if (stringValue == null || stringValue.size() == 0)
+//    {
+//      blankValue = true;
+//    }
+//
+//    // make sure a value is provided if a value is required
+//    if (mdAttributeIF.isRequired() && blankValue)
+//    {
+//      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
+//      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+//      problem.throwIt();
+//    }
   }
 
-  // /**
-  // * @see Attribute#validate(Object)
-  // *
-  // */
-  // @Override
-  // public void validate(Object valueToValidate)
-  // {
-  // MdAttributeEnumerationDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-  //
-  // // First verify that the object is of the correct type.
-  // if (valueToValidate != null && ! ( valueToValidate instanceof String ))
-  // {
-  // String devMessage = "Value is not a " + String.class.getName();
-  // throw new AttributeCharacterParseException(devMessage,
-  // mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()),
-  // valueToValidate.getClass().getName());
-  // }
-  //
-  // super.validate(valueToValidate);
-  // }
+  /**
+   * @see Attribute#validate(Object)
+   *
+   */
+  @Override
+  public void validate(Object valueToValidate)
+  {
+    MdAttributeEnumerationDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+    MdEnumerationDAOIF mdEnumeration = mdAttributeIF.getMdEnumerationDAO();
+
+    if (mdEnumeration != null)
+    {
+      String enumItemID = (String) valueToValidate;
+
+      if (!mdEnumeration.isValidEnumerationItem(enumItemID))
+      {
+        String error = "[" + enumItemID + "] is not a valid value for the enumerated Attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
+        throw new AttributeValueException(error, this, enumItemID);
+      }
+    }
+
+    super.validate(valueToValidate);
+  }
 
   @Override
   public boolean addItem(String value)
   {
-    return this.getObjectValue().add(value);
+    if (this.getObjectValue().contains(value))
+    {
+      return true;
+    }
+
+    MdAttributeEnumerationDAOIF mdAttribute = this.getMdAttributeConcrete();
+
+    this.validate(value);
+
+    if (!mdAttribute.selectMultiple())
+    {
+      this.clearItems();
+    }
+
+    this.getObjectValue().add(value);
+
+    this.setModified(true);
+    return true;
   }
 
   @Override
@@ -126,11 +160,13 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   public void removeItem(String value)
   {
     this.getObjectValue().remove(value);
+    this.setModified(true);
   }
 
   @Override
   public void clearItems()
   {
     this.getObjectValue().clear();
+    this.setModified(true);
   }
 }
