@@ -25,6 +25,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
@@ -36,7 +37,11 @@ import com.runwaysdk.session.Request;
 
 public class VertexObjectGeneratorTest
 {
-  private static MdVertexDAO                   mdVertexDAO;
+  private static MdVertexDAO                   mdParentDAO;
+
+  private static MdVertexDAO                   mdChildDAO;
+
+  private static MdEdgeDAO                     mdEdgeDAO;
 
   private static MdAttributeCharacterDAO       mdCharacterAttribute;
 
@@ -74,52 +79,58 @@ public class VertexObjectGeneratorTest
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
 
-    mdVertexDAO = TestFixtureFactory.createMdVertex();
-    mdVertexDAO.apply();
+    mdParentDAO = TestFixtureFactory.createMdVertex("TestParent");
+    mdParentDAO.apply();
 
-    mdCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdVertexDAO);
+    mdChildDAO = TestFixtureFactory.createMdVertex("TestChild");
+    mdChildDAO.apply();
+
+    mdEdgeDAO = TestFixtureFactory.createMdEdge(mdParentDAO, mdChildDAO);
+    mdEdgeDAO.apply();
+
+    mdCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdParentDAO);
     mdCharacterAttribute.apply();
 
-    mdIntegerAttribute = TestFixtureFactory.addIntegerAttribute(mdVertexDAO);
+    mdIntegerAttribute = TestFixtureFactory.addIntegerAttribute(mdParentDAO);
     mdIntegerAttribute.apply();
 
-    mdLongAttribute = TestFixtureFactory.addLongAttribute(mdVertexDAO);
+    mdLongAttribute = TestFixtureFactory.addLongAttribute(mdParentDAO);
     mdLongAttribute.apply();
 
-    mdFloatAttribute = TestFixtureFactory.addFloatAttribute(mdVertexDAO);
+    mdFloatAttribute = TestFixtureFactory.addFloatAttribute(mdParentDAO);
     mdFloatAttribute.apply();
 
-    mdDoubleAttribute = TestFixtureFactory.addDoubleAttribute(mdVertexDAO);
+    mdDoubleAttribute = TestFixtureFactory.addDoubleAttribute(mdParentDAO);
     mdDoubleAttribute.apply();
 
-    mdBooleanAttribute = TestFixtureFactory.addBooleanAttribute(mdVertexDAO);
+    mdBooleanAttribute = TestFixtureFactory.addBooleanAttribute(mdParentDAO);
     mdBooleanAttribute.apply();
 
-    mdDateAttribute = TestFixtureFactory.addDateAttribute(mdVertexDAO);
+    mdDateAttribute = TestFixtureFactory.addDateAttribute(mdParentDAO);
     mdDateAttribute.apply();
 
-    mdDateTimeAttribute = TestFixtureFactory.addDateTimeAttribute(mdVertexDAO);
+    mdDateTimeAttribute = TestFixtureFactory.addDateTimeAttribute(mdParentDAO);
     mdDateTimeAttribute.apply();
 
-    mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
+    mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdParentDAO);
     mdTimeAttribute.apply();
 
-    mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
+    mdPointAttribute = TestFixtureFactory.addPointAttribute(mdParentDAO);
     mdPointAttribute.apply();
 
-    mdPolygonAttribute = TestFixtureFactory.addPolygonAttribute(mdVertexDAO);
+    mdPolygonAttribute = TestFixtureFactory.addPolygonAttribute(mdParentDAO);
     mdPolygonAttribute.apply();
 
-    mdLineStringAttribute = TestFixtureFactory.addLineStringAttribute(mdVertexDAO);
+    mdLineStringAttribute = TestFixtureFactory.addLineStringAttribute(mdParentDAO);
     mdLineStringAttribute.apply();
 
-    mdMultiPointAttribute = TestFixtureFactory.addMultiPointAttribute(mdVertexDAO);
+    mdMultiPointAttribute = TestFixtureFactory.addMultiPointAttribute(mdParentDAO);
     mdMultiPointAttribute.apply();
 
-    mdMultiPolygonAttribute = TestFixtureFactory.addMultiPolygonAttribute(mdVertexDAO);
+    mdMultiPolygonAttribute = TestFixtureFactory.addMultiPolygonAttribute(mdParentDAO);
     mdMultiPolygonAttribute.apply();
 
-    mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdVertexDAO);
+    mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdParentDAO);
     mdMultiLineStringAttribute.apply();
   }
 
@@ -127,7 +138,9 @@ public class VertexObjectGeneratorTest
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(mdVertexDAO);
+    TestFixtureFactory.delete(mdEdgeDAO);
+    TestFixtureFactory.delete(mdParentDAO);
+    TestFixtureFactory.delete(mdChildDAO);
 
     LocalProperties.setSkipCodeGenAndCompile(false);
   }
@@ -138,13 +151,15 @@ public class VertexObjectGeneratorTest
   {
     StringWriter writer = new StringWriter();
 
-    VertexObjectBaseGenerator generator = new VertexObjectBaseGenerator(mdVertexDAO);
+    VertexObjectBaseGenerator generator = new VertexObjectBaseGenerator(mdParentDAO);
     generator.setWriter(new SourceWriter(new BufferedWriter(writer)));
     generator.go(true);
 
     String output = writer.toString();
 
     Assert.assertNotNull(output);
+
+    System.out.println(output);
   }
 
   @Request
@@ -153,7 +168,7 @@ public class VertexObjectGeneratorTest
   {
     StringWriter writer = new StringWriter();
 
-    VertexObjectStubGenerator generator = new VertexObjectStubGenerator(mdVertexDAO);
+    VertexObjectStubGenerator generator = new VertexObjectStubGenerator(mdParentDAO);
     generator.setWriter(new SourceWriter(new BufferedWriter(writer)));
     generator.go(true);
 
@@ -167,15 +182,20 @@ public class VertexObjectGeneratorTest
   public void testGenerateAndCompile()
   {
     LinkedList<MdTypeDAOIF> list = new LinkedList<MdTypeDAOIF>();
-    list.add(mdVertexDAO);
+    list.add(mdParentDAO);
+    list.add(mdChildDAO);
 
-    GenerationManager.forceRegenerate(mdVertexDAO);
+    GenerationManager.forceRegenerate(mdParentDAO);
+    GenerationManager.forceRegenerate(mdChildDAO);
 
     DelegateCompiler compiler = new DelegateCompiler();
     compiler.compile(list);
 
     // Assert the files exist
-    Command command = mdVertexDAO.getDeleteJavaArtifactCommand(null);
+    Command command = mdParentDAO.getDeleteJavaArtifactCommand(null);
+    command.doIt();
+
+    command = mdChildDAO.getDeleteJavaArtifactCommand(null);
     command.doIt();
   }
 
