@@ -54,6 +54,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -391,6 +392,22 @@ public class MdGraphClassTest
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
+  @Request
+  @Test
+  public void testCreateTextAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeTextDAO mdAttribute = TestFixtureFactory.addTextAttribute(mdVertexDAO);
+    mdAttribute.apply();
+    
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    
+    boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+  
   @Request
   @Test
   public void testCreateDoubleAttrMdVertex()

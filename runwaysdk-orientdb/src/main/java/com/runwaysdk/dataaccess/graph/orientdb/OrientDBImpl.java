@@ -1,6 +1,5 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +50,7 @@ import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
@@ -690,6 +690,10 @@ public class OrientDBImpl implements GraphDB
       return OType.DATETIME.name();
     }
     else if (mdAttribute instanceof MdAttributeCharDAOIF)
+    {
+      return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeTextDAOIF)
     {
       return OType.STRING.name();
     }

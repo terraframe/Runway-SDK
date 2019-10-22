@@ -1007,12 +1007,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity)
   {
     return addTextAttribute(mdEntity, TestFixConst.ATTRIBUTE_TEXT);
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeTextDAO mdAttribute = MdAttributeTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -1021,12 +1021,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity)
   {
     return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
