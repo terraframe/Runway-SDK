@@ -3,9 +3,15 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ComponentInfo;
+import com.runwaysdk.constants.ElementInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -208,10 +214,41 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   protected void createDefaultAttributes()
   {
     MdBusinessDAOIF mdBusinessIF = MdBusinessDAO.getMdBusinessDAO(ComponentInfo.CLASS);
+    this.copyAttribute((MdAttributeDAO) mdBusinessIF.definesAttribute(ComponentInfo.OID).getBusinessDAO());
 
-    MdAttributeDAO oidMdAttribute = (MdAttributeDAO) mdBusinessIF.definesAttribute(ComponentInfo.OID).getBusinessDAO();
+    MdBusinessDAOIF mdElementIF = MdBusinessDAO.getMdBusinessDAO(ElementInfo.CLASS);
+    this.copyAttribute((MdAttributeDAO) mdElementIF.definesAttribute(BusinessInfo.SEQUENCE).getBusinessDAO());
+  }
 
-    this.copyAttribute(oidMdAttribute);
+  /**
+   * Copies the given attribute so that it is also defined by this entity.
+   * 
+   * @param mdAttributeIFOriginal
+   */
+  @Override
+  public void copyAttribute(MdAttributeDAOIF mdAttributeIFOriginal)
+  {
+    MdAttributeDAO newMdAttribute = (MdAttributeDAO) mdAttributeIFOriginal.copy();
+
+    if (mdAttributeIFOriginal instanceof MdAttributeConcreteDAOIF)
+    {
+      // The copied attribute is now defined by this entity.
+      newMdAttribute.getAttribute(MdAttributeConcreteInfo.DEFINING_MD_CLASS).setValue(this.getOid());
+      // Make sure that the unique database constraint for the key attribute is
+      // enabled.
+      if (newMdAttribute.definesAttribute().equals(ComponentInfo.KEY))
+      {
+        newMdAttribute.getAttribute(MdAttributeConcreteInfo.INDEX_TYPE).setModified(true);
+      }
+    }
+
+    if (newMdAttribute.definesAttribute().equals(BusinessInfo.SEQUENCE))
+    {
+      newMdAttribute.setValue(MdAttributeConcreteInfo.REQUIRED, Boolean.FALSE.toString());
+      newMdAttribute.setValue(MdAttributeConcreteInfo.SYSTEM, Boolean.FALSE.toString());
+    }
+
+    newMdAttribute.apply();
   }
 
   /**

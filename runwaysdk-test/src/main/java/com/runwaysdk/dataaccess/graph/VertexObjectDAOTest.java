@@ -177,12 +177,18 @@ public class VertexObjectDAOTest
   @AfterClass
   public static void classTearDown()
   {
+    classTearDown_Transaction();
+
+    LocalProperties.setSkipCodeGenAndCompile(false);
+  }
+
+  @Transaction
+  public static void classTearDown_Transaction()
+  {
     TestFixtureFactory.delete(mdVertexDAO);
     TestFixtureFactory.delete(mdEnumerationDAO);
     TestFixtureFactory.delete(mdEnumMasterDAO);
     TestFixtureFactory.delete(mdBusinessDAO);
-
-    LocalProperties.setSkipCodeGenAndCompile(false);
   }
 
   @Request

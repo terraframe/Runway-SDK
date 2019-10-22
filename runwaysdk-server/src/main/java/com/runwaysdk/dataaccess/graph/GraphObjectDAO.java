@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.graph.GraphClassInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -134,6 +135,16 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   public Object getRID()
   {
     return rid;
+  }
+
+  /**
+   * Gets the sequence number of the entity object
+   * 
+   * @return The sequence number of the entity
+   */
+  public Long getSequence()
+  {
+    return (Long) this.getAttributeIF(ElementInfo.SEQUENCE).getObjectValue();
   }
 
   /**
@@ -546,8 +557,6 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     {
       GraphDBService.getInstance().update(request, this);
     }
-
-    this.isNew = false;
 
     return this.getOid();
   }

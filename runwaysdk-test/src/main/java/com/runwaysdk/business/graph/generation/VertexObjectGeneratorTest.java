@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
@@ -93,6 +94,12 @@ public class VertexObjectGeneratorTest
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
 
+    classSetup_Transaction();
+  }
+
+  @Transaction
+  protected static void classSetup_Transaction()
+  {
     mdBusinessDAO = TestFixtureFactory.createMdBusiness1();
     mdBusinessDAO.apply();
 
@@ -167,12 +174,20 @@ public class VertexObjectGeneratorTest
   @AfterClass
   public static void classTearDown()
   {
+    classTearDown_Transaction();
+
+    LocalProperties.setSkipCodeGenAndCompile(false);
+  }
+
+  @Transaction
+  protected static void classTearDown_Transaction()
+  {
     TestFixtureFactory.delete(mdEdgeDAO);
     TestFixtureFactory.delete(mdParentDAO);
     TestFixtureFactory.delete(mdChildDAO);
+    TestFixtureFactory.delete(mdEnumerationDAO);
+    TestFixtureFactory.delete(mdEnumMasterDAO);
     TestFixtureFactory.delete(mdBusinessDAO);
-
-    LocalProperties.setSkipCodeGenAndCompile(false);
   }
 
   @Request
