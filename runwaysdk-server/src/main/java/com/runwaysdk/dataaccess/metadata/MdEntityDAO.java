@@ -864,6 +864,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * @return command object that either creates or updates Java artifacts for
    *         this type.
    */
+  @Override
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
     Command command;
@@ -889,6 +890,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * 
    * @return command object that deletes Java artifacts for this type.
    */
+  @Override
   public Command getDeleteJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdEntityCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE, conn);
@@ -902,6 +904,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * 
    * @return command object that cleans Java artifacts for this type.
    */
+  @Override
   public Command getCleanJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdEntityCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN, conn);

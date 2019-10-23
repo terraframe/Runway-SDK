@@ -218,6 +218,15 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     return childMdRelationshipDAOidSet;
   }
 
+  @Override
+  public Set<String> getChildMdEdgeDAOids(String mdVertexDAOid)
+  {
+    Set<String> childMdEdgeDAOidSet = new HashSet<String>();
+    childMdEdgeDAOidSet.addAll(super.getChildMdEdgeDAOids(mdVertexDAOid));
+    childMdEdgeDAOidSet.addAll(this.getTransactionCache().getChildMdEdgeDAOids(mdVertexDAOid));
+    return childMdEdgeDAOidSet;
+  }
+  
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
@@ -426,6 +435,17 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     parentMdRelationshipDAOidsSet.addAll(this.getTransactionCache().getParentMdRelationshipDAOids(mdBusinessDAOid));
 
     return parentMdRelationshipDAOidsSet;
+  }
+  
+  @Override
+  public Set<String> getParentMdEdgeDAOids(String mdVertexDAOid)
+  {
+    Set<String> parentMdEdgeDAOidsSet = new HashSet<String>();
+
+    parentMdEdgeDAOidsSet.addAll(super.getParentMdEdgeDAOids(mdVertexDAOid));
+    parentMdEdgeDAOidsSet.addAll(this.getTransactionCache().getParentMdEdgeDAOids(mdVertexDAOid));
+
+    return parentMdEdgeDAOidsSet;
   }
 
   @Override
