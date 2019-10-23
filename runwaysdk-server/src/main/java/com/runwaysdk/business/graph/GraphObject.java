@@ -59,6 +59,11 @@ public abstract class GraphObject
     return graphObjectDAO;
   }
 
+  public Object getRID()
+  {
+    return this.graphObjectDAO.getRID();
+  }
+
   /**
    * Indicates if this is a new instance. If it is new, then the records that
    * represent this ComponentIF have not been created.
@@ -97,7 +102,7 @@ public abstract class GraphObject
    * @return BusinessDAO representing the attribute metadata of the attribute
    *         with the given name
    */
-  public MdAttributeDAOIF getMdAttributeDAO(String name)
+  public MdAttributeConcreteDAOIF getMdAttributeDAO(String name)
   {
     return this.graphObjectDAO.getMdAttributeDAO(name);
   }

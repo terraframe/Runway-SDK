@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.ClassManager;
+import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand.Operation;
 import com.runwaysdk.business.generation.TypeGenerator;
@@ -85,6 +86,11 @@ public class JavaArtifactMdGraphClassCommand implements Command
     if (this.operation == Operation.DELETE || this.operation == Operation.CLEAN)
     {
       this.deleteMdClassFiles();
+    }
+    else
+    {
+      // Create the files
+      GenerationManager.generate(this.getMdTypeIF());
     }
   }
 
@@ -278,7 +284,7 @@ public class JavaArtifactMdGraphClassCommand implements Command
    */
   public boolean isUndoable()
   {
-    return true;
+    return false;
   }
 
   @Override

@@ -342,6 +342,12 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     return this.getMdClassDAO().getAllDefinedMdAttributes();
   }
 
+  @Override
+  public MdAttributeConcreteDAOIF getMdAttributeDAO(String name)
+  {
+    return (MdAttributeConcreteDAOIF) super.getMdAttributeDAO(name);
+  }
+
   /**
    * Returns the attribute object of the given name.
    * 
