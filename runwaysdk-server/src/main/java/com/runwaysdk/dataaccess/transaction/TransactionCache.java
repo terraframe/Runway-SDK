@@ -240,6 +240,36 @@ public class TransactionCache extends AbstractTransactionCache
         mainChildRelationships.addAll(threadChildRelationships);
       }
     }
+    
+    for (String key : threadTransactionCache.mdVertexParentMdEdges.keySet())
+    {
+      Set<String> threadParentRelationships = threadTransactionCache.mdVertexParentMdEdges.get(key);
+      Set<String> mainParentRelationships = this.mdVertexParentMdEdges.get(key);
+
+      if (mainParentRelationships == null)
+      {
+        this.mdVertexParentMdEdges.put(key, threadParentRelationships);
+      }
+      else
+      {
+        mainParentRelationships.addAll(threadParentRelationships);
+      }
+    }
+
+    for (String key : threadTransactionCache.mdVertexChildMdEdges.keySet())
+    {
+      Set<String> threadChildRelationships = threadTransactionCache.mdVertexChildMdEdges.get(key);
+      Set<String> mainChildRelationships = this.mdVertexChildMdEdges.get(key);
+
+      if (mainChildRelationships == null)
+      {
+        this.mdVertexChildMdEdges.put(key, threadChildRelationships);
+      }
+      else
+      {
+        mainChildRelationships.addAll(threadChildRelationships);
+      }
+    }
 
     for (EntityDAO entityDAO : threadTransactionCache.transactionObjectCache.values())
     {

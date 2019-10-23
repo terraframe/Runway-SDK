@@ -83,7 +83,25 @@ public interface TransactionCacheIF
    * @return set of <code>MdRelationshipDAOIF</code> ids
    */
   public abstract Set<String> getChildMdRelationshipDAOids(String mdBusinessDAOid);
+  
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * parent.
+   * 
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  public abstract Set<String> getParentMdEdgeDAOids(String mdVertexDAOid);
 
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * child.
+   * 
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  public abstract Set<String> getChildMdEdgeDAOids(String mdVertexDAOid);
+  
   /**
    * Adds the given new or updated EntityDAO to the transaction cache.
    * 

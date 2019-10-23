@@ -1459,6 +1459,44 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   {
     return this.getTransactionCache().getChildMdRelationshipDAOids(mdBusinessDAOid);
   }
+  
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * parent.
+   * 
+   * @return set of <code>MdRelationshipDAOIF</code> ids
+   */
+  protected pointcut getParentMdEdgeDAOids(String mdVertexDAOid)
+  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getParentMdEdgeDAOids(String))
+  && args(mdVertexDAOid)
+  && !within(AbstractTransactionManagement+)
+  && !within(AbstractTransactionCache+);
+
+  Set<String> around(String mdVertexDAOid)
+  : getParentMdEdgeDAOids(mdVertexDAOid)
+  {
+    return this.getTransactionCache().getParentMdEdgeDAOids(mdVertexDAOid);
+  }
+  
+  /**
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
+   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
+   * child.
+   * 
+   * @return set of <code>MdEdgeDAOIF</code> ids
+   */
+  protected pointcut getChildMdEdgeDAOids(String mdVertexDAOid)
+  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getChildMdEdgeDAOids(String))
+  && args(mdVertexDAOid)
+  && !within(AbstractTransactionManagement+)
+  && !within(AbstractTransactionCache+);
+
+  Set<String> around(String mdVertexDAOid)
+  : getChildMdEdgeDAOids(mdVertexDAOid)
+  {
+    return this.getTransactionCache().getChildMdEdgeDAOids(mdVertexDAOid);
+  }
 
   // Get parents that were created during this transaction as well as existing
   // parents.

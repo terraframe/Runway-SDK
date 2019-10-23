@@ -42,6 +42,7 @@ import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.MdClassInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
@@ -79,12 +80,16 @@ import com.runwaysdk.dataaccess.metadata.MdParameterDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.PermissionEntity;
 import com.runwaysdk.session.PermissionObserver;
 import com.runwaysdk.system.metadata.MdClass;
+import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.MdType;
 import com.runwaysdk.util.IdParser;
 
@@ -418,16 +423,28 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, RelationshipDAOCollection>           cachedRemovedRelationships;
 
   /**
-   * Key: MdBusiness oid. Value: MdRelationship ids where MdBusiness participates
+   * Key: {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where MdBusiness participates
    * as a parent.
    */
   protected Map<String, Set<String>>                         mdBusinessParentMdRelationships;
 
   /**
-   * Key: MdBusiness oid. Value: MdRelationship ids where MdBusiness participates
+   * Key:  {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where MdBusiness participates
    * as a child.
    */
   protected Map<String, Set<String>>                         mdBusinessChildMdRelationships;
+  
+  /**
+   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness participates
+   * as a parent.
+   */
+  protected Map<String, Set<String>>                         mdVertexParentMdEdges;
+
+  /**
+   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness participates
+   * as a child.
+   */
+  protected Map<String, Set<String>>                         mdVertexChildMdEdges;
 
   /**
    * The key is the new Id. The value is the old Id.
@@ -461,6 +478,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>Postcondition:</b> true
    * 
    */
+  @SuppressWarnings("rawtypes")
   protected AbstractTransactionCache(ReentrantLock transactionStateLock)
   {
     this.transactionStateLock = transactionStateLock;
@@ -526,7 +544,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
     this.mdBusinessParentMdRelationships = new HashMap<String, Set<String>>();
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
-
+    
+    this.mdVertexParentMdEdges = new HashMap<String, Set<String>>();
+    this.mdVertexChildMdEdges = new HashMap<String, Set<String>>(); 
+    
     this.changedIds = new HashMap<String, String>();
         
     this.isClosed = false;
@@ -889,6 +910,47 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         {
           MdIndexDAO mdIndexDAO = (MdIndexDAO) entityDAO;
           this.updatedMdIndexMap.put(mdIndexDAO.getIndexName(), mdIndexDAO.getOid());
+        }
+        else if (entityDAO instanceof MdGraphClassDAO)
+        {
+          MdGraphClassDAO mdGraphClassDAO = (MdGraphClassDAO) entityDAO;
+          this.updatedMdClassDefinedTypeMap.put(mdGraphClassDAO.definesType(), mdGraphClassDAO.getOid());
+          this.updatedMdClassRootIdMap.put(mdGraphClassDAO.getRootId(), mdGraphClassDAO.getOid());
+          
+          if (mdGraphClassDAO instanceof MdEdgeDAO)
+          {
+            MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) mdGraphClassDAO;
+
+            String parentMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.PARENT_MD_VERTEX).getValue();
+            Set<String> parentRelationshipSet;
+            if (this.mdVertexParentMdEdges.containsKey(parentMdVertexId))
+            {
+              parentRelationshipSet = this.mdVertexParentMdEdges.get(parentMdVertexId);
+            }
+            else
+            {
+              // Clone the Set in the global cache. This will be used for the rest
+              // of the transaction.
+              parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdEdgeDAOids(parentMdVertexId));
+              this.mdVertexParentMdEdges.put(parentMdVertexId, parentRelationshipSet);
+            }
+            parentRelationshipSet.remove(mdEdgeDAO.getOid());
+
+            String childMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.CHILD_MD_VERTEX).getValue();
+            Set<String> childRelationshipSet;
+            if (this.mdVertexChildMdEdges.containsKey(childMdVertexId))
+            {
+              childRelationshipSet = this.mdVertexChildMdEdges.get(childMdVertexId);
+            }
+            else
+            {
+              // Clone the Set in the global cache. This will be used for the rest
+              // of the transaction.
+              childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdEdgeDAOids(childMdVertexId));
+              this.mdVertexChildMdEdges.put(childMdVertexId, childRelationshipSet);
+            }
+            childRelationshipSet.remove(mdEdgeDAO.getOid());
+          }
         }
       } 
     }
@@ -1315,6 +1377,36 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         }
 
         return ObjectCache.getChildMdRelationshipDAOids(originalId);
+      }
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
+  /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getChildMdEdgeDAOids(java.lang.String)
+   */
+  public Set<String> getChildMdEdgeDAOids(String mdVertexDAOid)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      if (this.mdVertexChildMdEdges.containsKey(mdVertexDAOid))
+      {
+        return this.mdVertexChildMdEdges.get(mdVertexDAOid);
+      }
+      else
+      {
+        String originalId = this.getOriginalId(mdVertexDAOid);
+
+        if (originalId == null)
+        {
+          originalId = mdVertexDAOid;
+        }
+
+        return ObjectCache.getChildMdEdgeDAOids(originalId);
       }
     }
     finally
@@ -1778,6 +1870,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getParentMdRelationshipDAOids(java.lang.String)
    */
+  @Override
   public Set<String> getParentMdRelationshipDAOids(String mdBusinessDAOid)
   {
     this.transactionStateLock.lock();
@@ -1797,6 +1890,38 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         }
 
         return ObjectCache.getParentMdRelationshipDAOids(originalId);
+      }
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
+
+  /**
+   * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getParentMdEdgeDAOids(java.lang.String)
+   */
+  @Override
+  public Set<String> getParentMdEdgeDAOids(String mdVertexDAOid)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      if (this.mdVertexParentMdEdges.containsKey(mdVertexDAOid))
+      {
+        return this.mdVertexParentMdEdges.get(mdVertexDAOid);
+      }
+      else
+      {
+        String originalId = this.getOriginalId(mdVertexDAOid);
+
+        if (originalId == null)
+        {
+          originalId = mdVertexDAOid;
+        }
+
+        return ObjectCache.getParentMdEdgeDAOids(originalId);
       }
     }
     finally
@@ -2193,7 +2318,29 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           this.mdBusinessChildMdRelationships.put(entityDAO.getOid(), childRelationshipSet);
         }
       }
+      else if (entityDAO instanceof MdGraphClassDAO)
+      {
+        MdGraphClassDAO mdGraphClassDAO = (MdGraphClassDAO) entityDAO;
+        String oldRootId = IdParser.parseRootFromId(oldId);
+        this.updatedMdClassRootIdMap.remove(oldRootId);
+        this.updatedMdClassRootIdMap.put(mdGraphClassDAO.getRootId(), mdGraphClassDAO.getOid());
+        
+        Set<String> parentRelationshipSet = this.mdVertexParentMdEdges.get(oldId);
+        if (parentRelationshipSet != null)
+        {
+          this.mdVertexParentMdEdges.remove(oldId);
+          this.mdVertexParentMdEdges.put(entityDAO.getOid(), parentRelationshipSet);
+        }
 
+        Set<String> childRelationshipSet = this.mdVertexChildMdEdges.get(oldId);
+        if (childRelationshipSet != null)
+        {
+          this.mdVertexChildMdEdges.remove(oldId);
+          this.mdVertexChildMdEdges.put(entityDAO.getOid(), childRelationshipSet);
+        }
+      }
+      
+      
       if (entityDAO instanceof MdAttributeDAO)
       {
         MdAttributeDAO mdAttribute = (MdAttributeDAO) entityDAO;
@@ -2321,6 +2468,46 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
                 this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
               }
               childRelationshipSet.add(mdRelationshipDAO.getOid());
+            }
+          }
+          if (mdClassDAO instanceof MdEdgeDAO)
+          {
+            MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) mdClassDAO;
+
+            if (mdEdgeDAO.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX).isModified())
+            {
+              String parentMdVertexId = mdEdgeDAO.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX).getValue();
+              Set<String> parentRelationshipSet;
+              if (this.mdVertexParentMdEdges.containsKey(parentMdVertexId))
+              {
+                parentRelationshipSet = this.mdVertexParentMdEdges.get(parentMdVertexId);
+              }
+              else
+              {
+                // Clone the Set in the global cache. This will be used for the
+                // rest of the transaction.
+                parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdEdgeDAOids(parentMdVertexId));
+                this.mdVertexParentMdEdges.put(parentMdVertexId, parentRelationshipSet);
+              }
+              parentRelationshipSet.add(mdEdgeDAO.getOid());
+            }
+
+            if (mdEdgeDAO.getAttributeIF(MdEdgeInfo.CHILD_MD_VERTEX).isModified())
+            {
+              String childMdVertexId = mdEdgeDAO.getAttribute(MdEdgeInfo.CHILD_MD_VERTEX).getValue();
+              Set<String> childRelationshipSet;
+              if (this.mdVertexChildMdEdges.containsKey(childMdVertexId))
+              {
+                childRelationshipSet = this.mdVertexChildMdEdges.get(childMdVertexId);
+              }
+              else
+              {
+                // Clone the Set in the global cache. This will be used for the
+                // rest of the transaction.
+                childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdEdgeDAOids(childMdVertexId));
+                this.mdVertexChildMdEdges.put(childMdVertexId, childRelationshipSet);
+              }
+              childRelationshipSet.add(mdEdgeDAO.getOid());
             }
           }
         } // if (entityDAO instanceof MdClassDAO)
