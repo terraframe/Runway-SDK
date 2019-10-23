@@ -36,6 +36,7 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -48,10 +49,16 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -166,39 +173,39 @@ public class MdGraphClassTest
     MdEdgeDAO mdEdgeDAO = createEdgeClass(EDGE_CLASS_NAME, parentMdVertexDAO.getOid(), childMdVertexDAO.getOid());
     String dbClassName = mdEdgeDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     try
     {
       boolean classDefined = GraphDBService.getInstance().isEdgeClassDefined(graphRequest, dbClassName);
 
       Assert.assertEquals("Edge class was not defined", true, classDefined);
-      
+
       Set<String> parentEdgeIDs = ObjectCache.getParentMdEdgeDAOids(parentMdVertexDAO.getOid());
       Assert.assertEquals("Metadata did not properly store an edge class", 1, parentEdgeIDs.size());
       Assert.assertEquals("Metadata did not properly store an edge class", true, parentEdgeIDs.contains(mdEdgeDAO.getOid()));
-      
+
       Set<String> childEdgeIDs = ObjectCache.getChildMdEdgeDAOids(childMdVertexDAO.getOid());
-      
+
       Assert.assertEquals("Metadata did not properly store an edge class", 1, childEdgeIDs.size());
       Assert.assertEquals("Metadata did not properly store an edge class", true, childEdgeIDs.contains(mdEdgeDAO.getOid()));
     }
     finally
     {
       mdEdgeDAO.delete();
-      
+
       parentMdVertexDAO.delete();
       childMdVertexDAO.delete();
     }
-    
+
     boolean classDefined = GraphDBService.getInstance().isEdgeClassDefined(graphRequest, dbClassName);
     Assert.assertEquals("Edge class still exists in the database", false, classDefined);
-    
+
     Set<String> parentEdgeIDs = ObjectCache.getParentMdEdgeDAOids(parentMdVertexDAO.getOid());
     Assert.assertEquals("Metadata did not properly store an edge class", 0, parentEdgeIDs.size());
     Assert.assertEquals("Metadata did not properly store an edge class", false, parentEdgeIDs.contains(mdEdgeDAO.getOid()));
-    
+
     Set<String> childEdgeIDs = ObjectCache.getChildMdEdgeDAOids(childMdVertexDAO.getOid());
-    
+
     Assert.assertEquals("Metadata did not properly store an edge class", 0, childEdgeIDs.size());
     Assert.assertEquals("Metadata did not properly store an edge class", false, childEdgeIDs.contains(mdEdgeDAO.getOid()));
   }
@@ -387,6 +394,22 @@ public class MdGraphClassTest
 
   @Request
   @Test
+  public void testCreateTextAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeTextDAO mdAttribute = TestFixtureFactory.addTextAttribute(mdVertexDAO);
+    mdAttribute.apply();
+    
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    
+    boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+  
+  @Request
+  @Test
   public void testCreateDoubleAttrMdVertex()
   {
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
@@ -561,6 +584,57 @@ public class MdGraphClassTest
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
+  @Request
+  @Test
+  public void testCreateReferenceAttrMdVertex()
+  {
+    MdBusinessDAO mdBusinessDAO = TestFixtureFactory.createMdBusiness(VERTEX_CLASS_NAME_2);
+    mdBusinessDAO.apply();
+
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
+    MdAttributeReferenceDAO mdAttribute = TestFixtureFactory.addReferenceAttribute(mdVertexDAO, mdBusinessDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testCreateEnumerationAttrMdVertex()
+  {
+    MdBusinessDAO mdBusinessDAO = TestFixtureFactory.createEnumClass(VERTEX_CLASS_NAME_2);
+    mdBusinessDAO.apply();
+
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessDAO);
+
+    try
+    {
+      mdEnumeration.apply();
+
+      MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
+      MdAttributeEnumerationDAO mdAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumeration);
+      mdAttribute.apply();
+
+      String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+      String dbAttrName = mdAttribute.definesAttribute();
+      GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+      Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+      Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+    }
+    finally
+    {
+      TestFixtureFactory.delete(mdEnumeration);
+    }
+  }
+
   private static MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
@@ -611,16 +685,15 @@ public class MdGraphClassTest
 
   private static void deleteVertexClass(String vertexClassName)
   {
-    MdVertexDAOIF mdVertexDAOIF = null;
+    MdClassDAOIF mdVertexDAOIF = null;
 
     try
     {
-      mdVertexDAOIF = MdVertexDAO.getMdVertexDAO(vertexClassName);
+      mdVertexDAOIF = MdClassDAO.getMdClassDAO(vertexClassName);
     }
     catch (DataNotFoundException ex)
     {
     }
-    ;
 
     if (mdVertexDAOIF != null)
     {

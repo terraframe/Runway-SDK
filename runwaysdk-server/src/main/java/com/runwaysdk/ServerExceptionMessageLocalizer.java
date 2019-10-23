@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk;
 
@@ -276,7 +276,8 @@ public class ServerExceptionMessageLocalizer
    * @param devMessage
    * @param mdAttributeConcreteIF
    *          metadata of the attribute that is already defined.
-   * @param class that defines the type of the mdAttribute.
+   * @param class
+   *          that defines the type of the mdAttribute.
    * @param mdClassIF
    *          class that a new attribute is being added to.
    */
@@ -292,7 +293,8 @@ public class ServerExceptionMessageLocalizer
    * @param devMessage
    * @param mdAttributeConcreteIF
    *          metadata of the attribute that is already defined.
-   * @param class that defines the type of the mdAttribute.
+   * @param class
+   *          that defines the type of the mdAttribute.
    * @param mdClassIF
    *          class that a new attribute is being added to.
    */
@@ -308,7 +310,8 @@ public class ServerExceptionMessageLocalizer
    * @param devMessage
    * @param mdAttributeConcreteIF
    *          metadata of the attribute that is already defined.
-   * @param class that defines the type of the mdAttribute.
+   * @param class
+   *          that defines the type of the mdAttribute.
    */
   public static String attributeInvalidUniquenessConstraintException(Locale locale, MdAttributeConcreteDAOIF mdAttribute, MdClassDAOIF mdAttributeDefiningClass)
   {
@@ -1866,6 +1869,11 @@ public class ServerExceptionMessageLocalizer
     return LocalizationFacade.getMessage(locale, "StaleEntityException", "[{0}] is out of date - please update and try your operation again.", entity.toString());
   }
 
+  public static String staleEntityException(Locale locale, String label)
+  {
+    return LocalizationFacade.getMessage(locale, "StaleEntityException", "[{0}] is out of date - please update and try your operation again.", label);
+  }
+
   /**
    * Gets the localized {@link StateException} message, which encapsulates
    * errors that arise from state machines.
@@ -2637,13 +2645,15 @@ public class ServerExceptionMessageLocalizer
   {
     return LocalizationFacade.getMessage(locale, "FieldConversionException", "FieldConversionException", fieldLabel);
   }
-  
+
   /**
-   * Localized message whenever an <code>InvalidExpressionSyntaxException</code> is thrown.
+   * Localized message whenever an <code>InvalidExpressionSyntaxException</code>
+   * is thrown.
    * 
    * @param locale
    * @param expressionExceptionMessage
-   * @return Localized message whenever an <code>InvalidExpressionSyntaxException</code> is thrown.
+   * @return Localized message whenever an
+   *         <code>InvalidExpressionSyntaxException</code> is thrown.
    */
   public static String invalidExpressionSyntaxException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
   {
@@ -2655,7 +2665,8 @@ public class ServerExceptionMessageLocalizer
    * 
    * @param locale
    * @param expressionExceptionMessage
-   * @return Localized message whenever an <code>ExpressionException</code> is thrown.
+   * @return Localized message whenever an <code>ExpressionException</code> is
+   *         thrown.
    */
   public static String expressionException(Locale locale, MdAttributeDAOIF mdAttributeDAOIF, String expressionExceptionMessage)
   {
@@ -2676,7 +2687,7 @@ public class ServerExceptionMessageLocalizer
   {
     return LocalizationFacade.getMessage(locale, "LoginNotSupportedException", "The class [{0}] does not support logging in.", user.getType());
   }
-  
+
   /**
    * Gets the localized {@link InvalidIndicatorDefinition} message, which is
    * thrown when an invalid indicator attribute is defined.

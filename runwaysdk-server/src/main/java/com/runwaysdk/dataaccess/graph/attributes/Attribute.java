@@ -112,8 +112,6 @@ public abstract class Attribute implements AttributeIF
     this(mdAttributeDAOIF, definingGraphClass);
 
     this.value = value;
-
-    this.validate(this.value);
   }
 
   /**

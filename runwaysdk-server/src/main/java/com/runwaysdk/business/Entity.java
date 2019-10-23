@@ -330,7 +330,7 @@ public abstract class Entity implements Mutable, Serializable
    *          MdAttribute of instantiated types
    * @return
    */
-  static List<? extends BusinessEnumeration> loadEnumValues(Set<String> ids, MdAttributeConcreteDAOIF mdAttribute)
+  public static List<? extends BusinessEnumeration> loadEnumValues(Set<String> ids, MdAttributeConcreteDAOIF mdAttribute)
   {
     List<BusinessEnumeration> items = new LinkedList<BusinessEnumeration>();
 

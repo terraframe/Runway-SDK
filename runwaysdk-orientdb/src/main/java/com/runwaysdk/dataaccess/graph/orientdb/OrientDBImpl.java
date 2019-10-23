@@ -4,8 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.locationtech.spatial4j.shape.Shape;
 
 import com.orientechnologies.orient.core.db.ODatabasePool;
@@ -18,6 +22,9 @@ import com.orientechnologies.orient.core.index.OIndex;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.metadata.sequence.OSequence;
+import com.orientechnologies.orient.core.metadata.sequence.OSequence.SEQUENCE_TYPE;
+import com.orientechnologies.orient.core.metadata.sequence.OSequenceLibrary;
 import com.orientechnologies.orient.core.record.ODirection;
 import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.OElement;
@@ -28,6 +35,7 @@ import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
 import com.orientechnologies.spatial.shape.OShapeType;
+import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
@@ -37,15 +45,20 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
@@ -53,6 +66,8 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -181,6 +196,9 @@ public class OrientDBImpl implements GraphDB
           if (oClass == null)
           {
             oClass = db.createVertexClass(className);
+
+            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
+            sequenceLibrary.createSequence(className + "Seq", SEQUENCE_TYPE.ORDERED, new OSequence.CreateParams().setStart(0L));
           }
         }
         finally
@@ -202,7 +220,7 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction deleteVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
   {
-    return this.deleteClass(graphRequest, graphDDLRequest, className);
+    return this.deleteClass(graphRequest, graphDDLRequest, className, true);
   }
 
   /**
@@ -261,10 +279,10 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction deleteEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
   {
-    return deleteClass(graphRequest, graphDDLRequest, className);
+    return deleteClass(graphRequest, graphDDLRequest, className, false);
   }
 
-  private GraphDDLCommandAction deleteClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
+  private GraphDDLCommandAction deleteClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, boolean includeSequence)
   {
     GraphDDLCommandAction action = new GraphDDLCommandAction()
     {
@@ -279,6 +297,12 @@ public class OrientDBImpl implements GraphDB
         try
         {
           db.getMetadata().getSchema().dropClass(className);
+
+          if (includeSequence)
+          {
+            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
+            sequenceLibrary.dropSequence(className + "Seq");
+          }
         }
         finally
         {
@@ -359,6 +383,12 @@ public class OrientDBImpl implements GraphDB
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
   {
     return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
+  }
+
+  @Override
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required)
+  {
+    return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
   }
 
   @Override
@@ -663,7 +693,19 @@ public class OrientDBImpl implements GraphDB
     {
       return OType.STRING.name();
     }
+    else if (mdAttribute instanceof MdAttributeTextDAOIF)
+    {
+      return OType.STRING.name();
+    }
     else if (mdAttribute instanceof MdAttributeUUIDDAOIF)
+    {
+      return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeReferenceDAOIF)
+    {
+      return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
     {
       return OType.STRING.name();
     }
@@ -707,24 +749,47 @@ public class OrientDBImpl implements GraphDB
     OVertex vertex = db.newVertex(dbClassName);
 
     this.populateVertex(graphObjectDAO, vertex);
+    this.populateSequence(db, graphObjectDAO, vertex);
 
     ORecord record = vertex.save();
 
     graphObjectDAO.setRID(record.getIdentity());
     graphObjectDAO.setCommitState();
+
+    this.populateDAO(vertex, graphObjectDAO);
   }
 
   @Override
   public void update(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO)
   {
     OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
+
     OVertex vertex = db.load((ORID) graphObjectDAO.getRID());
 
+    // Validate the sequence number
+    Object oSeq = vertex.getProperty(BusinessInfo.SEQUENCE);
+    Long iSeq = graphObjectDAO.getSequence();
+
+    if (!oSeq.equals(iSeq))
+    {
+      throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
+    }
+
     this.populateVertex(graphObjectDAO, vertex);
+    this.populateSequence(db, graphObjectDAO, vertex);
 
     vertex.save();
+
+    this.populateDAO(vertex, graphObjectDAO);
+  }
+
+  protected void populateSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OVertex vertex)
+  {
+    OSequence seq = getSequence(db, graphObjectDAO);
+    long next = seq.next();
+
+    vertex.setProperty(BusinessInfo.SEQUENCE, next);
   }
 
   @Override
@@ -885,6 +950,13 @@ public class OrientDBImpl implements GraphDB
   {
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAOIF);
 
+    populateDAO(vertex, vertexDAO);
+
+    return vertexDAO;
+  }
+
+  protected void populateDAO(OElement vertex, GraphObjectDAO vertexDAO)
+  {
     Attribute[] attributes = vertexDAO.getAttributeArray();
 
     for (Attribute attribute : attributes)
@@ -904,6 +976,26 @@ public class OrientDBImpl implements GraphDB
 
           attribute.setValueInternal(geometry);
         }
+        else if (mdAttribute instanceof MdAttributeEnumerationDAO)
+        {
+          try
+          {
+            JSONArray array = new JSONArray(value.toString());
+
+            Set<String> set = new TreeSet<String>();
+
+            for (int i = 0; i < array.length(); i++)
+            {
+              set.add(array.getString(i));
+            }
+
+            attribute.setValueInternal(set);
+          }
+          catch (JSONException e)
+          {
+            throw new ProgrammingErrorException(e);
+          }
+        }
         else
         {
           attribute.setValueInternal(value);
@@ -913,8 +1005,6 @@ public class OrientDBImpl implements GraphDB
     // Heads up: clean up
     // vertexDAO.setIsNew(false);
     vertexDAO.setRID(vertex.getIdentity());
-
-    return vertexDAO;
   }
 
   protected void populateVertex(GraphObjectDAO graphObjectDAO, OVertex vertex)
@@ -941,6 +1031,22 @@ public class OrientDBImpl implements GraphDB
           vertex.setProperty(columnName, null);
         }
       }
+      else if (mdAttribute instanceof MdEnumerationDAOIF)
+      {
+        Set<String> value = ( (AttributeEnumeration) attribute ).getObjectValue();
+        String columnName = mdAttribute.getColumnName();
+
+        if (value.size() > 0)
+        {
+          JSONArray array = new JSONArray(value);
+
+          vertex.setProperty(columnName, array.toString());
+        }
+        else
+        {
+          vertex.setProperty(columnName, null);
+        }
+      }
       else
       {
         String columnName = mdAttribute.getColumnName();
@@ -948,5 +1054,13 @@ public class OrientDBImpl implements GraphDB
         vertex.setProperty(columnName, attribute.getObjectValue());
       }
     }
+  }
+
+  protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)
+  {
+    MdGraphClassDAOIF mdGraphClassDAO = graphObjectDAO.getMdGraphClassDAO();
+    String className = mdGraphClassDAO.getDBClassName();
+
+    return db.getMetadata().getSequenceLibrary().getSequence(className + "Seq");
   }
 }

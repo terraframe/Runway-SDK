@@ -588,8 +588,13 @@ public class TestFixtureFactory
 
   public static MdBusinessDAO createEnumClass1()
   {
+    return createEnumClass("EnumClassTest");
+  }
+
+  public static MdBusinessDAO createEnumClass(String name)
+  {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.NAME, "EnumClassTest");
+    mdBusiness.setValue(MdBusinessInfo.NAME, name);
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration mdBusiness Test");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
@@ -730,7 +735,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeEnumerationDAO addEnumerationAttribute(MdEntityDAOIF mdEntity, MdEnumerationDAOIF mdEnumeration)
+  public static MdAttributeEnumerationDAO addEnumerationAttribute(MdClassDAOIF mdEntity, MdEnumerationDAOIF mdEnumeration)
   {
     MdAttributeEnumerationDAO mdAttribute = MdAttributeEnumerationDAO.newInstance();
     mdAttribute.setValue(MdAttributeEnumerationInfo.NAME, "testEnumeration");
@@ -1002,12 +1007,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity)
   {
     return addTextAttribute(mdEntity, TestFixConst.ATTRIBUTE_TEXT);
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeTextDAO mdAttribute = MdAttributeTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -1016,12 +1021,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity)
   {
     return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -2064,14 +2069,13 @@ public class TestFixtureFactory
     return value;
   }
 
-  
   public static Polygon getPolygon2()
   {
     GeometryFactory factory = new GeometryFactory();
     Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(30, 30), new Coordinate(30, 20), new Coordinate(20, 20), new Coordinate(30, 30) });
     return value;
   }
-  
+
   public static Point getPoint()
   {
     GeometryFactory factory = new GeometryFactory();
@@ -2085,7 +2089,7 @@ public class TestFixtureFactory
     Point value = factory.createPoint(new Coordinate(107.9903, 31.7392));
     return value;
   }
-  
+
   public static LineString getLineString()
   {
     GeometryFactory factory = new GeometryFactory();

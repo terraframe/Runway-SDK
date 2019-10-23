@@ -1,12 +1,18 @@
 package com.runwaysdk.business.graph;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.BusinessEnumeration;
+import com.runwaysdk.business.Entity;
+import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
 
@@ -137,6 +143,25 @@ public abstract class GraphObject
   }
 
   /**
+   * Returns a list of selected values for the given enumerated attribute. The
+   * declared type of the list is BusinessEnumeration, but each entry is
+   * instantiated through reflection, which allows for accurate actual types.
+   * 
+   * @param name
+   *          Name of the attribute enumeration
+   * @return List of typesafe enumeration options that are selected
+   */
+  public List<? extends BusinessEnumeration> getEnumValues(String name)
+  {
+    AttributeEnumeration attribute = (AttributeEnumeration) graphObjectDAO.getAttribute(name);
+    Set<String> ids = attribute.getObjectValue();
+
+    MdAttributeConcreteDAOIF mdAttribute = attribute.getMdAttributeConcrete();
+
+    return Entity.loadEnumValues(ids, mdAttribute);
+  }
+
+  /**
    * Validates the attribute with the given name. If the attribute is not valid,
    * then an AttributeException exception is thrown.
    * 
@@ -168,6 +193,61 @@ public abstract class GraphObject
   public void setValue(String name, Object _object)
   {
     graphObjectDAO.setValue(name, _object);
+  }
+
+  /**
+   * A generic, type-unsafe method for adding an item to an enumerated attribute
+   * that takes the attribute name and enumeration item as Strings
+   * 
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
+   */
+  public void addEnumItem(String name, String item)
+  {
+    graphObjectDAO.addItem(name, item);
+  }
+
+  /**
+   * Replaces the items of an enumerated attribute. If the attribute does not
+   * allow multiplicity, then the {@code values} collection must contain only
+   * one item.
+   * 
+   * @param name
+   *          Name of the enumerated attribute
+   * @param values
+   *          Collection of enumerated item ids
+   */
+  public void replaceItems(String name, Collection<String> values)
+  {
+    graphObjectDAO.replaceItems(name, values);
+  }
+
+  /**
+   * A generic, type-unsafe method for removing an item from an enumerated
+   * attribute that takes the attribute name and enumeration item as Strings
+   * 
+   * @param name
+   *          String name of the enumerated attribute
+   * @param item
+   *          String representation of the enumeration item
+   */
+  public void removeEnumItem(String name, String item)
+  {
+    graphObjectDAO.removeItem(name, item);
+  }
+
+  /**
+   * A generic method for clearing out all selected items on an enumerated
+   * attribute.
+   * 
+   * @param name
+   *          String name of the enumerated attribute
+   */
+  public void clearEnum(String name)
+  {
+    graphObjectDAO.clearItems(name);
   }
 
   /**

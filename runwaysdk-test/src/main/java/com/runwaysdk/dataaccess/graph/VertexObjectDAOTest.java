@@ -2,6 +2,7 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -10,22 +11,25 @@ import org.junit.Test;
 
 import com.runwaysdk.AttributeCharacterParseException;
 import com.runwaysdk.AttributeIntegerParseException;
-import com.runwaysdk.RunwayException;
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
-import com.runwaysdk.constants.graph.MdVertexInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.AttributeLineStringParseException;
@@ -51,6 +55,12 @@ import com.vividsolutions.jts.geom.Polygon;
 public class VertexObjectDAOTest
 {
   private static MdVertexDAO                   mdVertexDAO;
+
+  private static MdBusinessDAO                 mdBusinessDAO;
+
+  private static MdBusinessDAO                 mdEnumMasterDAO;
+
+  private static MdEnumerationDAO              mdEnumerationDAO;
 
   private static MdAttributeCharacterDAO       mdCharacterAttribute;
 
@@ -82,6 +92,10 @@ public class VertexObjectDAOTest
 
   private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
 
+  private static MdAttributeReferenceDAO       mdReferenceAttribute;
+
+  private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
+
   @Request
   @BeforeClass
   public static void classSetup()
@@ -90,12 +104,21 @@ public class VertexObjectDAOTest
 
     classSetup_Transaction();
   }
-  
+
   @Transaction
   private static void classSetup_Transaction()
   {
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
+
+    mdBusinessDAO = TestFixtureFactory.createMdBusiness1();
+    mdBusinessDAO.apply();
+
+    mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
+    mdEnumMasterDAO.apply();
+
+    mdEnumerationDAO = TestFixtureFactory.createMdEnumeation1(mdEnumMasterDAO);
+    mdEnumerationDAO.apply();
 
     mdCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdVertexDAO);
     mdCharacterAttribute.apply();
@@ -142,16 +165,30 @@ public class VertexObjectDAOTest
 
     mdMultiLineStringAttribute = TestFixtureFactory.addMultiLineStringAttribute(mdVertexDAO);
     mdMultiLineStringAttribute.apply();
-  }
 
+    mdReferenceAttribute = TestFixtureFactory.addReferenceAttribute(mdVertexDAO, mdBusinessDAO);
+    mdReferenceAttribute.apply();
+
+    mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
+    mdEnumerationAttribute.apply();
+  }
 
   @Request
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(mdVertexDAO);
+    classTearDown_Transaction();
 
     LocalProperties.setSkipCodeGenAndCompile(false);
+  }
+
+  @Transaction
+  public static void classTearDown_Transaction()
+  {
+    TestFixtureFactory.delete(mdVertexDAO);
+    TestFixtureFactory.delete(mdEnumerationDAO);
+    TestFixtureFactory.delete(mdEnumMasterDAO);
+    TestFixtureFactory.delete(mdBusinessDAO);
   }
 
   @Request
@@ -758,6 +795,93 @@ public class VertexObjectDAOTest
     }
 
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+
+  @Request
+  @Test
+  public void testReferenceAttribute()
+  {
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdBusinessDAO.definesType());
+    businessDAO.apply();
+
+    try
+    {
+      String attributeName = mdReferenceAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+      String value = businessDAO.getOid();
+      vertexDAO.setValue(attributeName, value);
+
+      Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+
+      try
+      {
+        vertexDAO.apply();
+
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+
+        Assert.assertEquals(value, test.getObjectValue(attributeName));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      businessDAO.delete();
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Request
+  @Test
+  public void testEnumerationAttribute()
+  {
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
+    businessDAO.setValue(EnumerationMasterInfo.NAME, "test");
+    businessDAO.apply();
+
+    try
+    {
+      String attributeName = mdEnumerationAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+      String value = businessDAO.getOid();
+
+      vertexDAO.addItem(attributeName, value);
+
+      try
+      {
+        vertexDAO.apply();
+
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+
+        Set<String> set = (Set<String>) test.getObjectValue(attributeName);
+
+        Assert.assertTrue(set.contains(value));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      businessDAO.delete();
+    }
   }
 
   @Request

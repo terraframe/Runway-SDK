@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.graph.GraphClassInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
 import com.runwaysdk.dataaccess.AttributeIF;
@@ -17,7 +18,9 @@ import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeFactory;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 
@@ -45,9 +48,9 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    * Indicates if this is a new instance. If it is new, then the records that
    * represent this component have not been created.
    */
-  private boolean                  isNew                = false;
-  
-  private boolean                  isAppliedToDB        = false;
+  private boolean                  isNew                 = false;
+
+  private boolean                  isAppliedToDB         = false;
 
   private MdGraphClassDAOIF        mdGraphClassDAOIF;
 
@@ -135,6 +138,16 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
+   * Gets the sequence number of the entity object
+   * 
+   * @return The sequence number of the entity
+   */
+  public Long getSequence()
+  {
+    return (Long) this.getAttributeIF(ElementInfo.SEQUENCE).getObjectValue();
+  }
+
+  /**
    * Returns the Id used for AttributeNotifications. New instances that fail
    * will have a different OID on the client.
    * 
@@ -210,7 +223,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     this.isAppliedToDB = appliedToDB;
   }
-  
+
   /**
    * Returns the Attribute object with the given name.
    * 
@@ -403,6 +416,97 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
+   * Adds an item to an enumerated attribute. If the attribute does not allow
+   * multiplicity, the <code>value</code> replaces the previous item.
+   * 
+   * @param name
+   *          Name of the set attribute
+   * @param value
+   *          Value to be added to the attribute
+   */
+  public void addItem(String name, String value)
+  {
+    try
+    {
+      AttributeEnumeration attrSet = (AttributeEnumeration) this.getAttribute(name);
+      attrSet.addItem(value);
+    }
+    catch (ClassCastException e)
+    {
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not a set attribute";
+      throw new AttributeTypeException(error);
+    }
+  }
+
+  /**
+   * Replaces the items of a set attribute. If the attribute does not allow
+   * multiplicity, then the {@code values} collection must contain only one
+   * item.
+   * 
+   * @param name
+   *          Name of the set attribute
+   * @param values
+   *          Collection of set item ids
+   */
+  public void replaceItems(String name, Collection<String> values)
+  {
+    try
+    {
+      AttributeEnumeration attrSet = (AttributeEnumeration) this.getAttribute(name);
+      attrSet.replaceItems(values);
+    }
+    catch (ClassCastException e)
+    {
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not a set attribute";
+      throw new AttributeTypeException(error);
+    }
+  }
+
+  /**
+   * Deletes an item from a set Attribute.
+   * 
+   * @param name
+   *          Name of the set attribute
+   * @param value
+   *          Value to be removed from the attribute
+   */
+  public void removeItem(String name, String value)
+  {
+    try
+    {
+      AttributeEnumeration attrSet = (AttributeEnumeration) this.getAttribute(name);
+      attrSet.removeItem(value);
+    }
+    catch (ClassCastException e)
+    {
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not an enumerated attribute";
+      throw new AttributeTypeException(error);
+    }
+  }
+
+  /**
+   * Deletes an item from a set Attribute.
+   * 
+   * @param name
+   *          Name of the set attribute
+   * @param value
+   *          Value to be removed from the attribute
+   */
+  public void clearItems(String name)
+  {
+    try
+    {
+      AttributeEnumeration attrSet = (AttributeEnumeration) this.getAttribute(name);
+      attrSet.clearItems();
+    }
+    catch (ClassCastException e)
+    {
+      String error = "Attribute [" + name + "] on type [" + getType() + "] is not an enumerated attribute";
+      throw new AttributeTypeException(error);
+    }
+  }
+
+  /**
    * Finalizes attributes, such as required attributes.
    * 
    * @return oid of the object.
@@ -454,8 +558,6 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     {
       GraphDBService.getInstance().update(request, this);
     }
-
-    this.isNew = false;
 
     return this.getOid();
   }
@@ -532,46 +634,6 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     // {
     // attributeEnumeration.setDefaultValue(attrDefaultValue);
     // }
-    // }
-    // else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
-    // {
-    // String setOid = ServerIDGenerator.nextID();
-    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
-    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
-    //
-    // AttributeMultiReference attributeMultiReference =
-    // (AttributeMultiReference) attribute;
-    //
-    // if (!attrDefaultValue.equals(""))
-    // {
-    // attributeMultiReference.setDefaultValue(attrDefaultValue);
-    // }
-    // }
-    // else if (mdAttribute instanceof MdAttributeMultiReferenceDAOIF)
-    // {
-    // String setOid = ServerIDGenerator.nextID();
-    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
-    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(), setOid);
-    //
-    // AttributeMultiReference attributeMultiReference =
-    // (AttributeMultiReference) attribute;
-    //
-    // if (!attrDefaultValue.equals(""))
-    // {
-    // attributeMultiReference.setDefaultValue(attrDefaultValue);
-    // }
-    // }
-    // else if (mdAttribute instanceof MdAttributeStructDAOIF)
-    // {
-    // MdStructDAOIF mdStructIF = ( (MdAttributeStructDAO) mdAttribute
-    // ).getMdStructDAOIF();
-    // StructDAO structDAO = StructDAO.newInstance(mdStructIF.definesType());
-    //
-    // attribute = AttributeFactory.createAttribute(mdAttribute.getKey(),
-    // mdAttribute.getType(), attrName, mdEntityDAOIF.definesType(),
-    // attrDefaultValue);
-    // ( (AttributeStruct) attribute ).setStructDAO(structDAO);
-    // }
     if (mdAttribute instanceof MdAttributeUUIDDAOIF)
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
@@ -580,7 +642,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     else
     {
       attribute = AttributeFactory.createAttribute(mdAttribute, mdGraphClassDAOIF.definesType());
-//      attribute.setValueInternal(attrDefaultValue);
+      // attribute.setValueInternal(attrDefaultValue);
     }
     return attribute;
   }

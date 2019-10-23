@@ -12,9 +12,11 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -99,6 +101,14 @@ public class AttributeFactory
     else if (mdAttributeDAOIF instanceof MdAttributeCharacterDAOIF)
     {
       attribute = new AttributeCharacter(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF)
+    {
+      attribute = new AttributeReference(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeEnumerationDAOIF)
+    {
+      attribute = new AttributeEnumeration(mdAttributeDAOIF, definingType);
     }
 
     if (attribute == null)

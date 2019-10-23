@@ -272,6 +272,9 @@ public interface GraphDB
    */
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
 
+  
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required);
+
   /**
    * Inserts a new object
    * 

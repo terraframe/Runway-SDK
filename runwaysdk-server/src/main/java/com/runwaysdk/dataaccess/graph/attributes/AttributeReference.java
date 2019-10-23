@@ -1,13 +1,14 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
 import com.runwaysdk.AttributeUUIDParseException;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.session.Session;
 
-public class AttributeUUID extends Attribute
+public class AttributeReference extends Attribute
 {
 
   /**
@@ -18,7 +19,7 @@ public class AttributeUUID extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
    */
-  protected AttributeUUID(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
+  protected AttributeReference(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
   {
     super(mdAttributeDAOIF, definingGraphClass);
   }
@@ -26,7 +27,7 @@ public class AttributeUUID extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeUUID(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeReference(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }
@@ -36,11 +37,22 @@ public class AttributeUUID extends Attribute
    * this is defined by a concrete attribute, this object is returned. If it is
    * a virtual attribute, then the concrete attribute it references is returned.
    * 
-   * @return {@link MdAttributeUUIDDAOIF} that defines the this attribute
+   * @return {@link MdAttributeReferenceDAOIF} that defines the this attribute
    */
-  public MdAttributeUUIDDAOIF getMdAttributeConcrete()
+  public MdAttributeReferenceDAOIF getMdAttributeConcrete()
   {
-    return (MdAttributeUUIDDAOIF) super.getMdAttributeConcrete();
+    return (MdAttributeReferenceDAOIF) super.getMdAttributeConcrete();
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public BusinessDAOIF dereference()
+  {
+    MdAttributeReferenceDAOIF mdAttribute = getMdAttributeConcrete();
+
+    return com.runwaysdk.dataaccess.attributes.entity.AttributeReference.dereference(this.getValue(), mdAttribute);
   }
 
   /**
@@ -68,7 +80,7 @@ public class AttributeUUID extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeUUIDDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+    MdAttributeReferenceDAOIF mdAttributeIF = this.getMdAttributeConcrete();
 
     // First verify that the object is of the correct type.
     if (valueToValidate != null && ! ( valueToValidate instanceof String ))
