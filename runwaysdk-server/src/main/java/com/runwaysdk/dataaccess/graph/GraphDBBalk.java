@@ -117,6 +117,12 @@ public class GraphDBBalk implements GraphDB
   {
     return false;
   }
+  
+  @Override
+  public boolean isIndexDefined(GraphRequest graphRequest, String className, String indexName)
+  {
+    return false;
+  }
 
   /**
    * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
@@ -186,6 +192,17 @@ public class GraphDBBalk implements GraphDB
    */
   @Override
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+
+  @Override
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
   {
     return new GraphDDLCommandAction()
     {

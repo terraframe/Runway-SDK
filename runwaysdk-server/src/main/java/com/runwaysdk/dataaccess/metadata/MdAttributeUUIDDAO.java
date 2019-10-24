@@ -136,7 +136,8 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
   @Override
   protected String generatedServerSetter(String attributeName)
   {
-    String conversion = "java.lang.String.toString(value)";
+//    String conversion = "java.lang.String.toString(value)";
+    String conversion = "value";
     return this.setterWrapper(attributeName, conversion);
   }
 

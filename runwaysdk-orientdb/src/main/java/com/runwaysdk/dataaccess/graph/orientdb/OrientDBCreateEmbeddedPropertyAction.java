@@ -1,10 +1,14 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
+import java.util.UUID;
+
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
@@ -41,9 +45,25 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
     if (oClass != null)
     {
       OSchema schema = db.getMetadata().getSchema();
-      OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDED, schema.getClass(this.schemaType));
+      OClass linkClass = schema.getClass(this.schemaType);
+
+      if (linkClass == null)
+      {
+        throw new ProgrammingErrorException("Unable to find embedded class type");
+      }
+
+      OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDED, linkClass);
 
       configure(oProperty);
+
+      /*
+       * Create the spatial index
+       */
+      String indexName = "i" + UUID.randomUUID().toString().replaceAll("-", "");
+      oClass.createIndex(indexName, "SPATIAL", null, null, "LUCENE", new String[] { this.attributeName });
+
+//      db.command(new OCommandSQL("CREATE INDEX " + indexName + " ON " + this.className + " (" + this.attributeName + ") SPATIAL ENGINE LUCENE")).execute();
+//      db.close();
     }
   }
 

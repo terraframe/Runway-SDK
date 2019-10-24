@@ -399,15 +399,15 @@ public class MdGraphClassTest
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributeTextDAO mdAttribute = TestFixtureFactory.addTextAttribute(mdVertexDAO);
     mdAttribute.apply();
-    
+
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     String dbAttrName = mdAttribute.definesAttribute();
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    
+
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
-  
+
   @Request
   @Test
   public void testCreateDoubleAttrMdVertex()
@@ -490,7 +490,7 @@ public class MdGraphClassTest
 
   @Request
   @Test
-  public void testCreatePointAttrMdVertex()
+  public void testCreatePointAttrMdVertex() throws InterruptedException
   {
     MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
     MdAttributePointDAO mdAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
@@ -502,6 +502,11 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Thread.sleep(1000);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request
@@ -518,6 +523,9 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request
@@ -534,6 +542,9 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request
@@ -550,6 +561,9 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request
@@ -566,6 +580,9 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request
@@ -582,6 +599,9 @@ public class MdGraphClassTest
 
     Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
   @Request

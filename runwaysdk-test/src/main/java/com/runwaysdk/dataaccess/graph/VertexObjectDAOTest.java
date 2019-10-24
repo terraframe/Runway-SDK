@@ -27,6 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
@@ -80,6 +81,8 @@ public class VertexObjectDAOTest
 
   private static MdAttributeTimeDAO            mdTimeAttribute;
 
+  private static MdAttributeTextDAO            mdTextAttribute;
+  
   private static MdAttributePointDAO           mdPointAttribute;
 
   private static MdAttributePolygonDAO         mdPolygonAttribute;
@@ -148,6 +151,9 @@ public class VertexObjectDAOTest
     mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
     mdTimeAttribute.apply();
 
+    mdTextAttribute = TestFixtureFactory.addTextAttribute(mdVertexDAO);
+    mdTextAttribute.apply();
+    
     mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
     mdPointAttribute.apply();
 
@@ -579,6 +585,48 @@ public class VertexObjectDAOTest
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
 
+  @Request
+  @Test
+  public void testTextAttribute()
+  {
+    String attributeName = mdTextAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+    
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+    
+    String value = "Test";
+    vertexDAO.setValue(attributeName, value);
+    
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+    
+    try
+    {
+      vertexDAO.apply();
+      
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+      
+      Assert.assertNotNull(test);
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+      
+      // Test update
+      value = "Update";
+      
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+      
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+    
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+  
   @Request
   @Test
   public void testPointAttribute()

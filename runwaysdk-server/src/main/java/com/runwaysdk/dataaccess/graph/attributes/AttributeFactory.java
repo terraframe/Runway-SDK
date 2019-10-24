@@ -17,6 +17,7 @@ import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -101,6 +102,10 @@ public class AttributeFactory
     else if (mdAttributeDAOIF instanceof MdAttributeCharacterDAOIF)
     {
       attribute = new AttributeCharacter(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeTextDAOIF)
+    {
+      attribute = new AttributeText(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF)
     {

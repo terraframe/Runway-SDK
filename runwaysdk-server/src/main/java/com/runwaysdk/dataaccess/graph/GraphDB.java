@@ -182,6 +182,8 @@ public interface GraphDB
    */
   public boolean isAttributeRequired(GraphRequest graphRequest, String className, String attributeName);
 
+  public boolean isIndexDefined(GraphRequest graphRequest, String className, String indexName);
+
   /**
    * Drop the attribute from the class.
    * 
@@ -193,6 +195,8 @@ public interface GraphDB
    *         in the command object.
    */
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName);
+
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName);
 
   /**
    * Returns true if the attribute is defined on the class, false otherwise.
@@ -272,7 +276,6 @@ public interface GraphDB
    */
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
 
-  
   public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required);
 
   /**
@@ -316,4 +319,5 @@ public interface GraphDB
   public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
 
   public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters);
+
 }

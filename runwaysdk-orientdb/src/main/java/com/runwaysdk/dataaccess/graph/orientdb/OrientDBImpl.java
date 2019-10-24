@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -34,7 +35,6 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
-import com.orientechnologies.spatial.shape.OShapeType;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
@@ -81,13 +81,13 @@ public class OrientDBImpl implements GraphDB
 {
   private OrientDB      orientDB;
 
-  private ODatabasePool pool;
+//  private ODatabasePool pool;
 
   public OrientDBImpl()
   {
     this.orientDB = this.getRootOrientDB();
 
-    this.pool = null;
+//    this.pool = null;
   }
 
   @Override
@@ -350,6 +350,26 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
+  @Override
+  public boolean isIndexDefined(GraphRequest graphRequest, String className, String attributeName)
+  {
+    OrientDBRequest ddlOrientLRequest = (OrientDBRequest) graphRequest;
+    ODatabaseSession db = ddlOrientLRequest.getODatabaseSession();
+
+    OClass oClass = db.getClass(className);
+
+    if (oClass != null)
+    {
+      Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+ 
+      return i.hasNext();
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   /**
    * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
    *      String, boolean, int)
@@ -478,6 +498,33 @@ public class OrientDBImpl implements GraphDB
           oClass.dropProperty(attributeName);
         }
 
+      }
+    };
+
+    return action;
+  }
+
+  @Override
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  {
+    GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
+    {
+      @Override
+      protected void executeDDL(ODatabaseSession db)
+      {
+        OClass oClass = db.getClass(className);
+
+        if (oClass != null)
+        {
+          Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+
+          while (i.hasNext())
+          {
+            i.next().delete();
+          }
+
+          oClass.dropProperty(attributeName);
+        }
       }
     };
 
@@ -711,27 +758,27 @@ public class OrientDBImpl implements GraphDB
     }
     else if (mdAttribute instanceof MdAttributePointDAOIF)
     {
-      return OShapeType.POINT.name();
+      return "OPoint";
     }
     else if (mdAttribute instanceof MdAttributeLineStringDAOIF)
     {
-      return OShapeType.LINESTRING.name();
+      return "OLineString";
     }
     else if (mdAttribute instanceof MdAttributePolygonDAOIF)
     {
-      return OShapeType.POLYGON.name();
+      return "OPolygon";
     }
     else if (mdAttribute instanceof MdAttributeMultiPointDAOIF)
     {
-      return OShapeType.MULTIPOINT.name();
+      return "OMultiPoint";
     }
     else if (mdAttribute instanceof MdAttributeMultiLineStringDAOIF)
     {
-      return OShapeType.MULTILINESTRING.name();
+      return "OMultiLineString";
     }
     else if (mdAttribute instanceof MdAttributeMultiPolygonDAOIF)
     {
-      return OShapeType.MULTIPOLYGON.name();
+      return "OMultiPolygon";
     }
 
     throw new ProgrammingErrorException("Unknown column type for MdAttribute [" + mdAttribute.getType() + "]");
@@ -847,6 +894,21 @@ public class OrientDBImpl implements GraphDB
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
+
+    /*
+     * Convert geometry parameters
+     */
+    Set<Entry<String, Object>> entries = parameters.entrySet();
+
+    for (Entry<String, Object> entry : entries)
+    {
+      Object value = entry.getValue();
+
+      if (value instanceof Geometry)
+      {
+        entry.setValue(OShapeFactory.INSTANCE.toDoc((Geometry) value));
+      }
+    }
 
     try (OResultSet rs = db.query(statement, parameters))
     {

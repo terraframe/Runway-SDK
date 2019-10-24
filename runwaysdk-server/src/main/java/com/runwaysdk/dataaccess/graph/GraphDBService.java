@@ -135,6 +135,11 @@ public class GraphDBService
     return this.graphDB.isVertexClassDefined(graphRequest, className);
   }
 
+  public Boolean isIndexDefined(GraphRequest graphRequest, String className, String indexName)
+  {
+    return this.graphDB.isIndexDefined(graphRequest, className, indexName);
+  }
+
   /**
    * @see GraphDB#isEdgeClassDefined(GraphRequest, String)
    */
@@ -166,7 +171,7 @@ public class GraphDBService
   {
     return this.graphDB.createSetAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
   }
-  
+
   /**
    * @see GraphDB#modifiyCharacterAttributeLength(GraphRequest, GraphRequest,
    *      String, String, newMaxLength)
@@ -207,6 +212,14 @@ public class GraphDBService
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
   {
     return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
+  }
+
+  /**
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
+   */
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  {
+    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
   }
 
   /**
