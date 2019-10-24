@@ -68,6 +68,7 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -899,7 +900,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          return this.buildDAO(mdVertexDAOIF, element);
+          return this.buildDAO(element);
         }
         else
         {
@@ -1028,10 +1029,18 @@ public class OrientDBImpl implements GraphDB
 
     for (OVertex target : targets)
     {
-      list.add(this.buildDAO(mdVertex, target));
+      list.add(this.buildDAO(target));
     }
 
     return list;
+  }
+
+  protected VertexObjectDAOIF buildDAO(OElement element)
+  {
+    OClass oClass = element.getSchemaType().get();
+    MdGraphClassDAOIF mdGraph = MdGraphClassDAO.getMdGraphClassByTableName(oClass.getName());
+
+    return this.buildDAO((MdVertexDAOIF) mdGraph, element);
   }
 
   protected VertexObjectDAOIF buildDAO(MdVertexDAOIF mdVertexDAOIF, OElement vertex)

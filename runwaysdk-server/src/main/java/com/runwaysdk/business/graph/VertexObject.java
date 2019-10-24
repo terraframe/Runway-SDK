@@ -75,18 +75,18 @@ public class VertexObject extends GraphObject
     this.getGraphObjectDAO().removeChild(child.getGraphObjectDAO(), mdEdge);
   }
 
-  public List<VertexObject> getChildren(String edgeType)
+  public <T> List<T> getChildren(String edgeType, Class<T> clazz)
   {
     MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
 
-    return this.getChildren(mdEdge);
+    return this.getChildren(mdEdge, clazz);
   }
 
-  public List<VertexObject> getChildren(MdEdgeDAOIF mdEdge)
+  public <T> List<T> getChildren(MdEdgeDAOIF mdEdge, Class<T> clazz)
   {
     List<VertexObjectDAOIF> children = this.getGraphObjectDAO().getChildren(mdEdge);
 
-    return this.convert(children);
+    return this.convert(children, clazz);
   }
 
   public void addParent(VertexObject parent, String edgeType)
@@ -113,27 +113,28 @@ public class VertexObject extends GraphObject
     this.getGraphObjectDAO().removeParent(parent.getGraphObjectDAO(), mdEdge);
   }
 
-  public List<VertexObject> getParents(String edgeType)
+  public <T> List<T> getParents(String edgeType, Class<T> clazz)
   {
     MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
 
-    return this.getParents(mdEdge);
+    return this.getParents(mdEdge, clazz);
   }
 
-  public List<VertexObject> getParents(MdEdgeDAOIF mdEdge)
+  public <T> List<T> getParents(MdEdgeDAOIF mdEdge, Class<T> clazz)
   {
     List<VertexObjectDAOIF> parents = this.getGraphObjectDAO().getParents(mdEdge);
 
-    return this.convert(parents);
+    return this.convert(parents, clazz);
   }
 
-  protected List<VertexObject> convert(List<VertexObjectDAOIF> children)
+  @SuppressWarnings("unchecked")
+  protected <T> List<T> convert(List<VertexObjectDAOIF> children, Class<T> clazz)
   {
-    LinkedList<VertexObject> list = new LinkedList<VertexObject>();
+    LinkedList<T> list = new LinkedList<T>();
 
     for (VertexObjectDAOIF child : children)
     {
-      list.add(VertexObject.instantiate((VertexObjectDAO) child));
+      list.add((T) VertexObject.instantiate((VertexObjectDAO) child));
     }
 
     return list;

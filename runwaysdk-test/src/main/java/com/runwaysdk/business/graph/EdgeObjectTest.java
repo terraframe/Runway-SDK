@@ -64,7 +64,7 @@ public class EdgeObjectTest
 
     parent.addChild(child, mdEdgeDAO);
 
-    List<VertexObject> children = parent.getChildren(mdEdgeDAO);
+    List<VertexObject> children = parent.getChildren(mdEdgeDAO, VertexObject.class);
 
     Assert.assertEquals(1, children.size());
 
@@ -74,7 +74,7 @@ public class EdgeObjectTest
 
     parent.removeChild(child, mdEdgeDAO);
 
-    children = parent.getChildren(mdEdgeDAO);
+    children = parent.getChildren(mdEdgeDAO, VertexObject.class);
 
     Assert.assertEquals(0, children.size());
   }
@@ -91,7 +91,7 @@ public class EdgeObjectTest
 
     child.addParent(parent, mdEdgeDAO);
 
-    List<VertexObject> parents = child.getParents(mdEdgeDAO);
+    List<VertexObject> parents = child.getParents(mdEdgeDAO, VertexObject.class);
 
     Assert.assertEquals(1, parents.size());
 
@@ -101,7 +101,7 @@ public class EdgeObjectTest
 
     child.removeParent(parent, mdEdgeDAO);
 
-    parents = child.getParents(mdEdgeDAO);
+    parents = child.getParents(mdEdgeDAO, VertexObject.class);
 
     Assert.assertEquals(0, parents.size());
   }

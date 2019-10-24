@@ -1,6 +1,5 @@
 package com.runwaysdk.business.graph.generation;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.business.graph.VertexObject;
@@ -119,7 +118,7 @@ public class VertexObjectBaseGenerator extends GraphObjectBaseGenerator
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
       getWriter().writeLine(visibility.getJavaModifier() + " " + List.class.getName() + "<" + parentType + "> get" + mdEdge.getTypeName() + "Parent" + parentMdVertexIF.getTypeName() + "s()");
       getWriter().openBracket();
-      getWriter().writeLine("return new " + LinkedList.class.getName() + "(super.getParents(\"" + edgeType + "\"));");
+      getWriter().writeLine("return super.getParents(\"" + edgeType + "\", " + parentType + ".class);");
       getWriter().closeBracket();
       getWriter().writeLine("");
     }
@@ -133,21 +132,21 @@ public class VertexObjectBaseGenerator extends GraphObjectBaseGenerator
     {
       VisibilityModifier visibility = VisibilityModifier.PUBLIC;
 
-      MdVertexDAOIF parentMdVertexIF = mdEdge.getChildMdVertex();
+      MdVertexDAOIF childMdVertexIF = mdEdge.getChildMdVertex();
 
-      String parentType = this.getVertexType(parentMdVertexIF);
-      String lowercase = CommonGenerationUtil.lowerFirstCharacter(parentMdVertexIF.getTypeName());
+      String childType = this.getVertexType(childMdVertexIF);
+      String lowercase = CommonGenerationUtil.lowerFirstCharacter(childMdVertexIF.getTypeName());
       String edgeType = mdEdge.definesType();
 
       // Add a new Relationship of this type
-      getWriter().writeLine(visibility.getJavaModifier() + " void add" + mdEdge.getTypeName() + "Child(" + parentType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " void add" + mdEdge.getTypeName() + "Child(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
       getWriter().writeLine("super.addChild(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Remove Relationship(s) with a specific parent
-      getWriter().writeLine(visibility.getJavaModifier() + " void remove" + mdEdge.getTypeName() + "Child(" + parentType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " void remove" + mdEdge.getTypeName() + "Child(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
       getWriter().writeLine("super.addChild(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
@@ -156,9 +155,9 @@ public class VertexObjectBaseGenerator extends GraphObjectBaseGenerator
       // Get all parents (including duplicates) that have a realtionship with
       // this child
       getWriter().writeLine("@SuppressWarnings(\"unchecked\")");
-      getWriter().writeLine(visibility.getJavaModifier() + " " + List.class.getName() + "<" + parentType + "> get" + mdEdge.getTypeName() + "Child" + parentMdVertexIF.getTypeName() + "s()");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + List.class.getName() + "<" + childType + "> get" + mdEdge.getTypeName() + "Child" + childMdVertexIF.getTypeName() + "s()");
       getWriter().openBracket();
-      getWriter().writeLine("return new " + LinkedList.class.getName() + "(super.getChildren(\"" + edgeType + "\"));");
+      getWriter().writeLine("return super.getChildren(\"" + edgeType + "\"," + childType + ".class);");
       getWriter().closeBracket();
       getWriter().writeLine("");
     }

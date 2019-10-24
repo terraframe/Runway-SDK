@@ -7,19 +7,19 @@ import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
-import com.runwaysdk.constants.MdAttributeVirtualInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
+import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
@@ -277,10 +277,6 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   }
 
   /*
-   * @Override public List<GeneratorIF> getGenerators() { // TODO Auto-generated
-   * method stub return null; }
-   * 
-   * 
    * @Override public boolean isAbstract() { // TODO Auto-generated method stub
    * return false; }
    * 
@@ -290,14 +286,30 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
    * 
    * @Override public boolean isRootOfHierarchy() { // TODO Auto-generated
    * method stub return false; }
-   * 
-   * @Override public Command getCreateUpdateJavaArtifactCommand(Connection
-   * conn) { // TODO Auto-generated method stub return null; }
-   * 
-   * @Override public Command getDeleteJavaArtifactCommand(Connection conn) { //
-   * TODO Auto-generated method stub return null; }
-   * 
-   * @Override public Command getCleanJavaArtifactCommand(Connection conn) { //
-   * TODO Auto-generated method stub return null; }
    */
+
+  /**
+   * Returns the <code>MdEntityDAOIF</code> instance that defines the given
+   * table name.
+   * 
+   * @param tableName
+   * 
+   * @return <code>MdEntityDAOIF</code> that defines the table with the given
+   *         name.
+   */
+  public static MdGraphClassDAOIF getMdGraphClassByTableName(String tableName)
+  {
+    MdGraphClassDAOIF mdEntity = (MdGraphClassDAOIF) ObjectCache.getMdClassByTableName(tableName);
+
+    if (mdEntity == null)
+    {
+      String error = "Metadata not found that defines table [" + tableName + "]";
+
+      // Feed in the MdEntityDAO for MdEntityDAO. Yes, it's self-describing.
+      throw new DataNotFoundException(error, MdEntityDAO.getMdEntityDAO(MdGraphClassInfo.CLASS));
+    }
+
+    return mdEntity;
+  }
+
 }

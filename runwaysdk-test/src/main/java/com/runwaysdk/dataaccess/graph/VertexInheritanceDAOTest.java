@@ -95,7 +95,7 @@ public class VertexInheritanceDAOTest
       vertexDAO.setValue(attributeName, value);
       vertexDAO.apply();
 
-      test = VertexObjectDAO.get(mdChildDAO, vertexDAO.getOid());
+      test = VertexObjectDAO.get(mdParentDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }

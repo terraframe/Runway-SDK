@@ -26,12 +26,14 @@ import com.runwaysdk.business.graph.VertexObjectTest;
 import com.runwaysdk.business.graph.generation.VertexObjectGeneratorTest;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOTest;
 import com.runwaysdk.dataaccess.graph.MdGraphClassTest;
+import com.runwaysdk.dataaccess.graph.VertexInheritanceDAOTest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   MdGraphClassTest.class, 
   VertexObjectDAOTest.class,
+  VertexInheritanceDAOTest.class,
   EdgeObjectDAOTest.class,
   VertexObjectTest.class,
   EdgeObjectTest.class,

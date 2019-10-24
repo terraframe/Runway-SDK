@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jul 11, 2004
@@ -364,10 +364,10 @@ public class ObjectCache
   }
 
   /**
-   * Fetches an object with the given OID. If the object has been modified during
-   * a transaction and the request is from that transaction, this object will
-   * not come from the global {@link ObjectCache} but instead will come from a
-   * transaction cache.
+   * Fetches an object with the given OID. If the object has been modified
+   * during a transaction and the request is from that transaction, this object
+   * will not come from the global {@link ObjectCache} but instead will come
+   * from a transaction cache.
    * 
    * @param oid
    * @return
@@ -659,12 +659,12 @@ public class ObjectCache
   }
 
   /**
-   * Returns the {@link EntityDAOIF} from the cache with the given oid or null if
-   * the object with the given oid is not in the cache.
+   * Returns the {@link EntityDAOIF} from the cache with the given oid or null
+   * if the object with the given oid is not in the cache.
    * 
    * @param oid
-   * @return {@link EntityDAOIF} from the cache with the given oid or null if the
-   *         object with the given oid is not in the cache.
+   * @return {@link EntityDAOIF} from the cache with the given oid or null if
+   *         the object with the given oid is not in the cache.
    */
   public static EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
@@ -688,7 +688,8 @@ public class ObjectCache
    * changed oid for the given {@link EntityDAOIF} in the cache.
    * 
    * <br/>
-   * <b>Precondition:</b> Calling method has checked whether the oid has changed.
+   * <b>Precondition:</b> Calling method has checked whether the oid has
+   * changed.
    * 
    * @param oldEntityId
    * @param entityDAOIF
@@ -1747,8 +1748,8 @@ public class ObjectCache
    * <b>Precondition:</b> !veiwType.trim().equals("") <br/>
    * <b>Precondition:</b> veiwType is a valid class defined in the database
    * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdViewDAOIF} instance of the metadata for the
-   * given class (MdViewIF().definesType().equals(veiwType)
+   * <b>Postcondition:</b> Returns a {@link MdViewDAOIF} instance of the
+   * metadata for the given class (MdViewIF().definesType().equals(veiwType)
    * 
    * @param veiwType
    * @return {@link MdViewDAOIF} instance of the metadata for the given type.
@@ -1765,20 +1766,23 @@ public class ObjectCache
 
     return (MdViewDAOIF) mdClassIF;
   }
-  
+
   /**
-   * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given
+   * type.
    * 
    * <br/>
    * <b>Precondition:</b> graphClassType != null <br/>
    * <b>Precondition:</b> !graphClassType.trim().equals("") <br/>
-   * <b>Precondition:</b> graphClassType is a valid class defined in the database
-   * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdGraphClassDAOIF} instance of the metadata for the
-   * given class ({@link MdGraphClassDAOIF}().definesType().equals(graphClassType)
+   * <b>Precondition:</b> graphClassType is a valid class defined in the
+   * database <br/>
+   * <b>Postcondition:</b> Returns a {@link MdGraphClassDAOIF} instance of the
+   * metadata for the given class
+   * ({@link MdGraphClassDAOIF}().definesType().equals(graphClassType)
    * 
    * @param graphClassType
-   * @return {@link MdGraphClassDAOIF} instance of the metadata for the given type.
+   * @return {@link MdGraphClassDAOIF} instance of the metadata for the given
+   *         type.
    */
   public static MdGraphClassDAOIF getMdGraphClassDAO(String graphClassType)
   {
@@ -1792,7 +1796,7 @@ public class ObjectCache
 
     return (MdGraphClassDAOIF) mdClassIF;
   }
-  
+
   /**
    * @see MdVertexDAO#getMdVertexDAO(String)
    */
@@ -1808,7 +1812,7 @@ public class ObjectCache
 
     return (MdVertexDAOIF) mdClassIF;
   }
-  
+
   /**
    * @see MdEdgeDAO#getMdEdgeDAO(String)
    */
@@ -2060,11 +2064,11 @@ public class ObjectCache
    * @return <code>MdEntityDAOIF</code> that defines the table with the given
    *         name.
    */
-  public static MdEntityDAOIF getMdEntityByTableName(String tableName)
+  public static MdClassDAOIF getMdClassByTableName(String tableName)
   {
     MdClassStrategy mdClassStrategy = (MdClassStrategy) strategyMap.get(MdClassInfo.CLASS);
 
-    return mdClassStrategy.getMdEntityByTableName(tableName);
+    return mdClassStrategy.getMdClassByTableName(tableName);
   }
 
   /**
@@ -2136,9 +2140,8 @@ public class ObjectCache
   }
 
   /**
-   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
-   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
-   * parent.
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in which
+   * the <code>MdVertexDAOIF</code> with the given oid participates as a parent.
    * 
    * @return set of <code>MdEdgeDAOIF</code> ids
    */
@@ -2156,9 +2159,8 @@ public class ObjectCache
   }
 
   /**
-   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in
-   * which the <code>MdVertexDAOIF</code> with the given oid participates as a
-   * child.
+   * Returns a set of <code>MdEdgeDAOIF</code> ids for relationships in which
+   * the <code>MdVertexDAOIF</code> with the given oid participates as a child.
    * 
    * @return set of <code>MdEdgeDAOIF</code> ids
    */
@@ -2174,7 +2176,7 @@ public class ObjectCache
 
     return ( (MdClassStrategy) mdClassStrategy ).getChildMdEdgeDAOids(mdVertexDAOid);
   }
-  
+
   public static MdFormDAOIF getMdFormDAOgetMdFormDAO(String type)
   {
     MdFormStrategy mdFormStrategy = (MdFormStrategy) strategyMap.get(MdFormInfo.CLASS);
