@@ -889,9 +889,6 @@ public class OrientDBImpl implements GraphDB
 
     String statement = "SELECT FROM " + dbClassName + " WHERE oid = ?";
 
-    System.out.println(statement);
-    System.out.println(oid);
-
     try (OResultSet rs = db.query(statement, oid))
     {
       if (rs.hasNext())
