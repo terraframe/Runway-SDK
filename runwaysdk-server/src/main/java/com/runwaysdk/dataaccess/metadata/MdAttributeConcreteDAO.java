@@ -875,10 +875,10 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       throw new InvalidColumnNameException(error, columnName);
     }
 
-    if (ReservedWords.sqlContains(columnName))
-    {
-      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
-    }
+//    if (ReservedWords.sqlContains(columnName))
+//    {
+//      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
+//    }
   }
 
 }

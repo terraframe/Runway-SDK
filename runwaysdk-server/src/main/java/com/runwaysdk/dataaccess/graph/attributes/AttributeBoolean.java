@@ -68,13 +68,16 @@ public class AttributeBoolean extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeBooleanDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof Boolean ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + Boolean.class.getName();
-      throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeBooleanDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof Boolean ))
+      {
+        String devMessage = "Value is not a " + Boolean.class.getName();
+        throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

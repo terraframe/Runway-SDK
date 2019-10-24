@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,9 +68,12 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public void addChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    GraphDBService.getInstance().addEdge(request, this, child, mdEdge);
+      GraphDBService.getInstance().addEdge(request, this, child, mdEdge);
+    }
   }
 
   public void removeChild(VertexObjectDAOIF child, String edgeType)
@@ -81,9 +85,12 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public void removeChild(VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    GraphDBService.getInstance().removeEdge(request, this, child, mdEdge);
+      GraphDBService.getInstance().removeEdge(request, this, child, mdEdge);
+    }
   }
 
   public List<VertexObjectDAOIF> getChildren(String edgeType)
@@ -95,9 +102,14 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public List<VertexObjectDAOIF> getChildren(MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    return GraphDBService.getInstance().getChildren(request, this, mdEdge);
+      return GraphDBService.getInstance().getChildren(request, this, mdEdge);
+    }
+
+    return new LinkedList<VertexObjectDAOIF>();
   }
 
   public void addParent(VertexObjectDAOIF parent, String edgeType)
@@ -109,9 +121,12 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public void addParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    GraphDBService.getInstance().addEdge(request, parent, this, mdEdge);
+      GraphDBService.getInstance().addEdge(request, parent, this, mdEdge);
+    }
   }
 
   public void removeParent(VertexObjectDAOIF parent, String edgeType)
@@ -123,9 +138,12 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public void removeParent(VertexObjectDAOIF parent, MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    GraphDBService.getInstance().removeEdge(request, parent, this, mdEdge);
+      GraphDBService.getInstance().removeEdge(request, parent, this, mdEdge);
+    }
   }
 
   public List<VertexObjectDAOIF> getParents(String edgeType)
@@ -137,9 +155,14 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public List<VertexObjectDAOIF> getParents(MdEdgeDAOIF mdEdge)
   {
-    GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
+    if (this.isAppliedToDB())
+    {
+      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    return GraphDBService.getInstance().getParents(request, this, mdEdge);
+      return GraphDBService.getInstance().getParents(request, this, mdEdge);
+    }
+
+    return new LinkedList<VertexObjectDAOIF>();
   }
 
   public static VertexObjectDAO newInstance(String vertexType)

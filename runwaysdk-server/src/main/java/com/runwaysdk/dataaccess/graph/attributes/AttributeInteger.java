@@ -68,13 +68,16 @@ public class AttributeInteger extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeIntegerDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof Integer ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + Integer.class.getName();
-      throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeIntegerDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof Integer ))
+      {
+        String devMessage = "Value is not a " + Integer.class.getName();
+        throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

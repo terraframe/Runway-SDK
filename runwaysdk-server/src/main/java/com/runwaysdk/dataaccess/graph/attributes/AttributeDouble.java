@@ -68,13 +68,16 @@ public class AttributeDouble extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeDoubleDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof Double ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + Double.class.getName();
-      throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeDoubleDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof Double ))
+      {
+        String devMessage = "Value is not a " + Double.class.getName();
+        throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

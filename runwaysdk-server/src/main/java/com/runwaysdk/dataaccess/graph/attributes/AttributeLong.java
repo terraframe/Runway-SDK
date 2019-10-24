@@ -68,13 +68,16 @@ public class AttributeLong extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeLongDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof Long ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + Long.class.getName();
-      throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeLongDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof Long ))
+      {
+        String devMessage = "Value is not a " + Long.class.getName();
+        throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

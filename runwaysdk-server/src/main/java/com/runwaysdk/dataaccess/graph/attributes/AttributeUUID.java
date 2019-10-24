@@ -68,13 +68,16 @@ public class AttributeUUID extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeUUIDDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof String ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + String.class.getName();
-      throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeUUIDDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof String ))
+      {
+        String devMessage = "Value is not a " + String.class.getName();
+        throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

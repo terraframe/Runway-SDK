@@ -68,13 +68,16 @@ public class AttributeFloat extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeFloatDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof Float ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + Float.class.getName();
-      throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeFloatDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof Float ))
+      {
+        String devMessage = "Value is not a " + Float.class.getName();
+        throw new AttributeIntegerParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);

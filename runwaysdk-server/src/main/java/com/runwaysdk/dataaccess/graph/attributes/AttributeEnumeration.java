@@ -10,7 +10,6 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 
 public class AttributeEnumeration extends Attribute implements AttributeSet
 {
@@ -83,21 +82,24 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   @Override
   public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
   {
-//    Set<String> stringValue = (Set<String>) valueToValidate;
-//
-//    boolean blankValue = false;
-//    if (stringValue == null || stringValue.size() == 0)
-//    {
-//      blankValue = true;
-//    }
-//
-//    // make sure a value is provided if a value is required
-//    if (mdAttributeIF.isRequired() && blankValue)
-//    {
-//      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-//      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-//      problem.throwIt();
-//    }
+    // Set<String> stringValue = (Set<String>) valueToValidate;
+    //
+    // boolean blankValue = false;
+    // if (stringValue == null || stringValue.size() == 0)
+    // {
+    // blankValue = true;
+    // }
+    //
+    // // make sure a value is provided if a value is required
+    // if (mdAttributeIF.isRequired() && blankValue)
+    // {
+    // String error = "Attribute [" + getName() + "] on type [" +
+    // getDefiningClassType() + "] requires a value";
+    // EmptyValueProblem problem = new
+    // EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(),
+    // mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+    // problem.throwIt();
+    // }
   }
 
   /**
@@ -107,18 +109,21 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeEnumerationDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    MdEnumerationDAOIF mdEnumeration = mdAttributeIF.getMdEnumerationDAO();
-
-    if (mdEnumeration != null)
+    if (valueToValidate != null)
     {
-      String enumItemID = (String) valueToValidate;
+      MdAttributeEnumerationDAOIF mdAttributeIF = this.getMdAttributeConcrete();
 
-      if (!mdEnumeration.isValidEnumerationItem(enumItemID))
+      MdEnumerationDAOIF mdEnumeration = mdAttributeIF.getMdEnumerationDAO();
+
+      if (mdEnumeration != null)
       {
-        String error = "[" + enumItemID + "] is not a valid value for the enumerated Attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
-        throw new AttributeValueException(error, this, enumItemID);
+        String enumItemID = (String) valueToValidate;
+
+        if (!mdEnumeration.isValidEnumerationItem(enumItemID))
+        {
+          String error = "[" + enumItemID + "] is not a valid value for the enumerated Attribute [" + getName() + "] on type [" + getDefiningClassType() + "]";
+          throw new AttributeValueException(error, this, enumItemID);
+        }
       }
     }
 

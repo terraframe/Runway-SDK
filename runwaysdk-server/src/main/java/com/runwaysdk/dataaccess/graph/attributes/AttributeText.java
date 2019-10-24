@@ -77,13 +77,16 @@ public class AttributeText extends Attribute
   @Override
   public void validate(Object valueToValidate)
   {
-    MdAttributeTextDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-    // First verify that the object is of the correct type.
-    if (valueToValidate != null && ! ( valueToValidate instanceof String ))
+    if (valueToValidate != null)
     {
-      String devMessage = "Value is not a " + String.class.getName();
-      throw new AttributeTextParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      MdAttributeTextDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+
+      // First verify that the object is of the correct type.
+      if (! ( valueToValidate instanceof String ))
+      {
+        String devMessage = "Value is not a " + String.class.getName();
+        throw new AttributeTextParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
+      }
     }
 
     super.validate(valueToValidate);
