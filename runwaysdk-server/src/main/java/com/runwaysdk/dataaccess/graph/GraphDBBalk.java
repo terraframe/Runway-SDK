@@ -47,7 +47,7 @@ public class GraphDBBalk implements GraphDB
    * @see GraphDB#createVertexClass(GraphRequest, String)
    */
   @Override
-  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
+  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, String superClassName)
   {
     return new GraphDDLCommandAction()
     {

@@ -16,7 +16,6 @@ import com.runwaysdk.business.graph.generation.VertexObjectStubGenerator;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.MdTransientInfo;
 import com.runwaysdk.constants.RelationshipTypes;
-import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -257,11 +256,21 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
   @Override
   protected void createClassInDB()
   {
+    String superMdVertexOid = this.getAttributeIF(MdVertexInfo.SUPER_MD_VERTEX).getValue();
     String dbClassName = this.getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+    String superClassName = null;
+
+    if (superMdVertexOid != null && superMdVertexOid.length() > 0)
+    {
+      MdVertexDAOIF mdVertex = MdVertexDAO.get(superMdVertexOid);
+
+      superClassName = mdVertex.getDBClassName();
+    }
+
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName, superClassName);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().deleteVertexClass(graphRequest, graphDDLRequest, dbClassName);
 
     GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, false);
@@ -270,12 +279,22 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 
   protected void deleteClassInDB()
   {
-    String dbClassName = this.getAttributeIF(MdGraphClassInfo.DB_CLASS_NAME).getValue();
+    String superMdVertexOid = this.getAttributeIF(MdVertexInfo.SUPER_MD_VERTEX).getValue();
+    String dbClassName = this.getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
+    String superClassName = null;
+
+    if (superMdVertexOid != null && superMdVertexOid.length() > 0)
+    {
+      MdVertexDAOIF mdVertex = MdVertexDAO.get(superMdVertexOid);
+
+      superClassName = mdVertex.getDBClassName();
+    }
+
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().deleteVertexClass(graphRequest, graphDDLRequest, dbClassName);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createVertexClass(graphRequest, graphDDLRequest, dbClassName, superClassName);
 
     GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, true);
     command.doIt();

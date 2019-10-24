@@ -7,6 +7,7 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.metadata.schema.OClass.INDEX_TYPE;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
@@ -59,11 +60,9 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
       /*
        * Create the spatial index
        */
-      String indexName = "i" + UUID.randomUUID().toString().replaceAll("-", "");
-      oClass.createIndex(indexName, "SPATIAL", null, null, "LUCENE", new String[] { this.attributeName });
+      String indexName = OrientDBImpl.generateIndexName();
 
-//      db.command(new OCommandSQL("CREATE INDEX " + indexName + " ON " + this.className + " (" + this.attributeName + ") SPATIAL ENGINE LUCENE")).execute();
-//      db.close();
+      oClass.createIndex(indexName, INDEX_TYPE.SPATIAL.name(), null, null, "LUCENE", new String[] { oProperty.getName() });
     }
   }
 

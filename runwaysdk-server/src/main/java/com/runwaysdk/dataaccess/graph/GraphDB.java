@@ -30,10 +30,11 @@ public interface GraphDB
    * @param className
    *          The name of the table in the graph database that should match the
    *          table name in the relational database.
+   * @param superClassName TODO
    * @return {@link GraphDDLCommandAction} so that it can be executed at the
    *         proper time within the transaction.
    */
-  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className);
+  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, String superClassName);
 
   /**
    * Deletes a vertex class in the Graph Database. The convention is that the

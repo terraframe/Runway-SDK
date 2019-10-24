@@ -95,11 +95,13 @@ public class GraphDBService
   }
 
   /**
-   * @see GraphDB#createVertexClass(GraphRequest, GraphRequest, String)
+   * @param superClassName
+   *          TODO
+   * @see GraphDB#createVertexClass(GraphRequest, GraphRequest, String, String)
    */
-  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDBRequest, String className)
+  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest graphDBRequest, String className, String superClassName)
   {
-    return this.graphDB.createVertexClass(graphRequest, graphDBRequest, className);
+    return this.graphDB.createVertexClass(graphRequest, graphDBRequest, className, superClassName);
   }
 
   /**

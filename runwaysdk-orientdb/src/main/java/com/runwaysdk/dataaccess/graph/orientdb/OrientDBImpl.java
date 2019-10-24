@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.locationtech.spatial4j.shape.Shape;
 
-import com.orientechnologies.orient.core.db.ODatabasePool;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 import com.orientechnologies.orient.core.db.OrientDB;
@@ -21,6 +20,7 @@ import com.orientechnologies.orient.core.db.OrientDBConfig;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.index.OIndex;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OClass.INDEX_TYPE;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.metadata.sequence.OSequence;
@@ -79,15 +79,15 @@ import com.vividsolutions.jts.geom.Geometry;
 
 public class OrientDBImpl implements GraphDB
 {
-  private OrientDB      orientDB;
+  private OrientDB orientDB;
 
-//  private ODatabasePool pool;
+  // private ODatabasePool pool;
 
   public OrientDBImpl()
   {
     this.orientDB = this.getRootOrientDB();
 
-//    this.pool = null;
+    // this.pool = null;
   }
 
   @Override
@@ -174,10 +174,10 @@ public class OrientDBImpl implements GraphDB
   }
 
   /**
-   * @see GraphDB#createVertexClass(GraphRequest, GraphRequest, String)
+   * @see GraphDB#createVertexClass(GraphRequest, GraphRequest, String, String)
    */
   @Override
-  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className)
+  public GraphDDLCommandAction createVertexClass(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String superClassName)
   {
     GraphDDLCommandAction action = new GraphDDLCommandAction()
     {
@@ -196,6 +196,23 @@ public class OrientDBImpl implements GraphDB
           if (oClass == null)
           {
             oClass = db.createVertexClass(className);
+
+            if (superClassName != null)
+            {
+              OClass v = db.getMetadata().getSchema().getClass(superClassName);
+
+              if (v == null)
+              {
+                throw new ProgrammingErrorException("Unable to find graph database class [" + superClassName + "]");
+              }
+
+              oClass.addSuperClass(v);
+            }
+            else
+            {
+              // OClass v = db.getMetadata().getSchema().getClass("V");
+              // oClass.addSuperClass(v);
+            }
 
             OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
             sequenceLibrary.createSequence(className + "Seq", SEQUENCE_TYPE.ORDERED, new OSequence.CreateParams().setStart(0L));
@@ -257,8 +274,10 @@ public class OrientDBImpl implements GraphDB
 
             statement = "CREATE PROPERTY " + edgeClass + ".IN LINK " + childVertexClass;
             db.command(statement);
-          }
 
+            // OClass e = db.getMetadata().getSchema().getClass("E");
+            // oClass.addSuperClass(e);
+          }
         }
         finally
         {
@@ -361,7 +380,7 @@ public class OrientDBImpl implements GraphDB
     if (oClass != null)
     {
       Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
- 
+
       return i.hasNext();
     }
     else
@@ -590,11 +609,9 @@ public class OrientDBImpl implements GraphDB
 
             if (oClassIndexType != null)
             {
-              String indexName = ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0, 30);
+              String indexName = OrientDBImpl.generateIndexName();
 
               oClass.createIndex(indexName, oClassIndexType, oProperty.getName());
-
-              // oProperty.createIndex(oClassIndexType);
             }
             // Clear the index if it is set to none.
             else
@@ -605,7 +622,12 @@ public class OrientDBImpl implements GraphDB
               {
                 OIndex<?> oIndex = i.next();
 
-                oIndex.delete();
+                String indexType = oIndex.getType();
+
+                if (!indexType.equals(INDEX_TYPE.SPATIAL.name()))
+                {
+                  oIndex.delete();
+                }
                 // oIndex.clear();
                 // oIndex.flush();
               }
@@ -679,7 +701,11 @@ public class OrientDBImpl implements GraphDB
       while (i.hasNext())
       {
         OIndex<?> oIndex = i.next();
-        returnValue = oIndex.getName();
+
+        if (!oIndex.getType().equals(INDEX_TYPE.SPATIAL.name()))
+        {
+          returnValue = oIndex.getName();
+        }
       }
     }
     return returnValue;
@@ -1124,5 +1150,10 @@ public class OrientDBImpl implements GraphDB
     String className = mdGraphClassDAO.getDBClassName();
 
     return db.getMetadata().getSequenceLibrary().getSequence(className + "Seq");
+  }
+
+  public static String generateIndexName()
+  {
+    return ( "i" + UUID.randomUUID().toString().replaceAll("-", "") ).substring(0, 30);
   }
 }
