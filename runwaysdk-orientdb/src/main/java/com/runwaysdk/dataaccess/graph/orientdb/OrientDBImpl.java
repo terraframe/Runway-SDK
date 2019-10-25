@@ -914,7 +914,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
+  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     List<VertexObjectDAOIF> results = new LinkedList<VertexObjectDAOIF>();
 
@@ -947,7 +947,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          results.add(this.buildDAO(mdVertex, element));
+          results.add(this.buildDAO(element));
         }
         else
         {
