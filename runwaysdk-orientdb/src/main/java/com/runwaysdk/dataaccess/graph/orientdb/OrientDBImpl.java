@@ -1016,7 +1016,6 @@ public class OrientDBImpl implements GraphDB
   private List<VertexObjectDAOIF> getVertices(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
   {
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
-    MdVertexDAOIF mdVertex = direction.equals(ODirection.OUT) ? mdEdge.getParentMdVertex() : mdEdge.getChildMdVertex();
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
@@ -1054,6 +1053,9 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateDAO(OElement vertex, GraphObjectDAO vertexDAO)
   {
+    vertexDAO.setIsNew(false);
+    vertexDAO.setAppliedToDB(true);
+
     Attribute[] attributes = vertexDAO.getAttributeArray();
 
     for (Attribute attribute : attributes)
