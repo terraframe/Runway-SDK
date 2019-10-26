@@ -939,7 +939,7 @@ public class OrientDBImpl implements GraphDB
 
     try (OResultSet rs = db.query(statement, parameters))
     {
-      if (rs.hasNext())
+      while (rs.hasNext())
       {
         OResult result = rs.next();
 
