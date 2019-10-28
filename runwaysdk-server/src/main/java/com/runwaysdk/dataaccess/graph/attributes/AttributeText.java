@@ -1,10 +1,9 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
 import com.runwaysdk.AttributeTextParseException;
-import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
+import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.session.Session;
 
 public class AttributeText extends Attribute
@@ -64,9 +63,7 @@ public class AttributeText extends Attribute
     // make sure a value is provided if a value is required
     if (mdAttributeIF.isRequired() && blankValue)
     {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
+      this.throwEmptyValueProblem(mdAttributeIF);
     }
   }
 

@@ -4,10 +4,8 @@ import java.util.Date;
 
 import com.runwaysdk.AttributeIntegerParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.session.Session;
 
 public class AttributeTime extends Attribute
@@ -44,24 +42,6 @@ public class AttributeTime extends Attribute
   public MdAttributeTimeDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeTimeDAOIF) super.getMdAttributeConcrete();
-  }
-
-  /**
-   * @see Attribute#validateRequired(Object, MdAttributeDAOIF)
-   * 
-   *      <br>
-   *      <b>Precondition: </b> value is of type Date <br>
-   *
-   */
-  public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
-  {
-    // make sure a value is provided if a value is required
-    if (mdAttributeIF.isRequired() && valueToValidate == null)
-    {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
-    }
   }
 
   /**

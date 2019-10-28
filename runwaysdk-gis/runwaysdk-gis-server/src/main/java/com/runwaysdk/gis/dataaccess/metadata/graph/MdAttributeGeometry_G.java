@@ -8,7 +8,6 @@ import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.graph.MdAttributeConcrete_G;
-import com.runwaysdk.gis.constants.MdAttributeGeometryInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeGeometryDAO;
 
 public class MdAttributeGeometry_G extends MdAttributeConcrete_G

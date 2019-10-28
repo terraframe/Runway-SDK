@@ -282,6 +282,16 @@ public class GraphDBBalk implements GraphDB
     };
   }
 
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
+    {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+  
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
   {

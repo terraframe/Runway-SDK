@@ -385,19 +385,20 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     super.validate();
 
-    if (this.isNew())
-    {
-      // make sure an MdBusiness cannot extend MdAttribute.
-      List<MdBusinessDAOIF> parentMdBusinessIFList = this.getSuperClasses();
-      for (MdBusinessDAOIF parentMdBusinessIF : parentMdBusinessIFList)
-      {
-        if (parentMdBusinessIF.definesType().equals(MdAttributeConcreteInfo.CLASS))
-        {
-          String error = "Error in [" + definesType() + "] definition - New types cannot extend [" + MdAttributeConcreteInfo.CLASS + "].";
-          throw new InheritanceException(error);
-        }
-      }
-    }
+// Heads up: clean up - this is a reduntant check that is already handled in MdAttributeConcreteDAO
+//    if (this.isNew())
+//    {
+//      // make sure an MdBusiness cannot extend MdAttribute.
+//      List<MdBusinessDAOIF> parentMdBusinessIFList = this.getSuperClasses();
+//      for (MdBusinessDAOIF parentMdBusinessIF : parentMdBusinessIFList)
+//      {
+//        if (parentMdBusinessIF.definesType().equals(MdAttributeConcreteInfo.CLASS))
+//        {
+//          String error = "Error in [" + definesType() + "] definition - New types cannot extend [" + MdAttributeConcreteInfo.CLASS + "].";
+//          throw new InheritanceException(error);
+//        }
+//      }
+//    }
 
     // if MRU caching is being used, there must be a valid cache size set
     BusinessDAOIF cacheAlgorithm = this.getCacheAlgorithm();

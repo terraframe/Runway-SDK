@@ -1,8 +1,6 @@
 package com.runwaysdk.gis.dataaccess.graph.attributes;
 
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.gis.AttributeMultiPolygonParseException;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
@@ -44,24 +42,6 @@ public class AttributeMultiPolygon extends Attribute
   public MdAttributeMultiPolygonDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeMultiPolygonDAOIF) super.getMdAttributeConcrete();
-  }
-
-  /**
-   * @see Attribute#validateRequired(Object, MdAttributeDAOIF)
-   * 
-   *      <br>
-   *      <b>Precondition: </b> value is of type MultiPolygon <br>
-   *
-   */
-  public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
-  {
-    // make sure a value is provided if a value is required
-    if (mdAttributeIF.isRequired() && valueToValidate == null)
-    {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
-    }
   }
 
   /**

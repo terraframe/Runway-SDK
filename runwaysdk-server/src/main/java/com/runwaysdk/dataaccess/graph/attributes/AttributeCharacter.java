@@ -4,7 +4,6 @@ import com.runwaysdk.AttributeCharacterParseException;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.session.Session;
 
 public class AttributeCharacter extends Attribute
@@ -64,9 +63,7 @@ public class AttributeCharacter extends Attribute
     // make sure a value is provided if a value is required
     if (mdAttributeIF.isRequired() && blankValue)
     {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
+      this.throwEmptyValueProblem(mdAttributeIF);
     }
   }
 

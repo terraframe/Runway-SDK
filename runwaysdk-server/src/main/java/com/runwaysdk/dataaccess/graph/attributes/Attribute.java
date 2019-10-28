@@ -216,8 +216,16 @@ public abstract class Attribute implements AttributeIF
    */
   @Override
   public String getValue()
-  {
-    return this.value.toString();
+  {    
+    if (this.value != null)
+    {
+      return this.value.toString();
+    }
+    else
+    {
+      return "NULL";
+    }
+    
   }
 
   /**
@@ -309,21 +317,27 @@ public abstract class Attribute implements AttributeIF
    *           if this attribute is required for its defining
    *           {@link GraphObjectDAO} but contains an empty value.
    */
-  public abstract void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF);
-  // {
-  // // make sure a value is provided if a value is required
-  // if ( mdAttributeIF.isRequired() && valueToValidate.trim().equals(""))
-  // {
-  // String error = "Attribute [" + getName() + "] on type [" +
-  // getDefiningClassType()
-  // + "] requires a value";
-  // EmptyValueProblem problem =
-  // new
-  // EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(),
-  // mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-  // problem.throwIt();
-  // }
-  // }
+  public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
+  {
+    // make sure a value is provided if a value is required
+    if (mdAttributeIF.isRequired() && valueToValidate == null)
+    {
+      this.throwEmptyValueProblem(mdAttributeIF);
+    }
+  }
+
+  /** 
+   * Creates an {@link EmptyValueProblem}
+   * 
+   * @param mdAttributeIF
+   */
+  protected void throwEmptyValueProblem(MdAttributeDAOIF mdAttributeIF)
+  {
+    String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
+    EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
+    problem.throwIt();
+  }
+  
 
   /**
    * Checks if this attribute is required for its defining
@@ -446,7 +460,7 @@ public abstract class Attribute implements AttributeIF
   @Override
   public String toString()
   {
-    return getName() + "=" + getValue();
+    return getName() + "=" + getValue().toString();
   }
 
   /**

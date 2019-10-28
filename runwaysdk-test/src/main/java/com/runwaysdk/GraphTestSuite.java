@@ -28,10 +28,12 @@ import com.runwaysdk.dataaccess.graph.EdgeObjectDAOTest;
 import com.runwaysdk.dataaccess.graph.MdGraphClassTest;
 import com.runwaysdk.dataaccess.graph.VertexInheritanceDAOTest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOTest;
+import com.runwaysdk.gis.dataaccess.graph.GeoVertexTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   MdGraphClassTest.class, 
+  GeoVertexTest.class, 
   VertexObjectDAOTest.class,
   VertexInheritanceDAOTest.class,
   EdgeObjectDAOTest.class,

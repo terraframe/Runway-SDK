@@ -50,6 +50,7 @@ import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
+import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
@@ -117,6 +118,7 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -140,6 +142,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
@@ -210,12 +213,14 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdGeoVertexInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.gis.geo.AllowedIn;
 import com.runwaysdk.system.gis.geo.GeoEntity;
@@ -255,6 +260,18 @@ public class TestFixtureFactory
     public static final String TEST_CLASS1                = "Class1";
 
     public static final String TEST_CLASS1_TYPE           = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
+    
+    public static final String TEST_VERTEX1               = "Vertex1";
+    
+    public static final String TEST_VERTEX1_TYPE          = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_VERTEX1);
+    
+    public static final String TEST_EMBEDDED_VERTEX1      = "EmbeddedVertex1";
+    
+    public static final String TEST_EMBEDDED_VERTEX1_TYPE = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_EMBEDDED_VERTEX1);
+    
+    public static final String TEST_ENUM_CLASS            = "EnumClassTest";
+    
+    public static final String TEST_ENUM_CLASS1_TYPE      = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_ENUM_CLASS);
 
     public static final String TEST_TABLE1                = "MdTable1";
 
@@ -588,7 +605,7 @@ public class TestFixtureFactory
 
   public static MdBusinessDAO createEnumClass1()
   {
-    return createEnumClass("EnumClassTest");
+    return createEnumClass(TestFixConst.TEST_ENUM_CLASS);
   }
 
   public static MdBusinessDAO createEnumClass(String name)
@@ -743,6 +760,22 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
     mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+
+    return mdAttribute;
+  }
+  
+  /**
+   * 
+   * @param mdClass the class to which the attribute will be added
+   * @param embeddedMdClass the class that defines the embedded attributes
+   * @return
+   */
+  public static MdAttributeEmbeddedDAO addEmbeddedttribute(MdClassDAOIF mdClass, MdClassDAOIF embeddedMdClass)
+  {
+    MdAttributeEmbeddedDAO mdAttribute = MdAttributeEmbeddedDAO.newInstance();
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.NAME, "testEmbedded");
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.EMBEDDED_MD_CLASS, embeddedMdClass.getOid());
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -1259,6 +1292,10 @@ public class TestFixtureFactory
 
         dataNotFoundException.printStackTrace();
       }
+      catch (RuntimeException ex)
+      {
+        ex.printStackTrace();
+      }
     }
   }
 
@@ -1697,7 +1734,7 @@ public class TestFixtureFactory
 
   public static MdVertexDAO createMdVertex()
   {
-    return createMdVertex("TestVertex");
+    return createMdVertex(TestFixConst.TEST_VERTEX1);
   }
 
   public static MdVertexDAO createMdVertex(String name)
@@ -1732,6 +1769,17 @@ public class TestFixtureFactory
     mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, childOid);
 
     return mdEdge;
+  }
+  
+  public static MdGeoVertexDAO createMdGeoVertex(String name)
+  {
+    MdGeoVertexDAO mdGeoVertex = MdGeoVertexDAO.newInstance();
+    mdGeoVertex.setValue(MdGeoVertexInfo.NAME, name);
+    mdGeoVertex.setValue(MdGeoVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdGeoVertex.setStructValue(MdGeoVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdGeoVertex Set Test");
+    mdGeoVertex.setStructValue(MdGeoVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdGeoVertex Attributes Test");
+
+    return mdGeoVertex;
   }
 
   /**
@@ -2127,6 +2175,24 @@ public class TestFixtureFactory
     cal.set(2019, 3, 15);
 
     return cal;
+  }
+
+  public static void deleteMdClass(String className)
+  {
+    MdClassDAOIF mdClassDAOIF = null;
+  
+    try
+    {
+      mdClassDAOIF = MdClassDAO.getMdClassDAO(className);
+    }
+    catch (DataNotFoundException ex)
+    {
+    }
+  
+    if (mdClassDAOIF != null)
+    {
+      mdClassDAOIF.getBusinessDAO().delete();
+    }
   }
 
 }

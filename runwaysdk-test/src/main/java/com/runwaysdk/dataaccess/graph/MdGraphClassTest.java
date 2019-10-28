@@ -36,11 +36,8 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -57,7 +54,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
@@ -96,17 +92,11 @@ public class MdGraphClassTest
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
 
-    // MdVertexDAOIF mdVertex = MdVertexDAO.getMdVertexDAO(VERTEX_CLASS_1);
-    //
-    // System.out.println("!!!!HEADS UP!!!!!");
-    // mdVertex.definesAttributes().forEach(a -> a.definesAttribute());
+    TestFixtureFactory.deleteMdClass(EDGE_CLASS);
 
-    deleteEdgeClass(EDGE_CLASS);
+    TestFixtureFactory.deleteMdClass(VERTEX_CLASS_2);
 
-    deleteVertexClass(VERTEX_CLASS_2);
-
-    deleteVertexClass(VERTEX_CLASS_1);
-
+    TestFixtureFactory.deleteMdClass(VERTEX_CLASS_1);
   }
 
   @Request
@@ -127,11 +117,11 @@ public class MdGraphClassTest
   @After
   public void tearDown() throws Exception
   {
-    deleteEdgeClass(EDGE_CLASS);
+    TestFixtureFactory.deleteMdClass(EDGE_CLASS);
 
-    deleteVertexClass(VERTEX_CLASS_2);
+    TestFixtureFactory.deleteMdClass(VERTEX_CLASS_2);
 
-    deleteVertexClass(VERTEX_CLASS_1);
+    TestFixtureFactory.deleteMdClass(VERTEX_CLASS_1);
   }
 
   @Request
@@ -142,6 +132,18 @@ public class MdGraphClassTest
 
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    examineMdGraphClassCreationAndDefaultAttributes(mdVertexDAO, dbClassName, graphRequest);
+
+    mdVertexDAO.delete();
+
+    boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
+    Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
+  }
+
+  public static void examineMdGraphClassCreationAndDefaultAttributes(MdVertexDAO mdVertexDAO,
+      String dbClassName, GraphRequest graphRequest)
+  {
     boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
     Assert.assertEquals("Vertex class was not defined", true, classDefined);
 
@@ -156,12 +158,9 @@ public class MdGraphClassTest
 
     IndexTypes indexType = GraphDBService.getInstance().getIndexType(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("The wrong type of index is defined", IndexTypes.UNIQUE_INDEX, indexType);
-
-    mdVertexDAO.delete();
-
-    classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
-    Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
   }
+  
+
 
   @Request
   @Test
@@ -699,43 +698,6 @@ public class MdGraphClassTest
     mdAttrChar.apply();
 
     return mdAttrChar;
-  }
-
-  private static void deleteVertexClass(String vertexClassName)
-  {
-    MdClassDAOIF mdVertexDAOIF = null;
-
-    try
-    {
-      mdVertexDAOIF = MdClassDAO.getMdClassDAO(vertexClassName);
-    }
-    catch (DataNotFoundException ex)
-    {
-    }
-
-    if (mdVertexDAOIF != null)
-    {
-      mdVertexDAOIF.getBusinessDAO().delete();
-    }
-  }
-
-  private static void deleteEdgeClass(String edgeClassName)
-  {
-    MdEdgeDAOIF mdEdgeDAOIF = null;
-
-    try
-    {
-      mdEdgeDAOIF = MdEdgeDAO.getMdEdgeDAO(edgeClassName);
-    }
-    catch (DataNotFoundException ex)
-    {
-    }
-    ;
-
-    if (mdEdgeDAOIF != null)
-    {
-      mdEdgeDAOIF.getBusinessDAO().delete();
-    }
   }
 
 }

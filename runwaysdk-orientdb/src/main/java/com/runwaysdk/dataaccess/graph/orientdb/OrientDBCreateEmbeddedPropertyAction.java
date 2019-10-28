@@ -1,40 +1,38 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
-import java.util.UUID;
-
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OClass.INDEX_TYPE;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
-import com.orientechnologies.orient.core.metadata.schema.OClass.INDEX_TYPE;
-import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
 {
-  private String  className;
+  protected String   className;
 
-  private String  attributeName;
+  protected String   attributeName;
 
-  private String  schemaType;
+  private   String   embeddedClassName;
 
-  private boolean required;
+  private   boolean  required;
+  
 
   /**
    * @param className
    * @param attributeName
-   * @param schemaType
+   * @param embeddedClassName
    * @param required
    */
-  public OrientDBCreateEmbeddedPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String schemaType, boolean required)
+  public OrientDBCreateEmbeddedPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassName, boolean required)
   {
     super(graphRequest, ddlGraphDBRequest);
 
     this.className = className;
     this.attributeName = attributeName;
-    this.schemaType = schemaType;
+    this.embeddedClassName = embeddedClassName;
     this.required = required;
   }
 
@@ -46,7 +44,7 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
     if (oClass != null)
     {
       OSchema schema = db.getMetadata().getSchema();
-      OClass linkClass = schema.getClass(this.schemaType);
+      OClass linkClass = schema.getClass(this.embeddedClassName);
 
       if (linkClass == null)
       {
@@ -56,13 +54,6 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
       OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDED, linkClass);
 
       configure(oProperty);
-
-      /*
-       * Create the spatial index
-       */
-      String indexName = OrientDBImpl.generateIndexName();
-
-      oClass.createIndex(indexName, INDEX_TYPE.SPATIAL.name(), null, null, "LUCENE", new String[] { oProperty.getName() });
     }
   }
 

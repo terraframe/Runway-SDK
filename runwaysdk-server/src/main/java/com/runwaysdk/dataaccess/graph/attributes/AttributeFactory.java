@@ -12,6 +12,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
@@ -20,9 +21,11 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 
 public class AttributeFactory
 {
@@ -115,7 +118,19 @@ public class AttributeFactory
     {
       attribute = new AttributeEnumeration(mdAttributeDAOIF, definingType);
     }
-
+    else if (mdAttributeDAOIF instanceof MdAttributeEmbeddedDAOIF)
+    {
+      MdAttributeEmbeddedDAOIF mdAttributeEmbeddedDAOIF = (MdAttributeEmbeddedDAOIF)mdAttributeDAOIF;
+      
+      String embeddedType =  ((MdGraphClassDAOIF)mdAttributeEmbeddedDAOIF.getEmbeddedMdClassDAOIF()).definesType();
+      
+      VertexObjectDAO vertexObjectDAO = VertexObjectDAO.newInstance(embeddedType);
+      
+      attribute = new AttributeEmbedded(mdAttributeDAOIF, definingType);
+      attribute.setValue(vertexObjectDAO);
+    }
+    
+    
     if (attribute == null)
     {
       ServiceLoader<GraphAttributeFactoryIF> loader = ServiceLoader.load(GraphAttributeFactoryIF.class);

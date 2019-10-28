@@ -25,5 +25,7 @@ public class GISConstants
 
   public static final String GIS_METADATA_PACKAGE = GIS_SYSTEM_PACKAGE+".metadata";
   
+  public static final String GRAPH_GIS_METADATA_PACKAGE = GIS_METADATA_PACKAGE+".graph";
+  
   public static final String GEO_PACKAGE = GIS_SYSTEM_PACKAGE+".geo";
 }

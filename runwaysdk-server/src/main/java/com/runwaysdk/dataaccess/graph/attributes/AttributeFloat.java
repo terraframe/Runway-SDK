@@ -2,9 +2,7 @@ package com.runwaysdk.dataaccess.graph.attributes;
 
 import com.runwaysdk.AttributeIntegerParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.session.Session;
 
 public class AttributeFloat extends Attribute
@@ -41,24 +39,6 @@ public class AttributeFloat extends Attribute
   public MdAttributeFloatDAOIF getMdAttributeConcrete()
   {
     return (MdAttributeFloatDAOIF) super.getMdAttributeConcrete();
-  }
-
-  /**
-   * @see Attribute#validateRequired(Object, MdAttributeDAOIF)
-   * 
-   *      <br>
-   *      <b>Precondition: </b> value is of type Float <br>
-   *
-   */
-  public void validateRequired(Object valueToValidate, MdAttributeDAOIF mdAttributeIF)
-  {
-    // make sure a value is provided if a value is required
-    if (mdAttributeIF.isRequired() && valueToValidate == null)
-    {
-      String error = "Attribute [" + getName() + "] on type [" + getDefiningClassType() + "] requires a value";
-      EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
-      problem.throwIt();
-    }
   }
 
   /**
