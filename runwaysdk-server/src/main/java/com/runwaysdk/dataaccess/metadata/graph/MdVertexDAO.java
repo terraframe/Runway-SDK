@@ -123,7 +123,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
    * @see MdVertexDAOIF#getSubClasses()
    */
   @Override
-  public List<MdVertexDAOIF> getSubClasses()
+  public List<? extends MdVertexDAOIF> getSubClasses()
   {
     List<RelationshipDAOIF> subClassRelationshipArray = this.getChildren(RelationshipTypes.VERTEX_INHERITANCE.getType());
 
@@ -176,9 +176,9 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
    * @see MdVertexDAOIF#getSuperClasses()
    */
   @SuppressWarnings("unchecked")
-  public List<MdVertexDAOIF> getSuperClasses()
+  public List<? extends MdVertexDAOIF> getSuperClasses()
   {
-    return (List<MdVertexDAOIF>) super.getSuperClasses();
+    return (List<? extends MdVertexDAOIF>) super.getSuperClasses();
   }
 
   @Override

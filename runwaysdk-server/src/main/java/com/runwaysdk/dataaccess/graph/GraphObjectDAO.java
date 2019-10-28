@@ -20,6 +20,7 @@ import com.runwaysdk.dataaccess.MdGraphDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeFactory;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
@@ -312,6 +313,25 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     return this.attributeMap.values().toArray(new Attribute[values.size()]);
   }
 
+  /**
+   * @see GraphObjectDAOIF#getEmbeddedComponentDAO(String)
+   */
+  public ComponentDAO getEmbeddedComponentDAO(String attributeName)
+  {
+    Attribute attribute = this.getAttribute(attributeName);
+    
+    if (attribute instanceof AttributeEmbedded)
+    {
+      AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
+      
+      return attributeEmbedded.getObjectValue();
+    }
+    else
+    {
+      return null;
+    }
+  }
+  
   /**
    * Returns a {@link MdGraphDAOIF} that defines this object's class.
    * 
@@ -621,7 +641,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     Attribute attribute;
     // assign a default value (if any) as defined in the meta data
-    String attrDefaultValue = mdAttribute.getAttributeInstanceDefaultValue();
+    //String attrDefaultValue = mdAttribute.getAttributeInstanceDefaultValue();
 
     // Check for sessionDefaultValue
 

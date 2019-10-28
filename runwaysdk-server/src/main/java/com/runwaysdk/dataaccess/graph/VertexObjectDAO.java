@@ -191,28 +191,64 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
    */
   public static VertexObjectDAO newInstance(MdVertexDAOIF mdVertexDAOIF)
   {
+    checkIsAbstract(mdVertexDAOIF);
+    
+    Hashtable<String, Attribute> attributeMap = getAttributeMap(mdVertexDAOIF);
+
+    VertexObjectDAO vertexObjectDAO = new VertexObjectDAO(attributeMap, mdVertexDAOIF);
+
+    initialize(attributeMap, vertexObjectDAO);
+
+    return vertexObjectDAO;
+  }
+
+  /**
+   * Checks if the defining type is abstract. If so, a {@link VectorObjectDAO} cannot be instantiated.
+   * 
+   * @param mdVertexDAOIF
+   * @throws AbstractInstantiationException
+   */
+  protected static void checkIsAbstract(MdVertexDAOIF mdVertexDAOIF)
+  {
     if (mdVertexDAOIF.isAbstract())
     {
       String errMsg = "Class [" + mdVertexDAOIF.definesType() + "] is abstract and cannot be instantiated";
       throw new AbstractInstantiationException(errMsg, mdVertexDAOIF);
     }
+  }
 
+  /**
+   * Returns an {@link Attribute} map to be used by a a {@link VertexObjectDAO}.
+   * 
+   * @param mdVertexDAOIF
+   * @return
+   */
+  protected static Hashtable<String, Attribute> getAttributeMap(MdVertexDAOIF mdVertexDAOIF)
+  {
     Hashtable<String, Attribute> attributeMap = new Hashtable<String, Attribute>();
 
     // get list of all classes in inheritance relationship
-    List<MdVertexDAOIF> superMdVertexList = mdVertexDAOIF.getSuperClasses();
+    List<? extends MdVertexDAOIF> superMdVertexList = mdVertexDAOIF.getSuperClasses();
     superMdVertexList.forEach(md -> attributeMap.putAll(GraphObjectDAO.createRecordsForEntity(md)));
-
-    VertexObjectDAO vertexObjectDAO = new VertexObjectDAO(attributeMap, mdVertexDAOIF);
-
+    
+    return attributeMap;
+  }
+  
+  /**
+   * Initializes the given {@link VertexObjectDAO} and {@link Attribute} objects.
+   * 
+   * @param attributeMap
+   * @param vertexObjectDAO
+   */
+  protected static void initialize(Hashtable<String, Attribute> attributeMap, VertexObjectDAO vertexObjectDAO)
+  {
     attributeMap.values().forEach(a -> a.setContainingComponent(vertexObjectDAO));
 
     vertexObjectDAO.setIsNew(true);
 
     vertexObjectDAO.setAppliedToDB(false);
-
-    return vertexObjectDAO;
   }
+
 
   public static VertexObjectDAOIF get(MdVertexDAOIF mdVertexDAO, String oid)
   {
@@ -220,5 +256,5 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
     return GraphDBService.getInstance().get(request, mdVertexDAO, oid);
   }
-
+  
 }

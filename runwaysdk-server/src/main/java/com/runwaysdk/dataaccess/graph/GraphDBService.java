@@ -162,6 +162,11 @@ public class GraphDBService
     return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
   }
 
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required)
+  {
+    return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required);
+  }
+  
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
   {
     return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);

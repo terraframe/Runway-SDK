@@ -37,7 +37,9 @@ import com.orientechnologies.orient.core.sql.executor.OResultSet;
 import com.orientechnologies.spatial.shape.OShapeFactory;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
@@ -45,6 +47,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
@@ -53,6 +56,7 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
@@ -66,7 +70,9 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
@@ -431,10 +437,17 @@ public class OrientDBImpl implements GraphDB
     return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
   }
 
+
+  @Override
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required)
+  {
+    return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required);
+  }
+  
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
   {
-    return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);
+    return new OrientDBCreateGeometryPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);
   }
 
   /**
@@ -807,6 +820,21 @@ public class OrientDBImpl implements GraphDB
     {
       return "OMultiPolygon";
     }
+    else if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
+    {
+      MdAttributeEmbeddedDAOIF mdAttributeEmbeddedDAO = (MdAttributeEmbeddedDAOIF)mdAttribute;
+      
+      MdClassDAOIF mdClassDAOIF = mdAttributeEmbeddedDAO.getEmbeddedMdClassDAOIF();
+      
+      if (mdClassDAOIF instanceof MdGraphClassDAOIF)
+      {
+        return ((MdGraphClassDAOIF)mdClassDAOIF).getDBClassName();
+      }
+      else
+      {
+        throw new ProgrammingErrorException("Attribute ["+MdAttributeEmbeddedInfo.CLASS+"] can only be defined on a ["+MdGraphClassInfo.CLASS+"]");
+      }
+    }
 
     throw new ProgrammingErrorException("Unknown column type for MdAttribute [" + mdAttribute.getType() + "]");
   }
@@ -822,7 +850,7 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.newVertex(dbClassName);
 
-    this.populateVertex(graphObjectDAO, vertex);
+    this.populateVertex(db, graphObjectDAO, vertex);
     this.populateSequence(db, graphObjectDAO, vertex);
 
     ORecord record = vertex.save();
@@ -850,7 +878,7 @@ public class OrientDBImpl implements GraphDB
       throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
     }
 
-    this.populateVertex(graphObjectDAO, vertex);
+    this.populateVertex(db, graphObjectDAO, vertex);
     this.populateSequence(db, graphObjectDAO, vertex);
 
     vertex.save();
@@ -1095,18 +1123,27 @@ public class OrientDBImpl implements GraphDB
             throw new ProgrammingErrorException(e);
           }
         }
+        else if (mdAttribute instanceof MdAttributeEmbeddedDAO)
+        {
+          if (value instanceof OVertex)
+          {
+            OVertex embedOVertex = (OVertex)value;
+            AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
+            GraphObjectDAO embedGraphObjectDAO = (GraphObjectDAO)attributeEmbedded.getObjectValue();
+            this.populateDAO(embedOVertex, embedGraphObjectDAO);
+          }
+        }
         else
         {
           attribute.setValueInternal(value);
         }
       }
     }
-    // Heads up: clean up
-    // vertexDAO.setIsNew(false);
+
     vertexDAO.setRID(vertex.getIdentity());
   }
 
-  protected void populateVertex(GraphObjectDAO graphObjectDAO, OVertex vertex)
+  protected void populateVertex(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OVertex vertex)
   {
     Attribute[] attributes = graphObjectDAO.getAttributeArray();
 
@@ -1146,6 +1183,41 @@ public class OrientDBImpl implements GraphDB
           vertex.setProperty(columnName, null);
         }
       }
+      else if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
+      {
+        MdAttributeEmbeddedDAOIF mdAttributeEmbedded = (MdAttributeEmbeddedDAOIF)mdAttribute;
+        String embeddedClassName = ((MdGraphClassDAOIF)mdAttributeEmbedded.getEmbeddedMdClassDAOIF()).getDBClassName();
+        String columnName = mdAttributeEmbedded.getColumnName();
+        
+        OVertex innerVertex = null;
+        
+        AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
+        GraphObjectDAO embeddedObject = (GraphObjectDAO)attributeEmbedded.getObjectValue();
+        
+        if (embeddedObject != null)
+        {
+          OElement oElement = vertex.getProperty(columnName);
+          
+          if (oElement == null)
+          {
+            innerVertex = db.newVertex(embeddedClassName);
+          }
+          else if (oElement instanceof OVertex)
+          {
+            innerVertex = (OVertex)oElement;
+          }
+          
+          if (innerVertex != null)
+          {
+            // persist the values on the inner embedded object
+            this.populateVertex(db, embeddedObject, innerVertex);
+          }
+        }
+        // else embeddedObject == null-  if there is no embedded object, then set the propperty to null
+        
+        vertex.setProperty(columnName, innerVertex);
+      }
+      
       else
       {
         String columnName = mdAttribute.getColumnName();

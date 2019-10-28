@@ -46,6 +46,7 @@ import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -57,6 +58,7 @@ import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
+import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
@@ -897,6 +899,12 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     }
 
     return mdAttributeMap;
+  }
+  
+  
+  public static MdClassDAOIF get(String oid)
+  {
+    return (MdClassDAOIF) BusinessDAO.get(oid);
   }
 
   /**

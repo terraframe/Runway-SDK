@@ -265,6 +265,20 @@ public interface GraphDB
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required);
 
   /**
+   * Adds an embedded attribute of the given name and type.
+   * 
+   * @param graphRequest
+   * @param ddlGraphDBRequest
+   * @param className
+   * @param attributeName
+   * @param geometryType
+   * @param required
+   * @return
+   */
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required);
+
+  
+  /**
    * Adds a geometry attribute of the given name and type.
    * 
    * @param graphRequest

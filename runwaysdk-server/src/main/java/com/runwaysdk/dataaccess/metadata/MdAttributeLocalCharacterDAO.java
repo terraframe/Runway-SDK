@@ -48,7 +48,7 @@ public class MdAttributeLocalCharacterDAO extends MdAttributeLocalDAO implements
   }
 
   /**
-   * Constructs a MdAttributeStruct from the given hashtable of Attributes.
+   * Constructs a {@link MdAttributeLocalCharacterDAO} from the given hashtable of Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
