@@ -347,7 +347,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
+  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     return new LinkedList<VertexObjectDAOIF>();
   }

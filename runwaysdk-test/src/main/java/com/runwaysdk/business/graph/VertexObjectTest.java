@@ -735,12 +735,10 @@ public class VertexObjectTest
 
       String stm = "SELECT FROM " + mdVertexDAO.getDBClassName() + " WHERE " + mdCharacterAttribute.getColumnName() + " = :name";
 
-      TreeMap<String, Object> parameters = new TreeMap<String, Object>();
-      parameters.put("name", value);
+      VertexQuery<VertexObject> query = new VertexQuery<VertexObject>(stm);
+      query.setParameter("name", value);
 
-      GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
-
-      List<VertexObject> results = GraphDBService.getInstance().query(request, mdVertexDAO, stm, parameters);
+      List<VertexObject> results = query.getResults();
 
       Assert.assertEquals(1, results.size());
     }

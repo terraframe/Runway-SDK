@@ -1,13 +1,11 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
-import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -307,17 +305,9 @@ public class GraphDBService
     return this.graphDB.getParents(request, vertexDAO, mdEdge);
   }
 
-  public List<VertexObject> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
+  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
-    List<VertexObjectDAOIF> results = this.graphDB.query(request, mdVertex, statement, parameters);
-    LinkedList<VertexObject> list = new LinkedList<VertexObject>();
-
-    for (VertexObjectDAOIF result : results)
-    {
-      list.add(VertexObject.instantiate((VertexObjectDAO) result));
-    }
-
-    return list;
+    return this.graphDB.query(request, statement, parameters);
   }
 
 }

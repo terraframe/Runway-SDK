@@ -333,6 +333,6 @@ public interface GraphDB
 
   public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
 
-  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters);
+  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters);
 
 }

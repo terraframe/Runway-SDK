@@ -942,7 +942,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public List<VertexObjectDAOIF> query(GraphRequest request, MdVertexDAOIF mdVertex, String statement, Map<String, Object> parameters)
+  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     List<VertexObjectDAOIF> results = new LinkedList<VertexObjectDAOIF>();
 
@@ -967,7 +967,7 @@ public class OrientDBImpl implements GraphDB
 
     try (OResultSet rs = db.query(statement, parameters))
     {
-      if (rs.hasNext())
+      while (rs.hasNext())
       {
         OResult result = rs.next();
 
@@ -975,7 +975,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          results.add(this.buildDAO(mdVertex, element));
+          results.add(this.buildDAO(element));
         }
         else
         {
@@ -1044,7 +1044,6 @@ public class OrientDBImpl implements GraphDB
   private List<VertexObjectDAOIF> getVertices(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
   {
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
-    MdVertexDAOIF mdVertex = direction.equals(ODirection.OUT) ? mdEdge.getParentMdVertex() : mdEdge.getChildMdVertex();
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
@@ -1082,6 +1081,9 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateDAO(OElement vertex, GraphObjectDAO vertexDAO)
   {
+    vertexDAO.setIsNew(false);
+    vertexDAO.setAppliedToDB(true);
+
     Attribute[] attributes = vertexDAO.getAttributeArray();
 
     for (Attribute attribute : attributes)
