@@ -19,10 +19,10 @@
 package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.RelationshipMetadata;
 
 public class AddChildPermissionException extends RelationshipPermissionException
 {
@@ -39,19 +39,19 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          access layer information useful for application debugging. The
    *          developer message is saved for later retrieval by the
    *          {@link #getMessage()} method.
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param userIF
    *          The user attempting the operation
    */
-  public AddChildPermissionException(String devMessage, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF userIF)
+  public AddChildPermissionException(String devMessage, Mutable parentMutable, Mutable childMutable,
+      RelationshipMetadata mdRelationshipIF, SingleActorDAOIF userIF)
   {
-    super(devMessage, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, userIF);
+    super(devMessage, Operation.ADD_CHILD, parentMutable, childMutable, mdRelationshipIF, userIF);
   }
 
   /**
@@ -71,19 +71,19 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          {@link #getCause()} method). (A <tt>null</tt> value is
    *          permitted, and indicates that the cause is nonexistent or
    *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public AddChildPermissionException(String devMessage, Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public AddChildPermissionException(String devMessage, Throwable cause, Mutable parentMutable, Mutable childMutable,
+      RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, cause, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, cause, Operation.ADD_CHILD, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -96,19 +96,19 @@ public class AddChildPermissionException extends RelationshipPermissionException
    *          {@link #getCause()} method). (A <tt>null</tt> value is
    *          permitted, and indicates that the cause is nonexistent or
    *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public AddChildPermissionException(Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF,  SingleActorDAOIF user)
+  public AddChildPermissionException(Throwable cause, Mutable parentMutable, Mutable childMutable,
+      RelationshipMetadata mdRelationshipIF,  SingleActorDAOIF user)
   {
-    super(cause, Operation.ADD_CHILD, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(cause, Operation.ADD_CHILD, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -118,6 +118,6 @@ public class AddChildPermissionException extends RelationshipPermissionException
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.addChildPermissionException(this.getLocale(), this.childBusiness, this.parentBusiness, this.mdRelationshipIF.getChildDisplayLabel(this.getLocale()));
+    return ServerExceptionMessageLocalizer.addChildPermissionException(this.getLocale(), this.childMutable, this.parentMutable, this.mdRelationshipIF.getChildDisplayLabel(this.getLocale()));
   }
 }

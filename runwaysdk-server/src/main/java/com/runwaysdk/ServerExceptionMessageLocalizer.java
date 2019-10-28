@@ -1544,7 +1544,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String addChildPermissionException(Locale locale, Business childBusiness, Business parentBusiness, String childRelDisplayLabel)
+  public static String addChildPermissionException(Locale locale, Mutable childBusiness, Mutable parentBusiness, String childRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "AddChildPermissionException", "You do not have permission to add [{0}] to [{1}] as [{2}].", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
   }
@@ -1564,7 +1564,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String addParentPermissionException(Locale locale, Business parentBusiness, Business childBusiness, String childRelDisplayLabel)
+  public static String addParentPermissionException(Locale locale, Mutable parentBusiness, Mutable childBusiness, String childRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "AddParentPermissionException", "You do not have permission to add [{0}] to [{1}] as [{2}].", parentBusiness.toString(), childBusiness.toString(), childRelDisplayLabel);
   }
@@ -1584,7 +1584,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String deleteChildPermissionException(Locale locale, Business childBusiness, Business parentBusiness, String childRelDisplayLabel)
+  public static String deleteChildPermissionException(Locale locale, Mutable childBusiness, Mutable parentBusiness, String childRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "DeleteChildPermissionException", "You do not have permission to remove [{0}] from [{1}] as [{2}].", childBusiness.toString(), parentBusiness.toString(), childRelDisplayLabel);
   }
@@ -1604,7 +1604,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String deleteParentPermissionException(Locale locale, Business parentBusiness, Business childBusiness, String parentRelDisplayLabel)
+  public static String deleteParentPermissionException(Locale locale, Mutable parentBusiness, Mutable childBusiness, String parentRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "DeleteParentPermissionException", "You do not have permission to remove [{0}] from [{1}] as [{2}].", parentBusiness.toString(), childBusiness.toString(), parentRelDisplayLabel);
   }
@@ -1622,7 +1622,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String readChildPermissionException(Locale locale, Business parentBusiness, String childRelDisplayLabel)
+  public static String readChildPermissionException(Locale locale, Mutable parentBusiness, String childRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "ReadChildPermissionException", "You do not have permission to read [{0}] on [{1}].", parentBusiness.toString(), childRelDisplayLabel);
   }
@@ -1640,7 +1640,7 @@ public class ServerExceptionMessageLocalizer
    *          display lable of the child end of the relationship
    * @return The localized error message
    */
-  public static String readParentPermissionException(Locale locale, Business childBusiness, String parentRelDisplayLabel)
+  public static String readParentPermissionException(Locale locale, Mutable childBusiness, String parentRelDisplayLabel)
   {
     return LocalizationFacade.getMessage(locale, "ReadParentPermissionException", "You do not have permission to read [{0}] on [{1}].", childBusiness.toString(), parentRelDisplayLabel);
   }

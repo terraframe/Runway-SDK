@@ -33,7 +33,7 @@ import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
  * @author nathan
  *
  */
-public interface MdRelationshipDAOIF extends MdElementDAOIF
+public interface MdRelationshipDAOIF extends MdElementDAOIF, RelationshipMetadata
 {
   /**
    * Name of the table used to store intances of this class.
@@ -97,24 +97,6 @@ public interface MdRelationshipDAOIF extends MdElementDAOIF
   public String getParentCardinality();
 
   /**
-   *Returns the display label of the role of the parents in this relationship.
-   *
-   *@param locale
-   *
-   * @return the display label of the role of the parents in this relationship.
-   */
-  public String getParentDisplayLabel(Locale locale);
-
-  /**
-   * Returns a map where the key is the locale and the value is the localized
-   * String value.
-   *
-   * @return map where the key is the locale and the value is the localized
-   *   String value.
-   */
-  public Map<String, String> getParentDisplayLabes();
-
-  /**
    * Specifies the name of the getter method for the parent in the relationship.
    * Note that the method actually exists on the child.  For example, in the
    * relationship Person Owns Vehicle (Person is the parent), an appropriate
@@ -143,24 +125,6 @@ public interface MdRelationshipDAOIF extends MdElementDAOIF
    * @return the cardinality of child instances in this relationship type.
    */
   public String getChildCardinality();
-
-  /**
-   *Returns the display label of the role of the children in this relationship.
-   *
-   *@param locale
-   *
-   * @return the display label of the role of the children in this relationship.
-   */
-  public String getChildDisplayLabel(Locale locale);
-
-  /**
-   * Returns a map where the key is the locale and the value is the localized
-   * String value.
-   *
-   * @return map where the key is the locale and the value is the localized
-   *   String value.
-   */
-  public Map<String, String> getChildDisplayLabes();
 
   /**
    * Specifies the name of the getter method for the child in the relationship.

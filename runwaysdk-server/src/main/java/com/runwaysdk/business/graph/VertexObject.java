@@ -1,6 +1,7 @@
 package com.runwaysdk.business.graph;
 
 import java.lang.reflect.Constructor;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -183,5 +184,4 @@ public class VertexObject extends GraphObject
 
     return new VertexObject((VertexObjectDAO) vertexDAO);
   }
-
 }

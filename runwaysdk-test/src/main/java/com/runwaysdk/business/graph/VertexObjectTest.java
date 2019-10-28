@@ -153,7 +153,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -164,7 +164,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = "Updated Value";
@@ -174,7 +174,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -194,7 +194,7 @@ public class VertexObjectTest
     Integer value = new Integer(5);
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -205,7 +205,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Integer(10);
@@ -215,7 +215,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -235,7 +235,7 @@ public class VertexObjectTest
     Long value = new Long(5);
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -245,7 +245,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Long(10);
@@ -255,7 +255,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -275,7 +275,7 @@ public class VertexObjectTest
     Float value = new Float(5F);
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -285,7 +285,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Float(10F);
@@ -295,7 +295,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -315,7 +315,7 @@ public class VertexObjectTest
     Double value = new Double(5D);
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -325,7 +325,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Double(10D);
@@ -335,7 +335,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -355,7 +355,7 @@ public class VertexObjectTest
     Boolean value = Boolean.TRUE;
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -365,7 +365,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = Boolean.FALSE;
@@ -375,7 +375,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -398,7 +398,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -408,7 +408,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       cal = TestFixtureFactory.getDate();
@@ -421,7 +421,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -441,7 +441,7 @@ public class VertexObjectTest
     Date value = new Date();
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -451,7 +451,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Date();
@@ -461,7 +461,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -481,7 +481,7 @@ public class VertexObjectTest
     Date value = new Date();
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -491,7 +491,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = new Date();
@@ -501,7 +501,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -522,7 +522,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -532,7 +532,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = TestFixtureFactory.getPoint2();
@@ -542,7 +542,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -563,7 +563,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -573,7 +573,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
       value = TestFixtureFactory.getPolygon2();
@@ -583,7 +583,7 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -604,7 +604,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -614,7 +614,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -635,7 +635,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -645,7 +645,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -666,7 +666,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -676,7 +676,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
@@ -697,7 +697,7 @@ public class VertexObjectTest
 
     vertex.setValue(attributeName, value);
 
-    Assert.assertEquals(value, vertex.getValue(attributeName));
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
 
     try
     {
@@ -707,7 +707,7 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      Assert.assertEquals(value, test.getValue(attributeName));
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {

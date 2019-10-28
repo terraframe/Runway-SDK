@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.session;
 
-import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.RelationshipMetadata;
 
 public abstract class RelationshipPermissionException extends PermissionException
 {
@@ -31,9 +31,9 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    */
   private static final long serialVersionUID = 7270801852455204703L;
   
-  protected Business parentBusiness;
-  protected Business childBusiness;
-  protected MdRelationshipDAOIF mdRelationshipIF;
+  protected Mutable parentMutable;
+  protected Mutable childMutable;
+  protected RelationshipMetadata mdRelationshipIF;
  
   /**
    * Constructs a new PermissionException with the specified developer message.
@@ -45,22 +45,22 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          {@link #getMessage()} method.
    * @param operation
    *          The failed operation
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public RelationshipPermissionException(String devMessage, Operation operation, Business parentBusiness, Business childBusiness, 
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public RelationshipPermissionException(String devMessage, Operation operation, Mutable parentMutable, Mutable childMutable, 
+      RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, parentBusiness, operation, user);
+    super(devMessage, parentMutable, operation, user);
     
-    this.parentBusiness = parentBusiness;
-    this.childBusiness = childBusiness;
+    this.parentMutable = parentMutable;
+    this.childMutable = childMutable;
     this.mdRelationshipIF = mdRelationshipIF;
   }
   
@@ -83,22 +83,22 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          unknown.)
    * @param operation
    *          The failed operation
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public RelationshipPermissionException(String devMessage, Throwable cause, Operation operation, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public RelationshipPermissionException(String devMessage, Throwable cause, Operation operation, Mutable parentMutable, Mutable childMutable,
+      RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, cause, parentBusiness, operation, user);
+    super(devMessage, cause, parentMutable, operation, user);
     
-    this.parentBusiness = parentBusiness;
-    this.childBusiness = childBusiness;
+    this.parentMutable = parentMutable;
+    this.childMutable = childMutable;
     this.mdRelationshipIF = mdRelationshipIF;
   }
   
@@ -114,22 +114,22 @@ public abstract class RelationshipPermissionException extends PermissionExceptio
    *          unknown.)
    * @param operation
    *          The failed operation
-   * @param parentBusiness
-   *          The parentBusiness that this child is added to
-   * @param childBusiness
-   *          The childBusiness being added to the parent
+   * @param parentMutable
+   *          The parentMutable that this child is added to
+   * @param childMutable
+   *          The childMutable being added to the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public RelationshipPermissionException(Throwable cause, Operation operation, Business parentBusiness, Business childBusiness, 
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public RelationshipPermissionException(Throwable cause, Operation operation, Mutable parentMutable, Mutable childMutable, 
+      RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(cause, parentBusiness, operation, user);
+    super(cause, parentMutable, operation, user);
 
-    this.parentBusiness = parentBusiness;
-    this.childBusiness = childBusiness;
+    this.parentMutable = parentMutable;
+    this.childMutable = childMutable;
     this.mdRelationshipIF = mdRelationshipIF; 
   }
   
