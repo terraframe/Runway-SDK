@@ -35,7 +35,7 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " " + CommonGenerationUtil.GET + attributeName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("return (" + m.javaType(false) + ") this.getValue(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().writeLine("return (" + m.javaType(false) + ") this.getObjectValue(" + m.definesAttribute().toUpperCase() + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
@@ -56,7 +56,7 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     getWriter().writeLine(getterVisibility.getJavaModifier() + " " + m.javaType(false) + " get" + attributeName + "()");
     getWriter().openBracket();
 
-    getWriter().writeLine("if (getValue(" + m.definesAttribute().toUpperCase() + ") == null)");
+    getWriter().writeLine("if (this.getObjectValue(" + m.definesAttribute().toUpperCase() + ") == null)");
     getWriter().openBracket();
     getWriter().writeLine("return null;");
     getWriter().closeBracket();
@@ -65,11 +65,11 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     getWriter().openBracket();
     if (referenceMdBusiness.isGenerateSource())
     {
-      getWriter().writeLine("return " + referenceMdBusiness.definesType() + ".get( (String) this.getValue(" + m.definesAttribute().toUpperCase() + "));");
+      getWriter().writeLine("return " + referenceMdBusiness.definesType() + ".get( (String) this.getObjectValue(" + m.definesAttribute().toUpperCase() + "));");
     }
     else
     {
-      getWriter().writeLine("return " + Business.class.getName() + ".get( (String) this.getValue(" + m.definesAttribute().toUpperCase() + "));");
+      getWriter().writeLine("return " + Business.class.getName() + ".get( (String) this.getObjectValue(" + m.definesAttribute().toUpperCase() + "));");
     }
     getWriter().closeBracket();
 
@@ -80,7 +80,7 @@ public abstract class GraphObjectBaseGenerator extends ClassBaseGenerator
     String refAttributeIdName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute()) + CommonGenerationUtil.upperFirstCharacter(ComponentInfo.OID);
     getWriter().writeLine(getterVisibility.getJavaModifier() + " String get" + refAttributeIdName + "()");
     getWriter().openBracket();
-    getWriter().writeLine("return (String) this.getValue(" + m.definesAttribute().toUpperCase() + ");");
+    getWriter().writeLine("return (String) this.getObjectValue(" + m.definesAttribute().toUpperCase() + ");");
     getWriter().closeBracket();
     getWriter().writeLine("");
   }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 
-public interface MdEdgeDAOIF extends MdGraphClassDAOIF
+public interface MdEdgeDAOIF extends MdGraphClassDAOIF, RelationshipMetadata
 {
   /**
    * Name of the table used to store instances of this class.

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -45,6 +45,8 @@ import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.Warning;
+import com.runwaysdk.business.graph.GraphObject;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
@@ -55,6 +57,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -80,7 +83,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     // Initialize the connection pool of the graph database, if one is present
     GraphDBService.getInstance().initializeConnectionPool();
   }
-  
+
   declare                                       precedence : AbstractTransactionManagement+;
 
   protected RequestState                        requestState;
@@ -95,9 +98,9 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   private Map<String, AttributeNotificationMap> attributeNotificationMapMap = new HashMap<String, AttributeNotificationMap>();
 
-  private List<ProblemIF> problemList = new LinkedList<ProblemIF>();
+  private List<ProblemIF>                       problemList                 = new LinkedList<ProblemIF>();
 
-  protected Logger log = LoggerFactory.getLogger(AbstractRequestManagement.class);
+  protected Logger                              log                         = LoggerFactory.getLogger(AbstractRequestManagement.class);
 
   public RequestState getRequestState()
   {
@@ -110,8 +113,8 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
   /**
-   * Some things, like permission checking, does not need to be done if
-   * the request does not occur in an initialized session.
+   * Some things, like permission checking, does not need to be done if the
+   * request does not occur in an initialized session.
    *
    * @return true if the session has been initialized, false otherwise;
    */
@@ -145,12 +148,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   public pointcut nonThreadRequest()
   : (nonAnnotizedRequestEntryPoints() || defaultRequest(Request) || sessionRequest(Request, String));
 
-//  public pointcut nonThreadRequest(Request request)
-//  : (nonAnnotizedRequestEntryPoints() || defaultRequest(Request) || sessionRequest(Request, String)) && @annotation(request);
+  // public pointcut nonThreadRequest(Request request)
+  // : (nonAnnotizedRequestEntryPoints() || defaultRequest(Request) ||
+  // sessionRequest(Request, String)) && @annotation(request);
 
   public abstract pointcut request();
 
-//  public abstract pointcut request(Request request);
+  // public abstract pointcut request(Request request);
 
   public pointcut nonAnnotizedRequestEntryPoints()
   :  execution (public * com.runwaysdk.dataaccess.io..*.*(..))
@@ -196,61 +200,57 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // suite.addTest(JSONWebServiceInvokeMethodTest.suite());
   // suite.addTest(SeleniumTestSuite.suite());
 
-
   public pointcut allRequestEntryPoints()
   : nonAnnotizedRequestEntryPoints() || nonThreadRequest() || threadRequest(Request);
 
-//  public pointcut allRequestEntryPoints()
-//  : nonAnnotizedRequestEntryPoints() || nonThreadRequest(Request) || threadRequest(Request);
+  // public pointcut allRequestEntryPoints()
+  // : nonAnnotizedRequestEntryPoints() || nonThreadRequest(Request) ||
+  // threadRequest(Request);
 
   public abstract pointcut enterSession();
 
-/*
-  public pointcut enterSession() :
-    execution (@com.runwaysdk.session.Request * *+.*(..))
-    || execution (public * com.runwaysdk.dataaccess.io..*.*(..))
-    || (
-          ( execution (* junit.framework.TestSuite+.*(..)) ||
-            execution (* junit.extensions.TestSetup+.*(..)) ||
-            execution (* junit.framework.TestCase+.*(..))
-          )
-
-        && (
-
-// !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..)))
-// &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceAdapterTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
-
-//            !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceAdapterTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..))) &&
-            !cflow(execution (* com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
-
-           && !within(com.runwaysdk.facade.AdapterTest+)
-           && !within(com.runwaysdk.facade.SessionDTOAdapterTest+)
-           && !within(com.runwaysdk.facade.FacadeGenerationTest+)
-           && !within(com.runwaysdk.facade.InvokeSessionComponentMethodTestBase+)
-           && !within(com.runwaysdk.facade.InvokeMethodTestBase+)
-           && !within(com.runwaysdk.facade.MessageTest+)
-           && !within(com.runwaysdk.facade.*SeleniumTest*)
-
-           && !within(com.runwaysdk.DoNotWeave+)
-    ));
-
-  // suite.addTest(WebServiceAdapterTest.suite());
-  // suite.addTest(WebServiceInvokeMethodTest.suite());
-  // suite.addTest(WebServiceFacadeGenerationTest.suite());
-  // suite.addTest(JSONWebServiceInvokeMethodTest.suite());
-  // suite.addTest(SeleniumTestSuite.suite());
-*/
+  /*
+   * public pointcut enterSession() : execution (@com.runwaysdk.session.Request
+   * * *+.*(..)) || execution (public * com.runwaysdk.dataaccess.io..*.*(..)) ||
+   * ( ( execution (* junit.framework.TestSuite+.*(..)) || execution (*
+   * junit.extensions.TestSetup+.*(..)) || execution (*
+   * junit.framework.TestCase+.*(..)) )
+   * 
+   * && (
+   * 
+   * // !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..))) // && //
+   * !cflow(execution (* // com.runwaysdk.facade.WebServiceAdapterTest.*(..)))
+   * && // !cflow(execution (* //
+   * com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) && //
+   * !cflow(execution (* //
+   * com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..))) && //
+   * !cflow(execution (* //
+   * com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
+   * 
+   * // !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..))) && //
+   * !cflow(execution (* com.runwaysdk.facade.WebServiceAdapterTest.*(..))) &&
+   * // !cflow(execution (*
+   * com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) && //
+   * !cflow(execution (* com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..)))
+   * && !cflow(execution (*
+   * com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
+   * 
+   * && !within(com.runwaysdk.facade.AdapterTest+) &&
+   * !within(com.runwaysdk.facade.SessionDTOAdapterTest+) &&
+   * !within(com.runwaysdk.facade.FacadeGenerationTest+) &&
+   * !within(com.runwaysdk.facade.InvokeSessionComponentMethodTestBase+) &&
+   * !within(com.runwaysdk.facade.InvokeMethodTestBase+) &&
+   * !within(com.runwaysdk.facade.MessageTest+) &&
+   * !within(com.runwaysdk.facade.*SeleniumTest*)
+   * 
+   * && !within(com.runwaysdk.DoNotWeave+) ));
+   * 
+   * // suite.addTest(WebServiceAdapterTest.suite()); //
+   * suite.addTest(WebServiceInvokeMethodTest.suite()); //
+   * suite.addTest(WebServiceFacadeGenerationTest.suite()); //
+   * suite.addTest(JSONWebServiceInvokeMethodTest.suite()); //
+   * suite.addTest(SeleniumTestSuite.suite());
+   */
   public pointcut topLevelSession()
     :  enterSession()
     && !cflowbelow(enterSession());
@@ -273,19 +273,21 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   protected pointcut throwProblem(ProblemIF problemIF)
   : (execution (* com.runwaysdk.ProblemIF+.throwIt())
   && target(problemIF));
-  before (ProblemIF problemIF) : throwProblem(problemIF)
+
+  before(ProblemIF problemIF) : throwProblem(problemIF)
   {
-    log.info( RunwayLogUtil.formatLoggableMessage(problemIF.getDeveloperMessage(), problemIF.getLocalizedMessage()) );
+    log.info(RunwayLogUtil.formatLoggableMessage(problemIF.getDeveloperMessage(), problemIF.getLocalizedMessage()));
     problemList.add(problemIF);
   }
 
   protected pointcut getProblemsInCurrentRequest()
   : (execution (* com.runwaysdk.session.RequestState.getProblemsInCurrentRequest()));
-  Object around () : getProblemsInCurrentRequest()
+
+  Object around() : getProblemsInCurrentRequest()
   {
     return problemList;
   }
-  
+
   // Execute the create Commands now, but save the deletes for later.
   protected pointcut attributeNotificationMap(AttributeNotificationMap attributeNotificationMap)
     : execution(com.runwaysdk.dataaccess.transaction.AttributeNotificationMap+.new(..)) && this(attributeNotificationMap);
@@ -308,18 +310,17 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     return this.getRequestState().getDatabaseConnection();
   }
 
-
   protected pointcut getGraphRequest()
-//  :  call(Optional<GraphRequest> com.runwaysdk.dataaccess.graph.GraphDBService.getGraphDBRequest())
+  // : call(Optional<GraphRequest>
+  // com.runwaysdk.dataaccess.graph.GraphDBService.getGraphDBRequest())
     :  call(* com.runwaysdk.dataaccess.graph.GraphDBService.getGraphDBRequest())
   && !within(RequestState);
-  
+
   Object around() : getGraphRequest()
-  {  
+  {
     return this.getRequestState().getGraphDBRequest();
   }
-  
-  
+
   protected pointcut closeGraphRequest()
   :  call(void com.runwaysdk.dataaccess.graph.GraphRequest+.close())
   && !within(AbstractRequestManagement+)
@@ -331,8 +332,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     // NOT clossing the Graph DB
   }
-  
-  
+
   // Trace usage of all connection objects, except those used by assertion
   // checking
   // protected pointcut connectionTrace()
@@ -372,6 +372,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // //////////////////////////////////////////////////////////////////////////////////////////////////////
   pointcut getCurrentSession()
   : execution (* com.runwaysdk.session.Session.getCurrentSession());
+
   Object around() : getCurrentSession()
   {
     return this.getRequestState().getSession();
@@ -379,6 +380,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   pointcut getCurrentRequestState()
   : execution (* com.runwaysdk.session.RequestState.getCurrentRequestState());
+
   Object around() : getCurrentRequestState()
   {
     return this.getRequestState();
@@ -387,7 +389,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   protected pointcut checkMethodExecutePermission(Mutable mutable)
   : ( execution (@Authenticate  * *.*(..)) && this(mutable));
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressAjWarnings({ "adviceDidNotMatch" })
   Object around(Mutable mutable) : checkMethodExecutePermission(mutable)
   {
     Signature signature = thisJoinPointStaticPart.getSignature();
@@ -433,7 +435,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   protected pointcut checkStaticMethodExecutePermission()
   : ( execution (@Authenticate  static * *.*(..)));
 
-  @SuppressAjWarnings({"adviceDidNotMatch"})
+  @SuppressAjWarnings({ "adviceDidNotMatch" })
   Object around() : checkStaticMethodExecutePermission()
   {
     Signature signature = thisJoinPointStaticPart.getSignature();
@@ -525,31 +527,33 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   // Ensures a userIF has create permissions on a Business when requesting a new
   // instance
-//  pointcut getNewBusinessFromFacade(String type)
-//  : call (* com.runwaysdk.business.BusinessFacade.newBusiness(..)) && args(type)
-//  && withincode (* com.runwaysdk.facade.Facade.newBusiness(String, String))
-//  && (cflow(topLevelPermission(String)));
-//  Object around(String type) : getNewBusinessFromFacade(type)
-//  {
-//    Business business = (Business) proceed(type);
-//
-//    // Check execute permission on this method
-//    if (this.mdMethodIFStack.size() > 0)
-//    {
-//      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-//      checkEntityCreatePermission(mdMethodIF, business);
-//    }
-//    else
-//    {
-//      checkEntityCreatePermission(sessionId, business);
-//    }
-//
-//    return business;
-//  }
+  // pointcut getNewBusinessFromFacade(String type)
+  // : call (* com.runwaysdk.business.BusinessFacade.newBusiness(..)) &&
+  // args(type)
+  // && withincode (* com.runwaysdk.facade.Facade.newBusiness(String, String))
+  // && (cflow(topLevelPermission(String)));
+  // Object around(String type) : getNewBusinessFromFacade(type)
+  // {
+  // Business business = (Business) proceed(type);
+  //
+  // // Check execute permission on this method
+  // if (this.mdMethodIFStack.size() > 0)
+  // {
+  // MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
+  // checkEntityCreatePermission(mdMethodIF, business);
+  // }
+  // else
+  // {
+  // checkEntityCreatePermission(sessionId, business);
+  // }
+  //
+  // return business;
+  // }
 
   pointcut getNewBusinessFromFacade(String type)
   : call (* com.runwaysdk.business.BusinessFacade.newBusiness(..)) && args(type)
   && withincode (* com.runwaysdk.facade.Facade.newBusiness(String, String));
+
   Object around(String type) : getNewBusinessFromFacade(type)
   {
     Business business = (Business) proceed(type);
@@ -570,14 +574,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     return business;
   }
-  
+
   pointcut getNewDisconnectedEntityFromFacade(String type)
   : call (* com.runwaysdk.business.BusinessFacade.newEntity(..)) && args(type)
   && withincode (* com.runwaysdk.facade.Facade.newDisconnectedEntity(String, String));
+
   Object around(String type) : getNewDisconnectedEntityFromFacade(type)
   {
     Entity business = (Entity) proceed(type);
-    
+
     if (this.isSessionInitialized())
     {
       // Check execute permission on this method
@@ -591,7 +596,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         this.checkEntityReadPermission(business);
       }
     }
-    
+
     return business;
   }
 
@@ -599,6 +604,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // modify it.
   pointcut applyEntity(Entity entity)
   : execution (* com.runwaysdk.business.Entity.apply()) && this(entity);
+
   before(Entity entity)
   : applyEntity(entity)
   {
@@ -619,8 +625,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         // owner to the userIF currently performing the action
 
         // Do not overwrite the owner if we are importing the object.
-        if (!entityDAO.isImport() && entityDAO.hasAttribute(ElementInfo.OWNER)
-            && ( entityDAO.getAttributeIF(ElementInfo.OWNER).getValue().trim().equals("") ))
+        if (!entityDAO.isImport() && entityDAO.hasAttribute(ElementInfo.OWNER) && ( entityDAO.getAttributeIF(ElementInfo.OWNER).getValue().trim().equals("") ))
         {
           entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getOid());
         }
@@ -651,8 +656,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       if (entityDAO.hasAttribute(ElementInfo.LAST_UPDATED_BY))
       {
 
-        if (this.mdMethodIFStack.size() > 0 && entity.hasAttribute(ElementInfo.LOCKED_BY)
-            && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getOid()))
+        if (this.mdMethodIFStack.size() > 0 && entity.hasAttribute(ElementInfo.LOCKED_BY) && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getOid()))
         {
           MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
           MethodActorDAOIF methodActorIF = MethodFacade.getMethodActorIF(mdMethodIF);
@@ -660,8 +664,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
           // checkEntityWritePermission method would have thrown an exception.
           if (methodActorIF != null)
           {
-            if (!entityDAO.isImport() &&
-                (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
+            if (!entityDAO.isImport() && ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
             {
               entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getOid());
             }
@@ -669,8 +672,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
         }
         else
         {
-          if (!entityDAO.isImport() &&
-              (!entityDAO.isImportResolution() || (entityDAO.isImportResolution() && entityDAO.isMasteredHere())))
+          if (!entityDAO.isImport() && ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
           {
             entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getOid());
           }
@@ -683,6 +685,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut elementLockedByCheck(Element element)
     : (execution (* com.runwaysdk.business.Element+.userLock(String)))
       && target(element);
+
   before(Element element)
   : elementLockedByCheck(element)
   {
@@ -710,6 +713,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       execution (* com.runwaysdk.business.Entity.setBlob(String, ..))
   )
    && this(entity) && args(attributeName, ..);
+
   before(Entity entity, String attributeName) :
       modifyEntityAttribute(entity, attributeName)
   {
@@ -737,6 +741,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       execution (* com.runwaysdk.business.Element.setStructBlob(String, ..))
   )
    && this(element) && args(attributeName, ..);
+
   before(Element element, String attributeName) :
     modifyElementAttribute(element, attributeName)
   {
@@ -807,8 +812,8 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
     MdAttributeDAOIF mdAttribute = mutable.getMdAttributeDAO(attributeName);
 
-//    boolean hasLock = mutable.hasAttribute(ElementInfo.LOCKED_BY);
-//    String lockById = mutable.getValue(ElementInfo.LOCKED_BY);
+    // boolean hasLock = mutable.hasAttribute(ElementInfo.LOCKED_BY);
+    // String lockById = mutable.getValue(ElementInfo.LOCKED_BY);
 
     if (this.mdMethodIFStack.size() > 0)
     {
@@ -816,16 +821,16 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       boolean access = MethodFacade.checkAttributeAccess(mdMethodIF, Operation.WRITE, mutable, mdAttribute);
 
-      // IMPORTANT: If the method does not have access check if the user has permissions.
-      if(!access)
+      // IMPORTANT: If the method does not have access check if the user has
+      // permissions.
+      if (!access)
       {
         access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
       }
 
       if (!access)
       {
-        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute ["
-            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with oid [" + mutable.getOid() + "]";
+        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with oid [" + mutable.getOid() + "]";
         throw new DomainErrorException(errorMsg);
       }
     }
@@ -835,8 +840,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
       if (!access)
       {
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the write permission for attribute ["
-            + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "]";
+        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "]";
         throw new AttributeWritePermissionException(errorMsg, mutable, mdAttribute, userIF);
       }
     }
@@ -888,6 +892,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // Check delete permission on an object
   pointcut deleteMutable(Mutable mutable)
     : execution (* com.runwaysdk.business.Mutable.delete()) && this(mutable);
+
   before(Mutable mutable) : deleteMutable(mutable)
   {
     if (this.isSessionInitialized())
@@ -949,6 +954,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut addChildObject(Business parentBusiness, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addChild(Business, String))
       && args(childBusiness, relationshipType) && this(parentBusiness);
+
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : addChildObject(parentBusiness, childBusiness, relationshipType)
   {
@@ -962,6 +968,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut addChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addChild(String, String))
       && args(childOid, relationshipType) && this(parentBusiness);
+
   before(Business parentBusiness, String childOid, String relationshipType)
     : addChildOid(parentBusiness, childOid, relationshipType)
   {
@@ -1019,6 +1026,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeChildObject(Business parentBusiness, Relationship relationship)
     : execution (* com.runwaysdk.business.Business.removeChild(Relationship))
       && args(relationship) && this(parentBusiness);
+
   before(Business parentBusiness, Relationship relationship)
     : removeChildObject(parentBusiness, relationship)
   {
@@ -1031,6 +1039,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeChildOid(Business parentBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeChild(String))
       && args(relationshipId) && this(parentBusiness);
+
   before(Business parentBusiness, String relationshipId)
     : removeChildOid(parentBusiness, relationshipId)
   {
@@ -1045,6 +1054,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeAllChildObjects(Business parentBusiness, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllChildren(Business, String))
       && args(childBusiness, relationshipType) && this(parentBusiness);
+
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : removeAllChildObjects(parentBusiness, childBusiness, relationshipType)
   {
@@ -1057,6 +1067,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeAllChildOid(Business parentBusiness, String childOid, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllChildren(String, String))
       && args(childOid, relationshipType) && this(parentBusiness);
+
   before(Business parentBusiness, String childOid, String relationshipType)
     : removeAllChildOid(parentBusiness, childOid, relationshipType)
   {
@@ -1068,8 +1079,8 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   /**
    * Checks if session userIF has permission to remove the given child object
-   * from the given parent object. Either childOid or relationshipId is null, but
-   * not both.
+   * from the given parent object. Either childOid or relationshipId is null,
+   * but not both.
    *
    *
    * @param parentBusiness
@@ -1119,6 +1130,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut addParentObject(Business parentBusiness, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addParent(Business, String))
       && args(parentBusiness, relationshipType) && this(childBusiness);
+
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : addParentObject(parentBusiness, childBusiness, relationshipType)
   {
@@ -1132,6 +1144,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut addParentOid(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.addParent(String, String))
       && args(parentOid, relationshipType) && this(childBusiness);
+
   before(String parentOid, Business childBusiness, String relationshipType)
     : addParentOid(parentOid, childBusiness, relationshipType)
   {
@@ -1188,6 +1201,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeParentObject(Business childBusiness, Relationship relationship)
     : execution (* com.runwaysdk.business.Business.removeParent(Relationship))
       && args(relationship) && this(childBusiness);
+
   before(Business childBusiness, Relationship relationship)
     : removeParentObject(childBusiness, relationship)
   {
@@ -1200,6 +1214,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeParentOid(Business childBusiness, String relationshipId)
     : execution (* com.runwaysdk.business.Business.removeParent(String))
       && args(relationshipId) && this(childBusiness);
+
   before(Business childBusiness, String relationshipId)
     : removeParentOid(childBusiness, relationshipId)
   {
@@ -1214,6 +1229,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeAllParentObjects(Business parentBusiness, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllParents(Business, String))
       && args(parentBusiness, relationshipType) && this(childBusiness);
+
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : removeAllParentObjects(parentBusiness, childBusiness, relationshipType)
   {
@@ -1227,6 +1243,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   pointcut removeAllParentOids(String parentOid, Business childBusiness, String relationshipType)
     : execution (* com.runwaysdk.business.Business.removeAllParents(String, String))
       && args(parentOid, relationshipType) && this(childBusiness);
+
   before(String parentOid, Business childBusiness, String relationshipType)
     : removeAllParentOids(parentOid, childBusiness, relationshipType)
   {
@@ -1280,7 +1297,6 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       }
     }
   }
-
 
   /**
    * Throws a business exception if the userIF bound to the given session does
@@ -1345,15 +1361,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param entity
    */
-  private void checkEntityCreatePermission(Entity entity)
+  private void checkEntityCreatePermission(Mutable mutable)
   {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.CREATE, entity);
+    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.CREATE, mutable);
 
     if (!access)
     {
       SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
-      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to create [" + entity.getType() + "] instances.";
-      throw new CreatePermissionException(errorMsg, entity, sessionUserIF);
+      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to create [" + mutable.getType() + "] instances.";
+      throw new CreatePermissionException(errorMsg, mutable, sessionUserIF);
     }
   }
 
@@ -1374,7 +1390,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       throw new DomainErrorException(errorMsg);
     }
   }
-  
+
   /**
    * Checks if the session userIF has create permissions on the given Entity.
    *
@@ -1391,10 +1407,10 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
       throw new ReadPermissionException(errorMsg, entity, sessionUserIF);
     }
   }
-  
+
   /**
-   * Checks if the currently executing method has read permissions on the
-   * given Entity.
+   * Checks if the currently executing method has read permissions on the given
+   * Entity.
    *
    * @param mdMethodIF
    * @param entity
@@ -1402,7 +1418,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   private void checkEntityReadPermission(MdMethodDAOIF mdMethodIF, Entity entity)
   {
     boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.READ, entity);
-    
+
     if (!access)
     {
       String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to read [" + entity.getType() + "] instances.";
@@ -1415,7 +1431,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    *
    * @param entity
    */
-  private void checkEntityWritePermission(Entity entity)
+  private void checkEntityWritePermission(Mutable entity)
   {
     boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity);
 
@@ -1453,11 +1469,11 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     if (message instanceof Warning)
     {
-      log.info( RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()) );
+      log.info(RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()));
     }
     else if (message instanceof Information)
     {
-      log.info( RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()) );
+      log.info(RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()));
     }
 
     messageList.add(message);
@@ -1479,5 +1495,217 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   }
 
   // //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // GRAPH OBJECT ASPECTS AND METHODS
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  // Used to ensure that a userIF must have a lock on the object in order to
+  // modify it.
+  pointcut applyGraphObject(GraphObject graph)
+  : execution (* com.runwaysdk.business.graph.GraphObject.apply()) && this(graph);
+
+  before(GraphObject graph)
+  : applyGraphObject(graph)
+  {
+    if (this.isSessionInitialized())
+    {
+      if (graph.isNew())
+      {
+        this.checkEntityCreatePermission(graph);
+      }
+      else
+      {
+        this.checkEntityWritePermission(graph);
+      }
+    }
+  }
+
+  // Check permission for adding a child to an object
+  pointcut addChildVertex(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
+    : execution (* com.runwaysdk.business.graph.VertexObject.addChild(VertexObject, MdEdgeDAOIF))
+      && args(child, mdEdge) && this(parent);
+
+  before(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
+    : addChildVertex(parent, child, mdEdge)
+  {
+    if (this.isSessionInitialized())
+    {
+      this.checkAddChildObject(parent, child.getOid(), mdEdge);
+    }
+  }
+
+  /**
+   * Checks if session userIF has permission to add the given child object to
+   * the given parent object.
+   *
+   * @param parentBusiness
+   *          object that the child object is added to.
+   * @param childOid
+   *          reference to the child object.
+   * @param relationship
+   *          type of involved.
+   */
+  private void checkAddChildObject(VertexObject parent, String childOid, MdEdgeDAOIF mdEdge)
+  {
+    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, parent, mdEdge.getOid());
+
+    if (!access)
+    {
+      VertexObject child = VertexObject.get(mdEdge.getChildMdVertex(), childOid);
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
+
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdEdge.definesType() + "] on type [" + parent.getType() + "]";
+      throw new AddChildPermissionException(errorMsg, parent, child, mdEdge, userIF);
+    }
+  }
+
+  
+
+  // Check permission for removing a child from an object
+  pointcut removeChildVertex(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
+  : execution (* com.runwaysdk.business.graph.VertexObject.removeChild(VertexObject, MdEdgeDAOIF))
+      && args(child, mdEdge) && this(parent);
+
+  before(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
+    : removeChildVertex(parent, child, mdEdge)
+  {
+    if (this.isSessionInitialized())
+    {
+      this.checkRemoveChildObject(parent, child.getOid(), mdEdge);
+    }
+  }
+
+  /**
+   * Checks if session userIF has permission to remove the given child object
+   * from the given parent object. Either childOid or relationshipId is null,
+   * but not both.
+   *
+   *
+   * @param parent
+   *          object that the child object is removed from.
+   * @param childOid
+   *          oid to the child object.
+   * @param relationshipType
+   *          name of the relationship type.
+   * @param relationshipId
+   *          oid to the relationship.
+   */
+  private void checkRemoveChildObject(VertexObject parent, String childOid, MdEdgeDAOIF mdEdge)
+  {
+    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, parent, mdEdge.getOid());
+
+    if (!access)
+    {
+      VertexObject child = VertexObject.get(mdEdge.getChildMdVertex(), childOid);
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
+
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdEdge.definesType() + "] on type [" + parent.getType() + "]";
+      throw new DeleteChildPermissionException(errorMsg, parent, child, mdEdge, userIF);
+    }
+  }
+  
+  // Check permission for adding a parent to an object
+  pointcut addParentVertex(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
+  : execution (* com.runwaysdk.business.graph.VertexObject.addParent(VertexObject, MdEdgeDAOIF))
+  && args(parent, mdEdge) && this(child);
+  
+  before(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
+  : addParentVertex(child, parent, mdEdge)
+  {
+    if (this.isSessionInitialized())
+    {
+      this.checkAddParentObject(child, parent.getOid(), mdEdge);
+    }
+  }
+  
+  /**
+   * Checks if session userIF has permission to add the given parent object to
+   * the given child object.
+   *
+   * @param childBusiness
+   *          object that the parent object is added to.
+   * @param parentOid
+   *          reference to the parent object.
+   * @param relationship
+   *          type of involved.
+   */
+  private void checkAddParentObject(VertexObject child, String parentOid, MdEdgeDAOIF mdEdge)
+  {
+    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, child, mdEdge.getOid());
+    
+    if (!access)
+    {
+      VertexObject parent = VertexObject.get(mdEdge.getParentMdVertex(), parentOid);
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
+      
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdEdge.definesType() + "] on type [" + child.getType() + "]";
+      throw new AddParentPermissionException(errorMsg, child, parent, mdEdge, userIF);
+    }
+  }
+  
+  
+  
+  // Check permission for removing a parent from an object
+  pointcut removeParentVertex(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
+  : execution (* com.runwaysdk.business.graph.VertexObject.removeParent(VertexObject, MdEdgeDAOIF))
+  && args(parent, mdEdge) && this(child);
+  
+  before(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
+  : removeParentVertex(child, parent, mdEdge)
+  {
+    if (this.isSessionInitialized())
+    {
+      this.checkRemoveParentObject(child, parent.getOid(), mdEdge);
+    }
+  }
+  
+  /**
+   * Checks if session userIF has permission to remove the given parent object
+   * from the given child object. Either parentOid or relationshipId is null,
+   * but not both.
+   *
+   *
+   * @param child
+   *          object that the parent object is removed from.
+   * @param parentOid
+   *          oid to the parent object.
+   * @param relationshipType
+   *          name of the relationship type.
+   * @param relationshipId
+   *          oid to the relationship.
+   */
+  private void checkRemoveParentObject(VertexObject child, String parentOid, MdEdgeDAOIF mdEdge)
+  {
+    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, child, mdEdge.getOid());
+    
+    if (!access)
+    {
+      VertexObject parent = VertexObject.get(mdEdge.getParentMdVertex(), parentOid);
+      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
+      
+      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdEdge.definesType() + "] on type [" + child.getType() + "]";
+      throw new DeleteParentPermissionException(errorMsg, child, parent, mdEdge, userIF);
+    }
+  }
+
+
+  // Check write permission on an object attribute
+  pointcut modifyGraphAttribute(GraphObject entity, String attributeName)
+  : (
+      execution (* com.runwaysdk.business.graph.GraphObject.setValue(String, ..))           ||
+      execution (* com.runwaysdk.business.graph.GraphObject.addEnumItem(String, ..))        ||
+      execution (* com.runwaysdk.business.graph.GraphObject.clearEnum(String))              ||
+      execution (* com.runwaysdk.business.graph.GraphObject.removeEnumItem(String, ..))
+  )
+   && this(entity) && args(attributeName, ..);
+
+  before(GraphObject entity, String attributeName) :
+    modifyGraphAttribute(entity, attributeName)
+  {
+    if (this.isSessionInitialized())
+    {
+      checkAttributePermissions((GraphObject) entity, attributeName);
+    }
+  }
+  
+  
 }

@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.business.generation.GenerationUtil;
@@ -356,6 +357,30 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   {
     AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdEdgeInfo.CHILD_MD_VERTEX);
     return (MdVertexDAOIF) attributeReference.dereference();
+  }
+
+  @Override
+  public String getParentDisplayLabel(Locale locale)
+  {
+    return this.getParentMdVertex().getDisplayLabel(locale);
+  }
+
+  @Override
+  public Map<String, String> getParentDisplayLabes()
+  {
+    return this.getParentMdVertex().getDisplayLabels();
+  }
+
+  @Override
+  public String getChildDisplayLabel(Locale locale)
+  {
+    return this.getChildMdVertex().getDisplayLabel(locale);
+  }
+
+  @Override
+  public Map<String, String> getChildDisplayLabes()
+  {
+    return this.getChildMdVertex().getDisplayLabels();
   }
 
 }

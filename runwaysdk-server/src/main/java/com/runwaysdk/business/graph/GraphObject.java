@@ -7,6 +7,7 @@ import java.util.Set;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.Entity;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -16,7 +17,7 @@ import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
 
-public abstract class GraphObject
+public abstract class GraphObject implements Mutable
 {
 
   public final static String CLASS = GraphObject.class.getName();
@@ -62,6 +63,12 @@ public abstract class GraphObject
   public Object getRID()
   {
     return this.graphObjectDAO.getRID();
+  }
+
+  @Override
+  public String toString()
+  {
+    return this.getMdClass().toString();
   }
 
   /**
@@ -142,7 +149,7 @@ public abstract class GraphObject
    * @param name
    * @return object stored on the attribute.
    */
-  public Object getValue(String name)
+  public Object getObjectValue(String name)
   {
     return this.graphObjectDAO.getObjectValue(name);
   }
@@ -392,65 +399,51 @@ public abstract class GraphObject
     return this.getOid().equals(comp.getOid());
   }
 
-  // /**
-  // * Returns an object of the specified type with the specified oid from the
-  // * database without using reflection. The returned GraphObject is not
-  // * typesafe, meaning that its actual type just a GraphObject.
-  // *
-  // * @param oid
-  // * OID of the instance to get.
-  // * @return Typesafe GraphObject representing the oid in the database.
-  // */
-  // public static GraphObject getGraphObject(String oid)
-  // {
-  // GraphObjectDAO graphObjectDAO =
-  // GraphObjectDAO.get(oid).getGraphObjectDAO();
-  //
-  // return GraphObject.getGraphObject(graphObjectDAO);
-  // }
-  //
-  // public static GraphObject getGraphObject(GraphObjectDAO graphObjectDAO)
-  // {
-  // if (graphObjectDAO instanceof VertexObjectDAO)
-  // {
-  // return new VertexObject((VertexObjectDAO) graphObjectDAO);
-  // }
-  //// else if (graphObjectDAO instanceof EdgeObjectDAO)
-  //// {
-  //// return new EdgeObject((EdgeObjectDAO) graphObjectDAO);
-  //// }
-  //
-  // throw new UnexpectedTypeException("OID [" + graphObjectDAO.getOid() + "] is
-  // not an GraphObject");
-  // }
-  //
-  // /**
-  // * Using reflection, get returns an object of the specified type with the
-  // * specified oid from the database. The returned GraphObject is typesafe,
-  // * meaning that its actual type is that specified by the type parameter.
-  // *
-  // * @param oid
-  // * OID of the instance to get
-  // * @return Typesafe Business representing the oid in the database
-  // */
-  // public static GraphObject get(String oid, String type)
-  // {
-  // // GraphObjectDAOIF graphObjectDAOIF = GraphObjectDAO.(oid);
-  // //
-  // // if (graphObjectDAOIF instanceof RelationshipDAO)
-  // // {
-  // // return Relationship.instantiate((RelationshipDAOIF) graphObjectDAOIF);
-  // // }
-  // // else if (graphObjectDAOIF instanceof BusinessDAO)
-  // // {
-  // // return Business.instantiate((BusinessDAOIF) graphObjectDAOIF);
-  // // }
-  // // else if (graphObjectDAOIF instanceof StructDAO)
-  // // {
-  // // return Struct.instantiate((StructDAOIF) graphObjectDAOIF);
-  // // }
-  //
-  // throw new UnexpectedTypeException("OID [" + oid + "] is not an
-  // GraphObject");
-  // }
+  @Override
+  public void setValue(String name, String _value)
+  {
+    this.getGraphObjectDAO().setValue(name, _value);
+  }
+
+  @Override
+  public void setBlob(String blobName, byte[] value)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void replaceEnumItems(String name, Collection<String> values)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void addMultiItem(String name, String itemId)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void replaceMultiItems(String name, Collection<String> itemIds)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void removeMultiItem(String name, String item)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void clearMultiItems(String name)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getValue(String name)
+  {
+    throw new UnsupportedOperationException();
+  }
 }

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -31,6 +31,7 @@ import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Element;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
@@ -225,10 +226,11 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
   }
 
-/**
+  /**
    * Sets the first {@link MdMethodDAOIF encountered in the request (if any).
    *
-   * @param mdMethodDAOIF first {@link MdMethodDAOIF encountered in the request (if any).
+   * @param mdMethodDAOIF
+   *          first {@link MdMethodDAOIF encountered in the request (if any).
    */
   public void setFirstMdMethodDAOIF(MdMethodDAOIF mdMethodDAOIF)
   {
@@ -247,8 +249,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
   }
 
-/**SingleActorDAOIF
-   * returns the first {@link MdMethodDAOIF encountered in the request (if any).
+  /**
+   * SingleActorDAOIF returns the first {@link MdMethodDAOIF encountered in the
+   * request (if any).
    *
    * @return the first {@link MdMethodDAOIF encountered in the request (if any).
    */
@@ -368,8 +371,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * @param dimension
    *          key for this session.
    * 
-   * @throws {@link DataNotFoundException} if the key does not represent a valid
-   *         dimension if the given key is not null.
+   * @throws {@link
+   *           DataNotFoundException} if the key does not represent a valid
+   *           dimension if the given key is not null.
    */
   public void setDimension(String dimensionKey)
   {
@@ -491,9 +495,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.session.PermissionEntity#checkTypeAccess(com.runwaysdk.business
-   * .rbac.Operation, java.lang.String)
+   * @see com.runwaysdk.session.PermissionEntity#checkTypeAccess(com.runwaysdk.
+   * business .rbac.Operation, java.lang.String)
    */
   public boolean checkTypeAccess(Operation o, String type)
   {
@@ -521,9 +524,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.session.PermissionEntity#checkTypeAccess(com.runwaysdk.business
-   * .rbac.Operation, com.runwaysdk.dataaccess.MdTypeIF)
+   * @see com.runwaysdk.session.PermissionEntity#checkTypeAccess(com.runwaysdk.
+   * business .rbac.Operation, com.runwaysdk.dataaccess.MdTypeIF)
    */
   public boolean checkTypeAccess(Operation o, MdTypeDAOIF mdTypeIF)
   {
@@ -625,9 +627,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * com.runwaysdk.session.PermissionEntity#checkAttributeTypeAccess(com.runwaysdk
-   * .business.rbac.Operation, com.runwaysdk.dataaccess.MdAttributeIF)
+   * @see com.runwaysdk.session.PermissionEntity#checkAttributeTypeAccess(com.
+   * runwaysdk .business.rbac.Operation, com.runwaysdk.dataaccess.MdAttributeIF)
    */
   public boolean checkAttributeTypeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
@@ -659,8 +660,8 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * 
    * 
    * 
-   * @seecom.runwaysdk.session.PermissionEntity#checkAttributeAccess(com.runwaysdk
-   * .business.rbac.Operation, com.runwaysdk.business.Mutable,
+   * @seecom.runwaysdk.session.PermissionEntity#checkAttributeAccess(com.
+   * runwaysdk .business.rbac.Operation, com.runwaysdk.business.Mutable,
    * com.runwaysdk.dataaccess.MdAttributeIF)
    */
   @Override
@@ -837,6 +838,29 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       }
 
       if (this.getOwnerRelationshipOperations(business, mdRelationshipId).contains(o))
+      {
+        return true;
+      }
+
+      return false;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  public boolean checkEdgeAccess(Operation o, VertexObject vertex, String mdEdgeId)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      if (this.isAdmin)
+      {
+        return true;
+      }
+      // ADD/DELETE/READ PARENT/CHILD permission.
+      if (super.checkEdgeAccess(o, vertex, mdEdgeId))
       {
         return true;
       }
@@ -1116,7 +1140,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   public void reloadPermissions()
   {
     this.permissionLock.lock();
-    
+
     try
     {
       // Set the locale to the one configured for the user if no valid locale
@@ -1156,8 +1180,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       this.permissionLock.unlock();
     }
   }
-  
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -1351,10 +1374,10 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   }
 
   /**
-   * Hook method for aspects. This is used to create a mapping between the oid of
-   * an object that is generated on a new <code>MutableDTO</code> to the oid that
-   * is generated on the <code>Mutable</code> object to which the values of the
-   * DTO are copied.
+   * Hook method for aspects. This is used to create a mapping between the oid
+   * of an object that is generated on a new <code>MutableDTO</code> to the oid
+   * that is generated on the <code>Mutable</code> object to which the values of
+   * the DTO are copied.
    * 
    * @param oldTempId
    *          original temporary oid for new instances.
@@ -1363,5 +1386,4 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   public static void mapNewInstanceTempId(String oldTempId, String newId)
   {
   }
-
 }
