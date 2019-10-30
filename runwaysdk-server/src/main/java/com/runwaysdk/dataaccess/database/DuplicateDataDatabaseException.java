@@ -144,7 +144,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     // that is defined by entity metadata. If not, then pass through the database exception.
     try
     {
-      this.mdEntityIF = MdEntityDAO.getMdEntityByTableName(_pkTableName);
+      this.mdClassDAOIF = MdEntityDAO.getMdEntityByTableName(_pkTableName);
       this.pkTableName = _pkTableName;
     }
     catch (DataNotFoundException e)
@@ -180,7 +180,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     else if (this.isIdPrimaryKeyViolation())
     {
       buildPrimaryKeyErrorMessage();
-      return "Duplicate value on ["+this.mdEntityIF.definesType()+"] for attribute(s) "+this.attributeNames;
+      return "Duplicate value on ["+this.mdClassDAOIF.definesType()+"] for attribute(s) "+this.attributeNames;
     }
     else
     {
@@ -199,12 +199,12 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
       buildMdIndexErrorMessage();
     }
     
-    this.errorMessage = "Duplicate value on ["+this.mdEntityIF.definesType()+"] for attribute(s) "+this.attributeNames;
+    this.errorMessage = "Duplicate value on ["+this.mdClassDAOIF.definesType()+"] for attribute(s) "+this.attributeNames;
   }
 
   private void buildPrimaryKeyErrorMessage()
   {
-    MdAttributeDAOIF mdAttributeDAOIF = this.mdEntityIF.getMdAttributeDAO(ComponentInfo.OID);
+    MdAttributeDAOIF mdAttributeDAOIF = this.mdClassDAOIF.getMdAttributeDAO(ComponentInfo.OID);
     
     this.attributeNames += "["+mdAttributeDAOIF.definesAttribute()+"]";
     this.attributeDisplayLabels += "["+mdAttributeDAOIF.getDisplayLabel(this.getLocale())+"]";
@@ -222,9 +222,9 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
       {
         this.mdAttributeWithIndex = MdAttributeConcreteDAO.getMdAttributeWithIndex(this.indexName);
 
-        if (this.mdEntityIF == null)
+        if (this.mdClassDAOIF == null)
         {
-          this.mdEntityIF = (MdEntityDAOIF)this.mdAttributeWithIndex.definedByClass();
+          this.mdClassDAOIF = (MdEntityDAOIF)this.mdAttributeWithIndex.definedByClass();
         }
 
         mdAttributeIFList = new LinkedList<MdAttributeConcreteDAOIF>();
@@ -238,9 +238,9 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     {
       MdIndexDAOIF mdIndexIF = ObjectCache.getMdIndexDAO(this.indexName);
 
-      if (this.mdEntityIF == null)
+      if (this.mdClassDAOIF == null)
       {
-        this.mdEntityIF = mdIndexIF.definesIndexForEntity();
+        this.mdClassDAOIF = mdIndexIF.definesIndexForEntity();
       }
 
       mdAttributeIFList = mdIndexIF.getIndexedAttributes();
@@ -305,22 +305,22 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
       {
         if (valueList.size() > 0)
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
         }
         else
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingleNoValue(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingleNoValue(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
         }
       }
       else
       {
         if (valueList.size() > 0)
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
         }
         else
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultipleNoValues(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultipleNoValues(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
         }
       }
     }

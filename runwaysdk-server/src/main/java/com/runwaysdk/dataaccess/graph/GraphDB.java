@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.graph;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
@@ -334,5 +335,14 @@ public interface GraphDB
   public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
 
   public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters);
+  
+  /**
+   * Transforms the given {@link RuntimeException} from the graph database and transforms it into a 
+   * {@link RunwayException}.
+   * 
+   * @param runEx
+   * @return converted {@link RunwayException}
+   */
+  public RunwayException processException(RuntimeException runEx);
 
 }

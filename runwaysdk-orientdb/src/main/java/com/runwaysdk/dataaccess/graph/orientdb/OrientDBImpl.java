@@ -34,7 +34,9 @@ import com.orientechnologies.orient.core.record.OVertex;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.orient.core.sql.executor.OResultSet;
+import com.orientechnologies.orient.core.storage.ORecordDuplicatedException;
 import com.orientechnologies.spatial.shape.OShapeFactory;
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
@@ -72,6 +74,7 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
@@ -1227,6 +1230,27 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
+  
+  /**
+   * @see GraphDB#processException(RuntimeException)
+   */
+  @Override
+  public RunwayException processException(RuntimeException runEx)
+  {
+    if (runEx instanceof ORecordDuplicatedException)
+    {
+      ORecordDuplicatedException dupEx = (ORecordDuplicatedException)runEx;
+      String dbIndexName = dupEx.getIndexName();
+      MdAttributeConcreteDAOIF mdAttribute = MdAttributeConcreteDAO.getMdAttributeWithIndex(dbIndexName);
+      
+      MdGraphClassDAOIF mdGraphClass = (MdGraphClassDAOIF)mdAttribute.definedByClass();
+      
+      
+    }
+    
+    return null;
+  }
+  
   protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)
   {
     MdGraphClassDAOIF mdGraphClassDAO = graphObjectDAO.getMdGraphClassDAO();

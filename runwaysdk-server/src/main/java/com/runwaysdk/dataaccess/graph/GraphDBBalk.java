@@ -4,10 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 /**
  * This class implements the Balk pattern for instances where no graph database
@@ -350,5 +352,13 @@ public class GraphDBBalk implements GraphDB
   public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     return new LinkedList<VertexObjectDAOIF>();
+  }
+  
+  /**
+   * @see GraphDB#processException(RuntimeException)
+   */
+  public RunwayException processException(RuntimeException runEx)
+  {
+    return new ProgrammingErrorException("Balk exception");
   }
 }

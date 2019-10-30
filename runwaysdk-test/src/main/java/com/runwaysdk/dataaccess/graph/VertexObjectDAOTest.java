@@ -87,7 +87,7 @@ public class VertexObjectDAOTest
   private static MdAttributeTimeDAO            mdTimeAttribute;
 
   private static MdAttributeTextDAO            mdTextAttribute;
-  
+
   private static MdAttributePointDAO           mdPointAttribute;
 
   private static MdAttributePolygonDAO         mdPolygonAttribute;
@@ -103,12 +103,12 @@ public class VertexObjectDAOTest
   private static MdAttributeReferenceDAO       mdReferenceAttribute;
 
   private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
-  
+
   private static MdAttributeEmbeddedDAO        mdAttributeEmbedded;
-  
+
   // Embedded class
   private static MdVertexDAO                   mdEmbeddedVertexDAO;
-  
+
   private static MdAttributeCharacterDAO       mdEmbeddedCharacterAttribute;
 
   @Request
@@ -116,14 +116,14 @@ public class VertexObjectDAOTest
   public static void classSetup()
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
-    
+
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_VERTEX1_TYPE);
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_EMBEDDED_VERTEX1_TYPE);
 
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_CLASS1_TYPE);
-    
+
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_ENUM_CLASS1_TYPE);
-    
+
     classSetup_Transaction();
   }
 
@@ -172,7 +172,7 @@ public class VertexObjectDAOTest
 
     mdTextAttribute = TestFixtureFactory.addTextAttribute(mdVertexDAO);
     mdTextAttribute.apply();
-    
+
     mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
     mdPointAttribute.apply();
 
@@ -196,18 +196,17 @@ public class VertexObjectDAOTest
 
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
-    
-    
+
     // Define the embedded class
     mdEmbeddedVertexDAO = TestFixtureFactory.createMdVertex("TestEmbeddedClass");
     mdEmbeddedVertexDAO.apply();
-    
+
     mdEmbeddedCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdEmbeddedVertexDAO);
     mdEmbeddedCharacterAttribute.apply();
-    
+
     mdAttributeEmbedded = TestFixtureFactory.addEmbeddedttribute(mdVertexDAO, mdEmbeddedVertexDAO);
     mdAttributeEmbedded.apply();
-    
+
   }
 
   @Request
@@ -229,70 +228,90 @@ public class VertexObjectDAOTest
     TestFixtureFactory.delete(mdEmbeddedVertexDAO);
   }
 
-//  @Request
-//  @Test
-//  public void testEmbeddedAttribute()
-//  {
-//    String embeddedAttributeName = mdAttributeEmbedded.definesAttribute();
-//
-//    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-//
-//    Assert.assertNotNull(vertexDAO.getAttributeIF(embeddedAttributeName));
-//
-//    VertexObjectDAO embeddedVertexDAO = (VertexObjectDAO)vertexDAO.getEmbeddedComponentDAO(embeddedAttributeName);
-//    
-//    Assert.assertNotNull(embeddedVertexDAO);
-//    
-//    // Make sure the embedded attribute is defined
-//    Assert.assertNotNull(vertexDAO.getAttributeIF(embeddedAttributeName));
-//    
-//    
-//   // Make sure the embedded object has a character attribute defined.
-//    String embeddedVertexCharacterName = mdEmbeddedCharacterAttribute.definesAttribute();
-//    AttributeIF attributeIF = embeddedVertexDAO.getAttributeIF(embeddedVertexCharacterName);
-//    Assert.assertTrue(attributeIF instanceof AttributeCharacter);
-//    
-//    embeddedVertexDAO.setValue(embeddedVertexCharacterName, "Test Embedded Value");
-//    
-//    vertexDAO.apply();
-//    
-//    
-//    vertexDAO = (VertexObjectDAO)VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-//    
-//    embeddedVertexDAO = (VertexObjectDAO)vertexDAO.getEmbeddedComponentDAO(embeddedAttributeName);
-//    Assert.assertNotNull(embeddedVertexDAO);
-//    
-//    // Make sure the embedded attribute is defined
-//    Assert.assertNotNull(vertexDAO.getAttributeIF(embeddedAttributeName));
-//    attributeIF = embeddedVertexDAO.getAttributeIF(embeddedVertexCharacterName);
-//    Assert.assertTrue(attributeIF instanceof AttributeCharacter);
-//    
-//    Assert.assertEquals("The character attribute on the embedded object did not persist correctly.", "Test Embedded Value", attributeIF.getValue());
-//    
-//    
-//    
-//    String dateAttributeName = mdDateAttribute.definesAttribute();
-//
-//    VertexObjectDAO vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-//    Calendar cal = TestFixtureFactory.getDate();
-//    Date value = cal.getTime();
-//    vertexDAO2.setValue(dateAttributeName, value);
-//    VertexObjectDAO embeddedVertexDAO2 = (VertexObjectDAO)vertexDAO2.getEmbeddedComponentDAO(embeddedAttributeName);
-//    embeddedVertexDAO2.setValue(embeddedVertexCharacterName, "Test Embedded Value2");
-//    vertexDAO2.apply();
-//    
-//    
-//    vertexDAO.delete();
-//    vertexDAO2.delete();
-//  }
-  
+  @Request
+  @Test
+  public void testEmbeddedAttribute()
+  {
+    VertexObjectDAO vertexDAO1 = null;
+    VertexObjectDAO vertexDAO2 = null;
+    
+    try
+    {
+      String embeddedAttributeName = mdAttributeEmbedded.definesAttribute();
+
+      vertexDAO1 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertNotNull(vertexDAO1.getAttributeIF(embeddedAttributeName));
+
+      VertexObjectDAO embeddedVertexDAO = (VertexObjectDAO) vertexDAO1
+          .getEmbeddedComponentDAO(embeddedAttributeName);
+
+      Assert.assertNotNull(embeddedVertexDAO);
+
+      // Make sure the embedded attribute is defined
+      Assert.assertNotNull(vertexDAO1.getAttributeIF(embeddedAttributeName));
+
+      // Make sure the embedded object has a character attribute defined.
+      String embeddedVertexCharacterName = mdEmbeddedCharacterAttribute.definesAttribute();
+      AttributeIF attributeIF = embeddedVertexDAO.getAttributeIF(embeddedVertexCharacterName);
+      Assert.assertTrue(attributeIF instanceof AttributeCharacter);
+
+      embeddedVertexDAO.setValue(embeddedVertexCharacterName, "Test Embedded Value");
+
+      vertexDAO1.apply();
+
+      vertexDAO1 = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO1.getOid());
+
+      embeddedVertexDAO = (VertexObjectDAO) vertexDAO1.getEmbeddedComponentDAO(embeddedAttributeName);
+      Assert.assertNotNull(embeddedVertexDAO);
+
+      // Make sure the embedded attribute is defined
+      Assert.assertNotNull(vertexDAO1.getAttributeIF(embeddedAttributeName));
+      attributeIF = embeddedVertexDAO.getAttributeIF(embeddedVertexCharacterName);
+      Assert.assertTrue(attributeIF instanceof AttributeCharacter);
+
+      Assert.assertEquals("The character attribute on the embedded object did not persist correctly.",
+          "Test Embedded Value", attributeIF.getValue());
+
+      String dateAttributeName = mdDateAttribute.definesAttribute();
+
+      vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+      Calendar cal = TestFixtureFactory.getDate();
+      Date value = cal.getTime();
+      vertexDAO2.setValue(dateAttributeName, value);
+      VertexObjectDAO embeddedVertexDAO2 = (VertexObjectDAO) vertexDAO2
+          .getEmbeddedComponentDAO(embeddedAttributeName);
+      embeddedVertexDAO2.setValue(embeddedVertexCharacterName, "Test Embedded Value2");
+      vertexDAO2.apply();
+
+    }
+//    catch (com.orientechnologies.orient.core.storage.ORecordDuplicatedException ex)
+//    {
+//      ex.get
+//    }
+    finally
+    {
+      if (vertexDAO1 != null && !vertexDAO1.isNew())
+      {
+        vertexDAO1.delete();
+      }
+
+      if (vertexDAO2 != null && !vertexDAO2.isNew())
+      {
+        vertexDAO2.delete();
+      }
+    }
+    
+    System.out.println("\n\n\n\nTEST\n\n\n\n");
+  }
+
   @Request
   @Test
   public void testCharacterAttribute()
   {
     String attributeName = mdCharacterAttribute.definesAttribute();
 
-    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType()); 
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
@@ -680,42 +699,42 @@ public class VertexObjectDAOTest
   {
     String attributeName = mdTextAttribute.definesAttribute();
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-    
+
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
-    
+
     String value = "Test";
     vertexDAO.setValue(attributeName, value);
-    
+
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
-    
+
     try
     {
       vertexDAO.apply();
-      
+
       VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-      
+
       Assert.assertNotNull(test);
-      
+
       Assert.assertEquals(value, test.getObjectValue(attributeName));
-      
+
       // Test update
       value = "Update";
-      
+
       vertexDAO.setValue(attributeName, value);
       vertexDAO.apply();
-      
+
       test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-      
+
       Assert.assertEquals(value, test.getObjectValue(attributeName));
     }
     finally
     {
       vertexDAO.delete();
     }
-    
+
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
-  
+
   @Request
   @Test
   public void testPointAttribute()

@@ -38,7 +38,7 @@ public class DuplicateDataException extends DataAccessException
   /**
    * The type of the attribute being set.
    */
-  protected MdEntityDAOIF mdEntityIF;
+  protected MdClassDAOIF mdClassDAOIF;
   
   /**
    * The attribute being set
@@ -69,7 +69,7 @@ public class DuplicateDataException extends DataAccessException
   public DuplicateDataException(String devMessage, MdEntityDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(devMessage);
-    this.mdEntityIF = mdEntityIF;
+    this.mdClassDAOIF = mdEntityIF;
     this.attributeIFList = attributeIFList;
     this.valueList = valueList;
   }
@@ -101,7 +101,7 @@ public class DuplicateDataException extends DataAccessException
   public DuplicateDataException(String devMessage, Throwable cause, MdEntityDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(devMessage, cause);
-    this.mdEntityIF = mdEntityIF;
+    this.mdClassDAOIF = mdEntityIF;
     this.attributeIFList = attributeIFList;
     this.valueList = valueList;
   }
@@ -151,7 +151,7 @@ public class DuplicateDataException extends DataAccessException
   public DuplicateDataException(Throwable cause, MdElementDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(cause);
-    this.mdEntityIF = mdEntityIF;
+    this.mdClassDAOIF = mdEntityIF;
     this.attributeIFList = attributeIFList;
     this.valueList = valueList;
   }
@@ -167,7 +167,7 @@ public class DuplicateDataException extends DataAccessException
     {
       String displayLabel = attributeIFList.get(0).getDisplayLabel(this.getLocale());
       String value = attributeIFList.get(0).getValue();
-      return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), displayLabel, value);
+      return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabel, value);
     }
     else
     {
@@ -202,7 +202,7 @@ public class DuplicateDataException extends DataAccessException
         values += "["+value+"]";
       }
             
-      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), displayLabels, values);
+      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabels, values);
     }
     
 
