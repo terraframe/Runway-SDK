@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.graph.orientdb;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -43,6 +44,7 @@ import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
+import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -1232,23 +1234,46 @@ public class OrientDBImpl implements GraphDB
 
   
   /**
-   * @see GraphDB#processException(RuntimeException)
+   * @see GraphDB#processException(Locale, RuntimeException)
    */
   @Override
-  public RunwayException processException(RuntimeException runEx)
+  public RuntimeException processException(Locale locale, RuntimeException runEx)
   {
     if (runEx instanceof ORecordDuplicatedException)
     {
       ORecordDuplicatedException dupEx = (ORecordDuplicatedException)runEx;
+      
+      Object key = dupEx.getKey();
+     
+      String value;
+     
+      if (key == null)
+      {
+        value = "NULL";
+      }
+      else
+      {
+        value = key.toString();
+      }
+
       String dbIndexName = dupEx.getIndexName();
       MdAttributeConcreteDAOIF mdAttribute = MdAttributeConcreteDAO.getMdAttributeWithIndex(dbIndexName);
-      
       MdGraphClassDAOIF mdGraphClass = (MdGraphClassDAOIF)mdAttribute.definedByClass();
       
+      String devMsg = "The graph class ["+mdGraphClass.definesType()+"] already has an instance with attribute ["+mdAttribute.definesAttribute()+"] with value ["+value+"]";
       
+      List<String> localizedAttrLabels = new LinkedList<String>();
+      localizedAttrLabels.add(mdAttribute.getDisplayLabel(locale));
+      
+      List<String> valueList = new LinkedList<String>();
+      valueList.add(value);
+      
+      throw new DuplicateDataException(devMsg, localizedAttrLabels, mdGraphClass, valueList);
     }
-    
-    return null;
+    else
+    {
+      throw runEx;
+    }
   }
   
   protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)

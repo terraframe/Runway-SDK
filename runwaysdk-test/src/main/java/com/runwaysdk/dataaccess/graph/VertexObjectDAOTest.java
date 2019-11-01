@@ -17,8 +17,8 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeCharacter;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -273,8 +273,9 @@ public class VertexObjectDAOTest
       Assert.assertEquals("The character attribute on the embedded object did not persist correctly.",
           "Test Embedded Value", attributeIF.getValue());
 
+      // Set the date attribute or otherwise it will generate a duplicate data exception as two objects will
+      // both have null values
       String dateAttributeName = mdDateAttribute.definesAttribute();
-
       vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
       Calendar cal = TestFixtureFactory.getDate();
       Date value = cal.getTime();
@@ -283,12 +284,7 @@ public class VertexObjectDAOTest
           .getEmbeddedComponentDAO(embeddedAttributeName);
       embeddedVertexDAO2.setValue(embeddedVertexCharacterName, "Test Embedded Value2");
       vertexDAO2.apply();
-
     }
-//    catch (com.orientechnologies.orient.core.storage.ORecordDuplicatedException ex)
-//    {
-//      ex.get
-//    }
     finally
     {
       if (vertexDAO1 != null && !vertexDAO1.isNew())
@@ -301,10 +297,46 @@ public class VertexObjectDAOTest
         vertexDAO2.delete();
       }
     }
-    
-    System.out.println("\n\n\n\nTEST\n\n\n\n");
   }
 
+  
+  @Request
+  @Test
+  public void testDuplicateDataException()
+  {
+    VertexObjectDAO vertexDAO1 = null;
+    VertexObjectDAO vertexDAO2 = null;
+    
+    try
+    {
+      vertexDAO1 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+      vertexDAO1.apply();
+      
+      try
+      {
+        vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+        vertexDAO2.apply();
+        Assert.fail("A vertex object with a duplicate unique attribute was incorrectly applied. ");
+      }
+      catch (RuntimeException runEx)
+      {
+        Assert.assertTrue(DuplicateDataException.class.getName() +" should have been thrown", runEx instanceof DuplicateDataException);
+      }
+    }
+    finally
+    {
+      if (vertexDAO1 != null && !vertexDAO1.isNew())
+      {
+        vertexDAO1.delete();
+      }
+
+      if (vertexDAO2 != null && !vertexDAO2.isNew())
+      {
+        vertexDAO2.delete();
+      }
+    }
+  }
+  
   @Request
   @Test
   public void testCharacterAttribute()

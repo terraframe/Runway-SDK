@@ -2,6 +2,7 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.RunwayException;
@@ -355,9 +356,9 @@ public class GraphDBBalk implements GraphDB
   }
   
   /**
-   * @see GraphDB#processException(RuntimeException)
+   * @see GraphDB#processException(Locale, RuntimeException)
    */
-  public RunwayException processException(RuntimeException runEx)
+  public RuntimeException processException(Locale locale, RuntimeException runEx)
   {
     return new ProgrammingErrorException("Balk exception");
   }

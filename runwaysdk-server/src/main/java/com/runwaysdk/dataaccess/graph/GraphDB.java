@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.RunwayException;
@@ -339,10 +340,11 @@ public interface GraphDB
   /**
    * Transforms the given {@link RuntimeException} from the graph database and transforms it into a 
    * {@link RunwayException}.
-   * 
+   *
+   * @param locale
    * @param runEx
    * @return converted {@link RunwayException}
    */
-  public RunwayException processException(RuntimeException runEx);
+  public RuntimeException processException(Locale locale, RuntimeException runEx);
 
 }

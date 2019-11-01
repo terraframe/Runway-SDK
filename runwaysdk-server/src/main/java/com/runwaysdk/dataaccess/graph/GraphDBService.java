@@ -2,10 +2,12 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -310,4 +312,11 @@ public class GraphDBService
     return this.graphDB.query(request, statement, parameters);
   }
 
+  /**
+   * @see GraphDB#processException(Locale, RuntimeException)
+   */
+  public RuntimeException processException(Locale locale, RuntimeException runEx)
+  {
+    return this.graphDB.processException(locale, runEx);
+  }
 }
