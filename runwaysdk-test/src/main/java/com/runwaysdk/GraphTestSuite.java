@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.runwaysdk.business.graph.EdgeObjectTest;
+import com.runwaysdk.business.graph.VertexObjectPermissionTest;
 import com.runwaysdk.business.graph.VertexObjectTest;
 import com.runwaysdk.business.graph.generation.VertexObjectGeneratorTest;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOTest;
@@ -39,7 +40,8 @@ import com.runwaysdk.gis.dataaccess.graph.GeoVertexTest;
   EdgeObjectDAOTest.class,
   VertexObjectTest.class,
   EdgeObjectTest.class,
-  VertexObjectGeneratorTest.class
+  VertexObjectGeneratorTest.class,
+  VertexObjectPermissionTest.class
 })
 public class GraphTestSuite
 {

@@ -94,7 +94,7 @@ public class EdgeObject extends GraphObject
   //
 
   @Override
-  EdgeObjectDAO getGraphObjectDAO()
+  public EdgeObjectDAO getGraphObjectDAO()
   {
     return (EdgeObjectDAO) super.getGraphObjectDAO();
   }

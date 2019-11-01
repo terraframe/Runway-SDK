@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.patcher;
 
@@ -52,6 +52,8 @@ import org.slf4j.LoggerFactory;
 import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.InstallerCP;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -60,6 +62,7 @@ import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.io.TimeFormat;
+import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
@@ -70,22 +73,22 @@ import com.runwaysdk.session.Request;
 
 public class RunwayPatcher
 {
-  private static Logger logger = LoggerFactory.getLogger(RunwayPatcher.class);
-  
-  public static final List<String> supportedExtensions = toList("sql,xml,java");
-  
-  public static final String RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
-  
-  private static final String DATE_PATTEN  = "\\d{4,}";
-  
-  private static final String NAME_PATTERN = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions,"|") + ")$";
-  
-  public static final String METADATA_CLASSPATH_LOC = "domain";
-  
-  public static final String MODE_STANDARD = "standard";
-  
-  public static final String MODE_BOOTSTRAP = "bootstrap";
-  
+  private static Logger            logger                                     = LoggerFactory.getLogger(RunwayPatcher.class);
+
+  public static final List<String> supportedExtensions                        = toList("sql,xml,java");
+
+  public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
+
+  private static final String      DATE_PATTEN                                = "\\d{4,}";
+
+  private static final String      NAME_PATTERN                               = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions, "|") + ")$";
+
+  public static final String       METADATA_CLASSPATH_LOC                     = "domain";
+
+  public static final String       MODE_STANDARD                              = "standard";
+
+  public static final String       MODE_BOOTSTRAP                             = "bootstrap";
+
   class VersionComparator implements Comparator<ClasspathResource>
   {
     public int compare(ClasspathResource arg0, ClasspathResource arg1)
@@ -93,15 +96,15 @@ public class RunwayPatcher
       return RunwayPatcher.compare(arg0, arg1);
     }
   }
-  
+
   /**
    * List of timestamps which have already been imported
    */
-  protected Set<Date> timestamps;
-  
+  protected Set<Date>                    timestamps;
+
   /**
-   * List of all schema resources in the given location in order from earliest to
-   * latest
+   * List of all schema resources in the given location in order from earliest
+   * to latest
    */
   protected Set<ClasspathResource>       ordered;
 
@@ -109,13 +112,13 @@ public class RunwayPatcher
    * Mapping between a resource and its timestamp
    */
   protected Map<Date, ClasspathResource> map;
-  
-  private List<String> extensions;
-  
-  private String path;
-  
-  private Boolean ignoreErrors;
-  
+
+  private List<String>                   extensions;
+
+  private String                         path;
+
+  private Boolean                        ignoreErrors;
+
   public RunwayPatcher(List<String> extensions, String path, Boolean ignoreErrors)
   {
     if (path == null)
@@ -126,7 +129,7 @@ public class RunwayPatcher
     {
       this.path = path;
     }
-    
+
     if (extensions != null && !extensions.equals(""))
     {
       this.extensions = extensions;
@@ -135,17 +138,17 @@ public class RunwayPatcher
     {
       this.extensions = supportedExtensions;
     }
-    
+
     this.ignoreErrors = ignoreErrors;
     this.timestamps = new TreeSet<Date>();
-    
+
     initialize();
   }
-  
+
   private void initialize()
   {
     logger.info("Initializing Runway patcher.");
-    
+
     this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
@@ -156,7 +159,7 @@ public class RunwayPatcher
       map.put(getDate(resource), resource);
     }
   }
-  
+
   private static Boolean rawTableExistCheck(String tableName)
   {
     String sqlStmt = "SELECT relname FROM pg_class WHERE relname = '" + tableName + "'";
@@ -170,18 +173,21 @@ public class RunwayPatcher
     try
     {
       statement = conx.createStatement();
-      
+
       boolean isResultSet = statement.execute(selectStatement);
-      
-      while(true) {
-        if (isResultSet) {
+
+      while (true)
+      {
+        if (isResultSet)
+        {
           resultSet = statement.getResultSet();
           break;
         }
-        else if (statement.getUpdateCount() == -1) {
+        else if (statement.getUpdateCount() == -1)
+        {
           throw new SQLException("No results were returned by the query.");
         }
-        
+
         isResultSet = statement.getMoreResults();
       }
     }
@@ -227,10 +233,10 @@ public class RunwayPatcher
         Database.throwDatabaseException(sqlEx2);
       }
     }
-    
+
     return returnResult;
   }
-  
+
   /**
    * Bootstrapping must not be done inside a request or transaction.
    */
@@ -243,10 +249,11 @@ public class RunwayPatcher
     }
     catch (DatabaseException ex)
     {
-      // An exception can be thrown if the database itself doesn't exist. (not just the table)
+      // An exception can be thrown if the database itself doesn't exist. (not
+      // just the table)
       tableExist = false;
     }
-    
+
     if (clean == true || !tableExist)
     {
       if (clean == true)
@@ -257,24 +264,24 @@ public class RunwayPatcher
       {
         logger.info("Bootstrapping Runway into an empty database.");
       }
-      
+
       if (rootUser != null && rootPass != null)
       {
         if (template == null)
         {
           template = "postgres";
         }
-        
+
         Database.close();
         Database.initialSetup(rootUser, rootPass, template);
       }
-      
+
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-      
+
       try
       {
         InputStream[] xmlFilesIS = InstallerCP.buildMetadataInputStreamList();
-  
+
         XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
         importer.toDatabase();
       }
@@ -295,7 +302,7 @@ public class RunwayPatcher
       }
     }
   }
-  
+
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
     refreshTimestamps();
@@ -304,28 +311,29 @@ public class RunwayPatcher
     if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
     {
       logger.info("Importing [" + resource.getName() + "].");
-      
+
       Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
-      // We always want to use the context class loader because it ensures our resource paths are absolute.
+      // We always want to use the context class loader because it ensures our
+      // resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-      
+
       Savepoint sp = null;
       if (ignoreErrors && isTransaction)
       {
         sp = Database.setSavepoint();
       }
-      
+
       try
       {
         if (resource.getNameExtension().equals("sql"))
         {
           ObjectCache.shutdownGlobalCache();
-          
+
           try (InputStream stream = resource.openNewStream())
           {
             String sql = IOUtils.toString(stream, "UTF-8");
-            
+
             Database.executeStatement(sql);
           }
         }
@@ -337,7 +345,7 @@ public class RunwayPatcher
         {
           Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + RunwayPatcher.METADATA_CLASSPATH_LOC + "." + RunwayPatcher.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
-          main.invoke(null, (Object) new String[]{});
+          main.invoke(null, (Object) new String[] {});
         }
         else
         {
@@ -371,8 +379,9 @@ public class RunwayPatcher
         {
           Database.releaseSavepoint(sp);
         }
-        
-        try {
+
+        try
+        {
           schema.close();
         }
         catch (IOException e)
@@ -380,7 +389,7 @@ public class RunwayPatcher
           e.printStackTrace();
         }
       }
-      
+
       timestamps.add(timestamp);
     }
   }
@@ -397,7 +406,7 @@ public class RunwayPatcher
       timestamps.add(new Date(Long.parseLong(value)));
     }
   }
-  
+
   public void performDoIt(List<ClasspathResource> resources, Boolean isTransaction)
   {
     for (ClasspathResource resource : resources)
@@ -407,43 +416,45 @@ public class RunwayPatcher
       this.performDoIt(resource, date, isTransaction);
     }
   }
-  
+
   /**
-   * Migrates databases using the legacy patcher system to our new versioned patcher.
+   * Migrates databases using the legacy patcher system to our new versioned
+   * patcher.
    */
-//  public void migrateToNewPatcher()
-//  {
-//    RunwayMetadataVersion version = Database.getMetadataVersion();
-//    
-//    String sql = null;
-//    
-//    if (version.toString().equals("1.27.0"))
-//    {
-//      
-//    }
-//  }
-  
+  // public void migrateToNewPatcher()
+  // {
+  // RunwayMetadataVersion version = Database.getMetadataVersion();
+  //
+  // String sql = null;
+  //
+  // if (version.toString().equals("1.27.0"))
+  // {
+  //
+  // }
+  // }
+
   public void doAll()
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
-    
+
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
     this.performDoIt(list, false);
   }
-  
+
   @Transaction
   public void doAllInTransaction()
   {
     LocalProperties.setSkipCodeGenAndCompile(true);
-    
+
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
     this.performDoIt(list, true);
   }
-  
+
   /**
-   * Brings your database to a fully patched state (as far as Runway is concerned).
+   * Brings your database to a fully patched state (as far as Runway is
+   * concerned).
    * 
    * @param args
    */
@@ -459,11 +470,11 @@ public class RunwayPatcher
     options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
     options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
     options.addOption(Option.builder("ignoreErrors").hasArg().argName("ignoreErrors").longOpt("ignoreErrors").desc("Ignore errors if one occurs while importing sql. Not recommended for everyday usage.").optionalArg(true).build());
-    
+
     try
     {
-      CommandLine line = parser.parse( options, args );
-      
+      CommandLine line = parser.parse(options, args);
+
       String mode = line.getOptionValue("mode");
       String user = line.getOptionValue("rootUser");
       String pass = line.getOptionValue("rootPass");
@@ -472,20 +483,20 @@ public class RunwayPatcher
       String path = line.getOptionValue("path");
       Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
       Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
-      
+
       List<String> exts = supportedExtensions;
       if (extensions != null && extensions.length() > 0)
       {
         exts = toList(extensions);
       }
-      
+
       try
       {
         if (path == null || path.length() == 0)
         {
           path = RunwayPatcher.METADATA_CLASSPATH_LOC;
         }
-        
+
         if (mode != null && mode.equals(RunwayPatcher.MODE_BOOTSTRAP))
         {
           RunwayPatcher.bootstrap(user, pass, template, clean);
@@ -493,16 +504,18 @@ public class RunwayPatcher
         else
         {
           RunwayPatcher.bootstrap(user, pass, template, clean);
-          
-          // I think this code is somehow running inside a transaction even though we're trying to avoid it.
-          // I'm commenting this code out (because it doesn't work anyway and) because it breaks my "ignoreErrors"
-          //   logic which I need for DDMS BackupDevImporter.
-//          if (exts.contains("sql"))
-//          {
-//            RunwayPatcher.run(toList("sql"), path, ignoreErrors);
-//            exts.remove(exts.indexOf("sql"));
-//          }
-          
+
+          // I think this code is somehow running inside a transaction even
+          // though we're trying to avoid it.
+          // I'm commenting this code out (because it doesn't work anyway and)
+          // because it breaks my "ignoreErrors"
+          // logic which I need for DDMS BackupDevImporter.
+          // if (exts.contains("sql"))
+          // {
+          // RunwayPatcher.run(toList("sql"), path, ignoreErrors);
+          // exts.remove(exts.indexOf("sql"));
+          // }
+
           RunwayPatcher.run(exts, path, ignoreErrors);
         }
       }
@@ -516,35 +529,40 @@ public class RunwayPatcher
       throw new RuntimeException(e);
     }
   }
-  
+
   private static ArrayList<String> toList(String string)
   {
     String[] split = string.split(",");
-    
+
     ArrayList<String> ret = new ArrayList<String>();
     for (String sp : split)
     {
       ret.add(sp);
     }
-    
+
     return ret;
   }
-  
+
   @Request
   public static void run(List<String> extensions, String path, Boolean ignoreErrors)
   {
-//    if (extensions.contains("sql"))
-//    {
-//      RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
-//      patcher.doAll();
-//    }
-//    else
-//    {
-      RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
-      patcher.doAllInTransaction();
-//    }
+    // if (extensions.contains("sql"))
+    // {
+    // RunwayPatcher patcher = new RunwayPatcher(extensions, path,
+    // ignoreErrors);
+    // patcher.doAll();
+    // }
+    // else
+    // {
+
+    ServerProperties.setAllowModificationOfMdAttribute(true);
+
+    RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
+    patcher.doAllInTransaction();
+
+    // }
   }
-  
+
   public static String getName(ClasspathResource resource)
   {
     Pattern namePattern = Pattern.compile(NAME_PATTERN);
@@ -553,19 +571,19 @@ public class RunwayPatcher
     if (nameMatcher.find())
     {
       String out = "";
-      
+
       String name1 = nameMatcher.group(1);
       if (name1 != null)
       {
         out = out + name1;
       }
-      
+
       String name2 = nameMatcher.group(3);
       if (name2 != null)
       {
         out = out + name2;
       }
-      
+
       return out;
     }
 
@@ -608,14 +626,14 @@ public class RunwayPatcher
     List<ClasspathResource> list = new LinkedList<ClasspathResource>();
 
     Pattern namePattern = Pattern.compile(NAME_PATTERN);
-    
+
     List<ClasspathResource> resources = ClasspathResource.getResourcesInPackage(cpPackage);
-    
+
     for (ClasspathResource resource : resources)
     {
       String name = resource.getName();
       Matcher nameMatcher = namePattern.matcher(name);
-      
+
       if (nameMatcher.find())
       {
         list.add(resource);

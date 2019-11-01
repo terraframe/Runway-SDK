@@ -41,7 +41,7 @@ public class VertexObject extends GraphObject
    * 
    * @return the GraphObjectDAO
    */
-  VertexObjectDAO getGraphObjectDAO()
+  public VertexObjectDAO getGraphObjectDAO()
   {
     return (VertexObjectDAO) super.getGraphObjectDAO();
   }

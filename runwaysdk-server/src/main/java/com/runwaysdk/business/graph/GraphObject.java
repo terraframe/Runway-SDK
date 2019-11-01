@@ -55,7 +55,7 @@ public abstract class GraphObject implements Mutable
    * 
    * @return the GraphObjectDAO
    */
-  GraphObjectDAO getGraphObjectDAO()
+  public GraphObjectDAO getGraphObjectDAO()
   {
     return graphObjectDAO;
   }
