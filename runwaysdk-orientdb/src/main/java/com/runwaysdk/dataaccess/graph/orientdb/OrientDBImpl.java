@@ -442,13 +442,12 @@ public class OrientDBImpl implements GraphDB
     return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
   }
 
-
   @Override
   public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required)
   {
     return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required);
   }
-  
+
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
   {
@@ -827,17 +826,17 @@ public class OrientDBImpl implements GraphDB
     }
     else if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
     {
-      MdAttributeEmbeddedDAOIF mdAttributeEmbeddedDAO = (MdAttributeEmbeddedDAOIF)mdAttribute;
-      
+      MdAttributeEmbeddedDAOIF mdAttributeEmbeddedDAO = (MdAttributeEmbeddedDAOIF) mdAttribute;
+
       MdClassDAOIF mdClassDAOIF = mdAttributeEmbeddedDAO.getEmbeddedMdClassDAOIF();
-      
+
       if (mdClassDAOIF instanceof MdGraphClassDAOIF)
       {
-        return ((MdGraphClassDAOIF)mdClassDAOIF).getDBClassName();
+        return ( (MdGraphClassDAOIF) mdClassDAOIF ).getDBClassName();
       }
       else
       {
-        throw new ProgrammingErrorException("Attribute ["+MdAttributeEmbeddedInfo.CLASS+"] can only be defined on a ["+MdGraphClassInfo.CLASS+"]");
+        throw new ProgrammingErrorException("Attribute [" + MdAttributeEmbeddedInfo.CLASS + "] can only be defined on a [" + MdGraphClassInfo.CLASS + "]");
       }
     }
 
@@ -1132,9 +1131,9 @@ public class OrientDBImpl implements GraphDB
         {
           if (value instanceof OVertex)
           {
-            OVertex embedOVertex = (OVertex)value;
-            AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
-            GraphObjectDAO embedGraphObjectDAO = (GraphObjectDAO)attributeEmbedded.getObjectValue();
+            OVertex embedOVertex = (OVertex) value;
+            AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
+            GraphObjectDAO embedGraphObjectDAO = (GraphObjectDAO) attributeEmbedded.getObjectValue();
             this.populateDAO(embedOVertex, embedGraphObjectDAO);
           }
         }
@@ -1190,39 +1189,40 @@ public class OrientDBImpl implements GraphDB
       }
       else if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
       {
-        MdAttributeEmbeddedDAOIF mdAttributeEmbedded = (MdAttributeEmbeddedDAOIF)mdAttribute;
-        String embeddedClassName = ((MdGraphClassDAOIF)mdAttributeEmbedded.getEmbeddedMdClassDAOIF()).getDBClassName();
+        MdAttributeEmbeddedDAOIF mdAttributeEmbedded = (MdAttributeEmbeddedDAOIF) mdAttribute;
+        String embeddedClassName = ( (MdGraphClassDAOIF) mdAttributeEmbedded.getEmbeddedMdClassDAOIF() ).getDBClassName();
         String columnName = mdAttributeEmbedded.getColumnName();
-        
+
         OVertex innerVertex = null;
-        
-        AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
-        GraphObjectDAO embeddedObject = (GraphObjectDAO)attributeEmbedded.getObjectValue();
-        
+
+        AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
+        GraphObjectDAO embeddedObject = (GraphObjectDAO) attributeEmbedded.getObjectValue();
+
         if (embeddedObject != null)
         {
           OElement oElement = vertex.getProperty(columnName);
-          
+
           if (oElement == null)
           {
             innerVertex = db.newVertex(embeddedClassName);
           }
           else if (oElement instanceof OVertex)
           {
-            innerVertex = (OVertex)oElement;
+            innerVertex = (OVertex) oElement;
           }
-          
+
           if (innerVertex != null)
           {
             // persist the values on the inner embedded object
             this.populateVertex(db, embeddedObject, innerVertex);
           }
         }
-        // else embeddedObject == null-  if there is no embedded object, then set the propperty to null
-        
+        // else embeddedObject == null- if there is no embedded object, then set
+        // the propperty to null
+
         vertex.setProperty(columnName, innerVertex);
       }
-      
+
       else
       {
         String columnName = mdAttribute.getColumnName();
@@ -1232,7 +1232,6 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
-  
   /**
    * @see GraphDB#processException(Locale, RuntimeException)
    */
@@ -1241,12 +1240,12 @@ public class OrientDBImpl implements GraphDB
   {
     if (runEx instanceof ORecordDuplicatedException)
     {
-      ORecordDuplicatedException dupEx = (ORecordDuplicatedException)runEx;
-      
+      ORecordDuplicatedException dupEx = (ORecordDuplicatedException) runEx;
+
       Object key = dupEx.getKey();
-     
+
       String value;
-     
+
       if (key == null)
       {
         value = "NULL";
@@ -1258,16 +1257,16 @@ public class OrientDBImpl implements GraphDB
 
       String dbIndexName = dupEx.getIndexName();
       MdAttributeConcreteDAOIF mdAttribute = MdAttributeConcreteDAO.getMdAttributeWithIndex(dbIndexName);
-      MdGraphClassDAOIF mdGraphClass = (MdGraphClassDAOIF)mdAttribute.definedByClass();
-      
-      String devMsg = "The graph class ["+mdGraphClass.definesType()+"] already has an instance with attribute ["+mdAttribute.definesAttribute()+"] with value ["+value+"]";
-      
+      MdGraphClassDAOIF mdGraphClass = (MdGraphClassDAOIF) mdAttribute.definedByClass();
+
+      String devMsg = "The graph class [" + mdGraphClass.definesType() + "] already has an instance with attribute [" + mdAttribute.definesAttribute() + "] with value [" + value + "]";
+
       List<String> localizedAttrLabels = new LinkedList<String>();
       localizedAttrLabels.add(mdAttribute.getDisplayLabel(locale));
-      
+
       List<String> valueList = new LinkedList<String>();
       valueList.add(value);
-      
+
       throw new DuplicateDataException(devMsg, localizedAttrLabels, mdGraphClass, valueList);
     }
     else
@@ -1275,7 +1274,7 @@ public class OrientDBImpl implements GraphDB
       throw runEx;
     }
   }
-  
+
   protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)
   {
     MdGraphClassDAOIF mdGraphClassDAO = graphObjectDAO.getMdGraphClassDAO();

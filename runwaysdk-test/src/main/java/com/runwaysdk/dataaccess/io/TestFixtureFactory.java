@@ -118,7 +118,6 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
@@ -149,6 +148,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -260,17 +260,17 @@ public class TestFixtureFactory
     public static final String TEST_CLASS1                = "Class1";
 
     public static final String TEST_CLASS1_TYPE           = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
-    
+
     public static final String TEST_VERTEX1               = "Vertex1";
-    
+
     public static final String TEST_VERTEX1_TYPE          = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_VERTEX1);
-    
+
     public static final String TEST_EMBEDDED_VERTEX1      = "EmbeddedVertex1";
-    
+
     public static final String TEST_EMBEDDED_VERTEX1_TYPE = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_EMBEDDED_VERTEX1);
-    
+
     public static final String TEST_ENUM_CLASS            = "EnumClassTest";
-    
+
     public static final String TEST_ENUM_CLASS1_TYPE      = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_ENUM_CLASS);
 
     public static final String TEST_TABLE1                = "MdTable1";
@@ -716,14 +716,29 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addLocalCharacterAttribute(mdEntity, "testLocalCharacter");
   }
 
-  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
+    mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeLocalCharacterEmbeddedDAO addLocalCharacterEmbeddedAttribute(MdClassDAO mdEntity)
+  {
+    return TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdEntity, "testLocalCharacterEmbedded");
+  }
+
+  public static MdAttributeLocalCharacterEmbeddedDAO addLocalCharacterEmbeddedAttribute(MdClassDAO mdEntity, String attributeName)
+  {
+    MdAttributeLocalCharacterEmbeddedDAO mdAttribute = MdAttributeLocalCharacterEmbeddedDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
     mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
@@ -763,11 +778,13 @@ public class TestFixtureFactory
 
     return mdAttribute;
   }
-  
+
   /**
    * 
-   * @param mdClass the class to which the attribute will be added
-   * @param embeddedMdClass the class that defines the embedded attributes
+   * @param mdClass
+   *          the class to which the attribute will be added
+   * @param embeddedMdClass
+   *          the class that defines the embedded attributes
    * @return
    */
   public static MdAttributeEmbeddedDAO addEmbeddedttribute(MdClassDAOIF mdClass, MdClassDAOIF embeddedMdClass)
@@ -1770,7 +1787,7 @@ public class TestFixtureFactory
 
     return mdEdge;
   }
-  
+
   public static MdGeoVertexDAO createMdGeoVertex(String name)
   {
     MdGeoVertexDAO mdGeoVertex = MdGeoVertexDAO.newInstance();
@@ -2180,7 +2197,7 @@ public class TestFixtureFactory
   public static void deleteMdClass(String className)
   {
     MdClassDAOIF mdClassDAOIF = null;
-  
+
     try
     {
       mdClassDAOIF = MdClassDAO.getMdClassDAO(className);
@@ -2188,7 +2205,7 @@ public class TestFixtureFactory
     catch (DataNotFoundException ex)
     {
     }
-  
+
     if (mdClassDAOIF != null)
     {
       mdClassDAOIF.getBusinessDAO().delete();

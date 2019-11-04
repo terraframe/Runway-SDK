@@ -178,6 +178,11 @@ public interface XMLTags
   public static final String   LOCAL_CHARACTER_TAG              = "localChar";
 
   /**
+   * The xml tag for an MdAttributeLocalCharacter
+   */
+  public static final String   LOCAL_CHARACTER_EMBEDDED_TAG     = "localCharEmbedded";
+
+  /**
    * The xml tag for an MdAttributeText
    */
   public static final String   TEXT_TAG                         = "text";
@@ -247,6 +252,11 @@ public interface XMLTags
    * The xml tag for an MdAttributeStruct
    */
   public static final String   STRUCT_TAG                       = "struct";
+
+  /**
+   * The xml tag for an MdAttributeStruct
+   */
+  public static final String   EMBEDDED_TAG                     = "embedded";
 
   /**
    * The xml tag for an MdAttributeReference

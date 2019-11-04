@@ -15,10 +15,12 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeCharacter;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -30,6 +32,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
@@ -60,56 +63,58 @@ import com.vividsolutions.jts.geom.Polygon;
 
 public class VertexObjectDAOTest
 {
-  private static MdVertexDAO                   mdVertexDAO;
+  private static MdVertexDAO                          mdVertexDAO;
 
-  private static MdBusinessDAO                 mdBusinessDAO;
+  private static MdBusinessDAO                        mdBusinessDAO;
 
-  private static MdBusinessDAO                 mdEnumMasterDAO;
+  private static MdBusinessDAO                        mdEnumMasterDAO;
 
-  private static MdEnumerationDAO              mdEnumerationDAO;
+  private static MdEnumerationDAO                     mdEnumerationDAO;
 
-  private static MdAttributeCharacterDAO       mdCharacterAttribute;
+  private static MdAttributeCharacterDAO              mdCharacterAttribute;
 
-  private static MdAttributeIntegerDAO         mdIntegerAttribute;
+  private static MdAttributeIntegerDAO                mdIntegerAttribute;
 
-  private static MdAttributeLongDAO            mdLongAttribute;
+  private static MdAttributeLongDAO                   mdLongAttribute;
 
-  private static MdAttributeFloatDAO           mdFloatAttribute;
+  private static MdAttributeFloatDAO                  mdFloatAttribute;
 
-  private static MdAttributeDoubleDAO          mdDoubleAttribute;
+  private static MdAttributeDoubleDAO                 mdDoubleAttribute;
 
-  private static MdAttributeBooleanDAO         mdBooleanAttribute;
+  private static MdAttributeBooleanDAO                mdBooleanAttribute;
 
-  private static MdAttributeDateDAO            mdDateAttribute;
+  private static MdAttributeDateDAO                   mdDateAttribute;
 
-  private static MdAttributeDateTimeDAO        mdDateTimeAttribute;
+  private static MdAttributeDateTimeDAO               mdDateTimeAttribute;
 
-  private static MdAttributeTimeDAO            mdTimeAttribute;
+  private static MdAttributeTimeDAO                   mdTimeAttribute;
 
-  private static MdAttributeTextDAO            mdTextAttribute;
+  private static MdAttributeTextDAO                   mdTextAttribute;
 
-  private static MdAttributePointDAO           mdPointAttribute;
+  private static MdAttributePointDAO                  mdPointAttribute;
 
-  private static MdAttributePolygonDAO         mdPolygonAttribute;
+  private static MdAttributePolygonDAO                mdPolygonAttribute;
 
-  private static MdAttributeLineStringDAO      mdLineStringAttribute;
+  private static MdAttributeLineStringDAO             mdLineStringAttribute;
 
-  private static MdAttributeMultiPointDAO      mdMultiPointAttribute;
+  private static MdAttributeMultiPointDAO             mdMultiPointAttribute;
 
-  private static MdAttributeMultiPolygonDAO    mdMultiPolygonAttribute;
+  private static MdAttributeMultiPolygonDAO           mdMultiPolygonAttribute;
 
-  private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
+  private static MdAttributeMultiLineStringDAO        mdMultiLineStringAttribute;
 
-  private static MdAttributeReferenceDAO       mdReferenceAttribute;
+  private static MdAttributeReferenceDAO              mdReferenceAttribute;
 
-  private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
+  private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
-  private static MdAttributeEmbeddedDAO        mdAttributeEmbedded;
+  private static MdAttributeEmbeddedDAO               mdAttributeEmbedded;
+
+  private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
 
   // Embedded class
-  private static MdVertexDAO                   mdEmbeddedVertexDAO;
+  private static MdVertexDAO                          mdEmbeddedVertexDAO;
 
-  private static MdAttributeCharacterDAO       mdEmbeddedCharacterAttribute;
+  private static MdAttributeCharacterDAO              mdEmbeddedCharacterAttribute;
 
   @Request
   @BeforeClass
@@ -194,6 +199,9 @@ public class VertexObjectDAOTest
     mdReferenceAttribute = TestFixtureFactory.addReferenceAttribute(mdVertexDAO, mdBusinessDAO);
     mdReferenceAttribute.apply();
 
+    mdLocalCharacterAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertexDAO);
+    mdLocalCharacterAttribute.apply();
+
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
 
@@ -234,7 +242,7 @@ public class VertexObjectDAOTest
   {
     VertexObjectDAO vertexDAO1 = null;
     VertexObjectDAO vertexDAO2 = null;
-    
+
     try
     {
       String embeddedAttributeName = mdAttributeEmbedded.definesAttribute();
@@ -243,8 +251,7 @@ public class VertexObjectDAOTest
 
       Assert.assertNotNull(vertexDAO1.getAttributeIF(embeddedAttributeName));
 
-      VertexObjectDAO embeddedVertexDAO = (VertexObjectDAO) vertexDAO1
-          .getEmbeddedComponentDAO(embeddedAttributeName);
+      VertexObjectDAO embeddedVertexDAO = (VertexObjectDAO) vertexDAO1.getEmbeddedComponentDAO(embeddedAttributeName);
 
       Assert.assertNotNull(embeddedVertexDAO);
 
@@ -270,18 +277,17 @@ public class VertexObjectDAOTest
       attributeIF = embeddedVertexDAO.getAttributeIF(embeddedVertexCharacterName);
       Assert.assertTrue(attributeIF instanceof AttributeCharacter);
 
-      Assert.assertEquals("The character attribute on the embedded object did not persist correctly.",
-          "Test Embedded Value", attributeIF.getValue());
+      Assert.assertEquals("The character attribute on the embedded object did not persist correctly.", "Test Embedded Value", attributeIF.getValue());
 
-      // Set the date attribute or otherwise it will generate a duplicate data exception as two objects will
+      // Set the date attribute or otherwise it will generate a duplicate data
+      // exception as two objects will
       // both have null values
       String dateAttributeName = mdDateAttribute.definesAttribute();
       vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
       Calendar cal = TestFixtureFactory.getDate();
       Date value = cal.getTime();
       vertexDAO2.setValue(dateAttributeName, value);
-      VertexObjectDAO embeddedVertexDAO2 = (VertexObjectDAO) vertexDAO2
-          .getEmbeddedComponentDAO(embeddedAttributeName);
+      VertexObjectDAO embeddedVertexDAO2 = (VertexObjectDAO) vertexDAO2.getEmbeddedComponentDAO(embeddedAttributeName);
       embeddedVertexDAO2.setValue(embeddedVertexCharacterName, "Test Embedded Value2");
       vertexDAO2.apply();
     }
@@ -299,19 +305,18 @@ public class VertexObjectDAOTest
     }
   }
 
-  
   @Request
   @Test
   public void testDuplicateDataException()
   {
     VertexObjectDAO vertexDAO1 = null;
     VertexObjectDAO vertexDAO2 = null;
-    
+
     try
     {
       vertexDAO1 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
       vertexDAO1.apply();
-      
+
       try
       {
         vertexDAO2 = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
@@ -320,7 +325,7 @@ public class VertexObjectDAOTest
       }
       catch (RuntimeException runEx)
       {
-        Assert.assertTrue(DuplicateDataException.class.getName() +" should have been thrown", runEx instanceof DuplicateDataException);
+        Assert.assertTrue(DuplicateDataException.class.getName() + " should have been thrown", runEx instanceof DuplicateDataException);
       }
     }
     finally
@@ -336,7 +341,7 @@ public class VertexObjectDAOTest
       }
     }
   }
-  
+
   @Request
   @Test
   public void testCharacterAttribute()
@@ -758,6 +763,50 @@ public class VertexObjectDAOTest
       test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
       Assert.assertEquals(value, test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+
+  @Request
+  @Test
+  public void testLocalCharacterAttribute()
+  {
+    String attributeName = mdLocalCharacterAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    AttributeLocalEmbedded attribute = (AttributeLocalEmbedded) vertexDAO.getAttribute(attributeName);
+
+    Assert.assertNotNull(attribute);
+
+    String value = "Test";
+    attribute.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, value);
+
+    Assert.assertEquals(value, attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+    try
+    {
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getEmbeddedComponentDAO(attributeName).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
+
+      // Test update
+      value = "Update";
+
+      attribute.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getEmbeddedComponentDAO(attributeName).getValue(MdAttributeLocalInfo.DEFAULT_LOCALE));
     }
     finally
     {

@@ -49,6 +49,8 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
@@ -141,8 +143,7 @@ public class MdGraphClassTest
     Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
   }
 
-  public static void examineMdGraphClassCreationAndDefaultAttributes(MdVertexDAO mdVertexDAO,
-      String dbClassName, GraphRequest graphRequest)
+  public static void examineMdGraphClassCreationAndDefaultAttributes(MdVertexDAO mdVertexDAO, String dbClassName, GraphRequest graphRequest)
   {
     boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
     Assert.assertEquals("Vertex class was not defined", true, classDefined);
@@ -159,8 +160,6 @@ public class MdGraphClassTest
     IndexTypes indexType = GraphDBService.getInstance().getIndexType(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("The wrong type of index is defined", IndexTypes.UNIQUE_INDEX, indexType);
   }
-  
-
 
   @Request
   @Test
@@ -650,6 +649,22 @@ public class MdGraphClassTest
     {
       TestFixtureFactory.delete(mdEnumeration);
     }
+  }
+
+  @Request
+  @Test
+  public void testCreateLocalCharacterAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeLocalCharacterEmbeddedDAO mdAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertexDAO);
+    mdAttribute.apply();
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
   private static MdVertexDAO createVertexClass(String vertexName)

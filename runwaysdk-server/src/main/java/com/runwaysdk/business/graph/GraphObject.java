@@ -8,11 +8,16 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.Mutable;
+import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
+import com.runwaysdk.dataaccess.graph.attributes.Attribute;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
@@ -152,6 +157,23 @@ public abstract class GraphObject implements Mutable
   public Object getObjectValue(String name)
   {
     return this.graphObjectDAO.getObjectValue(name);
+  }
+
+  /**
+   * @see GraphObjectDAOIF#getEmbeddedComponent(String)
+   */
+  public GraphObject getEmbeddedComponent(String attributeName)
+  {
+    ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName);
+
+    if (componentDAO instanceof VertexObjectDAO)
+    {
+      return VertexObject.instantiate((VertexObjectDAO) componentDAO);
+    }
+    else
+    {
+      throw new UnsupportedOperationException();
+    }
   }
 
   /**

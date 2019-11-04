@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -36,13 +36,16 @@ import com.runwaysdk.constants.MdAttributeDecInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
+import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
+import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -90,9 +93,11 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeNumberDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributePrimitiveDAO;
@@ -129,7 +134,10 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     * @see
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java
+     * .lang.String, org.xml.sax.Attributes,
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
     public void onStartElement(String localName, Attributes attributes, TagContext context)
@@ -244,7 +252,10 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     * @see
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(
+     * java.lang.String, org.xml.sax.Attributes,
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
     public void onStartElement(String localName, Attributes attributes, TagContext context)
@@ -354,11 +365,14 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         MdClassDAOIF concreteClass = MdClassDAO.getMdClassDAO(concreteType);
         MdAttributeDAOIF concreteAttribute = concreteClass.definesAttribute(concreteName);
 
-        // IMPORTANT: It is possible that the concrete type is defined before this
-        // schema was imported. However, the definition of the concrete attribute
+        // IMPORTANT: It is possible that the concrete type is defined before
+        // this
+        // schema was imported. However, the definition of the concrete
+        // attribute
         // may not be defined until an update statement in the current xml file.
         // As such it is possible to have the type defined but not have the
-        // concrete attribute defined. Therefore, if the attribute is not defined
+        // concrete attribute defined. Therefore, if the attribute is not
+        // defined
         // then we need to search and import the definition of the class which
         // exists in the current xml file.
         if (concreteAttribute == null)
@@ -379,8 +393,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -464,8 +479,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -545,8 +561,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -627,8 +644,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -665,8 +683,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -703,8 +722,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -747,13 +767,58 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
       this.populate(mdClass, (MdAttributeLocalDAO) mdAttribute, attributes);
+    }
+  }
+
+  protected static class AttributeLocalEmbeddedHandler extends AttributeEmbeddedHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public AttributeLocalEmbeddedHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    protected void populate(MdClassDAO mdClass, MdAttributeLocalEmbeddedDAO mdAttribute, Attributes attributes)
+    {
+      super.populate(mdClass, mdAttribute, attributes);
+
+      String localType = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
+
+      if (localType != null)
+      {
+        // Ensure that the class being reference is defined in the database
+        if (!MdTypeDAO.isDefined(localType))
+        {
+          String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+          SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, localType, mdClass.definesType());
+        }
+
+        // Get the databaseID of the enumeration reference
+        MdClassDAOIF refMdLocalEmbeddedStructIF = MdClassDAO.getMdClassDAO(localType);
+
+        // Reference to a struct class
+        mdAttribute.setValue(MdAttributeLocalEmbeddedInfo.EMBEDDED_MD_CLASS, refMdLocalEmbeddedStructIF.getOid());
+      }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
+    {
+      this.populate(mdClass, (MdAttributeLocalEmbeddedDAO) mdAttribute, attributes);
     }
   }
 
@@ -776,8 +841,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -804,8 +870,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -832,8 +899,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -842,7 +910,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
 
   }
-  
+
   protected static class AttributeCharacterHandler extends AttributePrimitiveHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeCharacterHandler(ImportManager manager, String tag, String type)
@@ -860,8 +928,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -907,13 +976,61 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
       this.populate(mdClass, (MdAttributeStructDAO) mdAttribute, attributes);
+    }
+  }
+
+  protected static class AttributeEmbeddedHandler extends AttributeConcreteHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public AttributeEmbeddedHandler(ImportManager manager, String type)
+    {
+      super(manager, type);
+    }
+
+    private void importEmbeddedType(MdClassDAO mdClass, MdAttributeDAO mdAttribute, String embeddedType)
+    {
+      if (embeddedType != null)
+      {
+        // Ensure that the class being reference is defined in the database
+        if (!MdTypeDAO.isDefined(embeddedType))
+        {
+          String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+          SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, embeddedType, mdClass.definesType());
+        }
+
+        // Get the databaseID of the enumeration reference
+        MdClassDAOIF refMdEmbeddedIF = MdClassDAO.getMdClassDAO(embeddedType);
+
+        // Reference to a struct class
+        mdAttribute.setValue(MdAttributeEmbeddedInfo.EMBEDDED_MD_CLASS, refMdEmbeddedIF.getOid());
+      }
+    }
+
+    protected void populate(MdClassDAO mdClass, MdAttributeEmbeddedDAO mdAttribute, Attributes attributes)
+    {
+      super.populate(mdClass, mdAttribute, attributes);
+
+      this.importEmbeddedType(mdClass, mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
+     */
+    @Override
+    protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
+    {
+      this.populate(mdClass, (MdAttributeEmbeddedDAO) mdAttribute, attributes);
     }
   }
 
@@ -974,8 +1091,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -1035,8 +1153,9 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -1054,7 +1173,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     super(manager);
 
     // Setup default handlers
- // Heads up: UUID
+    // Heads up: UUID
     this.addHandler(XMLTags.UUID_TAG, new AttributeConcreteHandler(manager, MdAttributeUUIDInfo.CLASS));
 
     this.addHandler(XMLTags.LOCAL_CHARACTER_TAG, new AttributeLocalHandler(manager, MdAttributeLocalCharacterInfo.CLASS));
@@ -1082,5 +1201,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.STRUCT_TAG, new AttributeStructHandler(manager, MdAttributeStructInfo.CLASS));
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));
+    this.addHandler(XMLTags.EMBEDDED_TAG, new AttributeEmbeddedHandler(manager, MdAttributeEmbeddedInfo.CLASS));
+    this.addHandler(XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG, new AttributeLocalEmbeddedHandler(manager, MdAttributeLocalCharacterEmbeddedInfo.CLASS));
   }
 }

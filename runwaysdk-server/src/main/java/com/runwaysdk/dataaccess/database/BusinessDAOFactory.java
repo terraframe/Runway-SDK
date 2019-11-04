@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on August 13, 2004
@@ -72,6 +72,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -191,6 +192,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -303,7 +305,7 @@ public class BusinessDAOFactory
     // Graoh Database
     map.put(MdVertexInfo.CLASS, new MdVertexDAO());
     map.put(MdEdgeInfo.CLASS, new MdEdgeDAO());
-    
+
     map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
     map.put(MdBusinessInfo.CLASS, new MdBusinessDAO());
@@ -363,6 +365,7 @@ public class BusinessDAOFactory
     map.put(MdAttributeHashInfo.CLASS, new MdAttributeHashDAO());
     map.put(MdAttributeSymmetricInfo.CLASS, new MdAttributeSymmetricDAO());
     map.put(MdAttributeEmbeddedInfo.CLASS, new MdAttributeEmbeddedDAO());
+    map.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, new MdAttributeLocalCharacterEmbeddedDAO());
 
     // web form
     map.put(MdWebFormInfo.CLASS, new MdWebFormDAO());
@@ -443,14 +446,14 @@ public class BusinessDAOFactory
     }
 
     boolean isUser = MdElementDAO.isSubEntity(type, UserInfo.CLASS);
-    
+
     if (isUser)
     {
       return new UserDAO(attributeMap, type);
     }
-    
+
     boolean isSingleActor = MdElementDAO.isSubEntity(type, SingleActorInfo.CLASS);
-    
+
     if (isSingleActor)
     {
       return new SingleActorDAO(attributeMap, type);
@@ -496,8 +499,8 @@ public class BusinessDAOFactory
   /**
    * Returns a BusinessDAO of the given type with the given key in the database.
    * This method does the same thing as get(String oid), but is faster. If you
-   * know the type of the oid, use this method. Otherwise use the get(String oid)
-   * method.
+   * know the type of the oid, use this method. Otherwise use the get(String
+   * oid) method.
    * 
    * <br/>
    * <b>Precondition:</b> key != null <br/>
@@ -645,10 +648,11 @@ public class BusinessDAOFactory
    *          {@link MdAttribute} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
-   *          contains {@link MdAttribute} objects for the attributes used in this query
+   *          contains {@link MdAttribute} objects for the attributes used in
+   *          this query
    * @param resultSet
    *          ResultSet object from a query.
-   * @return {@link BusinessDAO}  from a row from the given resultset
+   * @return {@link BusinessDAO} from a row from the given resultset
    */
 
   public static BusinessDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedByTableClasMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)

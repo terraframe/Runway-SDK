@@ -182,6 +182,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiTermDAO;
@@ -6720,6 +6721,43 @@ public class SAXParseTest
 
     // Ensure the attributes are linked to the correct MdVertex object
     Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdVertex1IF.getOid());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  @Request
+  @Test
+  public void testCreateLocalCharacterEmbedded()
+  {
+    // Create test MdVertex
+    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
+    mdVertex1.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.setValue(MdVertexInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdVertex1.setValue(MdVertexInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.apply();
+
+    MdAttributeLocalCharacterEmbeddedDAO mdAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertex1);
+    mdAttribute.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdVertex1 });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdVertex1);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdVertexDAOIF mdVertex1IF = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
+
+    MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
+
+    Assert.assertNotNull(attribute);
   }
 
   /**

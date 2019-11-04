@@ -12,22 +12,23 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 
 public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
 {
-  
+
   /**
    * 
    */
   private static final long serialVersionUID = -8831375476104335207L;
 
   /**
-   * Precondition: 
+   * Precondition:
    * 
-   * @param {@link MdAttributeEmbedded_G}
+   * @param {@link
+   *          MdAttributeEmbedded_G}
    */
   public MdAttributeEmbedded_G(MdAttributeEmbeddedDAO mdAttribute)
   {
-    super(mdAttribute);
+    super(mdAttribute, null);
   }
-  
+
   /**
    * Returns the {@link MdGraphClassDAOIF} that defines this MdAttribute.
    *
@@ -47,13 +48,12 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
   {
     return (MdAttributeEmbeddedDAO) super.getMdAttribute();
   }
-  
-  
+
   protected String getEmbeddedClassType()
   {
-    return this.dbColumnType;
+    return GraphDBService.getInstance().getDbColumnType(this.getMdAttribute());
   }
-  
+
   /**
    * Adds the attribute to the graph database
    *
@@ -62,7 +62,7 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
   protected void createDbAttribute()
   {
     String embeddedClassType = this.getEmbeddedClassType();
- 
+
     String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
     String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
     boolean required = ( (AttributeBooleanIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED) ).getBooleanValue();
@@ -76,7 +76,7 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
   }
-  
+
   /**
    * Drops the attribute from the graph database
    *
@@ -85,7 +85,7 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
   protected void dropDbAttribute()
   {
     String embeddedClassType = this.getEmbeddedClassType();
-    
+
     String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
     String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
     boolean required = ( (AttributeBooleanIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED) ).getBooleanValue();

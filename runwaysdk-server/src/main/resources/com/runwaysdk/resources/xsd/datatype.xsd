@@ -950,6 +950,8 @@
       <xs:element name="localChar" type="localChar" />
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
+      <xs:element name="embedded" type="embedded" />
+      <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
 
@@ -1042,6 +1044,12 @@
   </xs:attributeGroup>
 
   <xs:attributeGroup name="attributeStruct">
+    <xs:attributeGroup ref="attribute" />
+    <!--The fully qualified path of type that defines the struct -->
+    <xs:attribute name="type" type="xs:string" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="attributeEmbedded">
     <xs:attributeGroup ref="attribute" />
     <!--The fully qualified path of type that defines the struct -->
     <xs:attribute name="type" type="xs:string" />
@@ -1141,6 +1149,11 @@
     <xs:attributeGroup ref="attributeStruct" />
   </xs:complexType>
 
+  <!-- local character: a localized character attribute -->
+  <xs:complexType name="localCharEmbedded">
+    <xs:attributeGroup ref="attributeEmbedded" />
+  </xs:complexType>
+
   <!-- text character: a localized character attribute -->
   <xs:complexType name="localText">
     <xs:attributeGroup ref="attributeStruct" />
@@ -1157,6 +1170,11 @@
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="struct">
     <xs:attributeGroup ref="attributeStruct" />
+  </xs:complexType>
+
+  <!-- referenceName: Must reference a defined mdBusiness type -->
+  <xs:complexType name="embedded">
+    <xs:attributeGroup ref="attributeEmbedded" />
   </xs:complexType>
 
   <!-- Defines the hash encryption attribute -->
