@@ -1,13 +1,17 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
+import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 
 public class AttributeEmbedded extends Attribute
 {
@@ -75,6 +79,50 @@ public class AttributeEmbedded extends Attribute
   public void setValue(String attributeName, Object value)
   {
     this.getAttribute(attributeName).setValue(value);
+  }
+
+  /**
+   * 
+   * precondition: this.componentDAO is initialized
+   * 
+   * @param attributeName
+   * @param value
+   */
+  public void setValue(String attributeName, Object value, Date startDate, Date endDate)
+  {
+    ValueOverTime vt = this.getValueOvertTime(startDate, endDate);
+
+    if (vt != null)
+    {
+      GraphObjectDAO object = (GraphObjectDAO) vt.getValue();
+      object.setValue(attributeName, value);
+    }
+    else
+    {
+      VertexObjectDAO object = VertexObjectDAO.newInstance((MdVertexDAOIF) this.getMdAttributeConcrete().getEmbeddedMdClassDAOIF());
+      object.setValue(attributeName, value);
+
+      this.setValue(object, startDate, endDate);
+    }
+  }
+
+  /**
+   * 
+   * precondition: this.componentDAO is initialized
+   * 
+   * @param attributeName
+   * @param value
+   */
+  public Object getObjectValue(String attributeName, Date date)
+  {
+    GraphObjectDAO object = (GraphObjectDAO) this.getObjectValue(date);
+
+    if (object != null)
+    {
+      return object.getObjectValue(attributeName);
+    }
+
+    return null;
   }
 
   /**

@@ -3,15 +3,9 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import java.util.Collection;
 import java.util.Locale;
 
-import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.session.LocaleManager;
 
@@ -43,29 +37,7 @@ public class MdAttributeLocalEmbedded_G extends MdAttributeEmbedded_G
 
     if (embeddedAttribute.getValue().trim().equals(""))
     {
-      MdVertexDAO mdVertexDAO = null;
-
-      try
-      {
-        mdVertexDAO = (MdVertexDAO) MdVertexDAO.getMdVertexDAO(MdAttributeLocalEmbeddedInfo.EMBEDDED_LOCAL_VALUE);
-      }
-      catch (DataNotFoundException e)
-      {
-
-      }
-
-      if (mdVertexDAO == null)
-      {
-        // Create the MdStruct that holds the localized values
-        mdVertexDAO = MdVertexDAO.newInstance();
-        mdVertexDAO.getAttribute(MdVertexInfo.NAME).setValue(MdAttributeLocalEmbeddedInfo.EMBEDDED_LOCAL_VALUE_TYPE_NAME);
-        mdVertexDAO.getAttribute(MdVertexInfo.PACKAGE).setValue(Constants.SYSTEM_BUSINESS_PACKAGE);
-
-        ( (AttributeLocalCharacter) mdVertexDAO.getAttribute(MdVertexInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, getMdAttribute().getDisplayLabel(CommonProperties.getDefaultLocale()));
-        ( (AttributeLocalCharacter) mdVertexDAO.getAttribute(MdVertexInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, getMdAttribute().getDescription(CommonProperties.getDefaultLocale()));
-
-        mdVertexDAO.apply();
-      }
+      MdVertexDAO mdVertexDAO = (MdVertexDAO) MdVertexDAO.getMdVertexDAO(MdAttributeLocalEmbeddedInfo.EMBEDDED_LOCAL_VALUE);
 
       embeddedAttribute.setValue(mdVertexDAO.getOid());
     }
@@ -87,10 +59,10 @@ public class MdAttributeLocalEmbedded_G extends MdAttributeEmbedded_G
     {
       MdAttributeLocalEmbeddedDAO mdAttributeDAO = this.getMdAttribute();
 
-      if (!mdAttributeDAO.definesDefaultLocale())
-      {
-        mdAttributeDAO.addDefaultLocale();
-      }
+      // if (!mdAttributeDAO.definesDefaultLocale())
+      // {
+      // mdAttributeDAO.addDefaultLocale();
+      // }
 
       // Add all of the locales defined in SupportedLocale
       Collection<Locale> supportedLocales = LocaleManager.getSupportedLocales();

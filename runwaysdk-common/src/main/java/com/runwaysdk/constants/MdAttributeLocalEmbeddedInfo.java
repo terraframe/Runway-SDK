@@ -5,17 +5,12 @@ public interface MdAttributeLocalEmbeddedInfo extends MdAttributeEmbeddedInfo
   /**
    * Class.
    */
-  public static final String CLASS                          = Constants.METADATA_PACKAGE + ".MdAttributeLocalEmbedded";
+  public static final String CLASS                = Constants.METADATA_PACKAGE + ".MdAttributeLocalEmbedded";
 
   /**
    * OID.
    */
-  public static final String ID_VALUE                       = "69042a0b-9035-3b57-b543-6410e600003a";
+  public static final String ID_VALUE             = "69042a0b-9035-3b57-b543-6410e600003a";
 
-  /**
-   * Default embedded class
-   */
-  public static final String EMBEDDED_LOCAL_VALUE_TYPE_NAME = "EmbeddedLocalValue";
-
-  public static final String EMBEDDED_LOCAL_VALUE           = Constants.SYSTEM_BUSINESS_PACKAGE + "." + EMBEDDED_LOCAL_VALUE_TYPE_NAME;
+  public static final String EMBEDDED_LOCAL_VALUE = "com.runwaysdk.graph.EmbeddedLocalValue";
 }

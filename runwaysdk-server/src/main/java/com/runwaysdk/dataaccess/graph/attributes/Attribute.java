@@ -1,6 +1,9 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +63,8 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
+  private List<ValueOverTime>        valuesOverTime;
+
   /**
    * Creates an attribute with the given name and initializes the value to
    * blank.
@@ -85,6 +90,7 @@ public abstract class Attribute implements AttributeIF
     this.definingGraphClass = definingGraphClass;
     this.value = null;
     this.containingGraphObjectDAO = null;
+    this.valuesOverTime = new LinkedList<ValueOverTime>();
   }
 
   /**
@@ -216,7 +222,7 @@ public abstract class Attribute implements AttributeIF
    */
   @Override
   public String getValue()
-  {    
+  {
     if (this.value != null)
     {
       return this.value.toString();
@@ -225,7 +231,7 @@ public abstract class Attribute implements AttributeIF
     {
       return "NULL";
     }
-    
+
   }
 
   /**
@@ -235,6 +241,32 @@ public abstract class Attribute implements AttributeIF
   public Object getObjectValue()
   {
     return this.value;
+  }
+
+  public Object getObjectValue(Date date)
+  {
+    for (ValueOverTime vt : this.valuesOverTime)
+    {
+      if (vt.between(date))
+      {
+        return vt.getValue();
+      }
+    }
+
+    return null;
+  }
+
+  public ValueOverTime getValueOvertTime(Date startDate, Date endDate)
+  {
+    for (ValueOverTime vt : this.valuesOverTime)
+    {
+      if (vt.getStartDate().equals(startDate) && vt.getEndDate().equals(endDate))
+      {
+        return vt;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -262,6 +294,13 @@ public abstract class Attribute implements AttributeIF
     }
   }
 
+  public void setValue(Object value, Date startDate, Date endDate)
+  {
+    this.validate(value);
+
+    this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+  }
+
   /**
    * For internal use only as it bypasses validation.
    * 
@@ -270,6 +309,21 @@ public abstract class Attribute implements AttributeIF
   public void setValueInternal(Object value)
   {
     this.value = value;
+  }
+
+  public void setValueInternal(Object value, Date startDate, Date endDate)
+  {
+    this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+  }
+
+  public List<ValueOverTime> getValuesOverTime()
+  {
+    return valuesOverTime;
+  }
+
+  public void clearValuesOverTime()
+  {
+    this.valuesOverTime.clear();
   }
 
   /**
@@ -326,7 +380,7 @@ public abstract class Attribute implements AttributeIF
     }
   }
 
-  /** 
+  /**
    * Creates an {@link EmptyValueProblem}
    * 
    * @param mdAttributeIF
@@ -337,7 +391,6 @@ public abstract class Attribute implements AttributeIF
     EmptyValueProblem problem = new EmptyValueProblem(this.getContainingComponent().getProblemNotificationId(), mdAttributeIF.definedByClass(), mdAttributeIF, error, this);
     problem.throwIt();
   }
-  
 
   /**
    * Checks if this attribute is required for its defining

@@ -116,4 +116,6 @@ public interface MdGraphClassDAOIF extends MdClassDAOIF
   public MdGraphClassDAO getBusinessDAO();
 
   public String getDBClassName();
+
+  public boolean isEnableChangeOverTime();
 }

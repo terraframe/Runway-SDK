@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -25,6 +25,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeConcreteHandler;
+import com.runwaysdk.dataaccess.io.dataDefinition.MdVertexHandler;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
@@ -36,6 +37,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdGeoVertexInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeGeometryDAO;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -44,6 +46,8 @@ import com.runwaysdk.system.gis.geo.GeoNodeEntity;
 import com.runwaysdk.system.gis.geo.GeoNodeEntityQuery;
 import com.runwaysdk.system.gis.geo.GeoNodeGeometry;
 import com.runwaysdk.system.gis.geo.GeoNodeGeometryQuery;
+import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
+
 
 public class GISImportPlugin implements ImportPluginIF
 {
@@ -73,11 +77,14 @@ public class GISImportPlugin implements ImportPluginIF
         MdClassDAOIF concreteClass = MdClassDAO.getMdClassDAO(referenceType);
         MdAttributeDAOIF concreteAttribute = concreteClass.definesAttribute(referenceAttribute);
 
-        // IMPORTANT: It is possible that the concrete type is defined before this
-        // schema was imported. However, the definition of the concrete attribute
+        // IMPORTANT: It is possible that the concrete type is defined before
+        // this
+        // schema was imported. However, the definition of the concrete
+        // attribute
         // may not be defined until an update statement in the current xml file.
         // As such it is possible to have the type defined but not have the
-        // concrete attribute defined. Therefore, if the attribute is not defined
+        // concrete attribute defined. Therefore, if the attribute is not
+        // defined
         // then we need to search and import the definition of the class which
         // exists in the current xml file.
         if (concreteAttribute == null)
@@ -276,8 +283,9 @@ public class GISImportPlugin implements ImportPluginIF
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO, com.runwaysdk.dataaccess.metadata.MdAttributeDAO,
-     * org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
+     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
+     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
@@ -298,7 +306,7 @@ public class GISImportPlugin implements ImportPluginIF
       this.addHandler(XMLTags.MULTIPOLYGON_TAG, new AttributeGeometryHandler(manager, MdAttributeMultiPolygonInfo.CLASS));
     }
   }
-  
+
   private static class NodeHandlerFactory extends HandlerFactory implements HandlerFactoryIF
   {
     private static final String GEO_NODE_ENTITY_TAG   = "geoNodeEntity";
@@ -309,6 +317,35 @@ public class GISImportPlugin implements ImportPluginIF
     {
       this.addHandler(GEO_NODE_ENTITY_TAG, new GeoNodeEntityHandler(manager));
       this.addHandler(GEO_NODE_GEOMETRY_TAG, new GeoNodeGeometryHandler(manager));
+    }
+  }
+
+  private static class MdGeoVertexHandler extends MdVertexHandler implements TagHandlerIF, HandlerFactoryIF
+  {
+    public static final String TAG = "mdGeoVertex";
+
+    public MdGeoVertexHandler(ImportManager manager)
+    {
+      super(manager);
+    }
+
+    protected final MdGeoVertexDAO createMdVertex(String localName, String name)
+    {
+      return (MdGeoVertexDAO) this.getManager().getEntityDAO(MdGeoVertexInfo.CLASS, name).getEntityDAO();
+    }
+
+    protected String getTag()
+    {
+      return TAG;
+    }
+  }
+
+  private static class GeoVertexHandlerFactory extends HandlerFactory implements HandlerFactoryIF
+  {
+
+    public GeoVertexHandlerFactory(ImportManager manager)
+    {
+      this.addHandler(MdGeoVertexHandler.TAG, new MdGeoVertexHandler(manager));
     }
   }
 
@@ -324,5 +361,8 @@ public class GISImportPlugin implements ImportPluginIF
     manager.register(CreateHandler.class.getName(), new NodeHandlerFactory(manager));
     manager.register(UpdateHandler.class.getName(), new NodeHandlerFactory(manager));
     manager.register(CreateOrUpdateHandler.class.getName(), new NodeHandlerFactory(manager));
+    manager.register(CreateHandler.class.getName(), new GeoVertexHandlerFactory(manager));
+    manager.register(UpdateHandler.class.getName(), new GeoVertexHandlerFactory(manager));
+    manager.register(CreateOrUpdateHandler.class.getName(), new GeoVertexHandlerFactory(manager));
   }
 }

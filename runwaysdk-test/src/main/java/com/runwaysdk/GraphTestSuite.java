@@ -26,16 +26,20 @@ import com.runwaysdk.business.graph.VertexObjectPermissionTest;
 import com.runwaysdk.business.graph.VertexObjectTest;
 import com.runwaysdk.business.graph.generation.VertexObjectGeneratorTest;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOTest;
+import com.runwaysdk.dataaccess.graph.MdGraphClassChangeOverTimeTest;
 import com.runwaysdk.dataaccess.graph.MdGraphClassTest;
 import com.runwaysdk.dataaccess.graph.VertexInheritanceDAOTest;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOChangeOverTimeTest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOTest;
 import com.runwaysdk.gis.dataaccess.graph.GeoVertexTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
   MdGraphClassTest.class, 
+  MdGraphClassChangeOverTimeTest.class, 
   GeoVertexTest.class, 
   VertexObjectDAOTest.class,
+  VertexObjectDAOChangeOverTimeTest.class,
   VertexInheritanceDAOTest.class,
   EdgeObjectDAOTest.class,
   VertexObjectTest.class,

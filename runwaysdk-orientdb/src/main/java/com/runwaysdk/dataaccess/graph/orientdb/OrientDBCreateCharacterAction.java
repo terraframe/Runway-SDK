@@ -12,10 +12,11 @@ public class OrientDBCreateCharacterAction extends OrientDBCreatePropertyAction
    * @param attributeName
    * @param columnType
    * @param required
+   * @param cot TODO
    */
-  public OrientDBCreateCharacterAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, int maxLength)
+  public OrientDBCreateCharacterAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, int maxLength, boolean cot)
   {
-    super(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
+    super(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required, cot);
 
     this.maxLength = maxLength;
   }

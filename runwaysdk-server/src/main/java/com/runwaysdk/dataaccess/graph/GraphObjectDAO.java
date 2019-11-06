@@ -1,6 +1,7 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeFactory;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 
 public abstract class GraphObjectDAO extends ComponentDAO implements GraphObjectDAOIF
@@ -319,11 +321,11 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   public ComponentDAO getEmbeddedComponentDAO(String attributeName)
   {
     Attribute attribute = this.getAttribute(attributeName);
-    
+
     if (attribute instanceof AttributeEmbedded)
     {
-      AttributeEmbedded attributeEmbedded = (AttributeEmbedded)attribute;
-      
+      AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
+
       return attributeEmbedded.getObjectValue();
     }
     else
@@ -331,7 +333,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
       return null;
     }
   }
-  
+
   /**
    * Returns a {@link MdGraphDAOIF} that defines this object's class.
    * 
@@ -400,6 +402,50 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     attribute.validate(attribute.getValue());
   }
+  
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Object getObjectValue(String name, Date date)
+  {
+    Attribute attribute = (Attribute) this.getAttributeIF(name);
+
+    return attribute.getObjectValue(date);
+  }
+
+  /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public List<ValueOverTime> getValuesOverTime(String name)
+  {
+    Attribute attribute = (Attribute) this.getAttributeIF(name);
+
+    return attribute.getValuesOverTime();
+  }
+
+
+  public void setValue(String name, Object value, Date startDate, Date endDate)
+  {
+    if (value instanceof String)
+    {
+      String stringValue = (String) value;
+
+      if (name.equals(GraphClassInfo.TYPE))
+      {
+        this.componentType = stringValue;
+      }
+    }
+
+    Attribute attribute = this.getAttribute(name);
+
+    attribute.setValue(value, startDate, endDate);
+  }  
 
   /**
    * Sets the attribute of the given name with the given value.
@@ -440,7 +486,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     attribute.setValue(value);
   }
-
+  
   /**
    * Adds an item to an enumerated attribute. If the attribute does not allow
    * multiplicity, the <code>value</code> replaces the previous item.
@@ -641,7 +687,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     Attribute attribute;
     // assign a default value (if any) as defined in the meta data
-    //String attrDefaultValue = mdAttribute.getAttributeInstanceDefaultValue();
+    // String attrDefaultValue = mdAttribute.getAttributeInstanceDefaultValue();
 
     // Check for sessionDefaultValue
 

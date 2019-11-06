@@ -151,32 +151,33 @@ public class GraphDBService
   }
 
   /**
+   * @param cot TODO
    * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
-   *      String, boolean, int)
+   *      String, boolean, int, boolean)
    */
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength)
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength, boolean cot)
   {
-    return this.graphDB.createCharacterAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, required, maxLength);
+    return this.graphDB.createCharacterAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, required, maxLength, cot);
   }
 
-  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required)
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot)
   {
-    return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required);
+    return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required, cot);
   }
 
-  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required)
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
   {
-    return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required);
+    return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
   }
   
-  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required)
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
-    return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required);
+    return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required, cot);
   }
 
-  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required)
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required, boolean cot)
   {
-    return this.graphDB.createSetAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required);
+    return this.graphDB.createSetAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required, cot);
   }
 
   /**
@@ -214,17 +215,19 @@ public class GraphDBService
   }
 
   /**
+   * @param cot TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
    */
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
     return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
   }
 
   /**
+   * @param cot TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
    */
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
     return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
   }

@@ -66,6 +66,11 @@ public class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
     return (MdGraphClassDAOIF) this.getMdAttribute().definedByClass();
   }
 
+  protected boolean isChangeOverTime()
+  {
+    return this.definedByClass().isEnableChangeOverTime();
+  }
+
   protected void preSaveValidate()
   {
     super.preSaveValidate();
@@ -226,8 +231,8 @@ public class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
@@ -246,8 +251,8 @@ public class MdAttributeConcrete_G extends MdAttributeConcreteStrategy
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createConcreteAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
     graphCommand.doIt();

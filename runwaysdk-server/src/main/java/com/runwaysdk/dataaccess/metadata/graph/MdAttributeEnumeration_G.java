@@ -62,8 +62,8 @@ public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
@@ -82,8 +82,8 @@ public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
     graphCommand.doIt();

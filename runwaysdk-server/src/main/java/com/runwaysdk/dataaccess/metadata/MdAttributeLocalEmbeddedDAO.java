@@ -3,12 +3,15 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.Locale;
 import java.util.Map;
 
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.metadata.graph.MdAttributeLocalEmbedded_G;
 
 public abstract class MdAttributeLocalEmbeddedDAO extends MdAttributeEmbeddedDAO implements MdAttributeLocalEmbeddedDAOIF
@@ -28,10 +31,6 @@ public abstract class MdAttributeLocalEmbeddedDAO extends MdAttributeEmbeddedDAO
   {
     super(attributeMap, classType);
   }
-
-  public abstract void addDefaultLocale();
-
-  protected abstract MdAttributeDAOIF addLocaleWrapper(String attributeName, String columnName, String displayLabel, String description);
 
   /**
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
@@ -97,6 +96,26 @@ public abstract class MdAttributeLocalEmbeddedDAO extends MdAttributeEmbeddedDAO
         mdAttributeDAOIF.getBusinessDAO().delete();
       }
     }
+  }
+
+  private MdAttributeDAOIF addLocaleWrapper(String attributeName, String columnName, String displayLabel, String description)
+  {
+    MdAttributeTextDAO localChar = MdAttributeTextDAO.newInstance();
+    localChar.getAttribute(MdAttributeTextInfo.NAME).setValue(attributeName);
+    if (columnName.trim().length() != 0)
+    {
+      localChar.getAttribute(MdAttributeTextInfo.COLUMN_NAME).setValue(columnName);
+    }
+    ( (AttributeLocal) localChar.getAttribute(MdAttributeTextInfo.DISPLAY_LABEL) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, displayLabel);
+    ( (AttributeLocal) localChar.getAttribute(MdAttributeTextInfo.DESCRIPTION) ).setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, description);
+    localChar.getAttribute(MdAttributeTextInfo.REQUIRED).setValue(MdAttributeBooleanInfo.FALSE);
+    localChar.getAttribute(MdAttributeTextInfo.IMMUTABLE).setValue(MdAttributeBooleanInfo.FALSE);
+    localChar.getAttribute(MdAttributeTextInfo.GENERATE_ACCESSOR).setValue(Boolean.toString(false));
+    localChar.getAttribute(MdAttributeTextInfo.DEFINING_MD_CLASS).setValue(this.getEmbeddedMdClassDAOIF().getOid());
+    localChar.apply();
+
+    return localChar;
+
   }
 
   @Override

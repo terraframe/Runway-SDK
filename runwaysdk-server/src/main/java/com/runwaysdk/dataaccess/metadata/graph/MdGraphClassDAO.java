@@ -119,6 +119,22 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
     return (List<? extends MdAttributeConcreteDAOIF>) super.definesAttributes();
   }
 
+  @Override
+  public boolean isEnableChangeOverTime()
+  {
+    if (this.hasAttribute(MdGraphClassInfo.ENABLE_CHANGE_OVER_TIME))
+    {
+      String value = this.getAttribute(MdGraphClassInfo.ENABLE_CHANGE_OVER_TIME).getValue();
+
+      if (value != null && value.length() > 0)
+      {
+        return Boolean.parseBoolean(value);
+      }
+    }
+
+    return false;
+  }
+
   /**
    * Returns an {@link MdGraphClassDAOIF} instance of the metadata for the given
    * type.

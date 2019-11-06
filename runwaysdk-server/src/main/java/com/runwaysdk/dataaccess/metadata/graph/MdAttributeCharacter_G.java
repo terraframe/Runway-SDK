@@ -3,6 +3,7 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeInteger;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
@@ -56,13 +57,13 @@ public class MdAttributeCharacter_G extends MdAttributeConcrete_G
     String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
     String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.COLUMN_NAME).getValue();
     boolean required = ((AttributeBooleanIF)this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.REQUIRED)).getBooleanValue(); 
-    int maxLength = Integer.parseInt(this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.SIZE).getValue());
+    int maxLength = Integer.parseInt(this.getMdAttribute().getAttributeIF(MdAttributeCharacterInfo.SIZE).getValue());    
     
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createCharacterAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, required, maxLength);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createCharacterAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, required, maxLength, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
     
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
@@ -83,8 +84,8 @@ public class MdAttributeCharacter_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
     
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);    
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createCharacterAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, required, maxLength);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());    
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createCharacterAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, required, maxLength, this.isChangeOverTime());
     
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
     graphCommand.doIt();

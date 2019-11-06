@@ -667,7 +667,7 @@ public class MdGraphClassTest
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
-  private static MdVertexDAO createVertexClass(String vertexName)
+  protected MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
     mdVertexDAO.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
@@ -677,7 +677,7 @@ public class MdGraphClassTest
     return mdVertexDAO;
   }
 
-  private static MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)
+  protected MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)
   {
     MdEdgeDAO mdEdgeDAO = TestFixtureFactory.createMdEdge(parentMdEdgeOid, childMdEdgeOid, edgeName);
     mdEdgeDAO.apply();

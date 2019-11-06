@@ -37,5 +37,9 @@ public interface MdGraphClassInfo extends MdClassInfo
    * The name of the class in the database.
    */
   public static final String DB_CLASS_NAME       = "dbClassName"; 
-
+  
+  /**
+   * Flag indicating if the type has change over time enabled
+   */
+  public static final String ENABLE_CHANGE_OVER_TIME       = "enableChangeOverTime"; 
 }

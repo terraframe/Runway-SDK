@@ -6,33 +6,29 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 
-public class OrientDBCreatePropertyAction extends OrientDBDDLAction
+public class OrientDBCreateEmbeddedSetPropertyAction extends OrientDBDDLAction
 {
-  private String  className;
+  protected String className;
 
-  private String  attributeName;
+  protected String attributeName;
 
-  private String  columnType;
+  private boolean  required;
 
-  private boolean required;
-
-  private boolean cot;
+  private boolean  cot;
 
   /**
    * @param className
    * @param attributeName
-   * @param columnType
    * @param required
    * @param cot
    *          TODO
    */
-  public OrientDBCreatePropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot)
+  public OrientDBCreateEmbeddedSetPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, boolean cot)
   {
     super(graphRequest, ddlGraphDBRequest);
 
     this.className = className;
     this.attributeName = attributeName;
-    this.columnType = columnType;
     this.required = required;
     this.cot = cot;
   }
@@ -44,9 +40,7 @@ public class OrientDBCreatePropertyAction extends OrientDBDDLAction
 
     if (oClass != null)
     {
-      OType oType = OType.valueOf(this.columnType);
-
-      OProperty oProperty = oClass.createProperty(this.attributeName, oType);
+      OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDEDSET, OType.STRING);
 
       configure(oProperty);
 

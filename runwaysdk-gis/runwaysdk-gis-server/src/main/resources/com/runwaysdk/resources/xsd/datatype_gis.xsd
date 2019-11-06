@@ -44,6 +44,7 @@
       <xs:complexContent>
         <xs:extension base="create">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="mdGeoVertex" type="mdVertex" />
             <xs:element name="geoNodeEntity" type="geoNodeEntity" />
             <xs:element name="geoNodeGeometry" type="geoNodeGeometry" />
           </xs:choice>
@@ -55,6 +56,7 @@
       <xs:complexContent>
         <xs:extension base="update">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="mdGeoVertex" type="mdVertex" />          
             <xs:element name="geoNodeEntity" type="geoNodeEntity" />
             <xs:element name="geoNodeGeometry" type="geoNodeGeometry" />
           </xs:choice>

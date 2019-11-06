@@ -70,8 +70,8 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
@@ -93,8 +93,8 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropGeometryAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
     graphCommand.doIt();

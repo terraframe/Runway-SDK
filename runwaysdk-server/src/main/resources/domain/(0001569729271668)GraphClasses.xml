@@ -29,6 +29,7 @@
         generateController="false" >
         <attributes>
           <char name="dbClassName" label="Database Class Name" description="The name of the class in the database" required="true" size="31" indexType="unique index"/>
+          <boolean name="enableChangeOverTime" label="Enable change over time" immutable="true" required="false" defaultValue="false" description="Indicates if change over time is enabled for the class" />                    
         </attributes>
       </mdBusiness>
       

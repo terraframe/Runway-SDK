@@ -94,9 +94,14 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
     context.setObject(MdTypeInfo.CLASS, mdVertexDAO);
   }
 
-  private final MdVertexDAO createMdVertex(String localName, String name)
+  protected MdVertexDAO createMdVertex(String localName, String name)
   {
     return (MdVertexDAO) this.getManager().getEntityDAO(MdVertexInfo.CLASS, name).getEntityDAO();
+  }
+
+  protected String getTag()
+  {
+    return XMLTags.MD_VERTEX_TAG;
   }
 
   /**
@@ -135,7 +140,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+        String[] search_tags = { getTag() };
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdVertexDAO.definesType());
       }
 
@@ -156,7 +161,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_VERTEX_TAG))
+    if (localName.equals(getTag()))
     {
       MdVertexDAO mdVertexDAO = (MdVertexDAO) context.getObject(MdTypeInfo.CLASS);
 
