@@ -20,17 +20,20 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -39,12 +42,15 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
@@ -54,6 +60,10 @@ import com.vividsolutions.jts.geom.Point;
 public class VertexObjectDAOChangeOverTimeTest
 {
   private static MdVertexDAO                          mdVertexDAO;
+
+  private static MdBusinessDAO                        mdEnumMasterDAO;
+
+  private static MdEnumerationDAO                     mdEnumerationDAO;
 
   private static MdAttributeCharacterDAO              mdCharacterAttribute;
 
@@ -79,6 +89,8 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributePointDAO                  mdPointAttribute;
 
+  private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
+
   @Request
   @BeforeClass
   public static void classSetup()
@@ -93,6 +105,12 @@ public class VertexObjectDAOChangeOverTimeTest
   @Transaction
   private static void classSetup_Transaction()
   {
+    mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
+    mdEnumMasterDAO.apply();
+
+    mdEnumerationDAO = TestFixtureFactory.createMdEnumeation1(mdEnumMasterDAO);
+    mdEnumerationDAO.apply();
+
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.setValue(MdVertexInfo.ENABLE_CHANGE_OVER_TIME, MdAttributeBooleanInfo.TRUE);
     mdVertexDAO.apply();
@@ -130,9 +148,12 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdLocalCharacterAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertexDAO);
     mdLocalCharacterAttribute.apply();
-    
+
     mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
     mdPointAttribute.apply();
+
+    mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
+    mdEnumerationAttribute.apply();
   }
 
   @Request
@@ -148,6 +169,8 @@ public class VertexObjectDAOChangeOverTimeTest
   public static void classTearDown_Transaction()
   {
     TestFixtureFactory.delete(mdVertexDAO);
+    TestFixtureFactory.delete(mdEnumerationDAO);
+    TestFixtureFactory.delete(mdEnumMasterDAO);
   }
 
   public Date startDate()
@@ -677,7 +700,7 @@ public class VertexObjectDAOChangeOverTimeTest
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
 
-  @Request 
+  @Request
   @Test
   public void testPointAttribute()
   {
@@ -719,4 +742,50 @@ public class VertexObjectDAOChangeOverTimeTest
 
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
+
+  @SuppressWarnings("unchecked")
+  @Request
+  @Test
+  public void testEnumerationAttribute()
+  {
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
+    businessDAO.setValue(EnumerationMasterInfo.NAME, "test");
+    businessDAO.apply();
+
+    try
+    {
+      String attributeName = mdEnumerationAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+      String value = businessDAO.getOid();
+
+      vertexDAO.setValue(attributeName, value, startDate(), endDate());
+
+      try
+      {
+        vertexDAO.apply();
+
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+
+        Set<String> set = (Set<String>) test.getObjectValue(attributeName, date());
+
+        Assert.assertTrue(set.contains(value));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      businessDAO.delete();
+    }
+  }
+
 }
