@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -47,7 +47,9 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.session.Request;
+import com.vividsolutions.jts.geom.Point;
 
 public class VertexObjectDAOChangeOverTimeTest
 {
@@ -74,6 +76,8 @@ public class VertexObjectDAOChangeOverTimeTest
   private static MdAttributeTextDAO                   mdTextAttribute;
 
   private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
+
+  private static MdAttributePointDAO                  mdPointAttribute;
 
   @Request
   @BeforeClass
@@ -126,6 +130,9 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdLocalCharacterAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertexDAO);
     mdLocalCharacterAttribute.apply();
+    
+    mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
+    mdPointAttribute.apply();
   }
 
   @Request
@@ -661,6 +668,49 @@ public class VertexObjectDAOChangeOverTimeTest
       testAttribute = (AttributeLocalEmbedded) test.getAttributeIF(attributeName);
 
       Assert.assertEquals(value, testAttribute.getObjectValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+
+  @Request 
+  @Test
+  public void testPointAttribute()
+  {
+    String attributeName = mdPointAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+    Point value = TestFixtureFactory.getPoint();
+
+    vertexDAO.setValue(attributeName, value, startDate(), endDate());
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
+
+    try
+    {
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
+
+      // Test update
+      value = TestFixtureFactory.getPoint2();
+
+      vertexDAO.setValue(attributeName, value, startDate(), endDate());
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
     }
     finally
     {

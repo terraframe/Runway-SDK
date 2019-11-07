@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -1173,14 +1173,14 @@ public class OrientDBImpl implements GraphDB
 
       if (mdClass.isEnableChangeOverTime())
       {
-        populateChangeOverTime(vertex, attribute, mdAttribute);
+        populateDAOChangeOverTime(vertex, attribute, mdAttribute);
       }
     }
 
     vertexDAO.setRID(vertex.getIdentity());
   }
 
-  protected void populateChangeOverTime(OElement vertex, Attribute attribute, MdAttributeConcreteDAOIF mdAttribute)
+  protected void populateDAOChangeOverTime(OElement vertex, Attribute attribute, MdAttributeConcreteDAOIF mdAttribute)
   {
     String columnName = mdAttribute.getColumnName();
 
@@ -1202,6 +1202,24 @@ public class OrientDBImpl implements GraphDB
         this.populateDAO(vElement, votDAO);
 
         attribute.setValueInternal(votDAO, startDate, endDate);
+      }
+    }
+    else if (mdAttribute instanceof MdAttributeGeometryDAOIF)
+    {
+      List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
+
+      attribute.clearValuesOverTime();
+
+      for (OElement element : elements)
+      {
+        Date startDate = element.getProperty("startDate");
+        Date endDate = element.getProperty("endDate");
+        OElement vElement = element.getProperty("value");
+
+        Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
+        Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+
+        attribute.setValueInternal(geometry, startDate, endDate);
       }
     }
     else
@@ -1244,6 +1262,11 @@ public class OrientDBImpl implements GraphDB
         else
         {
           vertex.setProperty(columnName, null);
+        }
+
+        if (mdClass.isEnableChangeOverTime())
+        {
+          this.populateGeometryChangeOverTime(db, vertex, attribute, this.getDbColumnType(mdAttribute), columnName);
         }
       }
       else if (mdAttribute instanceof MdEnumerationDAOIF)
@@ -1321,12 +1344,36 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      OVertex document = db.newVertex("ChangeOverTime");
-      document.setProperty("startDate", vot.getStartDate());
-      document.setProperty("endDate", vot.getEndDate());
-      document.setProperty("value", vot.getValue());
+      if (vot.getValue() != null)
+      {
+        OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
+        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+        document.setProperty(OrientDBConstant.VALUE, vot.getValue());
 
-      documents.add(document);
+        documents.add(document);
+      }
+    }
+
+    vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+  }
+
+  protected void populateGeometryChangeOverTime(ODatabaseSession db, OVertex vertex, Attribute attribute, String geometryClassName, String columnName)
+  {
+    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    List<OVertex> documents = new LinkedList<OVertex>();
+
+    for (ValueOverTime vot : valuesOverTime)
+    {
+      if (vot.getValue() != null)
+      {
+        OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
+        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+        document.setProperty(OrientDBConstant.VALUE, OShapeFactory.INSTANCE.toDoc((Geometry) vot.getValue()));
+
+        documents.add(document);
+      }
     }
 
     vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
@@ -1339,15 +1386,18 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      OVertex votVertex = db.newVertex(embeddedClassName);
-      this.populateVertex(db, (GraphObjectDAO) vot.getValue(), votVertex);
+      if (vot.getValue() != null)
+      {
+        OVertex votVertex = db.newVertex(embeddedClassName);
+        this.populateVertex(db, (GraphObjectDAO) vot.getValue(), votVertex);
 
-      OVertex document = db.newVertex(embeddedClassName + OrientDBConstant.COT_SUFFIX);
-      document.setProperty("startDate", vot.getStartDate());
-      document.setProperty("endDate", vot.getEndDate());
-      document.setProperty("value", votVertex);
+        OVertex document = db.newVertex(embeddedClassName + OrientDBConstant.COT_SUFFIX);
+        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+        document.setProperty(OrientDBConstant.VALUE, votVertex);
 
-      documents.add(document);
+        documents.add(document);
+      }
     }
 
     vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
