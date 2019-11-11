@@ -3,39 +3,29 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 
 public class EdgeObject extends GraphObject
 {
   /**
-   * Lazily instantiated, this reference to the parent of the relationship is
-   * included to prevent repeated instantiations through reflection.
-   */
-  private VertexObject parent;
-
-  /**
-   * Lazily instantiated, this reference to the child of the relationship is
-   * included to prevent repeated instantiations through reflection.
-   */
-  private VertexObject child;
-
-  /**
-   * Constructor for new instances of Realtionships.
+   * /** Constructor for new instances of Realtionships.
    *
    * @param parentOid
    *          Database oid of the parent
@@ -44,10 +34,10 @@ public class EdgeObject extends GraphObject
    * @param type
    *          type the relationship
    */
-  public EdgeObject(String parentOid, String childOid)
+  public EdgeObject(VertexObjectDAOIF parent, VertexObjectDAOIF child)
   {
     super();
-    setGraphObjectDAO(EdgeObjectDAO.newInstance(parentOid, childOid, getDeclaredType()));
+    setGraphObjectDAO(EdgeObjectDAO.newInstance(parent, child, getDeclaredType()));
     parent = null;
     child = null;
   }
@@ -63,12 +53,10 @@ public class EdgeObject extends GraphObject
    * @param type
    *          type the relationship
    */
-  public EdgeObject(String parentOid, String childOid, String type)
+  public EdgeObject(VertexObjectDAOIF parent, VertexObjectDAOIF child, String type)
   {
     super();
-    setGraphObjectDAO(EdgeObjectDAO.newInstance(parentOid, childOid, type));
-    parent = null;
-    child = null;
+    setGraphObjectDAO(EdgeObjectDAO.newInstance(parent, child, type));
   }
 
   /**
@@ -76,12 +64,12 @@ public class EdgeObject extends GraphObject
    * a EdgeObjectDAO that is already in the database. All attribute values are
    * pulled from the EdgeObjectDAO parameter.
    *
-   * @param relationship
+   * @param edge
    */
-  EdgeObject(EdgeObjectDAO relationship)
+  EdgeObject(EdgeObjectDAO edge)
   {
     super();
-    setGraphObjectDAO(relationship);
+    setGraphObjectDAO(edge);
   }
 
   // /**
@@ -117,55 +105,56 @@ public class EdgeObject extends GraphObject
     return (EdgeObjectDAO) super.getGraphObjectDAO();
   }
 
-//  /**
-//   * Provides access to the typesafe parent of this relationship. The parent is
-//   * lazily instantiated.
-//   *
-//   * @return Typesafe parent of this relationship
-//   */
-//  public VertexObject getParent()
-//  {
-//    // Lazy instantiation of parent
-//    if (parent == null)
-//      parent = VertexObject.get(getGraphObjectDAO().getParentOid());
-//
-//    return parent;
-//  }
+  // /**
+  // * Provides access to the typesafe parent of this relationship. The parent
+  // is
+  // * lazily instantiated.
+  // *
+  // * @return Typesafe parent of this relationship
+  // */
+  // public VertexObject getParent()
+  // {
+  // // Lazy instantiation of parent
+  // if (parent == null)
+  // parent = VertexObject.get(getGraphObjectDAO().getParentOid());
+  //
+  // return parent;
+  // }
 
-  /**
-   * Returns the oid of the parent on this object.
-   *
-   * @return oid of the parent on this object.
-   */
-  public String getParentOid()
-  {
-    return this.getGraphObjectDAO().getParentOid();
-  }
-
-//  /**
-//   * Provides access to the typesafe child of this relationship. The child is
-//   * lazily instantiated.
-//   *
-//   * @return Typesafe child of this relationship
-//   */
-//  public VertexObject getChild()
-//  {
-//    // Lazy instantiation of child
-//    if (child == null)
-//      child = VertexObject.get(getGraphObjectDAO().getChildOid());
-//
-//    return child;
-//  }
-//
-  /**
-   * Returns the oid of the child on this object.
-   *
-   * @return oid of the child on this object.
-   */
-  public String getChildOid()
-  {
-    return this.getGraphObjectDAO().getChildOid();
-  }
+  // /**
+  // * Returns the oid of the parent on this object.
+  // *
+  // * @return oid of the parent on this object.
+  // */
+  // public String getParentOid()
+  // {
+  // return this.getGraphObjectDAO().getParentOid();
+  // }
+  //
+  // /**
+  // * Provides access to the typesafe child of this relationship. The child is
+  // * lazily instantiated.
+  // *
+  // * @return Typesafe child of this relationship
+  // */
+  // public VertexObject getChild()
+  // {
+  // // Lazy instantiation of child
+  // if (child == null)
+  // child = VertexObject.get(getGraphObjectDAO().getChildOid());
+  //
+  // return child;
+  // }
+  //
+  // /**
+  // * Returns the oid of the child on this object.
+  // *
+  // * @return oid of the child on this object.
+  // */
+  // public String getChildOid()
+  // {
+  // return this.getGraphObjectDAO().getChildOid();
+  // }
 
   protected String getDeclaredType()
   {
@@ -327,4 +316,10 @@ public class EdgeObject extends GraphObject
   // relationship.setGraphObjectDAO(relationshipDAO);
   // return relationship;
   // }
+
+  public static EdgeObject instantiate(EdgeObjectDAOIF edgeDAO)
+  {
+    return new EdgeObject((EdgeObjectDAO) edgeDAO);
+  }
+
 }

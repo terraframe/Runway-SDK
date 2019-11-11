@@ -77,11 +77,12 @@ import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
-import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.StaleEntityException;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
@@ -864,25 +865,32 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public void insert(GraphRequest graphRequest, GraphObjectDAO graphObjectDAO)
+  public void insert(GraphRequest request, GraphObjectDAO graphObjectDAO)
   {
-    MdGraphClassDAOIF mdClassDAO = graphObjectDAO.getMdClassDAO();
-    String dbClassName = mdClassDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    if (graphObjectDAO instanceof VertexObjectDAO)
+    {
+      MdGraphClassDAOIF mdClassDAO = graphObjectDAO.getMdClassDAO();
+      String dbClassName = mdClassDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
 
-    OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+      OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
-    ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    OVertex vertex = db.newVertex(dbClassName);
+      ODatabaseSession db = orientDBRequest.getODatabaseSession();
+      OVertex vertex = db.newVertex(dbClassName);
 
-    this.populateVertex(db, graphObjectDAO, vertex);
-    this.populateSequence(db, graphObjectDAO, vertex);
+      this.populateElement(db, graphObjectDAO, vertex);
+      this.populateSequence(db, graphObjectDAO, vertex);
 
-    ORecord record = vertex.save();
+      ORecord record = vertex.save();
 
-    graphObjectDAO.setRID(record.getIdentity());
-    graphObjectDAO.setCommitState();
+      graphObjectDAO.setRID(record.getIdentity());
+      graphObjectDAO.setCommitState();
 
-    this.populateDAO(vertex, graphObjectDAO);
+      this.populateDAO(vertex, graphObjectDAO);
+    }
+    else
+    {
+      this.addEdge(request, (EdgeObjectDAO) graphObjectDAO);
+    }
   }
 
   @Override
@@ -891,31 +899,38 @@ public class OrientDBImpl implements GraphDB
     OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
 
-    OVertex vertex = db.load((ORID) graphObjectDAO.getRID());
+    OElement element = db.load((ORID) graphObjectDAO.getRID());
 
     // Validate the sequence number
-    Object oSeq = vertex.getProperty(BusinessInfo.SEQUENCE);
-    Long iSeq = graphObjectDAO.getSequence();
-
-    if (!oSeq.equals(iSeq))
+    if (graphObjectDAO instanceof VertexObjectDAO)
     {
-      throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
+      Object oSeq = element.getProperty(BusinessInfo.SEQUENCE);
+      Long iSeq = graphObjectDAO.getSequence();
+
+      if (!oSeq.equals(iSeq))
+      {
+        throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
+      }
     }
 
-    this.populateVertex(db, graphObjectDAO, vertex);
-    this.populateSequence(db, graphObjectDAO, vertex);
+    this.populateElement(db, graphObjectDAO, element);
 
-    vertex.save();
+    if (graphObjectDAO instanceof VertexObjectDAO)
+    {
+      this.populateSequence(db, graphObjectDAO, element);
+    }
 
-    this.populateDAO(vertex, graphObjectDAO);
+    element.save();
+
+    this.populateDAO(element, graphObjectDAO);
   }
 
-  protected void populateSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OVertex vertex)
+  protected void populateSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
   {
     OSequence seq = getSequence(db, graphObjectDAO);
     long next = seq.next();
 
-    vertex.setProperty(BusinessInfo.SEQUENCE, next);
+    element.setProperty(BusinessInfo.SEQUENCE, next);
   }
 
   @Override
@@ -952,7 +967,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          return this.buildDAO(element);
+          return (VertexObjectDAOIF) this.buildDAO(element);
         }
         else
         {
@@ -999,7 +1014,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          results.add(this.buildDAO(element));
+          results.add((VertexObjectDAOIF) this.buildDAO(element));
         }
         else
         {
@@ -1011,46 +1026,25 @@ public class OrientDBImpl implements GraphDB
     return results;
   }
 
-  @Override
-  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  public void addEdge(GraphRequest request, EdgeObjectDAO edgeDAO)
   {
+    MdEdgeDAOIF mdEdge = edgeDAO.getMdGraphClassDAO();
+
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    OVertex pVertex = db.load((ORID) parent.getRID());
-    OVertex cVertex = db.load((ORID) child.getRID());
+    OVertex pVertex = db.load((ORID) edgeDAO.getParent().getRID());
+    OVertex cVertex = db.load((ORID) edgeDAO.getChild().getRID());
 
     OEdge edge = pVertex.addEdge(cVertex, edgeClass);
-    edge.setProperty("oid", UUID.randomUUID().toString());
+
+    this.populateElement(db, edgeDAO, edge);
+
     edge.save();
-  }
 
-  @Override
-  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
-  {
-    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
-    String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
-
-    ODatabaseSession db = orientDBRequest.getODatabaseSession();
-
-    // String statement = "DELETE EDGE " + edgeClass + " FROM ? TO ?";
-    // db.command(statement, parent.getRID(), child.getRID());
-
-    OVertex vertex = db.load((ORID) parent.getRID());
-
-    Iterable<OEdge> edges = vertex.getEdges(ODirection.OUT, edgeClass);
-
-    for (OEdge edge : edges)
-    {
-      OVertex to = edge.getTo();
-
-      if (to.getIdentity().equals(child.getRID()))
-      {
-        edge.delete();
-      }
-    }
+    this.populateDAO(edge, edgeDAO);
   }
 
   @Override
@@ -1080,27 +1074,113 @@ public class OrientDBImpl implements GraphDB
 
     for (OVertex target : targets)
     {
-      list.add(this.buildDAO(target));
+      list.add((VertexObjectDAOIF) this.buildDAO(target));
     }
 
     return list;
   }
 
-  protected VertexObjectDAOIF buildDAO(OElement element)
+  @Override
+  public List<EdgeObjectDAOIF> getChildEdges(GraphRequest request, VertexObjectDAO vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.getEdges(request, vertexDAO, ODirection.OUT, mdEdge);
+  }
+
+  @Override
+  public List<EdgeObjectDAOIF> getParentEdges(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return this.getEdges(request, vertexDAO, ODirection.IN, mdEdge);
+  }
+
+  @Override
+  public List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    List<EdgeObjectDAOIF> results = new LinkedList<EdgeObjectDAOIF>();
+
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+
+    String statement = "SELECT FROM " + mdEdge.getDBClassName() + " WHERE out = ? AND in = ?";
+
+    try (OResultSet rs = db.query(statement, parent.getRID(), child.getRID()))
+    {
+      while (rs.hasNext())
+      {
+        OResult result = rs.next();
+
+        if (result.isElement())
+        {
+          OElement element = result.toElement();
+
+          results.add((EdgeObjectDAOIF) this.buildDAO(element));
+        }
+        else
+        {
+          throw new UnsupportedOperationException("Unexpected result type");
+        }
+      }
+    }
+
+    return results;
+  }
+
+  private List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
+  {
+    String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
+
+    OrientDBRequest orientDBRequest = (OrientDBRequest) request;
+
+    ODatabaseSession db = orientDBRequest.getODatabaseSession();
+    OVertex vertex = db.load((ORID) vertexDAO.getRID());
+
+    Iterable<OEdge> targets = vertex.getEdges(direction, edgeClass);
+
+    LinkedList<EdgeObjectDAOIF> list = new LinkedList<EdgeObjectDAOIF>();
+
+    for (OEdge target : targets)
+    {
+      list.add((EdgeObjectDAOIF) this.buildDAO(target));
+    }
+
+    return list;
+  }
+
+  protected GraphObjectDAO buildDAO(OElement element)
   {
     OClass oClass = element.getSchemaType().get();
     MdGraphClassDAOIF mdGraph = MdGraphClassDAO.getMdGraphClassByTableName(oClass.getName());
 
-    return this.buildDAO((MdVertexDAOIF) mdGraph, element);
+    return this.buildDAO(mdGraph, element);
   }
 
-  protected VertexObjectDAOIF buildDAO(MdVertexDAOIF mdVertexDAOIF, OElement vertex)
+  protected GraphObjectDAO buildDAO(MdGraphClassDAOIF mdGraph, OElement element)
   {
-    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAOIF);
+    if (mdGraph instanceof MdVertexDAOIF)
+    {
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance((MdVertexDAOIF) mdGraph);
 
-    populateDAO(vertex, vertexDAO);
+      populateDAO(element.asVertex().get(), vertexDAO);
 
-    return vertexDAO;
+      return vertexDAO;
+    }
+    else
+    {
+      MdEdgeDAOIF mdEdge = (MdEdgeDAOIF) mdGraph;
+      OEdge edge = element.asEdge().get();
+
+      OVertex parent = edge.getFrom();
+      OVertex child = edge.getTo();
+
+      VertexObjectDAO parentDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getParentMdVertex(), parent);
+      VertexObjectDAO childDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getChildMdVertex(), child);
+
+      EdgeObjectDAO edgeDAO = EdgeObjectDAO.newInstance(parentDAO, childDAO, mdEdge);
+
+      populateDAO(edge, edgeDAO);
+
+      return edgeDAO;
+    }
   }
 
   protected void populateDAO(OElement vertex, GraphObjectDAO vertexDAO)
@@ -1239,7 +1319,7 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
-  protected void populateVertex(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OVertex vertex)
+  protected void populateElement(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
   {
     Attribute[] attributes = graphObjectDAO.getAttributeArray();
 
@@ -1257,16 +1337,16 @@ public class OrientDBImpl implements GraphDB
         {
           ODocument document = OShapeFactory.INSTANCE.toDoc(value);
 
-          vertex.setProperty(columnName, document);
+          element.setProperty(columnName, document);
         }
         else
         {
-          vertex.setProperty(columnName, null);
+          element.setProperty(columnName, null);
         }
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateGeometryChangeOverTime(db, vertex, attribute, this.getDbColumnType(mdAttribute), columnName);
+          this.populateGeometryChangeOverTime(db, element, attribute, this.getDbColumnType(mdAttribute), columnName);
         }
       }
       else if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
@@ -1282,7 +1362,7 @@ public class OrientDBImpl implements GraphDB
 
         if (embeddedObject != null)
         {
-          OElement oElement = vertex.getProperty(columnName);
+          OElement oElement = element.getProperty(columnName);
 
           if (oElement == null)
           {
@@ -1296,17 +1376,17 @@ public class OrientDBImpl implements GraphDB
           if (innerVertex != null)
           {
             // persist the values on the inner embedded object
-            this.populateVertex(db, embeddedObject, innerVertex);
+            this.populateElement(db, embeddedObject, innerVertex);
           }
         }
         // else embeddedObject == null- if there is no embedded object, then set
         // the propperty to null
 
-        vertex.setProperty(columnName, innerVertex);
+        element.setProperty(columnName, innerVertex);
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateEmbeddedChangeOvertTime(db, vertex, attribute, embeddedClassName, columnName);
+          this.populateEmbeddedChangeOvertTime(db, element, attribute, embeddedClassName, columnName);
         }
       }
       else if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
@@ -1316,33 +1396,33 @@ public class OrientDBImpl implements GraphDB
 
         if (value.size() > 0)
         {
-          vertex.setProperty(columnName, value);
+          element.setProperty(columnName, value);
         }
         else
         {
-          vertex.setProperty(columnName, null);
+          element.setProperty(columnName, null);
         }
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateEnumChangeOverTime(db, vertex, attribute, columnName);
+          this.populateEnumChangeOverTime(db, element, attribute, columnName);
         }
       }
       else
       {
         String columnName = mdAttribute.getColumnName();
 
-        vertex.setProperty(columnName, attribute.getObjectValue());
+        element.setProperty(columnName, attribute.getObjectValue());
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateChangeOverTime(db, vertex, attribute, columnName);
+          this.populateChangeOverTime(db, element, attribute, columnName);
         }
       }
     }
   }
 
-  protected void populateChangeOverTime(ODatabaseSession db, OVertex vertex, Attribute attribute, String columnName)
+  protected void populateChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
     List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
@@ -1360,10 +1440,10 @@ public class OrientDBImpl implements GraphDB
       }
     }
 
-    vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+    element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
-  protected void populateEnumChangeOverTime(ODatabaseSession db, OVertex vertex, Attribute attribute, String columnName)
+  protected void populateEnumChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
     List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
@@ -1381,10 +1461,10 @@ public class OrientDBImpl implements GraphDB
       }
     }
 
-    vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+    element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
-  protected void populateGeometryChangeOverTime(ODatabaseSession db, OVertex vertex, Attribute attribute, String geometryClassName, String columnName)
+  protected void populateGeometryChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String geometryClassName, String columnName)
   {
     List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
@@ -1402,10 +1482,10 @@ public class OrientDBImpl implements GraphDB
       }
     }
 
-    vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+    element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
-  protected void populateEmbeddedChangeOvertTime(ODatabaseSession db, OVertex vertex, Attribute attribute, String embeddedClassName, String columnName)
+  protected void populateEmbeddedChangeOvertTime(ODatabaseSession db, OElement element, Attribute attribute, String embeddedClassName, String columnName)
   {
     List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
@@ -1415,7 +1495,7 @@ public class OrientDBImpl implements GraphDB
       if (vot.getValue() != null)
       {
         OVertex votVertex = db.newVertex(embeddedClassName);
-        this.populateVertex(db, (GraphObjectDAO) vot.getValue(), votVertex);
+        this.populateElement(db, (GraphObjectDAO) vot.getValue(), votVertex);
 
         OVertex document = db.newVertex(embeddedClassName + OrientDBConstant.COT_SUFFIX);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
@@ -1426,7 +1506,7 @@ public class OrientDBImpl implements GraphDB
       }
     }
 
-    vertex.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+    element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
   /**

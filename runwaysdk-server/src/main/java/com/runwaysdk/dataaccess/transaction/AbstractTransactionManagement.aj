@@ -1253,6 +1253,30 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // cache. Consequently, requests for the metadata for this class from the
   // metadata cache within
   // this transaction will result in a 'Metadata not defined for class' error.
+  protected pointcut getMdClassByTableName(String tableName)
+  :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassByTableName(String))
+  && !within(AbstractTransactionManagement+)
+  && args(tableName); 
+  
+  Object around(String tableName) : getMdClassByTableName(tableName)
+  {
+    MdClassDAOIF mdClassDAOIF = null;
+    
+    mdClassDAOIF = this.getTransactionCache().getMdClassByTableName(tableName);
+    
+    if (mdClassDAOIF == null)
+    {
+      mdClassDAOIF = (MdClassDAOIF) proceed(tableName);
+    }
+    
+    return mdClassDAOIF;
+  }
+  
+  // If a MdClass were added during this transaction, then it will not exist yet
+  // in the metadata
+  // cache. Consequently, requests for the metadata for this class from the
+  // metadata cache within
+  // this transaction will result in a 'Metadata not defined for class' error.
   protected pointcut getMdClassDAOByRootId(String classRootId)
   :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getMdClassDAOByRootId(String))
   && !within(AbstractTransactionManagement+)

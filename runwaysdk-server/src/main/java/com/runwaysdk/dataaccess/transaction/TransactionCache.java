@@ -143,6 +143,7 @@ public class TransactionCache extends AbstractTransactionCache
     this.updatedTransientTransactionItemList.addAll(threadTransactionCache.updatedTransientTransactionItemList);
 
     this.updatedMdClassDefinedTypeMap.putAll(threadTransactionCache.updatedMdClassDefinedTypeMap);
+    this.updatedMdClassTableNameMap.putAll(threadTransactionCache.updatedMdClassTableNameMap);
     this.updatedMdClassRootIdMap.putAll(threadTransactionCache.updatedMdClassRootIdMap);
     this.updatedRoleIFMap.putAll(threadTransactionCache.updatedRoleIFMap);
 

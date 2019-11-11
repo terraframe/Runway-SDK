@@ -104,6 +104,8 @@ public class VertexObjectPermissionTest
     user.grantPermission(Operation.WRITE_ALL, mdChildDAO.getOid());
     user.grantPermission(Operation.DELETE, mdChildDAO.getOid());
 
+    user.grantPermission(Operation.CREATE, mdEdgeDAO.getOid());
+    user.grantPermission(Operation.WRITE, mdEdgeDAO.getOid());
     user.grantPermission(Operation.ADD_CHILD, mdEdgeDAO.getOid());
     user.grantPermission(Operation.ADD_PARENT, mdEdgeDAO.getOid());
     user.grantPermission(Operation.DELETE_CHILD, mdEdgeDAO.getOid());
@@ -153,7 +155,7 @@ public class VertexObjectPermissionTest
     VertexObject child = new VertexObject(mdChildDAO.definesType());
     child.apply();
 
-    parent.addChild(child, mdEdgeDAO);
+    parent.addChild(child, mdEdgeDAO).apply();
 
     List<VertexObject> children = parent.getChildren(mdEdgeDAO, VertexObject.class);
 
@@ -185,7 +187,7 @@ public class VertexObjectPermissionTest
     VertexObject child = new VertexObject(mdChildDAO.definesType());
     child.apply();
 
-    child.addParent(parent, mdEdgeDAO);
+    child.addParent(parent, mdEdgeDAO).apply();
 
     List<VertexObject> parents = child.getParents(mdEdgeDAO, VertexObject.class);
 

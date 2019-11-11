@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
@@ -26,6 +26,7 @@ import java.util.List;
 import com.runwaysdk.business.ClassLoaderException;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
@@ -70,16 +71,18 @@ public class VertexObject extends GraphObject
     return VertexObject.class.getName();
   }
 
-  public void addChild(VertexObject child, String edgeType)
+  public EdgeObject addChild(VertexObject child, String edgeType)
   {
     MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
 
-    this.addChild(child, mdEdge);
+    return this.addChild(child, mdEdge);
   }
 
-  public void addChild(VertexObject child, MdEdgeDAOIF mdEdge)
+  public EdgeObject addChild(VertexObject child, MdEdgeDAOIF mdEdge)
   {
-    this.getGraphObjectDAO().addChild(child.getGraphObjectDAO(), mdEdge);
+    EdgeObjectDAO edgeDAO = this.getGraphObjectDAO().addChild(child.getGraphObjectDAO(), mdEdge);
+
+    return EdgeObject.instantiate(edgeDAO);
   }
 
   public void removeChild(VertexObject child, String edgeType)
@@ -108,16 +111,18 @@ public class VertexObject extends GraphObject
     return this.convert(children, clazz);
   }
 
-  public void addParent(VertexObject parent, String edgeType)
+  public EdgeObject addParent(VertexObject parent, String edgeType)
   {
     MdEdgeDAOIF mdEdge = MdEdgeDAO.getMdEdgeDAO(edgeType);
 
-    this.addParent(parent, mdEdge);
+    return this.addParent(parent, mdEdge);
   }
 
-  public void addParent(VertexObject parent, MdEdgeDAOIF mdEdge)
+  public EdgeObject addParent(VertexObject parent, MdEdgeDAOIF mdEdge)
   {
-    this.getGraphObjectDAO().addParent(parent.getGraphObjectDAO(), mdEdge);
+    EdgeObjectDAO edgeDAO = this.getGraphObjectDAO().addParent(parent.getGraphObjectDAO(), mdEdge);
+
+    return EdgeObject.instantiate(edgeDAO);
   }
 
   public void removeParent(VertexObject parent, String edgeType)

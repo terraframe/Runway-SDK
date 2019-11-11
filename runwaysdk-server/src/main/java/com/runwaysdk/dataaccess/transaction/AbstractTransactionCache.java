@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -95,8 +95,8 @@ import com.runwaysdk.util.IdParser;
 
 public abstract class AbstractTransactionCache implements TransactionCacheIF
 {
-  final static Logger logger = LoggerFactory.getLogger(AbstractTransactionCache.class);
-  
+  final static Logger                                        logger = LoggerFactory.getLogger(AbstractTransactionCache.class);
+
   protected ReentrantLock                                    transactionStateLock;
 
   /**
@@ -128,12 +128,13 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>invariant</b> updatedEntityDAOKeyMap != null
    */
   protected Map<String, String>                              updatedEntityDAOKeyMap;
-  
+
   /**
-   * Sometimes entities that are cached should be cleared from the global cache at the end of a 
-   * transaction. Such objects will be refreshed in the global cache the next time they are referenced.
-   * {@link EntityDAO} ids should not bee in both this map and in the updatedEntityDAOIdMap. If an oid is
-   * added to updatedEntityDAOIdMap it should be removed from this set.
+   * Sometimes entities that are cached should be cleared from the global cache
+   * at the end of a transaction. Such objects will be refreshed in the global
+   * cache the next time they are referenced. {@link EntityDAO} ids should not
+   * bee in both this map and in the updatedEntityDAOIdMap. If an oid is added
+   * to updatedEntityDAOIdMap it should be removed from this set.
    * 
    * Key is the oid of a {@link EntityDAO} <br/>
    * 
@@ -154,7 +155,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, TransactionItemStrategyAction>       updatedEntityNameCacheStrategyMap;
 
   /**
-   * Contains all EntityDAOColletions that were deleted during a transaction. <br/>
+   * Contains all EntityDAOColletions that were deleted during a transaction.
+   * <br/>
    * <b>invariant</b> deleteEntityNameCacheStrategyMap != null
    */
   protected Map<String, TransactionItemStrategyAction>       deleteEntityNameCacheStrategyMap;
@@ -183,6 +185,15 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>invariant</b> updatedMdClassDefinedTypeMap != null
    */
   protected Map<String, String>                              updatedMdClassDefinedTypeMap;
+
+  /**
+   * Contains a reference to all {@link MdClass} objects that were modified
+   * during this transaction. The key is the name of the class. Used to allow
+   * sets of classes to be defined within a transaction. The value is the oid of
+   * the {@link MdClass}. <br/>
+   * <b>invariant</b> updatedMdClassDefinedTypeMap != null
+   */
+  protected Map<String, String>                              updatedMdClassTableNameMap;
 
   /**
    * Contains a reference to all {@link MdClass}. objects that were modified
@@ -423,26 +434,26 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected Map<String, RelationshipDAOCollection>           cachedRemovedRelationships;
 
   /**
-   * Key: {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where MdBusiness participates
-   * as a parent.
+   * Key: {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where
+   * MdBusiness participates as a parent.
    */
   protected Map<String, Set<String>>                         mdBusinessParentMdRelationships;
 
   /**
-   * Key:  {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where MdBusiness participates
-   * as a child.
+   * Key: {@link MdBusinessDAO} oid. Value: {@link MdRelationship} ids where
+   * MdBusiness participates as a child.
    */
   protected Map<String, Set<String>>                         mdBusinessChildMdRelationships;
-  
+
   /**
-   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness participates
-   * as a parent.
+   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness
+   * participates as a parent.
    */
   protected Map<String, Set<String>>                         mdVertexParentMdEdges;
 
   /**
-   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness participates
-   * as a child.
+   * Key: {@link MdVertexDAO} oid. Value: {@link MdEdgeDAO} ids where MdBusiness
+   * participates as a child.
    */
   protected Map<String, Set<String>>                         mdVertexChildMdEdges;
 
@@ -450,26 +461,27 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * The key is the new Id. The value is the old Id.
    */
   protected Map<String, String>                              changedIds;
-  
+
   /**
-   * Indicates whether the transaction cache has been closed. True if closed false if otherwise.
+   * Indicates whether the transaction cache has been closed. True if closed
+   * false if otherwise.
    */
   private Boolean                                            isClosed;
 
   /**
-   * Records the types, as the class root oid, that have participated in this transaction. 
-   * If a type has not participated in the transaction than no need to check the file system 
-   * to see if an object instance of the type has participated in the transaction.
+   * Records the types, as the class root oid, that have participated in this
+   * transaction. If a type has not participated in the transaction than no need
+   * to check the file system to see if an object instance of the type has
+   * participated in the transaction.
    */
   protected Set<String>                                      typeRootIdsInTransaction;
-  
+
   /**
-   * Used to store the ids of objects that have been newly created in the transaction but only 
-   * of a non-cached type.
+   * Used to store the ids of objects that have been newly created in the
+   * transaction but only of a non-cached type.
    */
   protected NewEntityIdStringCache                           newEntityIdStringCache;
-  
-  
+
   /**
    * Initializes all caches.
    * 
@@ -488,7 +500,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
     this.updatedEntityDAOIdMap = new HashMap<String, TransactionItemEntityDAOAction>();
     this.updatedEntityDAOKeyMap = new HashMap<String, String>();
-    
+
     this.entitiesToRefreshFromGlobalCache = new HashSet<String>();
 
     this.updatedBusinessDAORelationships = new HashMap<String, TransactionBusinessDAORelationships>();
@@ -500,6 +512,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     this.updatedCollectionTransactionItemList = new LinkedList<TransactionItemStrategyAction>();
 
     this.updatedMdClassDefinedTypeMap = new HashMap<String, String>();
+    this.updatedMdClassTableNameMap = new HashMap<String, String>();
     this.updatedMdClassRootIdMap = new HashMap<String, String>();
     this.updatedRoleIFMap = new HashMap<String, String>();
 
@@ -544,59 +557,68 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
     this.mdBusinessParentMdRelationships = new HashMap<String, Set<String>>();
     this.mdBusinessChildMdRelationships = new HashMap<String, Set<String>>();
-    
+
     this.mdVertexParentMdEdges = new HashMap<String, Set<String>>();
-    this.mdVertexChildMdEdges = new HashMap<String, Set<String>>(); 
-    
+    this.mdVertexChildMdEdges = new HashMap<String, Set<String>>();
+
     this.changedIds = new HashMap<String, String>();
-        
+
     this.isClosed = false;
-    
+
     this.typeRootIdsInTransaction = new HashSet<String>();
-    
+
     this.newEntityIdStringCache = new NewEntityIdStringCache();
   }
 
   /**
-   * Indicates whether the transaction cache has been closed. True if closed false if otherwise.
+   * Indicates whether the transaction cache has been closed. True if closed
+   * false if otherwise.
    */
   protected Boolean isClosed()
   {
     return isClosed;
   }
-//  Heads up: test
-//  /**
-//   * If the file cache used to check whether an {@link EntityDAO} of a non-cached type is not initialized, then
-//   * initialize it. Checks if the {@code this.newEntityIdStringFileCach} equals null. 
-//   * 
-//   */
-//  private void checkAndInitializeEntityIdFileCache()
-//  {
-//    if (this.newEntityIdStringFileCache == null)
-//    {
-//      this.entityIdFileCacheName = IDGenerator.nextID();;
-//      int diskSize = ServerProperties.getTransactionDiskstoreSize();
-//      this.entityIdCacheFileLocation = ServerProperties.getTransactionCacheFileLocation();
-// 
-//      this.filePersistenceService = new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File(this.entityIdCacheFileLocation, this.entityIdFileCacheName)));
-//    
-//      this.newEntityIdStringFileCache = UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class, String.class)
-//          .with(new UserManagedPersistenceContext<String, String>(this.entityIdFileCacheName, this.filePersistenceService)) 
-//          .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder() 
-//                    .heap(0, EntryUnit.ENTRIES)
-////                    .offheap(cacheMemorySize, MemoryUnit.MB)
-//                    .disk(diskSize, MemoryUnit.MB, true)
-//           )
-//          .build(true);
-//    }
-//  }
-// 
+
+  // Heads up: test
+  // /**
+  // * If the file cache used to check whether an {@link EntityDAO} of a
+  // non-cached type is not initialized, then
+  // * initialize it. Checks if the {@code this.newEntityIdStringFileCach}
+  // equals null.
+  // *
+  // */
+  // private void checkAndInitializeEntityIdFileCache()
+  // {
+  // if (this.newEntityIdStringFileCache == null)
+  // {
+  // this.entityIdFileCacheName = IDGenerator.nextID();;
+  // int diskSize = ServerProperties.getTransactionDiskstoreSize();
+  // this.entityIdCacheFileLocation =
+  // ServerProperties.getTransactionCacheFileLocation();
+  //
+  // this.filePersistenceService = new DefaultLocalPersistenceService(new
+  // DefaultPersistenceConfiguration(new File(this.entityIdCacheFileLocation,
+  // this.entityIdFileCacheName)));
+  //
+  // this.newEntityIdStringFileCache =
+  // UserManagedCacheBuilder.newUserManagedCacheBuilder(String.class,
+  // String.class)
+  // .with(new UserManagedPersistenceContext<String,
+  // String>(this.entityIdFileCacheName, this.filePersistenceService))
+  // .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()
+  // .heap(0, EntryUnit.ENTRIES)
+  //// .offheap(cacheMemorySize, MemoryUnit.MB)
+  // .disk(diskSize, MemoryUnit.MB, true)
+  // )
+  // .build(true);
+  // }
+  // }
+  //
   /**
    * Records that the {@link EntityDAOIF} has been created during this
-   * transaction.
-   * <br/>
-   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/>
-   * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
+   * transaction. <br/>
+   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/> <b>Pre:
+   * {@link EntityDAOIF.isNew()} equals true<b/>
    * 
    * @param entityDAOIF
    *          {@link EntityDAOIF} that goes into the the global cache.
@@ -608,29 +630,29 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
   /**
    * Records that the {@link EntityDAOIF} has been created during this
-   * transaction.
-   * <br/>
-   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/>
-   * <b>Pre: {@link EntityDAOIF.isNew()} equals true<b/>
+   * transaction. <br/>
+   * <b>Pre: {@link EntityDAOIF} is of a type that is not cached<b/> <b>Pre:
+   * {@link EntityDAOIF.isNew()} equals true<b/>
    * 
    * @param entityId
-   *          OID of the {@link EntityDAOIF} that goes into the the global cache.
+   *          OID of the {@link EntityDAOIF} that goes into the the global
+   *          cache.
    */
   public void recordNewlyCreatedNonCachedEntity(String entityId)
   {
     this.newEntityIdStringCache.recordNewlyCreatedNonCachedEntity(entityId);
   }
-  
+
   /**
-   * Returns true if the given oid is from a newly created {@link EntityDAO} who's type 
-   * is not cached.
+   * Returns true if the given oid is from a newly created {@link EntityDAO}
+   * who's type is not cached.
    * 
    * @param entityDAOid
-   * @return true if the given oid is from a newly created {@link EntityDAO} who's type 
-   * is not cached.
+   * @return true if the given oid is from a newly created {@link EntityDAO}
+   *         who's type is not cached.
    */
   public boolean isNewUncachedEntity(String entityDAOid)
-  {   
+  {
     return this.newEntityIdStringCache.isNewUncachedEntity(entityDAOid);
   }
 
@@ -643,17 +665,17 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected void changeEntityIdInCache(String oldId, EntityDAO entityDAO)
   {
     this.newEntityIdStringCache.changeEntityIdInCache(oldId, entityDAO);
-    
-    String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
+
+    String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
     this.typeRootIdsInTransaction.add(mdTypeRootId);
   }
-  
+
   /**
-   * Close the eChache instance used to simply store ids of newly created {@link EntityDAO} objects
-   * who's type are not cached.
+   * Close the eChache instance used to simply store ids of newly created
+   * {@link EntityDAO} objects who's type are not cached.
    */
   public void close()
-  {   
+  {
     try
     {
       this.newEntityIdStringCache.close();
@@ -662,10 +684,10 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     {
       logger.info("Error happened while deleting transaction cache directory. This probably shouldn't matter if ehcache shut down correctly.", e);
     }
-     
+
     this.isClosed = true;
-  } 
-  
+  }
+
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#addDMLTableName(java.lang.String)
    */
@@ -831,11 +853,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     try
     {
       // Record that this object's type is participating in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
       this.typeRootIdsInTransaction.add(mdTypeRootId);
-      
+
       MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
-      // We are only storing entities in the transaction cache that are cached or metadata in the transaction cache.
+      // We are only storing entities in the transaction cache that are cached
+      // or metadata in the transaction cache.
       if (!mdEntityDAOIF.isNotCached())
       {
         TransactionItemEntityDAOAction transactionCacheItem = TransactionItemEntityDAOAction.factory(ActionEnumDAO.DELETE, entityDAO, this);
@@ -850,6 +873,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         {
           MdEntityDAO mdEntityDAO = (MdEntityDAO) entityDAO;
           this.updatedMdClassDefinedTypeMap.put(mdEntityDAO.definesType(), mdEntityDAO.getOid());
+          this.updatedMdClassTableNameMap.put(mdEntityDAO.getTableName(), mdEntityDAO.getOid());
           this.updatedMdClassRootIdMap.put(mdEntityDAO.getRootId(), mdEntityDAO.getOid());
 
           if (mdEntityDAO instanceof MdRelationshipDAO)
@@ -864,7 +888,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             }
             else
             {
-              // Clone the Set in the global cache. This will be used for the rest
+              // Clone the Set in the global cache. This will be used for the
+              // rest
               // of the transaction.
               parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdRelationshipDAOids(parentMdBusinessId));
               this.mdBusinessParentMdRelationships.put(parentMdBusinessId, parentRelationshipSet);
@@ -879,7 +904,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             }
             else
             {
-              // Clone the Set in the global cache. This will be used for the rest
+              // Clone the Set in the global cache. This will be used for the
+              // rest
               // of the transaction.
               childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdRelationshipDAOids(childMdBusinessId));
               this.mdBusinessChildMdRelationships.put(childMdBusinessId, childRelationshipSet);
@@ -915,8 +941,9 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         {
           MdGraphClassDAO mdGraphClassDAO = (MdGraphClassDAO) entityDAO;
           this.updatedMdClassDefinedTypeMap.put(mdGraphClassDAO.definesType(), mdGraphClassDAO.getOid());
+          this.updatedMdClassTableNameMap.put(mdGraphClassDAO.getDBClassName(), mdGraphClassDAO.getOid());
           this.updatedMdClassRootIdMap.put(mdGraphClassDAO.getRootId(), mdGraphClassDAO.getOid());
-          
+
           if (mdGraphClassDAO instanceof MdEdgeDAO)
           {
             MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) mdGraphClassDAO;
@@ -929,7 +956,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             }
             else
             {
-              // Clone the Set in the global cache. This will be used for the rest
+              // Clone the Set in the global cache. This will be used for the
+              // rest
               // of the transaction.
               parentRelationshipSet = new HashSet<String>(ObjectCache.getParentMdEdgeDAOids(parentMdVertexId));
               this.mdVertexParentMdEdges.put(parentMdVertexId, parentRelationshipSet);
@@ -944,7 +972,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             }
             else
             {
-              // Clone the Set in the global cache. This will be used for the rest
+              // Clone the Set in the global cache. This will be used for the
+              // rest
               // of the transaction.
               childRelationshipSet = new HashSet<String>(ObjectCache.getChildMdEdgeDAOids(childMdVertexId));
               this.mdVertexChildMdEdges.put(childMdVertexId, childRelationshipSet);
@@ -952,7 +981,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
             childRelationshipSet.remove(mdEdgeDAO.getOid());
           }
         }
-      } 
+      }
     }
     finally
     {
@@ -1384,7 +1413,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       this.transactionStateLock.unlock();
     }
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getChildMdEdgeDAOids(java.lang.String)
    */
@@ -1451,8 +1480,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * 
    * @param businessDAOid
    * @param relationshipType
-   * @return OID that should be passed on to the ObjectCache for fetching parents
-   *         objects with the given oid.
+   * @return OID that should be passed on to the ObjectCache for fetching
+   *         parents objects with the given oid.
    */
   public String getBusIdForGetParentsMethod(String businessDAOid, String relationshipType)
   {
@@ -1629,8 +1658,9 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * 
    * @param oid
    * @return Null if the oid is null.
-   * @throws {@link DataNotFoundException} if oid != null and the object does not
-   *         exist in the transaction cache or the ObjectCache.
+   * @throws {@link
+   *           DataNotFoundException} if oid != null and the object does not
+   *           exist in the transaction cache or the ObjectCache.
    */
   protected EntityDAOIF internalGetEntityDAO(String oid)
   {
@@ -1640,12 +1670,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     }
 
     EntityDAOIF entityDAOIF = this.getEntityDAO(oid);
-    
+
     if (entityDAOIF == null)
     {
       entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
     }
-    
+
     return entityDAOIF;
   }
 
@@ -1727,30 +1757,33 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   protected EntityDAOIF getUpdatedEntityFromKeyNameMap(String providedType, String key)
   {
     EntityDAOIF entityDAOIF = null;
-    
-    // Check to see if the type and the key have been modified in this transaction
+
+    // Check to see if the type and the key have been modified in this
+    // transaction
     String oid = this.updatedEntityDAOKeyMap.get(providedType + "-" + key);
-    
-    // The type provided could be a parent type of the object with the key. Check all subclasses.
+
+    // The type provided could be a parent type of the object with the key.
+    // Check all subclasses.
     if (oid == null)
     {
       MdEntityDAOIF rootMdEntityDAOIF = MdEntityDAO.getMdEntityDAO(providedType);
       List<? extends MdEntityDAOIF> subClasses = rootMdEntityDAOIF.getAllSubClasses();
-      
+
       for (MdEntityDAOIF mdEntityDAOIF : subClasses)
       {
         String subType = mdEntityDAOIF.definesType();
         oid = this.updatedEntityDAOKeyMap.get(subType + "-" + key);
-        
+
         if (oid != null)
         {
-          // We have identified the type of the object that has been modified in this transaction. 
+          // We have identified the type of the object that has been modified in
+          // this transaction.
           // Type is also a cached type.
           break;
         }
       }
     }
-    
+
     // Object has participated in the transaction and is of a cached type.
     if (oid != null)
     {
@@ -1763,12 +1796,12 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       entityDAOIF = ObjectCache.getEntityDAO(providedType, key);
       if (this.isNewUncachedEntity(entityDAOIF.getOid()))
       {
-        ((EntityDAO)entityDAOIF).setIsNew(true);
+        ( (EntityDAO) entityDAOIF ).setIsNew(true);
       }
-    }  
- 
+    }
+
     return entityDAOIF;
-  } 
+  }
 
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String,
@@ -1810,8 +1843,22 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     this.transactionStateLock.lock();
     try
-    {       
-      return (MdClassDAOIF)this.internalGetEntityDAO(this.updatedMdClassDefinedTypeMap.get(type));
+    {
+      return (MdClassDAOIF) this.internalGetEntityDAO(this.updatedMdClassDefinedTypeMap.get(type));
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+
+  @Override
+  public MdClassDAOIF getMdClassByTableName(String tableName)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      return (MdClassDAOIF) this.internalGetEntityDAO(this.updatedMdClassTableNameMap.get(tableName));
     }
     finally
     {
@@ -1897,7 +1944,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       this.transactionStateLock.unlock();
     }
   }
-  
 
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getParentMdEdgeDAOids(java.lang.String)
@@ -2140,7 +2186,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    *      java.lang.String)
    */
   public boolean removeExecutedDeleteMethod(EntityDAO entityDAO, String signature)
-  {  
+  {
     this.transactionStateLock.lock();
     try
     {
@@ -2156,7 +2202,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
         if (deleteCount.intValue() <= 0)
         {
-          // Do not remove the oid from the map, as it indicates that this object
+          // Do not remove the oid from the map, as it indicates that this
+          // object
           // oid
           // has been deleted during the transaction.
           this.deletedEntitySignatureCount.put(entityDAO.getOid(), 0);
@@ -2244,8 +2291,8 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   /**
    * Returns the oid of the object before it was changed in this transaction.
    * 
-   * @return oid of the object before it was changed in this transaction, null if
-   *         there is no original oid.
+   * @return oid of the object before it was changed in this transaction, null
+   *         if there is no original oid.
    */
   public String getOriginalId(String oid)
   {
@@ -2324,7 +2371,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
         String oldRootId = IdParser.parseRootFromId(oldId);
         this.updatedMdClassRootIdMap.remove(oldRootId);
         this.updatedMdClassRootIdMap.put(mdGraphClassDAO.getRootId(), mdGraphClassDAO.getOid());
-        
+
         Set<String> parentRelationshipSet = this.mdVertexParentMdEdges.get(oldId);
         if (parentRelationshipSet != null)
         {
@@ -2339,8 +2386,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
           this.mdVertexChildMdEdges.put(entityDAO.getOid(), childRelationshipSet);
         }
       }
-      
-      
+
       if (entityDAO instanceof MdAttributeDAO)
       {
         MdAttributeDAO mdAttribute = (MdAttributeDAO) entityDAO;
@@ -2405,20 +2451,20 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
   {
     this.transactionStateLock.lock();
     try
-    {      
+    {
       MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
-      
+
       // Record that this object's type is participating in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid()); 
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(entityDAO.getOid());
       this.typeRootIdsInTransaction.add(mdTypeRootId);
-      
+
       if (mdEntityDAOIF.isNotCached() && entityDAO.isNew())
       {
         this.recordNewlyCreatedNonCachedEntity(entityDAO);
       } // (!mdEntityDAOIF.isNotCached() || !entityDAO.isNew())
       else
       {
-        TransactionItemEntityDAOAction transactionCacheItem = this.createTransactionItemForEntity(entityDAO);   
+        TransactionItemEntityDAOAction transactionCacheItem = this.createTransactionItemForEntity(entityDAO);
 
         this.storeTransactionEntityDAO(entityDAO);
         this.addToUpdatedEntityTransactionItemMap(transactionCacheItem);
@@ -2429,6 +2475,16 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
           this.updatedMdClassDefinedTypeMap.put(mdClassDAO.definesType(), mdClassDAO.getOid());
           this.updatedMdClassRootIdMap.put(mdClassDAO.getRootId(), mdClassDAO.getOid());
+
+          if (mdClassDAO instanceof MdEntityDAO)
+          {
+            this.updatedMdClassTableNameMap.put( ( (MdEntityDAO) mdClassDAO ).getTableName(), mdClassDAO.getOid());
+          }
+
+          if (mdClassDAO instanceof MdGraphClassDAO)
+          {
+            this.updatedMdClassTableNameMap.put( ( (MdGraphClassDAO) mdClassDAO ).getDBClassName(), mdClassDAO.getOid());
+          }
 
           if (mdClassDAO instanceof MdRelationshipDAO)
           {
@@ -2756,10 +2812,11 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       this.transactionStateLock.unlock();
     }
   }
-  
+
   /**
-   * Marks entities to be cleared from the global cache. Should the entity be of a cached type,
-   * the next request for the object from the global cache will refresh the object from the global cache.
+   * Marks entities to be cleared from the global cache. Should the entity be of
+   * a cached type, the next request for the object from the global cache will
+   * refresh the object from the global cache.
    * 
    * @param entityId
    */

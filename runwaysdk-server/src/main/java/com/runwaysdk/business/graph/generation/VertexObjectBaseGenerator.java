@@ -20,6 +20,7 @@ package com.runwaysdk.business.graph.generation;
 
 import java.util.List;
 
+import com.runwaysdk.business.graph.EdgeObject;
 import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -118,16 +119,16 @@ public class VertexObjectBaseGenerator extends GraphObjectBaseGenerator
       String edgeType = mdEdge.definesType();
 
       // Add a new Relationship of this type
-      getWriter().writeLine(visibility.getJavaModifier() + " void add" + mdEdge.getTypeName() + "Parent(" + parentType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + EdgeObject.class.getName() + " add" + mdEdge.getTypeName() + "Parent(" + parentType + " " + lowercase + ")");
       getWriter().openBracket();
-      getWriter().writeLine("super.addParent(" + lowercase + ", \"" + edgeType + "\");");
+      getWriter().writeLine("return super.addParent(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Remove Relationship(s) with a specific parent
       getWriter().writeLine(visibility.getJavaModifier() + " void remove" + mdEdge.getTypeName() + "Parent(" + parentType + " " + lowercase + ")");
       getWriter().openBracket();
-      getWriter().writeLine("super.addParent(" + lowercase + ", \"" + edgeType + "\");");
+      getWriter().writeLine("super.removeParent(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
@@ -157,16 +158,16 @@ public class VertexObjectBaseGenerator extends GraphObjectBaseGenerator
       String edgeType = mdEdge.definesType();
 
       // Add a new Relationship of this type
-      getWriter().writeLine(visibility.getJavaModifier() + " void add" + mdEdge.getTypeName() + "Child(" + childType + " " + lowercase + ")");
+      getWriter().writeLine(visibility.getJavaModifier() + " " + EdgeObject.class.getName() + " add" + mdEdge.getTypeName() + "Child(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
-      getWriter().writeLine("super.addChild(" + lowercase + ", \"" + edgeType + "\");");
+      getWriter().writeLine("return super.addChild(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 
       // Remove Relationship(s) with a specific parent
       getWriter().writeLine(visibility.getJavaModifier() + " void remove" + mdEdge.getTypeName() + "Child(" + childType + " " + lowercase + ")");
       getWriter().openBracket();
-      getWriter().writeLine("super.addChild(" + lowercase + ", \"" + edgeType + "\");");
+      getWriter().writeLine("super.removeChild(" + lowercase + ", \"" + edgeType + "\");");
       getWriter().closeBracket();
       getWriter().writeLine("");
 

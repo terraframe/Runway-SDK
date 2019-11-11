@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -50,7 +50,8 @@ public interface GraphDB
    * @param className
    *          The name of the table in the graph database that should match the
    *          table name in the relational database.
-   * @param superClassName TODO
+   * @param superClassName
+   *          TODO
    * @return {@link GraphDDLCommandAction} so that it can be executed at the
    *         proper time within the transaction.
    */
@@ -149,7 +150,8 @@ public interface GraphDB
    * @param required
    *          true if required, false otherwise.
    * @param maxLength
-   * @param cot TODO
+   * @param cot
+   *          TODO
    * @return {@link GraphDDLCommandAction} so that it can be closed or committed
    *         in the command object.
    */
@@ -281,7 +283,8 @@ public interface GraphDB
    * @param attributeName
    * @param columnType
    * @param required
-   * @param cot TODO
+   * @param cot
+   *          TODO
    * @return
    */
   public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot);
@@ -295,12 +298,12 @@ public interface GraphDB
    * @param attributeName
    * @param geometryType
    * @param required
-   * @param cot TODO
+   * @param cot
+   *          TODO
    * @return
    */
   public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
 
-  
   /**
    * Adds a geometry attribute of the given name and type.
    * 
@@ -310,7 +313,8 @@ public interface GraphDB
    * @param attributeName
    * @param geometryType
    * @param required
-   * @param cot TODO
+   * @param cot
+   *          TODO
    * @return
    */
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
@@ -349,24 +353,25 @@ public interface GraphDB
 
   public VertexObjectDAOIF get(GraphRequest graphRequest, MdVertexDAOIF mdVertexDAOIF, String oid);
 
-  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
-
-  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
-
   public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
+
+  public List<EdgeObjectDAOIF> getChildEdges(GraphRequest request, VertexObjectDAO vertexDAO, MdEdgeDAOIF mdEdge);
 
   public List<VertexObjectDAOIF> getParents(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
 
+  public List<EdgeObjectDAOIF> getParentEdges(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge);
+
+  public List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
+
   public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters);
-  
+
   /**
-   * Transforms the given {@link RuntimeException} from the graph database and transforms it into a 
-   * {@link RunwayException}.
+   * Transforms the given {@link RuntimeException} from the graph database and
+   * transforms it into a {@link RunwayException}.
    *
    * @param locale
    * @param runEx
    * @return converted {@link RunwayException}
    */
   public RuntimeException processException(Locale locale, RuntimeException runEx);
-
 }

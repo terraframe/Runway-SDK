@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -35,29 +35,9 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
    */
   private static final long serialVersionUID = 801720319418056258L;
 
-  /**
-   * oid of the parent BusinessDAO in the relationship. <br/>
-   * <b>invariant </b> parentOid != null <br/>
-   * <b>invariant </b> !parentOid.trim().equals("") <br/>
-   */
-  private String            parentOid;
+  private VertexObjectDAOIF parent;
 
-  /**
-   * The old oid of the parent if the parent has changed.
-   */
-  private String            oldParentOid;
-
-  /**
-   * oid of the child BusinessDAO in the relationship. <br/>
-   * <b>invariant </b> childOid != null <br/>
-   * <b>invariant </b> !childOid().equals("") <br/>
-   */
-  private String            childOid;
-
-  /**
-   * The old oid of the parent if the child has changed.
-   */
-  private String            oldChildOid;
+  private VertexObjectDAOIF child;
 
   /**
    * The default constructor, does not set any attributes
@@ -70,15 +50,12 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
   /**
    *
    */
-  public EdgeObjectDAO(Map<String, Attribute> attributeMap, MdEdgeDAOIF mdEdgeDAOIF, String parentOid, String childOid)
+  public EdgeObjectDAO(Map<String, Attribute> attributeMap, MdEdgeDAOIF mdEdgeDAOIF, VertexObjectDAOIF parent, VertexObjectDAOIF child)
   {
     super(attributeMap, mdEdgeDAOIF);
 
-    this.parentOid = parentOid;
-    this.childOid = childOid;
-
-    this.oldParentOid = null;
-    this.oldChildOid = null;
+    this.parent = parent;
+    this.child = child;
   }
 
   /**
@@ -96,146 +73,51 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
     return (MdEdgeDAOIF) super.getMdClassDAO();
   }
 
-  /**
-   * Clears the old ids, to be called only when this object has been applied to
-   * the global cache at the end of a transaction.
-   */
-  public void clearOldRelIds()
+  public MdEdgeDAOIF getMdGraphClassDAO()
   {
-    this.oldParentOid = null;
-    this.oldChildOid = null;
+    return (MdEdgeDAOIF) super.getMdGraphClassDAO();
   }
 
   /**
-   * Returns the oid of the parent BusinessDAO in this relationship.
-   * 
-   * <br/>
-   * <b>Precondition: </b> true <br/>
-   * <b>Postcondition: </b> return value != null
-   * 
-   * @return oid of the parent BusinessDAO in this relationship
+   * @return the parent
    */
-  public String getParentOid()
+  public VertexObjectDAOIF getParent()
   {
-    return this.parentOid;
+    return parent;
   }
 
   /**
-   * Sets the parent oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
-   * 
-   * @param newParentOid
+   * @param parent
+   *          the parent to set
    */
-  public void setParentOid(String newParentOid)
+  public void setParent(VertexObjectDAOIF parent)
   {
-    if (!this.getParentOid().equals(newParentOid))
-    {
-      this.oldParentOid = this.parentOid;
-      this.parentOid = newParentOid;
-    }
+    this.parent = parent;
   }
 
   /**
-   * @return the oldParentOid
+   * @return the child
    */
-  public String getOldParentOid()
+  public VertexObjectDAOIF getChild()
   {
-    return oldParentOid;
+    return child;
   }
 
   /**
-   * @param oldParentOid
-   *          the oldParentOid to set
+   * @param child
+   *          the child to set
    */
-  public void setOldParentOid(String oldParentOid)
+  public void setChild(VertexObjectDAOIF child)
   {
-    this.oldParentOid = oldParentOid;
+    this.child = child;
   }
 
-  /**
-   * Return true if the child oid has changed, false otherwise.
-   * 
-   * @return true if the child oid has changed, false otherwise.
-   */
-  public boolean hasChildOidChanged()
-  {
-    if (this.oldChildOid != null && !this.oldChildOid.equals(this.childOid))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  /**
-   * Return true if the parent oid has changed, false otherwise.
-   * 
-   * @return true if the parent oid has changed, false otherwise.
-   */
-  public boolean hasParentOidChanged()
-  {
-    if (this.oldParentOid != null && !this.oldParentOid.equals(this.parentOid))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  /**
-   * Returns the oid of the child BusinessDAO in this relationship.
-   * 
-   * <br/>
-   * <b>Precondition: </b> true <br/>
-   * <b>Postcondition: </b> return value != null
-   * 
-   * @return oid of the child BusinessDAO in this relationship
-   */
-  public String getChildOid()
-  {
-    return this.childOid;
-  }
-
-  /**
-   * Sets the child oid to a new oid. ONLY CALL THIS ONCE IN A TRANSACTION!
-   * 
-   * @param newChildOid
-   */
-  public void setChildOid(String newChildOid)
-  {
-    if (!this.getChildOid().equals(newChildOid))
-    {
-      this.oldChildOid = this.childOid;
-      this.childOid = newChildOid;
-    }
-  }
-
-  /**
-   * @return the oldChildOid
-   */
-  public String getOldChildOid()
-  {
-    return oldChildOid;
-  }
-
-  /**
-   * @param oldChildOid
-   *          the oldChildOid to set
-   */
-  public void setOldChildOid(String oldChildOid)
-  {
-    this.oldChildOid = oldChildOid;
-  }
-
-  public static EdgeObjectDAO newInstance(String parentOid, String childOid, String edgeType)
+  public static EdgeObjectDAO newInstance(VertexObjectDAOIF parent, VertexObjectDAOIF child, String edgeType)
   {
     // get the meta data for the given class
     MdEdgeDAOIF mdEdgeDAOIF = MdEdgeDAO.getMdEdgeDAO(edgeType);
 
-    return newInstance(parentOid, childOid, mdEdgeDAOIF);
+    return newInstance(parent, child, mdEdgeDAOIF);
   }
 
   /**
@@ -246,15 +128,20 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
    * <b>Precondition:</b> type != null <br/>
    * <b>Precondition:</b> !type.trim().equals("")
    * 
+   * @param parent
+   *          TODO
+   * @param child
+   *          TODO
    * @param mdEdgeDAOIF
    *          Class name of the new BusinessDAO to instantiate
+   * 
    * @return new {@link EdgeObjectDAO} of the given type
    * @throws DataAccessException
    *           if the given class name is abstract
    * @throws DataAccessException
    *           if metadata is not defined for the given class name
    */
-  public static EdgeObjectDAO newInstance(String parentOid, String childOid, MdEdgeDAOIF mdEdgeDAOIF)
+  public static EdgeObjectDAO newInstance(VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdgeDAOIF)
   {
     if (mdEdgeDAOIF.isAbstract())
     {
@@ -268,15 +155,14 @@ public class EdgeObjectDAO extends GraphObjectDAO implements EdgeObjectDAOIF
     List<? extends MdEdgeDAOIF> superMdEdgeList = mdEdgeDAOIF.getSuperClasses();
     superMdEdgeList.forEach(md -> attributeMap.putAll(GraphObjectDAO.createRecordsForEntity(md)));
 
-    EdgeObjectDAO edgeObjectDAO = new EdgeObjectDAO(attributeMap, mdEdgeDAOIF, parentOid, childOid);
+    EdgeObjectDAO edgeObjectDAO = new EdgeObjectDAO(attributeMap, mdEdgeDAOIF, parent, child);
 
     attributeMap.values().forEach(a -> a.setContainingComponent(edgeObjectDAO));
 
     edgeObjectDAO.setIsNew(true);
-    
+
     edgeObjectDAO.setAppliedToDB(false);
 
     return edgeObjectDAO;
   }
-
 }

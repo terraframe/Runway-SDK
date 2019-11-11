@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
@@ -138,7 +137,7 @@ public class GraphDBBalk implements GraphDB
   {
     return false;
   }
-  
+
   @Override
   public boolean isIndexDefined(GraphRequest graphRequest, String className, String indexName)
   {
@@ -304,7 +303,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
-    {
+  {
     return new GraphDDLCommandAction()
     {
       public void execute()
@@ -312,7 +311,7 @@ public class GraphDBBalk implements GraphDB
       }
     };
   }
-  
+
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
@@ -346,19 +345,15 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public void addEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
-  {
-  }
-
-  @Override
-  public void removeEdge(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
-  {
-  }
-
-  @Override
   public List<VertexObjectDAOIF> getChildren(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
   {
     return new LinkedList<VertexObjectDAOIF>();
+  }
+
+  @Override
+  public List<EdgeObjectDAOIF> getChildEdges(GraphRequest request, VertexObjectDAO vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<EdgeObjectDAOIF>();
   }
 
   @Override
@@ -368,11 +363,23 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
+  public List<EdgeObjectDAOIF> getParentEdges(GraphRequest request, VertexObjectDAOIF vertexDAO, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<EdgeObjectDAOIF>();
+  }
+  
+  @Override
+  public List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge)
+  {
+    return new LinkedList<EdgeObjectDAOIF>();
+  }
+
+  @Override
   public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     return new LinkedList<VertexObjectDAOIF>();
   }
-  
+
   /**
    * @see GraphDB#processException(Locale, RuntimeException)
    */

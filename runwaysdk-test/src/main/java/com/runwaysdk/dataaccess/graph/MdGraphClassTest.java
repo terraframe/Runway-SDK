@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -58,6 +58,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
@@ -372,6 +373,34 @@ public class MdGraphClassTest
 
     boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+  }
+
+  @Request
+  @Test
+  public void testGetByDBClassName()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
+    MdGraphClassDAOIF test = MdGraphClassDAO.getMdGraphClassByTableName(mdVertexDAO.getDBClassName());
+
+    Assert.assertEquals(mdVertexDAO.getOid(), test.getOid());
+  }
+
+  @Request
+  @Test
+  public void testGetByDBClassNameInTransaction()
+  {
+    testGetByDBClassNameInTransaction_Transaction();
+  }
+
+  @Transaction
+  protected void testGetByDBClassNameInTransaction_Transaction()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
+    MdGraphClassDAOIF test = MdGraphClassDAO.getMdGraphClassByTableName(mdVertexDAO.getDBClassName());
+
+    Assert.assertEquals(mdVertexDAO.getOid(), test.getOid());
   }
 
   @Request
