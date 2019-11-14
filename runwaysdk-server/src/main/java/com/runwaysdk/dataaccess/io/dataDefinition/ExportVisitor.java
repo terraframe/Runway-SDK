@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -1329,6 +1329,7 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, Boolean.toString(mdVertex.isAbstract()));
     parameters.put(XMLTags.DATABASE_CLASS_NAME, mdVertex.getValue(MdVertexInfo.DB_CLASS_NAME));
+    parameters.put(XMLTags.ENABLE_CHANGE_OVER_TIME, Boolean.toString(mdVertex.isEnableChangeOverTime()));
 
     return parameters;
   }
@@ -1375,6 +1376,7 @@ public class ExportVisitor extends MarkupVisitor
 
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, Boolean.toString(mdEdge.isAbstract()));
     parameters.put(XMLTags.DATABASE_CLASS_NAME, mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME));
+    parameters.put(XMLTags.ENABLE_CHANGE_OVER_TIME, Boolean.toString(mdEdge.isEnableChangeOverTime()));
 
     return parameters;
   }

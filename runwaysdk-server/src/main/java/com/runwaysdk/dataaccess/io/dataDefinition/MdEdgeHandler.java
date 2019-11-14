@@ -127,6 +127,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.ENABLE_CHANGE_OVER_TIME, attributes, XMLTags.ENABLE_CHANGE_OVER_TIME);
 
     // Import optional reference attributes
     String parent = attributes.getValue(XMLTags.PARENT_TAG);

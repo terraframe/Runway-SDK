@@ -21,7 +21,7 @@
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
     <create>
-      <mdVertex name="com.runwaysdk.graph.EmbeddedLocalValue" label="EmbeddedLocalValue" isAbstract="false" generateController="false" >
+      <mdVertex name="com.runwaysdk.graph.EmbeddedLocalValue" label="EmbeddedLocalValue" isAbstract="false" generateController="false" generateSource="false" >
         <attributes>
           <text name="defaultLocale" label="Default Locale" required="true"/>        
         </attributes>

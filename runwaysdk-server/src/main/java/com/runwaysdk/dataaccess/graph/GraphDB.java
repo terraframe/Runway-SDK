@@ -363,7 +363,7 @@ public interface GraphDB
 
   public List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
 
-  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters);
+  public List<GraphObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters);
 
   /**
    * Transforms the given {@link RuntimeException} from the graph database and

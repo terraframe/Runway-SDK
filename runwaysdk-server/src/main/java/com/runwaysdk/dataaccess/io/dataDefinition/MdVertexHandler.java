@@ -129,6 +129,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
+    ImportManager.setValue(mdVertexDAO, MdVertexInfo.ENABLE_CHANGE_OVER_TIME, attributes, XMLTags.ENABLE_CHANGE_OVER_TIME);
 
     // Import optional reference attributes
     String extend = attributes.getValue(XMLTags.EXTENDS_ATTRIBUTE);

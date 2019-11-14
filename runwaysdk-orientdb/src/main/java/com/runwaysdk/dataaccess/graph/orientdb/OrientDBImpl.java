@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -86,6 +86,7 @@ import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
@@ -981,9 +982,9 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public List<VertexObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
+  public List<GraphObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
-    List<VertexObjectDAOIF> results = new LinkedList<VertexObjectDAOIF>();
+    List<GraphObjectDAOIF> results = new LinkedList<GraphObjectDAOIF>();
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
@@ -1014,7 +1015,7 @@ public class OrientDBImpl implements GraphDB
         {
           OElement element = result.toElement();
 
-          results.add((VertexObjectDAOIF) this.buildDAO(element));
+          results.add((GraphObjectDAOIF) this.buildDAO(element));
         }
         else
         {
@@ -1269,52 +1270,59 @@ public class OrientDBImpl implements GraphDB
       MdVertexDAOIF embeddedVertex = (MdVertexDAOIF) ( (MdAttributeEmbeddedDAOIF) mdAttribute ).getEmbeddedMdClassDAOIF();
 
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
-
       attribute.clearValuesOverTime();
 
-      for (OElement element : elements)
+      if (elements != null)
       {
-        Date startDate = element.getProperty(OrientDBConstant.START_DATE);
-        Date endDate = element.getProperty(OrientDBConstant.END_DATE);
-        OElement vElement = element.getProperty(OrientDBConstant.VALUE);
 
-        VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
-        this.populateDAO(vElement, votDAO);
+        for (OElement element : elements)
+        {
+          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
+          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
+          OElement vElement = element.getProperty(OrientDBConstant.VALUE);
 
-        attribute.setValueInternal(votDAO, startDate, endDate);
+          VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
+          this.populateDAO(vElement, votDAO);
+
+          attribute.setValueInternal(votDAO, startDate, endDate);
+        }
       }
     }
     else if (mdAttribute instanceof MdAttributeGeometryDAOIF)
     {
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
-
       attribute.clearValuesOverTime();
 
-      for (OElement element : elements)
+      if (elements != null)
       {
-        Date startDate = element.getProperty(OrientDBConstant.START_DATE);
-        Date endDate = element.getProperty(OrientDBConstant.END_DATE);
-        OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+        for (OElement element : elements)
+        {
+          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
+          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
+          OElement vElement = element.getProperty(OrientDBConstant.VALUE);
 
-        Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
-        Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+          Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
+          Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
 
-        attribute.setValueInternal(geometry, startDate, endDate);
+          attribute.setValueInternal(geometry, startDate, endDate);
+        }
       }
     }
     else
     {
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
-
       attribute.clearValuesOverTime();
 
-      for (OElement element : elements)
+      if (elements != null)
       {
-        Date startDate = element.getProperty(OrientDBConstant.START_DATE);
-        Date endDate = element.getProperty(OrientDBConstant.END_DATE);
-        Object votValue = element.getProperty(OrientDBConstant.VALUE);
+        for (OElement element : elements)
+        {
+          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
+          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
+          Object votValue = element.getProperty(OrientDBConstant.VALUE);
 
-        attribute.setValueInternal(votValue, startDate, endDate);
+          attribute.setValueInternal(votValue, startDate, endDate);
+        }
       }
     }
   }
