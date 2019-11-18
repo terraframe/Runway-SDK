@@ -33,7 +33,7 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 
-public class VertexQuery<T>
+public class GraphQuery<T>
 {
   private String              statement;
 
@@ -42,7 +42,7 @@ public class VertexQuery<T>
   /**
    * @param statement
    */
-  public VertexQuery(String statement)
+  public GraphQuery(String statement)
   {
     super();
     this.statement = statement;
@@ -53,7 +53,7 @@ public class VertexQuery<T>
    * @param statement
    * @param parameters
    */
-  public VertexQuery(String statement, Map<String, Object> parameters)
+  public GraphQuery(String statement, Map<String, Object> parameters)
   {
     super();
     this.statement = statement;
@@ -89,11 +89,11 @@ public class VertexQuery<T>
     GraphDBService service = GraphDBService.getInstance();
     GraphRequest request = service.getGraphDBRequest();
 
-    List<GraphObjectDAOIF> results = service.query(request, statement, parameters);
+    List<Object> results = service.query(request, statement, parameters);
 
     LinkedList<T> list = new LinkedList<T>();
 
-    for (GraphObjectDAOIF result : results)
+    for (Object result : results)
     {
       if (result instanceof VertexObjectDAOIF)
       {
@@ -102,6 +102,10 @@ public class VertexQuery<T>
       else if (result instanceof EdgeObjectDAOIF)
       {
         list.add((T) EdgeObject.instantiate((EdgeObjectDAO) result));
+      }
+      else
+      {
+        list.add((T) result);
       }
     }
 

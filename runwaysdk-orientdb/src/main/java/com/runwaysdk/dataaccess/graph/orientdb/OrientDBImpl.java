@@ -982,9 +982,9 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public List<GraphObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
-    List<GraphObjectDAOIF> results = new LinkedList<GraphObjectDAOIF>();
+    List<Object> results = new LinkedList<Object>();
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
@@ -1019,7 +1019,26 @@ public class OrientDBImpl implements GraphDB
         }
         else
         {
-          throw new UnsupportedOperationException("Unexpected result type");
+          Set<String> names = result.getPropertyNames();
+
+          if (names.size() > 1)
+          {
+            LinkedList<Object> row = new LinkedList<Object>();
+
+            for (String name : names)
+            {
+              row.add(result.getProperty(name));
+            }
+
+            results.add(row);
+          }
+          else
+          {
+            String name = names.iterator().next(); 
+            Object value = result.getProperty(name);
+
+            results.add(value);
+          }
         }
       }
     }

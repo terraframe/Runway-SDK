@@ -335,7 +335,7 @@ public class GraphDBService
     return this.graphDB.getEdges(request, parent, child, mdEdge);
   }
 
-  public List<GraphObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     return this.graphDB.query(request, statement, parameters);
   }

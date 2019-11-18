@@ -375,9 +375,9 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public List<GraphObjectDAOIF> query(GraphRequest request, String statement, Map<String, Object> parameters)
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
-    return new LinkedList<GraphObjectDAOIF>();
+    return new LinkedList<Object>();
   }
 
   /**
