@@ -180,7 +180,7 @@ public class VertexObjectDAOChangeOverTimeTest
   {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
-    calendar.set(2012, Calendar.FEBRUARY, 13);
+    calendar.set(2012, Calendar.JANUARY, 1);
 
     return calendar.getTime();
   }
@@ -189,7 +189,7 @@ public class VertexObjectDAOChangeOverTimeTest
   {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
-    calendar.set(2013, Calendar.FEBRUARY, 13);
+    calendar.set(2014, Calendar.DECEMBER, 31);
 
     return calendar.getTime();
   }

@@ -18,7 +18,14 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.temporal.IsoFields;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -26,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -35,7 +41,6 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
-import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.attributes.SystemAttributeProblem;
@@ -46,6 +51,59 @@ import com.runwaysdk.system.graph.ChangeFrequency;
 
 public abstract class Attribute implements AttributeIF
 {
+  private static class FirstDayOfQuarter implements TemporalAdjuster
+  {
+
+    @Override
+    public Temporal adjustInto(Temporal temporal)
+    {
+      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
+
+      if (currentQuarter == 1)
+      {
+        return LocalDate.from(temporal).with(TemporalAdjusters.firstDayOfYear());
+      }
+      else if (currentQuarter == 2)
+      {
+        return LocalDate.from(temporal).withMonth(Month.APRIL.getValue()).with(TemporalAdjusters.firstDayOfMonth());
+      }
+      else if (currentQuarter == 3)
+      {
+        return LocalDate.from(temporal).withMonth(Month.JULY.getValue()).with(TemporalAdjusters.firstDayOfMonth());
+      }
+      else
+      {
+        return LocalDate.from(temporal).withMonth(Month.OCTOBER.getValue()).with(TemporalAdjusters.firstDayOfMonth());
+      }
+    }
+  }
+
+  private static class LastDayOfQuarter implements TemporalAdjuster
+  {
+
+    @Override
+    public Temporal adjustInto(Temporal temporal)
+    {
+      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
+
+      if (currentQuarter == 1)
+      {
+        return LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+      }
+      else if (currentQuarter == 2)
+      {
+        return LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+      }
+      else if (currentQuarter == 3)
+      {
+        return LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+      }
+      else
+      {
+        return LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+      }
+    }
+  }
 
   /**
    * 
@@ -416,34 +474,38 @@ public abstract class Attribute implements AttributeIF
 
       if (frequency != null)
       {
-        Calendar expected = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        expected.clear();
-        expected.setTime(startDate);
+        LocalDate lStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+        LocalDate lEndDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
 
         if (frequency.equals(ChangeFrequency.ANNUAL.name()))
         {
-          expected.add(Calendar.YEAR, 1);
+          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfYear());
+          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfYear());
+
+          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          {
+            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
+          }
         }
         else if (frequency.equals(ChangeFrequency.QUARTER.name()))
         {
-          expected.add(Calendar.MONTH, 3);
+          LocalDate expectedStartDate = lStartDate.with(new FirstDayOfQuarter());
+          LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
+
+          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          {
+            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
+          }
         }
         else if (frequency.equals(ChangeFrequency.MONTHLY.name()))
         {
-          expected.add(Calendar.MONTH, 1);
-        }
-        else if (frequency.equals(ChangeFrequency.DAILY.name()))
-        {
-          expected.add(Calendar.DAY_OF_YEAR, 1);
-        }
+          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfMonth());
+          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfMonth());
 
-        Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        actual.clear();
-        actual.setTime(endDate);
-
-        if (actual.get(Calendar.DAY_OF_YEAR) != expected.get(Calendar.DAY_OF_YEAR) || actual.get(Calendar.YEAR) != expected.get(Calendar.YEAR))
-        {
-          throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
+          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          {
+            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
+          }
         }
       }
     }
