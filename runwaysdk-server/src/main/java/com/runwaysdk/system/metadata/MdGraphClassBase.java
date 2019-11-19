@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1034231709)
+@com.runwaysdk.business.ClassSignature(hash = -1187782609)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +12,9 @@ public abstract class MdGraphClassBase extends com.runwaysdk.system.metadata.MdC
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdGraphClass";
   public static java.lang.String DBCLASSNAME = "dbClassName";
-  private static final long serialVersionUID = 1034231709;
+  public static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
+  public static java.lang.String FREQUENCY = "frequency";
+  private static final long serialVersionUID = -1187782609;
   
   public MdGraphClassBase()
   {
@@ -63,6 +47,72 @@ public abstract class MdGraphClassBase extends com.runwaysdk.system.metadata.MdC
     {
       setValue(DBCLASSNAME, value);
     }
+  }
+  
+  public Boolean getEnableChangeOverTime()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ENABLECHANGEOVERTIME));
+  }
+  
+  public void validateEnableChangeOverTime()
+  {
+    this.validateAttribute(ENABLECHANGEOVERTIME);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getEnableChangeOverTimeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdGraphClass.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(ENABLECHANGEOVERTIME);
+  }
+  
+  public void setEnableChangeOverTime(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(ENABLECHANGEOVERTIME, "");
+    }
+    else
+    {
+      setValue(ENABLECHANGEOVERTIME, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<com.runwaysdk.system.graph.ChangeFrequency> getFrequency()
+  {
+    return (java.util.List<com.runwaysdk.system.graph.ChangeFrequency>) getEnumValues(FREQUENCY);
+  }
+  
+  public void addFrequency(com.runwaysdk.system.graph.ChangeFrequency value)
+  {
+    if(value != null)
+    {
+      addEnumItem(FREQUENCY, value.getOid());
+    }
+  }
+  
+  public void removeFrequency(com.runwaysdk.system.graph.ChangeFrequency value)
+  {
+    if(value != null)
+    {
+      removeEnumItem(FREQUENCY, value.getOid());
+    }
+  }
+  
+  public void clearFrequency()
+  {
+    clearEnum(FREQUENCY);
+  }
+  
+  public void validateFrequency()
+  {
+    this.validateAttribute(FREQUENCY);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getFrequencyMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdGraphClass.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(FREQUENCY);
   }
   
   protected String getDeclaredType()

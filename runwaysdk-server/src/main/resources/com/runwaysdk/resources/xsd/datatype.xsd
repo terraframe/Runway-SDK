@@ -1502,6 +1502,7 @@
         </xs:choice>
         <xs:attribute name="dbClassName" type="xs:string" use="optional" />
         <xs:attribute name="enableChangeOverType" type="xs:boolean" use="optional" />
+        <xs:attribute name="frequency" type="xs:string" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

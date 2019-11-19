@@ -1330,6 +1330,7 @@ public class ExportVisitor extends MarkupVisitor
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, Boolean.toString(mdVertex.isAbstract()));
     parameters.put(XMLTags.DATABASE_CLASS_NAME, mdVertex.getValue(MdVertexInfo.DB_CLASS_NAME));
     parameters.put(XMLTags.ENABLE_CHANGE_OVER_TIME, Boolean.toString(mdVertex.isEnableChangeOverTime()));
+    parameters.put(XMLTags.FREQUENCY, ( (AttributeEnumerationIF) mdVertex.getAttributeIF(MdVertexInfo.FREQUENCY) ).dereference()[0].getName());
 
     return parameters;
   }
@@ -1377,6 +1378,7 @@ public class ExportVisitor extends MarkupVisitor
     parameters.put(XMLTags.ABSTRACT_ATTRIBUTE, Boolean.toString(mdEdge.isAbstract()));
     parameters.put(XMLTags.DATABASE_CLASS_NAME, mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME));
     parameters.put(XMLTags.ENABLE_CHANGE_OVER_TIME, Boolean.toString(mdEdge.isEnableChangeOverTime()));
+    parameters.put(XMLTags.FREQUENCY, ( (AttributeEnumerationIF) mdEdge.getAttributeIF(MdEdgeInfo.FREQUENCY) ).dereference()[0].getName());
 
     return parameters;
   }

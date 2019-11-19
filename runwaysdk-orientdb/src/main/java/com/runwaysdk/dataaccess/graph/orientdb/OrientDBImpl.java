@@ -1017,6 +1017,13 @@ public class OrientDBImpl implements GraphDB
 
           results.add((GraphObjectDAOIF) this.buildDAO(element));
         }
+        else if (result.isRecord())
+        {
+          ORecord record = result.getRecord().get();
+          OElement element = db.load(record);
+
+          results.add((GraphObjectDAOIF) this.buildDAO(element));
+        }
         else
         {
           Set<String> names = result.getPropertyNames();
@@ -1034,7 +1041,7 @@ public class OrientDBImpl implements GraphDB
           }
           else
           {
-            String name = names.iterator().next(); 
+            String name = names.iterator().next();
             Object value = result.getProperty(name);
 
             results.add(value);
