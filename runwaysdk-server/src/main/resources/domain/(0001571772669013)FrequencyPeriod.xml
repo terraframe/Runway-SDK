@@ -39,7 +39,7 @@
       <mdBusiness name="com.runwaysdk.system.metadata.MdGraphClass">
         <create>
           <attributes>
-            <enumeration name="frequency" label="Frequency" required="false" type="com.runwaysdk.system.graph.ChangeFrequency" selectMultiple="false" />
+            <enumeration name="frequency" label="Frequency" required="false" type="com.runwaysdk.system.graph.ChangeFrequency" immutable="true" selectMultiple="false" />
           </attributes>
         </create>
       </mdBusiness>

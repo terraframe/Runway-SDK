@@ -3,21 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,18 +26,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
+import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
+import com.runwaysdk.dataaccess.attributes.AttributeValueException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.attributes.SystemAttributeProblem;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
+import com.runwaysdk.system.graph.ChangeFrequency;
 
 public abstract class Attribute implements AttributeIF
 {
@@ -314,7 +320,7 @@ public abstract class Attribute implements AttributeIF
 
   public void setValue(Object value, Date startDate, Date endDate)
   {
-    this.validate(value);
+    this.validate(value, startDate, endDate);
 
     ValueOverTime vot = this.getValueOvertTime(startDate, endDate);
 
@@ -377,6 +383,70 @@ public abstract class Attribute implements AttributeIF
 
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttribute();
     this.validateMutable(mdAttributeIF);
+  }
+
+  /**
+   * Check to see if the given value is valid {@link GraphObjectDAO}.
+   *
+   * <br>
+   * <b>Precondition: </b> true <br>
+   * <b>Postcondition: </b> true
+   *
+   * @param valueToValidate
+   *          The value to be checked if its required in the the defining
+   *          {@link GraphObjectDAO}
+   * @param {@link
+   *          MdAttributeDAOIF} The Metatdata TransientDAO that defines the
+   *          Attribute
+   *
+   * @throws EmptyValueProblem
+   *           if this attribute is required for its defining
+   *           {@link GraphObjectDAO} but contains an empty value.
+   */
+  public void validate(Object valueToValidate, Date startDate, Date endDate)
+  {
+    this.validate(valueToValidate);
+
+    if (startDate != null && endDate != null)
+    {
+      // Validate the frequency
+      MdGraphClassDAOIF definedByClass = (MdGraphClassDAOIF) this.mdAttributeDAOIF.definedByClass();
+
+      String frequency = definedByClass.getFrequency();
+
+      if (frequency != null)
+      {
+        Calendar expected = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        expected.clear();
+        expected.setTime(startDate);
+
+        if (frequency.equals(ChangeFrequency.ANNUAL.name()))
+        {
+          expected.add(Calendar.YEAR, 1);
+        }
+        else if (frequency.equals(ChangeFrequency.QUARTER.name()))
+        {
+          expected.add(Calendar.MONTH, 3);
+        }
+        else if (frequency.equals(ChangeFrequency.MONTHLY.name()))
+        {
+          expected.add(Calendar.MONTH, 1);
+        }
+        else if (frequency.equals(ChangeFrequency.DAILY.name()))
+        {
+          expected.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        Calendar actual = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        actual.clear();
+        actual.setTime(endDate);
+
+        if (actual.get(Calendar.DAY_OF_YEAR) != expected.get(Calendar.DAY_OF_YEAR) || actual.get(Calendar.YEAR) != expected.get(Calendar.YEAR))
+        {
+          throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
+        }
+      }
+    }
   }
 
   /**

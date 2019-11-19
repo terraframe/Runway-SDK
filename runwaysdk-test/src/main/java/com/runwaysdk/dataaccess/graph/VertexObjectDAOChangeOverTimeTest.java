@@ -34,6 +34,7 @@ import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -188,7 +189,7 @@ public class VertexObjectDAOChangeOverTimeTest
   {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
-    calendar.set(2018, Calendar.FEBRUARY, 13);
+    calendar.set(2013, Calendar.FEBRUARY, 13);
 
     return calendar.getTime();
   }
@@ -197,7 +198,7 @@ public class VertexObjectDAOChangeOverTimeTest
   {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
-    calendar.set(2014, Calendar.FEBRUARY, 13);
+    calendar.set(2012, Calendar.MAY, 13);
 
     return calendar.getTime();
   }
@@ -788,6 +789,16 @@ public class VertexObjectDAOChangeOverTimeTest
     {
       businessDAO.delete();
     }
+  }
+
+  @Request
+  @Test(expected = AttributeFrequencyException.class)
+  public void testBadFrequency()
+  {
+    String attributeName = mdFloatAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
   }
 
 }
