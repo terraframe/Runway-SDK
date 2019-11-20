@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -170,7 +171,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
     this.setModified(true);
     return true;
   }
-
+  
   @Override
   public boolean replaceItems(Collection<String> values)
   {

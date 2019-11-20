@@ -3,22 +3,23 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +35,9 @@ import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
-import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
 
@@ -178,6 +179,17 @@ public abstract class GraphObject implements Mutable
   }
 
   /**
+   * Some attributes store objects instead of strings.
+   * 
+   * @param name
+   * @return object stored on the attribute.
+   */
+  public Object getObjectValue(String name, Date date)
+  {
+    return this.graphObjectDAO.getObjectValue(name, date);
+  }
+
+  /**
    * @see GraphObjectDAOIF#getEmbeddedComponent(String)
    */
   public GraphObject getEmbeddedComponent(String attributeName)
@@ -245,6 +257,32 @@ public abstract class GraphObject implements Mutable
   public void setValue(String name, Object _object)
   {
     graphObjectDAO.setValue(name, _object);
+  }
+
+  /**
+   * A generic, type-unsafe setter that takes the attribute name a and value as
+   * an Object.
+   * 
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
+   */
+  public void setValue(String name, Object _object, Date startDate, Date endDate)
+  {
+    graphObjectDAO.setValue(name, _object, startDate, endDate);
+  }
+
+  public void setEmbeddedValue(String name, String embeddedAttributeName, Object _object)
+  {
+    AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
+    attribute.setValue(embeddedAttributeName, _object);
+  }
+
+  public void setEmbeddedValue(String name, String embeddedAttributeName, Object _object, Date startDate, Date endDate)
+  {
+    AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
+    attribute.setValue(embeddedAttributeName, _object, startDate, endDate);
   }
 
   /**
