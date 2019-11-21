@@ -84,7 +84,7 @@ public class ServerProperties
    */
   public static Boolean compileTimeWeaving()
   {
-    return Singleton.INSTANCE.props.getBoolean("compileTimeWeaving");
+    return Singleton.INSTANCE.props.getBoolean("compileTimeWeaving", true);
   }
 
   /**
@@ -134,7 +134,7 @@ public class ServerProperties
    */
   public static String getKeyStoreFile()
   {
-    return Singleton.INSTANCE.props.getString("keyStore.file");
+    return Singleton.INSTANCE.props.getString("keyStore.file", ".keyStore");
   }
 
   /**
@@ -144,7 +144,7 @@ public class ServerProperties
    */
   public static String getKeyStoreType()
   {
-    return Singleton.INSTANCE.props.getString("keyStore.type");
+    return Singleton.INSTANCE.props.getString("keyStore.type", "JCEKS");
   }
 
   /**
@@ -164,7 +164,7 @@ public class ServerProperties
    */
   public static int getLockTimeout()
   {
-    return Singleton.INSTANCE.props.getInteger("lock.timeout");
+    return Singleton.INSTANCE.props.getInteger("lock.timeout", 180);
   }
 
   /**
@@ -172,7 +172,7 @@ public class ServerProperties
    */
   public static Boolean memoryOnlyCache()
   {
-    return Singleton.INSTANCE.props.getBoolean("memoryOnlyCache");
+    return Singleton.INSTANCE.props.getBoolean("memoryOnlyCache", true);
   }
 
   /**
@@ -182,7 +182,7 @@ public class ServerProperties
    */
   public static Integer getGlobalCacheOffheapMemorySize()
   {
-    return Singleton.INSTANCE.props.getInteger("globalCache.offheapMemorySize");
+    return Singleton.INSTANCE.props.getInteger("globalCache.offheapMemorySize", 20);
   }
   
   /**
@@ -192,7 +192,7 @@ public class ServerProperties
    */
   public static int getGlobalCacheMemorySize()
   {
-    return Singleton.INSTANCE.props.getInteger("globalCache.memorySize");
+    return Singleton.INSTANCE.props.getInteger("globalCache.memorySize", 20000);
   }
   
   /**
@@ -212,7 +212,7 @@ public class ServerProperties
    */
   public static String getGlobalCacheName()
   {
-    return Singleton.INSTANCE.props.getString("globalCache.cacheName");
+    return Singleton.INSTANCE.props.getString("globalCache.cacheName", "DDMS");
   }
 
   /**
@@ -260,7 +260,7 @@ public class ServerProperties
    */
   public static int getTransactionCacheMemorySize()
   {
-    return Singleton.INSTANCE.props.getInteger("transactionCache.memorySize");
+    return Singleton.INSTANCE.props.getInteger("transactionCache.memorySize", 10000);
   }
 
   /**
@@ -333,7 +333,7 @@ public class ServerProperties
    */
   public static String getTransactionCacheName()
   {
-    return Singleton.INSTANCE.props.getString("transactionCache.cacheName");
+    return Singleton.INSTANCE.props.getString("transactionCache.cacheName", "transactionCache");
   }
 
   /**
@@ -353,7 +353,7 @@ public class ServerProperties
    */
   public static int getLockedIdBucketSize()
   {
-    return Singleton.INSTANCE.props.getInteger("transaction.lockedObject.bucketSize");
+    return Singleton.INSTANCE.props.getInteger("transaction.lockedObject.bucketSize", 200);
   }
 
   /**
@@ -363,7 +363,7 @@ public class ServerProperties
    */
   public static int getTransationIdBucketSize()
   {
-    return Singleton.INSTANCE.props.getInteger("transaction.objectsInTransaction.bucketSize");
+    return Singleton.INSTANCE.props.getInteger("transaction.objectsInTransaction.bucketSize", 200);
   }
 
   public static int getTransactionDiskstoreSize()
@@ -384,7 +384,7 @@ public class ServerProperties
   
   public static boolean memoryOnlyTransactionCache()
   {
-    return Singleton.INSTANCE.props.getBoolean("transactionCache.memoryOnly");
+    return Singleton.INSTANCE.props.getBoolean("transactionCache.memoryOnly", true);
   }
 
   public static boolean getTransactionCacheStats()
