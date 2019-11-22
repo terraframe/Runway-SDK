@@ -173,9 +173,11 @@ public abstract class GraphObject implements Mutable
    * @param name
    * @return object stored on the attribute.
    */
-  public Object getObjectValue(String name)
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getObjectValue(String name)
   {
-    return this.graphObjectDAO.getObjectValue(name);
+    return (T) this.graphObjectDAO.getObjectValue(name);
   }
 
   /**
@@ -184,9 +186,10 @@ public abstract class GraphObject implements Mutable
    * @param name
    * @return object stored on the attribute.
    */
-  public Object getObjectValue(String name, Date date)
+  @SuppressWarnings("unchecked")
+  public <T> T getObjectValue(String name, Date date)
   {
-    return this.graphObjectDAO.getObjectValue(name, date);
+    return (T) this.graphObjectDAO.getObjectValue(name, date);
   }
 
   /**
@@ -195,6 +198,23 @@ public abstract class GraphObject implements Mutable
   public GraphObject getEmbeddedComponent(String attributeName)
   {
     ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName);
+
+    if (componentDAO instanceof VertexObjectDAO)
+    {
+      return VertexObject.instantiate((VertexObjectDAO) componentDAO);
+    }
+    else
+    {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  /**
+   * @see GraphObjectDAOIF#getEmbeddedComponent(String)
+   */
+  public GraphObject getEmbeddedComponent(String attributeName, Date date)
+  {
+    ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName, date);
 
     if (componentDAO instanceof VertexObjectDAO)
     {
@@ -283,6 +303,22 @@ public abstract class GraphObject implements Mutable
   {
     AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
     attribute.setValue(embeddedAttributeName, _object, startDate, endDate);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> T getEmbeddedValue(String name, String embeddedAttributeName)
+  {
+    AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
+
+    return (T) attribute.getValue(embeddedAttributeName);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> T getEmbeddedValue(String name, String embeddedAttributeName, Date date)
+  {
+    AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
+
+    return (T) attribute.getValue(embeddedAttributeName, date);
   }
 
   /**

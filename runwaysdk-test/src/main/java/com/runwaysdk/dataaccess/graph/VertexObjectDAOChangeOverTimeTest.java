@@ -669,7 +669,7 @@ public class VertexObjectDAOChangeOverTimeTest
     String value = "Test";
     attribute.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, value, startDate(), endDate());
 
-    Assert.assertEquals(value, attribute.getObjectValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
+    Assert.assertEquals(value, attribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
 
     try
     {
@@ -681,7 +681,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
       AttributeLocalEmbedded testAttribute = (AttributeLocalEmbedded) test.getAttributeIF(attributeName);
 
-      Assert.assertEquals(value, testAttribute.getObjectValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
+      Assert.assertEquals(value, testAttribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
 
       // Test update
       value = "Update";
@@ -693,7 +693,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
       testAttribute = (AttributeLocalEmbedded) test.getAttributeIF(attributeName);
 
-      Assert.assertEquals(value, testAttribute.getObjectValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
+      Assert.assertEquals(value, testAttribute.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE, date()));
     }
     finally
     {

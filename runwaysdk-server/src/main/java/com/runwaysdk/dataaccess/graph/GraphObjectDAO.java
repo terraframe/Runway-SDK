@@ -353,6 +353,25 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
+   * @see GraphObjectDAOIF#getEmbeddedComponentDAO(String)
+   */
+  public ComponentDAO getEmbeddedComponentDAO(String attributeName, Date date)
+  {
+    Attribute attribute = this.getAttribute(attributeName);
+
+    if (attribute instanceof AttributeEmbedded)
+    {
+      AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
+
+      return (ComponentDAO) attributeEmbedded.getObjectValue(date);
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  /**
    * Returns a {@link MdGraphDAOIF} that defines this object's class.
    * 
    * <br/>
