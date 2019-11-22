@@ -463,7 +463,7 @@ public class LocalProperties
    */
   public static boolean getCopyArtifactsOnStart()
   {
-    return instance().getBoolean("copyArtifactsOnStart", true);
+    return instance().getBoolean("copyArtifactsOnStart", false);
   }
 
   /**
