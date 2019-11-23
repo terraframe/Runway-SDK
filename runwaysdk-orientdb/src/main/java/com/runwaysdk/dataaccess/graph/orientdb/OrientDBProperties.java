@@ -54,42 +54,42 @@ public class OrientDBProperties
 
   public static String getDatabaseName()
   {
-    return Singleton.INSTANCE.props.getString("db.name");
+    return Singleton.INSTANCE.props.getString("orientdb.db.name");
   }
 
   public static String getUrl()
   {
-    return Singleton.INSTANCE.props.getString("db.url");
+    return Singleton.INSTANCE.props.getString("orientdb.db.url", "remote:localhost");
   }
 
   public static String getRootUserName()
   {
-    return Singleton.INSTANCE.props.getString("root.username");
+    return Singleton.INSTANCE.props.getString("orientdb.root.username", "root");
   }
 
   public static String getRootUserPassword()
   {
-    return Singleton.INSTANCE.props.getString("root.password");
+    return Singleton.INSTANCE.props.getString("orientdb.root.password", "root");
   }
 
   public static Integer getMinPoolSize()
   {
-    return Singleton.INSTANCE.props.getInteger("pool.min");
+    return Singleton.INSTANCE.props.getInteger("orientdb.pool.min", 5);
   }
 
   public static Integer getMaxPoolSize()
   {
-    return Singleton.INSTANCE.props.getInteger("pool.max");
+    return Singleton.INSTANCE.props.getInteger("orientdb.pool.max", 20);
   }
 
   public static String getAdminUserName()
   {
-    return Singleton.INSTANCE.props.getString("admin.username");
+    return Singleton.INSTANCE.props.getString("orientdb.admin.username", "admin");
   }
 
   public static String getAdminUserPassword()
   {
-    return Singleton.INSTANCE.props.getString("admin.password");
+    return Singleton.INSTANCE.props.getString("orientdb.admin.password", "admin");
   }
 
 }
