@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
@@ -112,6 +114,8 @@ public class OrientDBImpl implements GraphDB
   private OrientDB orientDB;
 
   // private ODatabasePool pool;
+  
+  private Logger logger = LoggerFactory.getLogger(OrientDBImpl.class);
 
   public OrientDBImpl()
   {
@@ -125,6 +129,7 @@ public class OrientDBImpl implements GraphDB
   {
     this.dropDB();
     this.createDB();
+    this.createAppUser();
   }
 
   private OrientDB getRootOrientDB()
@@ -141,7 +146,7 @@ public class OrientDBImpl implements GraphDB
     if (this.orientDB.exists(OrientDBProperties.getDatabaseName()))
     {
       this.orientDB.drop(OrientDBProperties.getDatabaseName());
-      System.out.println("Dropped OrientDB Database: " + OrientDBProperties.getDatabaseName());
+      logger.info("Dropped OrientDB Database: " + OrientDBProperties.getDatabaseName());
     }
 
     // }
@@ -158,12 +163,44 @@ public class OrientDBImpl implements GraphDB
     // try
     // {
     this.orientDB.create(OrientDBProperties.getDatabaseName(), ODatabaseType.PLOCAL);
-    System.out.println("Created OrientDB Database: " + OrientDBProperties.getDatabaseName());
+    logger.info("Created OrientDB Database: " + OrientDBProperties.getDatabaseName());
     // }
     // finally
     // {
     // orientDB.close();
     // }
+  }
+  
+  private void createAppUser()
+  {
+    String adminUser = OrientDBProperties.getAdminUserName();
+    String adminPass = OrientDBProperties.getAdminUserPassword();
+    
+    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getRootUserName(), OrientDBProperties.getRootUserPassword());
+    
+    try
+    {
+      rootSession.activateOnCurrentThread();
+      
+      // Remove pre-loaded users
+      String deleteAdmin = "delete from ouser where name = 'admin';";
+      try (OResultSet rs = rootSession.command(deleteAdmin)) {}
+      
+      String deleteReader = "delete from ouser where name = 'reader';";
+      try (OResultSet rs = rootSession.command(deleteReader)) {}
+      
+      String deleteWriter = "delete from ouser where name = 'writer';";
+      try (OResultSet rs = rootSession.command(deleteWriter)) {}
+      
+      String sqlAdminUser = "insert into ouser set name = '" + adminUser + "', password = '" + adminPass + "', status = 'ACTIVE', roles = (select from ORole where name = 'admin')";
+      try (OResultSet rs = rootSession.command(sqlAdminUser)) {}
+    }
+    finally
+    {
+      rootSession.close();
+    }
+    
+    logger.info("Created app user with name [" + adminUser + "].");
   }
 
   @Override
@@ -194,7 +231,7 @@ public class OrientDBImpl implements GraphDB
     // this.pool.close();
     //
     // this.orientDB.close();
-    System.out.println("Closing the GraphDB connection pool");
+    logger.info("Closing the GraphDB connection pool");
   }
 
   @Override
@@ -304,10 +341,10 @@ public class OrientDBImpl implements GraphDB
             // create property myE.in LINK B
             // "SELECT FROM V WHERE name = ? and surnanme = ?"
             String statement = "CREATE PROPERTY " + edgeClass + ".OUT LINK " + parentVertexClass;
-            db.command(statement);
+            try (OResultSet rs = db.command(statement)) {}
 
             statement = "CREATE PROPERTY " + edgeClass + ".IN LINK " + childVertexClass;
-            db.command(statement);
+            try (OResultSet rs = db.command(statement)) {}
 
             // OClass e = db.getMetadata().getSchema().getClass("E");
             // oClass.addSuperClass(e);
