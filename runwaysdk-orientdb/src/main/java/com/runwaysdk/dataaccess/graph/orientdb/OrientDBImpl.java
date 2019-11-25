@@ -1199,8 +1199,8 @@ public class OrientDBImpl implements GraphDB
       OVertex parent = edge.getFrom();
       OVertex child = edge.getTo();
 
-      VertexObjectDAO parentDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getParentMdVertex(), parent);
-      VertexObjectDAO childDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getChildMdVertex(), child);
+      VertexObjectDAO parentDAO = (VertexObjectDAO) this.buildDAO(parent);
+      VertexObjectDAO childDAO = (VertexObjectDAO) this.buildDAO(child);
 
       EdgeObjectDAO edgeDAO = EdgeObjectDAO.newInstance(parentDAO, childDAO, mdEdge);
 
