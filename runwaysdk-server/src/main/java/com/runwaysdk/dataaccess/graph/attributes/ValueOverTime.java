@@ -28,16 +28,26 @@ import java.time.temporal.IsoFields;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class ValueOverTime implements Comparable<ValueOverTime>
 {
-  public static final Date INFINITY_END_DATE = new GregorianCalendar(5000, 0, 0).getTime();
-  
+  public static final Date INFINITY_END_DATE;
+
+  static
+  {
+    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+    cal.clear();
+    cal.set(5000, Calendar.DECEMBER, 31);
+
+    INFINITY_END_DATE = cal.getTime();
+  }
+
   private static class FirstDayOfQuarter implements TemporalAdjuster
   {
 
@@ -91,7 +101,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
       }
     }
   }
-  
+
   private Date   startDate;
 
   private Date   endDate;
@@ -172,57 +182,62 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   {
     return this.startDate.compareTo(o.getStartDate());
   }
-  
+
   public String toString()
   {
     DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-    
+
     String endDate = dateFormat.format(INFINITY_END_DATE);
     if (this.endDate != null)
     {
       endDate = dateFormat.format(this.endDate);
     }
-    
+
     return "value [" + this.value + "] from " + dateFormat.format(this.startDate) + " to " + endDate;
   }
-  
+
   public void validate(ChangeFrequency frequency)
   {
-    if (startDate != null && endDate != null)
+    if (startDate != null)
     {
       if (frequency != null)
       {
         LocalDate lStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-        LocalDate lEndDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-        
+        // LocalDate lEndDate =
+        // endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+
         if (frequency.equals(ChangeFrequency.ANNUAL))
         {
           LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfYear());
-          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfYear());
+          // LocalDate expectedEndDate =
+          // lEndDate.with(TemporalAdjusters.lastDayOfYear());
 
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          // if (!lStartDate.equals(expectedStartDate) ||
+          // !lEndDate.equals(expectedEndDate))
+          if (!lStartDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate, endDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
           }
         }
         else if (frequency.equals(ChangeFrequency.QUARTER))
         {
           LocalDate expectedStartDate = lStartDate.with(new FirstDayOfQuarter());
-          LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
+          // LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
 
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          if (!lStartDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate, endDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
           }
         }
         else if (frequency.equals(ChangeFrequency.MONTHLY))
         {
           LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfMonth());
-          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfMonth());
+          // LocalDate expectedEndDate =
+          // lEndDate.with(TemporalAdjusters.lastDayOfMonth());
 
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
+          if (!lStartDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate, endDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
           }
         }
       }

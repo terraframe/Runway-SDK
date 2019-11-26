@@ -550,14 +550,13 @@ public class ServerExceptionMessageLocalizer
     return LocalizationFacade.getMessage(locale, "AttributeValueException", "[{0}] is not a valid value for [{1}].", value, attribute.getDisplayLabel(locale));
   }
 
-  public static String attributeFrequencyExceptionGeneric(Locale locale, String frequency, Date startDate, Date endDate)
+  public static String attributeFrequencyExceptionGeneric(Locale locale, String frequency, Date startDate)
   {
     DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, locale);
 
     String fStartDate = format.format(startDate);
-    String fEndDate = format.format(endDate);
 
-    return LocalizationFacade.getMessage(locale, "AttributeFrequencyException", "The time range from [{0}] to [{1}] is not a valid value for the frequency type [{2}].", fStartDate, fEndDate, frequency);
+    return LocalizationFacade.getMessage(locale, "AttributeFrequencyException", "The starting date of [{0}] is not a valid value for the frequency type [{1}].", fStartDate, frequency);
   }
 
   /**

@@ -1,5 +1,8 @@
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,32 +12,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.LocalDate;
 
 import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class ValueOverTimeCollection implements Collection<ValueOverTime>
 {
   private LinkedList<ValueOverTime> valuesOverTime;
-  
-  private ChangeFrequency frequency;
+
+  private ChangeFrequency           frequency;
 
   public ChangeFrequency getFrequency()
   {
     return this.frequency;
   }
-  
+
   public ValueOverTimeCollection(ChangeFrequency frequency)
   {
     this.valuesOverTime = new LinkedList<ValueOverTime>();
     this.frequency = frequency;
   }
-  
+
   public ValueOverTimeCollection()
   {
     this.valuesOverTime = new LinkedList<ValueOverTime>();
   }
-  
+
   @Override
   public int size()
   {
@@ -58,11 +60,10 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   {
     return valuesOverTime.iterator();
   }
-  
+
   public void sort()
   {
-    Collections.sort(valuesOverTime, 
-        (o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
+    Collections.sort(valuesOverTime, (o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
   }
 
   @Override
@@ -70,7 +71,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   {
     return (ValueOverTime[]) valuesOverTime.toArray();
   }
-  
+
   public ValueOverTime getValueOverTime(Date startDate, Date endDate)
   {
     for (ValueOverTime vt : this.valuesOverTime)
@@ -83,7 +84,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
 
     return null;
   }
-  
+
   public Object getValueOnDate(Date date)
   {
     if (date != null)
@@ -96,19 +97,19 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
         }
       }
     }
-    
+
     return null;
   }
-  
+
   @Override
   public boolean add(ValueOverTime vot)
   {
     Integer afterIndex = null;
-    
+
     for (int i = 0; i < this.valuesOverTime.size(); ++i)
     {
       ValueOverTime testVot = this.valuesOverTime.get(i);
-      
+
       if (vot.getStartDate().after(testVot.getStartDate()))
       {
         afterIndex = i;
@@ -126,7 +127,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
         }
       }
     }
-    
+
     if (afterIndex == null)
     {
       if (this.valuesOverTime.size() == 0)
@@ -135,53 +136,57 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       }
       else
       {
-        LocalDate localEnd = LocalDate.fromDateFields(this.valuesOverTime.get(0).getStartDate());
-        vot.setEndDate(localEnd.minusDays(1).toDate());
+        vot.setEndDate(this.calculateDateMinusOneDay(this.valuesOverTime.get(0).getStartDate()));
       }
-      
+
       this.valuesOverTime.addFirst(vot);
       return true;
     }
     else
     {
-      if (afterIndex+1 >= this.valuesOverTime.size())
+      if (afterIndex + 1 >= this.valuesOverTime.size())
       {
-        LocalDate localEnd = LocalDate.fromDateFields(vot.getStartDate());
-        this.valuesOverTime.get(afterIndex).setEndDate(localEnd.minusDays(1).toDate());
+        this.valuesOverTime.get(afterIndex).setEndDate(this.calculateDateMinusOneDay(vot.getStartDate()));
         vot.setEndDate(ValueOverTime.INFINITY_END_DATE);
       }
       else
       {
-        Date votEnd = LocalDate.fromDateFields(this.valuesOverTime.get(afterIndex+1).getStartDate()).minusDays(1).toDate();
-        vot.setEndDate(votEnd);
-        
-        Date afterVotEnd = LocalDate.fromDateFields(vot.getStartDate()).minusDays(1).toDate();
-        this.valuesOverTime.get(afterIndex).setEndDate(afterVotEnd);
+        vot.setEndDate(this.calculateDateMinusOneDay(this.valuesOverTime.get(afterIndex + 1).getStartDate()));
+        this.valuesOverTime.get(afterIndex).setEndDate(this.calculateDateMinusOneDay(vot.getStartDate()));
       }
-      
+
       this.valuesOverTime.add(afterIndex + 1, vot);
       return true;
     }
   }
-  
+
+  protected Date calculateDateMinusOneDay(Date source)
+  {
+    LocalDate localEnd = source.toInstant().atZone(ZoneId.of("Z")).toLocalDate().minusDays(1);
+    Instant instant = localEnd.atStartOfDay().atZone(ZoneId.of("Z")).toInstant();
+
+    return Date.from(instant);
+  }
+
   public ValueOverTime last()
   {
-    return this.get(this.valuesOverTime.size()-1);
+    return this.get(this.valuesOverTime.size() - 1);
   }
-  
+
   public ValueOverTime first()
   {
     return this.get(0);
   }
-  
+
   public ValueOverTime get(int index)
   {
     return this.valuesOverTime.get(index);
   }
-  
+
   public void validate()
   {
-    // Validate each ValueOverTime individually (will make sure they conform to the frequency)
+    // Validate each ValueOverTime individually (will make sure they conform to
+    // the frequency)
     if (frequency != null)
     {
       for (ValueOverTime vot : this)
@@ -189,13 +194,13 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
         vot.validate(frequency);
       }
     }
-    
+
     // Make sure there are no gaps
-    for (int i = 0; i < this.size()-1; ++i)
+    for (int i = 0; i < this.size() - 1; ++i)
     {
-      LocalDate left = LocalDate.fromDateFields(this.get(i).getEndDate());
-      LocalDate right = LocalDate.fromDateFields(this.get(i+1).getStartDate());
-      
+      LocalDate left = this.get(i).getEndDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+      LocalDate right = this.get(i + 1).getStartDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+
       if (!left.plusDays(1).equals(right))
       {
         throw new RuntimeException("Gap detected in " + this.toString() + ".");
@@ -207,7 +212,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   public boolean remove(Object vot)
   {
     // TODO : Restructure the collection?
-    
+
     return valuesOverTime.remove(vot);
   }
 
@@ -228,12 +233,12 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   public boolean removeAll(Collection<?> c)
   {
     boolean ret = false;
-    
+
     for (Object o : c)
     {
-      ret = (this.remove(o) || ret);
+      ret = ( this.remove(o) || ret );
     }
-    
+
     return ret;
   }
 
@@ -254,25 +259,25 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   {
     return this.valuesOverTime.toArray(a);
   }
-  
+
   public List<ValueOverTime> asList()
   {
     return this.valuesOverTime;
   }
-  
+
   public String toString()
   {
     String ret = "ValueOverTimeCollection [";
-    
-    List<String> vots = new ArrayList<String>(); 
+
+    List<String> vots = new ArrayList<String>();
     for (ValueOverTime vot : this)
     {
       vots.add(vot.toString());
     }
-    
+
     ret = ret + StringUtils.join(vots, ", ") + "]";
-    
+
     return ret;
   }
-  
+
 }

@@ -33,14 +33,11 @@ public class AttributeFrequencyException extends AttributeException
 
   private Date              startDate;
 
-  private Date              endDate;
-
-  public AttributeFrequencyException(String devMessage, String frequency, Date startDate, Date endDate)
+  public AttributeFrequencyException(String devMessage, String frequency, Date startDate)
   {
     super(devMessage);
     this.frequency = frequency;
     this.startDate = startDate;
-    this.endDate = endDate;
   }
 
   /**
@@ -50,6 +47,6 @@ public class AttributeFrequencyException extends AttributeException
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.attributeFrequencyExceptionGeneric(this.getLocale(), this.frequency, this.startDate, this.endDate);
+    return ServerExceptionMessageLocalizer.attributeFrequencyExceptionGeneric(this.getLocale(), this.frequency, this.startDate);
   }
 }
