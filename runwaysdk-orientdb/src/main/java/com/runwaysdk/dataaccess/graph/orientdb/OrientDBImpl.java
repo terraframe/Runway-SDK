@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -1495,7 +1496,7 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    SortedSet<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1516,7 +1517,7 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateEnumChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    SortedSet<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1537,7 +1538,7 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateGeometryChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String geometryClassName, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    SortedSet<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1558,7 +1559,7 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateEmbeddedChangeOvertTime(ODatabaseSession db, OElement element, Attribute attribute, String embeddedClassName, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    SortedSet<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)

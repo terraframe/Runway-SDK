@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.UUID;
 
 import com.runwaysdk.constants.ElementInfo;
@@ -459,7 +460,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    * @param name
    * @return object stored on the attribute.
    */
-  public List<ValueOverTime> getValuesOverTime(String name)
+  public SortedSet<ValueOverTime> getValuesOverTime(String name)
   {
     Attribute attribute = (Attribute) this.getAttributeIF(name);
 

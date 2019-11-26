@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -28,11 +28,11 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -145,7 +145,7 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
-  private List<ValueOverTime>        valuesOverTime;
+  private SortedSet<ValueOverTime>   valuesOverTime;
 
   /**
    * Creates an attribute with the given name and initializes the value to
@@ -172,7 +172,7 @@ public abstract class Attribute implements AttributeIF
     this.definingGraphClass = definingGraphClass;
     this.value = null;
     this.containingGraphObjectDAO = null;
-    this.valuesOverTime = new LinkedList<ValueOverTime>();
+    this.valuesOverTime = new TreeSet<ValueOverTime>();
   }
 
   /**
@@ -327,15 +327,20 @@ public abstract class Attribute implements AttributeIF
 
   public Object getObjectValue(Date date)
   {
-    for (ValueOverTime vt : this.valuesOverTime)
+    if (date != null)
     {
-      if (vt.between(date))
+      for (ValueOverTime vt : this.valuesOverTime)
       {
-        return vt.getValue();
+        if (vt.between(date))
+        {
+          return vt.getValue();
+        }
       }
+
+      return null;
     }
 
-    return null;
+    return this.getObjectValue();
   }
 
   public ValueOverTime getValueOvertTime(Date startDate, Date endDate)
@@ -380,16 +385,34 @@ public abstract class Attribute implements AttributeIF
   {
     this.validate(value, startDate, endDate);
 
-    ValueOverTime vot = this.getValueOvertTime(startDate, endDate);
-
-    if (vot != null)
+    if (startDate == null)
     {
-      vot.setValue(value);
+      if (this.valuesOverTime.size() > 0)
+      {
+        this.valuesOverTime.last().setValue(value);
+      }
+      else
+      {
+        Date date = new Date();
+
+        this.valuesOverTime.add(new ValueOverTime(date, date, value));
+      }
     }
     else
     {
-      this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+      ValueOverTime vot = this.getValueOvertTime(startDate, endDate);
+
+      if (vot != null)
+      {
+        vot.setValue(value);
+      }
+      else
+      {
+        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+      }
     }
+
+    this.setValue(this.valuesOverTime.last().getValue());
   }
 
   /**
@@ -407,7 +430,7 @@ public abstract class Attribute implements AttributeIF
     this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
   }
 
-  public List<ValueOverTime> getValuesOverTime()
+  public SortedSet<ValueOverTime> getValuesOverTime()
   {
     return valuesOverTime;
   }

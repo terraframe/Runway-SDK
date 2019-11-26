@@ -20,7 +20,7 @@ package com.runwaysdk.dataaccess.graph.attributes;
 
 import java.util.Date;
 
-public class ValueOverTime
+public class ValueOverTime implements Comparable<ValueOverTime>
 {
   private Date   startDate;
 
@@ -95,5 +95,11 @@ public class ValueOverTime
   public boolean between(Date date)
   {
     return ( this.startDate.equals(date) || this.startDate.before(date) ) && ( this.endDate.equals(date) || this.endDate.after(date) );
+  }
+
+  @Override
+  public int compareTo(ValueOverTime o)
+  {
+    return this.startDate.compareTo(o.getStartDate());
   }
 }
