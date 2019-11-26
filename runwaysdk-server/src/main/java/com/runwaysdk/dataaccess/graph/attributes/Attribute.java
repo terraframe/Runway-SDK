@@ -315,16 +315,35 @@ public abstract class Attribute implements AttributeIF
   {
     this.validate(value, startDate, endDate);
 
-    ValueOverTime vot = this.valuesOverTime.getValueOverTime(startDate, endDate);
-
-    if (vot != null)
+    
+    if (startDate == null)
     {
-      vot.setValue(value);
+      if (this.valuesOverTime.size() > 0)
+      {
+        this.valuesOverTime.last().setValue(value);
+      }
+      else
+      {
+        Date date = new Date();
+
+        this.valuesOverTime.add(new ValueOverTime(date, date, value));
+      }
     }
     else
     {
-      this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+      ValueOverTime vot = this.getValueOverTime(startDate, endDate);
+
+      if (vot != null)
+      {
+        vot.setValue(value);
+      }
+      else
+      {
+        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+      }
     }
+
+    this.setValue(this.valuesOverTime.last().getValue());
   }
 
   /**

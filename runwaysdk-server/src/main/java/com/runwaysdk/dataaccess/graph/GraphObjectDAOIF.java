@@ -19,12 +19,10 @@
 package com.runwaysdk.dataaccess.graph;
 
 import java.util.Date;
-import java.util.List;
-import java.util.SortedSet;
 
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.ComponentDAOIF;
-import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 
 public interface GraphObjectDAOIF extends ComponentDAOIF
 {
@@ -46,7 +44,7 @@ public interface GraphObjectDAOIF extends ComponentDAOIF
 
   public Object getObjectValue(String name, Date date);
 
-  public SortedSet<ValueOverTime> getValuesOverTime(String name);
+  public ValueOverTimeCollection getValuesOverTime(String name);
 
   public void setValue(String name, Object value, Date startDate, Date endDate);
 }

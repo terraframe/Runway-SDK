@@ -169,6 +169,11 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
     return this.get(this.valuesOverTime.size()-1);
   }
   
+  public ValueOverTime first()
+  {
+    return this.get(0);
+  }
+  
   public ValueOverTime get(int index)
   {
     return this.valuesOverTime.get(index);

@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 import java.util.UUID;
 
 import com.runwaysdk.constants.ElementInfo;
@@ -43,7 +42,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeFactory;
-import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 
 public abstract class GraphObjectDAO extends ComponentDAO implements GraphObjectDAOIF
@@ -460,11 +459,11 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    * @param name
    * @return object stored on the attribute.
    */
-  public SortedSet<ValueOverTime> getValuesOverTime(String name)
+  public ValueOverTimeCollection getValuesOverTime(String name)
   {
     Attribute attribute = (Attribute) this.getAttributeIF(name);
 
-    return attribute.getValuesOverTime().asList();
+    return attribute.getValuesOverTime();
   }
 
   public void setValue(String name, Object value, Date startDate, Date endDate)
