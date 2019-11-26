@@ -287,7 +287,7 @@ public class ClasspathResource implements ApplicationResource
           String packagePath = packageName;
           if (packagePath.endsWith("/"))
           {
-            packagePath = packagePath.substring(packagePath.length()-1);
+            packagePath = packagePath.substring(0, packagePath.length()-1);
           }
           
           for (File actual : contenuti)

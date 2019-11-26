@@ -96,6 +96,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
@@ -1388,6 +1389,8 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
+    
+    attribute.getValuesOverTime().validate();
   }
 
   protected void populateElement(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
@@ -1495,7 +1498,8 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
+    valuesOverTime.validate();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1516,7 +1520,8 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateEnumChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
+    valuesOverTime.validate();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1537,7 +1542,8 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateGeometryChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String geometryClassName, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
+    valuesOverTime.validate();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)
@@ -1558,7 +1564,8 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateEmbeddedChangeOvertTime(ODatabaseSession db, OElement element, Attribute attribute, String embeddedClassName, String columnName)
   {
-    List<ValueOverTime> valuesOverTime = attribute.getValuesOverTime();
+    ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
+    valuesOverTime.validate();
     List<OVertex> documents = new LinkedList<OVertex>();
 
     for (ValueOverTime vot : valuesOverTime)

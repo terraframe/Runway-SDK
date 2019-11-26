@@ -108,7 +108,7 @@ public class AttributeEmbedded extends Attribute
    */
   public void setValue(String attributeName, Object value, Date startDate, Date endDate)
   {
-    ValueOverTime vt = this.getValueOvertTime(startDate, endDate);
+    ValueOverTime vt = this.getValueOverTime(startDate, endDate);
 
     if (vt != null)
     {

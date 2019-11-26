@@ -51,60 +51,6 @@ import com.runwaysdk.system.graph.ChangeFrequency;
 
 public abstract class Attribute implements AttributeIF
 {
-  private static class FirstDayOfQuarter implements TemporalAdjuster
-  {
-
-    @Override
-    public Temporal adjustInto(Temporal temporal)
-    {
-      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
-
-      if (currentQuarter == 1)
-      {
-        return LocalDate.from(temporal).with(TemporalAdjusters.firstDayOfYear());
-      }
-      else if (currentQuarter == 2)
-      {
-        return LocalDate.from(temporal).withMonth(Month.APRIL.getValue()).with(TemporalAdjusters.firstDayOfMonth());
-      }
-      else if (currentQuarter == 3)
-      {
-        return LocalDate.from(temporal).withMonth(Month.JULY.getValue()).with(TemporalAdjusters.firstDayOfMonth());
-      }
-      else
-      {
-        return LocalDate.from(temporal).withMonth(Month.OCTOBER.getValue()).with(TemporalAdjusters.firstDayOfMonth());
-      }
-    }
-  }
-
-  private static class LastDayOfQuarter implements TemporalAdjuster
-  {
-
-    @Override
-    public Temporal adjustInto(Temporal temporal)
-    {
-      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
-
-      if (currentQuarter == 1)
-      {
-        return LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else if (currentQuarter == 2)
-      {
-        return LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else if (currentQuarter == 3)
-      {
-        return LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else
-      {
-        return LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-    }
-  }
-
   /**
    * 
    */
@@ -145,7 +91,7 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
-  private List<ValueOverTime>        valuesOverTime;
+  private ValueOverTimeCollection        valuesOverTime;
 
   /**
    * Creates an attribute with the given name and initializes the value to
@@ -172,7 +118,7 @@ public abstract class Attribute implements AttributeIF
     this.definingGraphClass = definingGraphClass;
     this.value = null;
     this.containingGraphObjectDAO = null;
-    this.valuesOverTime = new LinkedList<ValueOverTime>();
+    this.valuesOverTime = new ValueOverTimeCollection();
   }
 
   /**
@@ -327,28 +273,12 @@ public abstract class Attribute implements AttributeIF
 
   public Object getObjectValue(Date date)
   {
-    for (ValueOverTime vt : this.valuesOverTime)
-    {
-      if (vt.between(date))
-      {
-        return vt.getValue();
-      }
-    }
-
-    return null;
+    return this.valuesOverTime.getValueOnDate(date);
   }
 
-  public ValueOverTime getValueOvertTime(Date startDate, Date endDate)
+  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
   {
-    for (ValueOverTime vt : this.valuesOverTime)
-    {
-      if (vt.getStartDate().equals(startDate) && vt.getEndDate().equals(endDate))
-      {
-        return vt;
-      }
-    }
-
-    return null;
+    return this.valuesOverTime.getValueOverTime(startDate, endDate);
   }
 
   /**
@@ -380,7 +310,7 @@ public abstract class Attribute implements AttributeIF
   {
     this.validate(value, startDate, endDate);
 
-    ValueOverTime vot = this.getValueOvertTime(startDate, endDate);
+    ValueOverTime vot = this.valuesOverTime.getValueOverTime(startDate, endDate);
 
     if (vot != null)
     {
@@ -407,7 +337,7 @@ public abstract class Attribute implements AttributeIF
     this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
   }
 
-  public List<ValueOverTime> getValuesOverTime()
+  public ValueOverTimeCollection getValuesOverTime()
   {
     return valuesOverTime;
   }
@@ -465,7 +395,7 @@ public abstract class Attribute implements AttributeIF
   {
     this.validate(valueToValidate);
 
-    if (startDate != null && endDate != null)
+    if (startDate != null)
     {
       // Validate the frequency
       MdGraphClassDAOIF definedByClass = (MdGraphClassDAOIF) this.mdAttributeDAOIF.definedByClass();
@@ -474,39 +404,7 @@ public abstract class Attribute implements AttributeIF
 
       if (frequency != null)
       {
-        LocalDate lStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-        LocalDate lEndDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-
-        if (frequency.equals(ChangeFrequency.ANNUAL.name()))
-        {
-          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfYear());
-          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfYear());
-
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
-          {
-            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
-          }
-        }
-        else if (frequency.equals(ChangeFrequency.QUARTER.name()))
-        {
-          LocalDate expectedStartDate = lStartDate.with(new FirstDayOfQuarter());
-          LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
-
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
-          {
-            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
-          }
-        }
-        else if (frequency.equals(ChangeFrequency.MONTHLY.name()))
-        {
-          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfMonth());
-          LocalDate expectedEndDate = lEndDate.with(TemporalAdjusters.lastDayOfMonth());
-
-          if (!lStartDate.equals(expectedStartDate) || !lEndDate.equals(expectedEndDate))
-          {
-            throw new AttributeFrequencyException("Invalid frequency", frequency, startDate, endDate);
-          }
-        }
+        new ValueOverTime(startDate, endDate, valueToValidate).validate(ChangeFrequency.valueOf(frequency));
       }
     }
   }
