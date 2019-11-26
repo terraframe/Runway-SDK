@@ -86,14 +86,17 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   
   public Object getValueOnDate(Date date)
   {
-    for (ValueOverTime vt : this)
+    if (date != null)
     {
-      if (vt.between(date))
+      for (ValueOverTime vt : this)
       {
-        return vt.getValue();
+        if (vt.between(date))
+        {
+          return vt.getValue();
+        }
       }
     }
-
+    
     return null;
   }
   
@@ -159,6 +162,11 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       this.valuesOverTime.add(afterIndex + 1, vot);
       return true;
     }
+  }
+  
+  public ValueOverTime last()
+  {
+    return this.get(this.valuesOverTime.size()-1);
   }
   
   public ValueOverTime get(int index)

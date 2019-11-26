@@ -273,7 +273,12 @@ public abstract class Attribute implements AttributeIF
 
   public Object getObjectValue(Date date)
   {
-    return this.valuesOverTime.getValueOnDate(date);
+    if (date != null)
+    {
+      return this.valuesOverTime.getValueOnDate(date);
+    }
+    
+    return this.getObjectValue();
   }
 
   public ValueOverTime getValueOverTime(Date startDate, Date endDate)

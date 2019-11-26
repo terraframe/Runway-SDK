@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -115,8 +116,8 @@ public class OrientDBImpl implements GraphDB
   private OrientDB orientDB;
 
   // private ODatabasePool pool;
-  
-  private Logger logger = LoggerFactory.getLogger(OrientDBImpl.class);
+
+  private Logger   logger = LoggerFactory.getLogger(OrientDBImpl.class);
 
   public OrientDBImpl()
   {
@@ -171,36 +172,44 @@ public class OrientDBImpl implements GraphDB
     // orientDB.close();
     // }
   }
-  
+
   private void createAppUser()
   {
     String adminUser = OrientDBProperties.getAdminUserName();
     String adminPass = OrientDBProperties.getAdminUserPassword();
-    
+
     ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getRootUserName(), OrientDBProperties.getRootUserPassword());
-    
+
     try
     {
       rootSession.activateOnCurrentThread();
-      
+
       // Remove pre-loaded users
       String deleteAdmin = "delete from ouser where name = 'admin';";
-      try (OResultSet rs = rootSession.command(deleteAdmin)) {}
-      
+      try (OResultSet rs = rootSession.command(deleteAdmin))
+      {
+      }
+
       String deleteReader = "delete from ouser where name = 'reader';";
-      try (OResultSet rs = rootSession.command(deleteReader)) {}
-      
+      try (OResultSet rs = rootSession.command(deleteReader))
+      {
+      }
+
       String deleteWriter = "delete from ouser where name = 'writer';";
-      try (OResultSet rs = rootSession.command(deleteWriter)) {}
-      
+      try (OResultSet rs = rootSession.command(deleteWriter))
+      {
+      }
+
       String sqlAdminUser = "insert into ouser set name = '" + adminUser + "', password = '" + adminPass + "', status = 'ACTIVE', roles = (select from ORole where name = 'admin')";
-      try (OResultSet rs = rootSession.command(sqlAdminUser)) {}
+      try (OResultSet rs = rootSession.command(sqlAdminUser))
+      {
+      }
     }
     finally
     {
       rootSession.close();
     }
-    
+
     logger.info("Created app user with name [" + adminUser + "].");
   }
 
@@ -309,7 +318,25 @@ public class OrientDBImpl implements GraphDB
   @Override
   public GraphDDLCommandAction deleteVertexClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
   {
-    return this.deleteClass(graphRequest, graphDDLRequest, className, true);
+    GraphDDLCommandAction action = new OrientDBDeleteClassAction(graphRequest, graphDDLRequest, className, true)
+    {
+      @Override
+      public void execute()
+      {
+        OrientDBRequest request = this.getGraphRequest();
+        ODatabaseSession db = request.getODatabaseSession();
+
+        String statement = "DELETE EDGE WHERE out.@class='" + className + "' or in.@class='" + className + "'";
+
+        try (OResultSet command = db.command(statement))
+        {
+          // Do nothing
+        }
+
+        super.execute();
+      }
+    };
+    return action;
   }
 
   /**
@@ -342,10 +369,14 @@ public class OrientDBImpl implements GraphDB
             // create property myE.in LINK B
             // "SELECT FROM V WHERE name = ? and surnanme = ?"
             String statement = "CREATE PROPERTY " + edgeClass + ".OUT LINK " + parentVertexClass;
-            try (OResultSet rs = db.command(statement)) {}
+            try (OResultSet rs = db.command(statement))
+            {
+            }
 
             statement = "CREATE PROPERTY " + edgeClass + ".IN LINK " + childVertexClass;
-            try (OResultSet rs = db.command(statement)) {}
+            try (OResultSet rs = db.command(statement))
+            {
+            }
 
             // OClass e = db.getMetadata().getSchema().getClass("E");
             // oClass.addSuperClass(e);
@@ -375,37 +406,7 @@ public class OrientDBImpl implements GraphDB
 
   private GraphDDLCommandAction deleteClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, boolean includeSequence)
   {
-    GraphDDLCommandAction action = new GraphDDLCommandAction()
-    {
-      public void execute()
-      {
-        OrientDBRequest ddlOrientDDLRequest = (OrientDBRequest) graphDDLRequest;
-        ODatabaseSession db = ddlOrientDDLRequest.getODatabaseSession();
-
-        // make sure the DDL graph request is current on the active thread.
-        db.activateOnCurrentThread();
-
-        try
-        {
-          db.getMetadata().getSchema().dropClass(className);
-
-          if (includeSequence)
-          {
-            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
-            sequenceLibrary.dropSequence(className + "Seq");
-          }
-        }
-        finally
-        {
-          // make sure the DML graph request is current on the active thread.
-          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-          db = orientDBRequest.getODatabaseSession();
-          db.activateOnCurrentThread();
-        }
-      }
-    };
-
-    return action;
+    return new OrientDBDeleteClassAction(graphRequest, graphDDLRequest, className, includeSequence);
   }
 
   /**
@@ -1237,8 +1238,8 @@ public class OrientDBImpl implements GraphDB
       OVertex parent = edge.getFrom();
       OVertex child = edge.getTo();
 
-      VertexObjectDAO parentDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getParentMdVertex(), parent);
-      VertexObjectDAO childDAO = (VertexObjectDAO) this.buildDAO(mdEdge.getChildMdVertex(), child);
+      VertexObjectDAO parentDAO = (VertexObjectDAO) this.buildDAO(parent);
+      VertexObjectDAO childDAO = (VertexObjectDAO) this.buildDAO(child);
 
       EdgeObjectDAO edgeDAO = EdgeObjectDAO.newInstance(parentDAO, childDAO, mdEdge);
 

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -34,7 +34,7 @@ import java.util.GregorianCalendar;
 import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.system.graph.ChangeFrequency;
 
-public class ValueOverTime
+public class ValueOverTime implements Comparable<ValueOverTime>
 {
   public static final Date INFINITY_END_DATE = new GregorianCalendar(5000, 0, 0).getTime();
   
@@ -164,7 +164,13 @@ public class ValueOverTime
 
   public boolean between(Date date)
   {
-    return this.startDate.before(date) && this.endDate.after(date);
+    return ( this.startDate.equals(date) || this.startDate.before(date) ) && ( this.endDate.equals(date) || this.endDate.after(date) );
+  }
+
+  @Override
+  public int compareTo(ValueOverTime o)
+  {
+    return this.startDate.compareTo(o.getStartDate());
   }
   
   public String toString()
