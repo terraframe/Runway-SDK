@@ -1,0 +1,17 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <object type="com.runwaysdk.localization.LocalizedValueStore" key="AttributeFrequencyException">
+        <attribute name="storeTag" value="RunwayServerExceptions" />
+        <attribute name="storeKey" value="AttributeFrequencyException" />
+        <attributeStruct name="storeValue">
+          <attribute name="defaultLocale" value="The starting date of [{0}] is not a valid value for the frequency type [{1}]." />
+        </attributeStruct>
+      </object>
+    </create>
+    <update></update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>
