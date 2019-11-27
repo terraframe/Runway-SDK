@@ -18,18 +18,8 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.temporal.IsoFields;
-import java.time.temporal.Temporal;
-import java.time.temporal.TemporalAdjuster;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +30,6 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
-import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.attributes.SystemAttributeProblem;
@@ -281,9 +270,9 @@ public abstract class Attribute implements AttributeIF
     return this.getObjectValue();
   }
 
-  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
+  public ValueOverTime getValueOverTime(Date startDate)
   {
-    return this.valuesOverTime.getValueOverTime(startDate, endDate);
+    return this.valuesOverTime.getValueOverTime(startDate);
   }
 
   /**
@@ -311,9 +300,9 @@ public abstract class Attribute implements AttributeIF
     }
   }
 
-  public void setValue(Object value, Date startDate, Date endDate)
+  public void setValue(Object value, Date startDate)
   {
-    this.validate(value, startDate, endDate);
+    this.validate(value, startDate);
 
     
     if (startDate == null)
@@ -331,7 +320,7 @@ public abstract class Attribute implements AttributeIF
     }
     else
     {
-      ValueOverTime vot = this.getValueOverTime(startDate, endDate);
+      ValueOverTime vot = this.getValueOverTime(startDate);
 
       if (vot != null)
       {
@@ -339,7 +328,7 @@ public abstract class Attribute implements AttributeIF
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+        this.valuesOverTime.add(new ValueOverTime(startDate, null, value));
       }
     }
 
@@ -415,7 +404,7 @@ public abstract class Attribute implements AttributeIF
    *           if this attribute is required for its defining
    *           {@link GraphObjectDAO} but contains an empty value.
    */
-  public void validate(Object valueToValidate, Date startDate, Date endDate)
+  public void validate(Object valueToValidate, Date startDate)
   {
     this.validate(valueToValidate);
 
@@ -428,7 +417,7 @@ public abstract class Attribute implements AttributeIF
 
       if (frequency != null)
       {
-        new ValueOverTime(startDate, endDate, valueToValidate).validate(ChangeFrequency.valueOf(frequency));
+        new ValueOverTime(startDate, null, valueToValidate).validate(ChangeFrequency.valueOf(frequency));
       }
     }
   }

@@ -72,7 +72,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
     return (ValueOverTime[]) valuesOverTime.toArray();
   }
 
-  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
+  public ValueOverTime getValueOverTime(Date startDate)
   {
     for (ValueOverTime vt : this.valuesOverTime)
     {

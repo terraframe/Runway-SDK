@@ -75,32 +75,32 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     }
   }
 
-  private static class LastDayOfQuarter implements TemporalAdjuster
-  {
-
-    @Override
-    public Temporal adjustInto(Temporal temporal)
-    {
-      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
-
-      if (currentQuarter == 1)
-      {
-        return LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else if (currentQuarter == 2)
-      {
-        return LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else if (currentQuarter == 3)
-      {
-        return LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-      else
-      {
-        return LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-      }
-    }
-  }
+//  private static class LastDayOfQuarter implements TemporalAdjuster
+//  {
+//
+//    @Override
+//    public Temporal adjustInto(Temporal temporal)
+//    {
+//      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
+//
+//      if (currentQuarter == 1)
+//      {
+//        return LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+//      }
+//      else if (currentQuarter == 2)
+//      {
+//        return LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+//      }
+//      else if (currentQuarter == 3)
+//      {
+//        return LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+//      }
+//      else
+//      {
+//        return LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+//      }
+//    }
+//  }
 
   private Date   startDate;
 
