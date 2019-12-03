@@ -454,16 +454,23 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
-   * Some attributes store objects instead of strings.
-   * 
-   * @param name
-   * @return object stored on the attribute.
+   * Graph attributes store values over time. This will return the entire collection.
    */
   public ValueOverTimeCollection getValuesOverTime(String name)
   {
     Attribute attribute = (Attribute) this.getAttributeIF(name);
 
     return attribute.getValuesOverTime();
+  }
+  
+  /**
+   * Graph attributes store values over time. This will set the entire collection.
+   */
+  public void setValuesOverTime(String name, ValueOverTimeCollection collection)
+  {
+    Attribute attribute = (Attribute) this.getAttributeIF(name);
+
+    attribute.setValuesOverTime(collection);
   }
 
   public void setValue(String name, Object value, Date startDate, Date endDate)

@@ -354,6 +354,13 @@ public abstract class Attribute implements AttributeIF
   {
     return valuesOverTime;
   }
+  
+  public void setValuesOverTime(ValueOverTimeCollection collection)
+  {
+    collection.validate();
+    
+    this.valuesOverTime = collection;
+  }
 
   public void clearValuesOverTime()
   {

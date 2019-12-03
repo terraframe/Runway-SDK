@@ -38,6 +38,7 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.session.Session;
 
@@ -88,7 +89,7 @@ public abstract class GraphObject implements Mutable
   {
     return this.graphObjectDAO.getRID();
   }
-
+  
   @Override
   public String toString()
   {
@@ -179,7 +180,7 @@ public abstract class GraphObject implements Mutable
   {
     return (T) this.graphObjectDAO.getObjectValue(name);
   }
-
+  
   /**
    * Some attributes store objects instead of strings.
    * 
@@ -190,6 +191,16 @@ public abstract class GraphObject implements Mutable
   public <T> T getObjectValue(String name, Date date)
   {
     return (T) this.graphObjectDAO.getObjectValue(name, date);
+  }
+  
+  public ValueOverTimeCollection getValuesOverTime(String attributeName)
+  {
+    return this.graphObjectDAO.getValuesOverTime(attributeName);
+  }
+  
+  public void setValuesOverTime(String attributeName, ValueOverTimeCollection collection)
+  {
+    this.graphObjectDAO.setValuesOverTime(attributeName, collection);
   }
 
   /**
