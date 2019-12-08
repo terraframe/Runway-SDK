@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
@@ -89,7 +89,7 @@ public abstract class GraphObject implements Mutable
   {
     return this.graphObjectDAO.getRID();
   }
-  
+
   @Override
   public String toString()
   {
@@ -180,7 +180,7 @@ public abstract class GraphObject implements Mutable
   {
     return (T) this.graphObjectDAO.getObjectValue(name);
   }
-  
+
   /**
    * Some attributes store objects instead of strings.
    * 
@@ -192,12 +192,12 @@ public abstract class GraphObject implements Mutable
   {
     return (T) this.graphObjectDAO.getObjectValue(name, date);
   }
-  
+
   public ValueOverTimeCollection getValuesOverTime(String attributeName)
   {
     return this.graphObjectDAO.getValuesOverTime(attributeName);
   }
-  
+
   public void setValuesOverTime(String attributeName, ValueOverTimeCollection collection)
   {
     this.graphObjectDAO.setValuesOverTime(attributeName, collection);
@@ -227,7 +227,11 @@ public abstract class GraphObject implements Mutable
   {
     ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName, date);
 
-    if (componentDAO instanceof VertexObjectDAO)
+    if (componentDAO == null)
+    {
+      return null;
+    }
+    else if (componentDAO instanceof VertexObjectDAO)
     {
       return VertexObject.instantiate((VertexObjectDAO) componentDAO);
     }
