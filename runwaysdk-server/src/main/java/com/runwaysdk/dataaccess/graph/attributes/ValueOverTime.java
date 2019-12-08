@@ -107,9 +107,9 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 //    }
 //  }
 
-  private Date   startDate;
+  private LocalDate   startDate;
 
-  private Date   endDate;
+  private LocalDate   endDate;
 
   private Object value;
 
@@ -121,9 +121,11 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   public ValueOverTime(Date startDate, Date endDate, Object value)
   {
     super();
-    this.startDate = startDate;
-    this.endDate = endDate;
+    
     this.value = value;
+    
+    this.setStartDate(startDate);
+    this.setEndDate(endDate);
   }
 
   /**
@@ -131,7 +133,12 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public Date getStartDate()
   {
-    return startDate;
+    return Date.from(startDate.atStartOfDay().atZone(ZoneId.of("Z")).toInstant());
+  }
+  
+  public LocalDate getLocalStartDate()
+  {
+    return this.startDate;
   }
 
   /**
@@ -140,7 +147,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public void setStartDate(Date startDate)
   {
-    this.startDate = startDate;
+    this.startDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
   }
 
   /**
@@ -148,7 +155,17 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public Date getEndDate()
   {
-    return endDate;
+    if (endDate == null)
+    {
+      return null;
+    }
+    
+    return Date.from(endDate.atStartOfDay().atZone(ZoneId.of("Z")).toInstant());
+  }
+  
+  public LocalDate getLocalEndDate()
+  {
+    return this.endDate;
   }
 
   /**
@@ -157,7 +174,14 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public void setEndDate(Date endDate)
   {
-    this.endDate = endDate;
+    if (endDate != null)
+    {
+      this.endDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+    }
+    else
+    {
+      endDate = null;
+    }
   }
 
   /**
@@ -179,13 +203,15 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 
   public boolean between(Date date)
   {
-    return ( this.startDate.equals(date) || this.startDate.before(date) ) && ( this.endDate.equals(date) || this.endDate.after(date) );
+    LocalDate localDate = date.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+    
+    return ( this.startDate.equals(localDate) || this.startDate.isBefore(localDate) ) && ( this.endDate.equals(localDate) || this.endDate.isAfter(localDate) );
   }
 
   @Override
   public int compareTo(ValueOverTime o)
   {
-    return this.startDate.compareTo(o.getStartDate());
+    return this.startDate.compareTo(o.getLocalStartDate());
   }
 
   public String toString()
@@ -207,42 +233,38 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     {
       if (frequency != null)
       {
-        LocalDate lStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-        // LocalDate lEndDate =
-        // endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-
         if (frequency.equals(ChangeFrequency.ANNUAL))
         {
-          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfYear());
+          LocalDate expectedStartDate = startDate.with(TemporalAdjusters.firstDayOfYear());
           // LocalDate expectedEndDate =
           // lEndDate.with(TemporalAdjusters.lastDayOfYear());
 
           // if (!lStartDate.equals(expectedStartDate) ||
           // !lEndDate.equals(expectedEndDate))
-          if (!lStartDate.equals(expectedStartDate))
+          if (!startDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
           }
         }
         else if (frequency.equals(ChangeFrequency.QUARTER))
         {
-          LocalDate expectedStartDate = lStartDate.with(new FirstDayOfQuarter());
+          LocalDate expectedStartDate = startDate.with(new FirstDayOfQuarter());
           // LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
 
-          if (!lStartDate.equals(expectedStartDate))
+          if (!startDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
           }
         }
         else if (frequency.equals(ChangeFrequency.MONTHLY))
         {
-          LocalDate expectedStartDate = lStartDate.with(TemporalAdjusters.firstDayOfMonth());
+          LocalDate expectedStartDate = startDate.with(TemporalAdjusters.firstDayOfMonth());
           // LocalDate expectedEndDate =
           // lEndDate.with(TemporalAdjusters.lastDayOfMonth());
 
-          if (!lStartDate.equals(expectedStartDate))
+          if (!startDate.equals(expectedStartDate))
           {
-            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), startDate);
+            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
           }
         }
       }

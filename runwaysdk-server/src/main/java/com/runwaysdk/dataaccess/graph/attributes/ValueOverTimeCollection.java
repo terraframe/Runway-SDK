@@ -133,7 +133,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       {
         afterIndex = i;
       }
-      else if (vot.getStartDate().equals(testVot.getStartDate()) && vot.getEndDate().equals(testVot.getEndDate()))
+      else if (vot.getStartDate().equals(testVot.getStartDate()) && (testVot.getEndDate().equals(vot.getEndDate()) || (vot.getEndDate() == null && testVot.getEndDate().equals(ValueOverTime.INFINITY_END_DATE))))
       {
         if (vot.getValue().equals(testVot.getValue()))
         {

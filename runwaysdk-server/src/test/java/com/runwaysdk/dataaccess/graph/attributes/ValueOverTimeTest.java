@@ -105,6 +105,23 @@ public class ValueOverTimeTest
 
     genericTest(valuesOverTime, testValues);
   }
+  
+  @Test
+  public void testOverwrite() throws ParseException
+  {
+    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.DAILY);
+    
+    List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
+    testValues.add(new ValueOverTime(dateFormat.parse("01-01-1990"), dateFormat.parse("01-15-1990"), 0));
+    testValues.add(new ValueOverTime(dateFormat.parse("01-01-1990"), dateFormat.parse("01-15-1990"), 6));
+    
+    for (int i : new int[] { 0, 1 })
+    {
+      valuesOverTime.add(new ValueOverTime(testValues.get(i).getStartDate(), null, testValues.get(i).getValue()));
+    }
+    Assert.assertEquals(1, valuesOverTime.size());
+    Assert.assertEquals(6, valuesOverTime.get(0).getValue());
+  }
 
   private void genericTest(ValueOverTimeCollection valuesOverTime, List<ValueOverTime> testValues)
   {
