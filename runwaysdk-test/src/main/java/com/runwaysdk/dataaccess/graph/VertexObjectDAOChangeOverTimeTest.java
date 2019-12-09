@@ -862,14 +862,14 @@ public class VertexObjectDAOChangeOverTimeTest
     }
   }
 
-  @Request
-  @Test(expected = AttributeFrequencyException.class)
-  public void testBadFrequency()
-  {
-    String attributeName = mdFloatAttribute.definesAttribute();
-    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-
-    vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
-  }
+//  @Request
+//  @Test(expected = AttributeFrequencyException.class)
+//  public void testBadFrequency()
+//  {
+//    String attributeName = mdFloatAttribute.definesAttribute();
+//    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+//
+//    vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
+//  }
 
 }
