@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.IsoFields;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
@@ -32,12 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class ValueOverTime implements Comparable<ValueOverTime>
@@ -216,15 +211,46 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 
   public String toString()
   {
-    DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-
-    String endDate = dateFormat.format(INFINITY_END_DATE);
-    if (this.endDate != null)
+    String endDate = "error";
+    
+    try
     {
-      endDate = dateFormat.format(this.endDate);
+      DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+      endDate = dateFormat.format(INFINITY_END_DATE);
+      
+      if (this.endDate != null)
+      {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        endDate = this.endDate.format(formatter);
+      }
     }
-
-    return "value [" + this.value + "] from " + dateFormat.format(this.startDate) + " to " + endDate;
+    catch (Throwable t)
+    {
+      t.printStackTrace();
+    }
+   
+    String startDate = "error";
+    try
+    {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+      startDate = this.startDate.format(formatter);
+    }
+    catch (Throwable t)
+    {
+      t.printStackTrace();
+    }
+    
+    String value = "error";
+    try
+    {
+      value = String.valueOf(this.value);
+    }
+    catch (Throwable t)
+    {
+      t.printStackTrace();
+    }
+   
+    return "value [" + value + "] from " + startDate + " to " + endDate;
   }
 
   public void validate(ChangeFrequency frequency)
