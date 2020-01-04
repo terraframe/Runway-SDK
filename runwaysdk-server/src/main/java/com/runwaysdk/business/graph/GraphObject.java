@@ -104,6 +104,14 @@ public abstract class GraphObject implements Mutable
   {
     return graphObjectDAO.isNew();
   }
+  
+  /**
+   * Indicates if apply has been called on this object. IsNew will be set to true when the transaction ends.
+   */
+  public boolean isAppliedToDb()
+  {
+    return graphObjectDAO.isAppliedToDB();
+  }
 
   /**
    * Returns a MdClassIF that defines this Component's class.

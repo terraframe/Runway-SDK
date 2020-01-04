@@ -635,7 +635,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    if (!this.isNew)
+    if (!this.isAppliedToDB)
     {
       GraphDBService.getInstance().delete(request, this);
     }
@@ -678,12 +678,15 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
-   * Sets isNew = false and sets all attributes to isModified = false.
+   * sets all attributes to isModified = false.
    * 
    */
   public void setCommitState()
   {
-    this.setIsNew(false);
+    // isNew=false is supposed to happen at the end of the transaction. Since we aren't managing
+    // that with graph objects, we're just not going to set isNew to false (ever). This decision
+    // was made by @nmceachen and @rrowlands to facilitate the needs of the GeoRegistry data importer.
+//    this.setIsNew(false);
 
     this.problemNotificationId = "";
 
