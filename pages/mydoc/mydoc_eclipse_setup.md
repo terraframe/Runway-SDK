@@ -41,6 +41,6 @@ This is especially important for projects (like AMI or DDMS) which include third
 
 ## Add XML Catalog for working with Runway metadata schema files
 
-[Follow the instructions here](/mydoc_metadata_authoring.html#classpathNotation)
+[Follow the instructions here](/Runway-SDK/mydoc_metadata_authoring.html#classpathNotation)
 
 {% include links.html %}
