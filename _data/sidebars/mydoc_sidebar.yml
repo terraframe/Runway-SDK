@@ -32,6 +32,10 @@ entries:
       url: /mydoc_manifesto.html
       output: web, pdf
 
+    - title: Eclipse Setup
+      url: /mydoc_eclipse_setup.html
+      output: web, pdf
+
     - title: About the Team Behind Runway SDK
       url: /mydoc_about.html
       output: web, pdf
@@ -51,8 +55,8 @@ entries:
     # - title: Support
     #   url: /mydoc_support.html
     #   output: web, pdf
-  
-  
+
+
 #       subfolders:
 #       - title: Tag archive pages
 #         output: web
@@ -61,33 +65,33 @@ entries:
 #         - title: Formatting pages
 #           url: /tag_formatting.html
 #           output: web
-  
+
   - title: Working with Metadata
     output: web, pdf
     folderitems:
-     
+
     - title: Introduction
       url: /mydoc_metadata_getting_started.html
       output: web, pdf
-      
-      subfolders: 
+
+      subfolders:
       - title: MdClasses
         output: web, pdf
         subfolderitems:
-       
+
         - title: Introduction
           url: /mydoc_metadata_mdclass_intro.html
           output: web, pdf
-       
+
         - title: MdBusiness
           url: /mydoc_mdbusiness.html
           output: web, pdf
-          
+
         - title: MdRelationship
           url: /mydoc_mdrelationship.html
           output: web, pdf
-      
-      
+
+
     # This is a stupid little hack I had to do to compensate for the fact that this jekyll template doesn't know how to generate a menu structure
     #   with 2 subfolders right next to eachother.
     #   I hacked this line: {% elsif folderitem.title == "ignore" %}
@@ -95,74 +99,74 @@ entries:
     - title: ignore
       url: ignore
       output: web,pdf
-      
-      
-      subfolders: 
+
+
+      subfolders:
       - title: MdAttributes
         output: web, pdf
         subfolderitems:
-       
+
         - title: Introduction
           url: /mydoc_metadata_mdattr_intro.html
           output: web, pdf
-          
+
     - title: Manipulating Metadata in XML
       url: /mydoc_metadata_authoring.html
       output: web, pdf
-      
+
     - title: Manipulating Metadata in Java
       url: /mydoc_metadata_java_reading.html
       output: web, pdf
-    
+
     - title: Client-Server Architecture
       url: /mydoc_metadata_dtos.html
       output: web, pdf
-      
+
     #- title: Data access objects (DAO)
     #  url: /mydoc_metadata_daos.html
     #  output: web, pdf
-    
+
     #- title: Patching
     #  url: /mydoc_metadata_patching.html
     #  output: web, pdf
-      
+
   #- title: Aspect Oriented Programming
   #  output: web, pdf
   #  folderitems:
-    
+
   #  - title: Introduction
   #    url: /mydoc_aspects_introduction.html
   #    output: web, pdf
-      
+
   - title: Permissions (RBAC)
     output: web, pdf
     folderitems:
-    
+
     - title: Introduction
       url: /mydoc_permissions_introduction.html
       output: web, pdf
-      
+
   - title: Localization
     output: web, pdf
     folderitems:
-    
+
     - title: Introduction
       url: /mydoc_localization_introduction.html
       output: web, pdf
-      
-      
+
+
   - title: QueryBuilder
     output: web, pdf
     folderitems:
-    
+
     - title: Introduction
       url: /querybuilder_intro.html
       output: web, pdf
-      
+
     - title: Joins
       url: /querybuilder_joins.html
       output: web, pdf
-      
+
     - title: Value Queries
       url: /querybuilder_valuequery.html
       output: web, pdf
