@@ -20,12 +20,17 @@ package com.runwaysdk.system.scheduler;
 
 import java.util.Locale;
 
+import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
+import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +44,7 @@ import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
 import com.runwaysdk.system.metadata.MdDimension;
 import com.runwaysdk.transport.conversion.ConversionFacade;
+import com.runwaysdk.util.IDGenerator;
 
 /**
  * Handles the basic integration between Quartz and Runway.
@@ -49,7 +55,7 @@ import com.runwaysdk.transport.conversion.ConversionFacade;
  * @author rrowlands
  *
  */
-public class QuartzRunwayJob implements org.quartz.Job
+public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListener, org.quartz.JobListener
 {
   public static final String HISTORY_RECORD_ID = "HISTORY_RECORD_ID";
   
@@ -63,7 +69,7 @@ public class QuartzRunwayJob implements org.quartz.Job
   
   public QuartzRunwayJob()
   {
-    
+    // If you invoke the constructor you need to initialize the job afterwards. (Otherwise required stuff will null out)
   }
   
   public QuartzRunwayJob(ExecutableJob execJob)
@@ -77,24 +83,26 @@ public class QuartzRunwayJob implements org.quartz.Job
   }
   
   @Request
-  private Object[] buildExecutionPrereqs(JobExecutionContext context)
+  protected ExecutionContext buildExecutionContext(JobExecutionContext context)
   {
-    return buildExecutionPrereqsInTrans(context);
+    return buildExecutionContextInTrans(context);
   }
   @Transaction
-  private Object[] buildExecutionPrereqsInTrans(JobExecutionContext context)
+  protected ExecutionContext buildExecutionContextInTrans(JobExecutionContext context)
   {
-    JobHistoryRecord record;
-    JobHistory history;
+    JobHistoryRecord record = null;
+    JobHistory history = null;
     
     this.detail = context.getJobDetail();
-    JobDataMap dataMap = this.detail.getJobDataMap();
     
-    execJob = ExecutableJob.get(dataMap.getString(EXECUTABLE_JOB_ID));
-
-    if (dataMap.containsKey(HISTORY_RECORD_ID))
+    JobDataMap jobDataMap = this.detail.getJobDataMap();
+    execJob = ExecutableJob.get(jobDataMap.getString(EXECUTABLE_JOB_ID));
+    
+    JobDataMap triggerDataMap = context.getTrigger().getJobDataMap();
+    
+    if (triggerDataMap.containsKey(HISTORY_RECORD_ID))
     {
-      record = JobHistoryRecord.get(dataMap.getString(HISTORY_RECORD_ID));
+      record = JobHistoryRecord.get(triggerDataMap.getString(HISTORY_RECORD_ID));
       history = record.getChild();
     }
     else
@@ -107,9 +115,18 @@ public class QuartzRunwayJob implements org.quartz.Job
     
     execJob.setQuartzJob(this);
     
-    ExecutionContext executionContext = ExecutionContext.factory(ExecutionContext.Context.EXECUTION, execJob, history);
+    ExecutionContext ec = new ExecutionContext();
+    ec.setJob(execJob);
+    ec.setHistory(history);
+    ec.setJobHistoryRecord(record);
+    ec.setRunAsUser(execJob.getRunAsUser());
+    ec.setRunAsDimension(execJob.getRunAsDimension());
+    ec.setExecutableJobToString(execJob.toString());
     
-    return new Object[]{execJob, history, record, execJob.getRunAsUser(), execJob.getRunAsDimension(), executionContext, execJob.toString()};
+    context.put(HISTORY_RECORD_ID, record.getOid());
+    context.put(EXECUTABLE_JOB_ID, execJob.getOid());
+    
+    return ec;
   }
   
   /**
@@ -118,31 +135,24 @@ public class QuartzRunwayJob implements org.quartz.Job
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException
   {
-    Object[] prereqs = buildExecutionPrereqs(context);
-    ExecutableJob job = (ExecutableJob) prereqs[0];
-    JobHistory history = (JobHistory) prereqs[1];
-    JobHistoryRecord record = (JobHistoryRecord) prereqs[2];
-    SingleActor user = (SingleActor) prereqs[3];
-    MdDimension dimension = (MdDimension) prereqs[4];
-    ExecutionContext executionContext = (ExecutionContext) prereqs[5];
-    String jobts = (String) prereqs[6];
+    ExecutionContext executionContext = buildExecutionContext(context);
     
     String errorMessage = null;
     
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
     try
     {
-      if (user == null)
+      if (executionContext.getRunAsUser() == null)
       {
-        errorMessage = executeAsSystem(job, history, record, executionContext);
+        errorMessage = executeAsSystem(executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
       }
       else
       {
-        String sessionId = logIn(user, dimension);
+        String sessionId = logIn(executionContext.getRunAsUser(), executionContext.getRunAsDimension());
         
         try
         {
-          errorMessage = executeAsUser(sessionId, job, history, record, executionContext);
+          errorMessage = executeAsUser(sessionId, executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
         }
         finally
         {
@@ -152,14 +162,14 @@ public class QuartzRunwayJob implements org.quartz.Job
     }
     catch (Throwable t)
     {
-      logger.error("An error occurred while executing job " + jobts + ".", t);
+      logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ".", t);
       errorMessage = ExecutableJob.getMessageFromException(t);
     }
     finally
     {
-      execJob.writeHistory(history, executionContext, errorMessage);
+      execJob.writeHistory(executionContext.getHistory(), executionContext, errorMessage);
       
-      execJob.executeDownstreamJobs(job, errorMessage);
+      execJob.executeDownstreamJobs(executionContext.getJob(), errorMessage);
     }
   }
   
@@ -199,7 +209,12 @@ public class QuartzRunwayJob implements org.quartz.Job
   public String executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext)
   {
     String errorMessage = null;
-
+    
+    history.appLock();
+    history.clearStatus();
+    history.addStatus(AllJobStatus.RUNNING);
+    history.apply();
+    
     try
     {
       job.execute(executionContext);
@@ -226,9 +241,7 @@ public class QuartzRunwayJob implements org.quartz.Job
    */
   public void start(JobHistoryRecord record)
   {
-    this.detail.getJobDataMap().put(HISTORY_RECORD_ID, record.getOid());
-    
-    SchedulerManager.startJob(this);
+    SchedulerManager.startJob(this, record);
   }
   
   private void initialize(ExecutableJob execJob)
@@ -237,16 +250,16 @@ public class QuartzRunwayJob implements org.quartz.Job
     
     try
     {
-      String id = this.execJob.getOid();
+      JobKey jobKey = this.buildJobKey();
       
-      this.detail = SchedulerManager.getJobDetail(id);
+      this.detail = SchedulerManager.getJobDetail(this);
   
       if (this.detail == null)
       {
-        this.detail = JobBuilder.newJob(this.getClass()).withIdentity(id).build();
+        this.detail = JobBuilder.newJob(this.getClass()).withIdentity(jobKey).build();
   
         // Give the Quartz Job a back-reference to the Runway Job
-        this.detail.getJobDataMap().put(EXECUTABLE_JOB_ID, id);
+        this.detail.getJobDataMap().put(EXECUTABLE_JOB_ID, this.execJob.getOid());
       }
     }
     catch (SchedulerException e)
@@ -255,14 +268,168 @@ public class QuartzRunwayJob implements org.quartz.Job
     }
   }
   
-  public synchronized JobDetail getJobDetail() throws SchedulerException
+  public JobKey buildJobKey()
+  {
+    return JobKey.jobKey(this.getExecutableJob().getOid(), SchedulerManager.JOB_GROUP);
+  }
+  
+  public JobDetail getJobDetail()
   {
     return this.detail;
+  }
+  
+  public Trigger buildTrigger(JobDetail detail, String cronExpression, JobHistoryRecord record)
+  {
+    String id = IDGenerator.nextID();
+    
+    TriggerBuilder<Trigger> trigger = TriggerBuilder.newTrigger().withIdentity(id, SchedulerManager.TRIGGER_GROUP).forJob(detail);
+    
+    if (cronExpression != null && cronExpression.length() > 0)
+    {
+      trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression));
+    }
+    
+    trigger.usingJobData(EXECUTABLE_JOB_ID, detail.getJobDataMap().getString(EXECUTABLE_JOB_ID));
+    
+    if (record != null)
+    {
+      trigger.usingJobData(HISTORY_RECORD_ID, record.getOid());
+    }
+    
+    return trigger.build();
   }
 
   public void unschedule()
   {
     SchedulerManager.remove(this);
+  }
+
+  @Override
+  public String getName()
+  {
+    String name = this.getClass().getName();
+    
+    if (this.detail != null)
+    {
+      name = name + " " + this.detail.getKey();
+    }
+    
+    return name;
+  }
+  
+  @Request
+  protected void updateHistoryFromListener(AllJobStatus newStatus, JobDataMap map)
+  {
+    try
+    {
+      updateHistoryFromListenerInTrans(newStatus, map);
+    }
+    catch (Throwable t)
+    {
+      logger.error("Error thrown while listening to job.", t);
+    }
+  }
+  
+  @Transaction
+  protected void updateHistoryFromListenerInTrans(AllJobStatus newStatus, JobDataMap map)
+  {
+    if (map.containsKey(HISTORY_RECORD_ID))
+    {
+      JobHistoryRecord record = JobHistoryRecord.get(map.getString(HISTORY_RECORD_ID));
+      JobHistory history = record.getChild();
+      
+      history.appLock();
+      history.clearStatus();
+      history.addStatus(newStatus);
+      history.apply();
+      
+      System.out.println("Uploading history to [" + newStatus.getEnumName() + "]");
+    }
+    else
+    {
+      // This happens normally when a job is scheduled to run (not run via invoking start)
+      logger.info("Map [" + map.toString() + "] does not contain key " + HISTORY_RECORD_ID); // TODO delete
+    }
+  }
+  
+  @Request
+  protected void handleTriggerMisfire(Trigger trigger)
+  {
+    JobDataMap triggerDataMap = trigger.getJobDataMap();
+    
+    if (triggerDataMap.containsKey(HISTORY_RECORD_ID) && triggerDataMap.containsKey(EXECUTABLE_JOB_ID))
+    {
+      JobHistoryRecord record = JobHistoryRecord.get(triggerDataMap.getString(HISTORY_RECORD_ID));
+      
+      ExecutableJob execJob = ExecutableJob.get(triggerDataMap.getString(EXECUTABLE_JOB_ID));
+      
+      execJob.handleSchedulerMisfire(record);
+    }
+    else
+    {
+      // A trigger may or may not have a history record associated with it.
+      logger.info("Map [" + triggerDataMap.toString() + "] does not contain key " + HISTORY_RECORD_ID); // TODO delete
+    }
+  }
+
+  @Override
+  public void triggerFired(Trigger trigger, JobExecutionContext context)
+  {
+    // Do nothing.
+  }
+
+  @Override
+  public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context)
+  {
+    // This listener is always called. If we return true, then we will stop the job from being executed. 
+    return false;
+  }
+
+  @Override
+  public void triggerMisfired(Trigger trigger)
+  {
+    this.handleTriggerMisfire(trigger);
+  }
+
+  @Override
+  public void triggerComplete(Trigger trigger, JobExecutionContext context, CompletedExecutionInstruction triggerInstructionCode)
+  {
+    // Do nothing. Our history is updated at the end of the execute method, because it can either be Success or Failure.
+  }
+
+  @Override
+  public void jobToBeExecuted(JobExecutionContext context)
+  {
+    // It's better to do this from the execute method because we don't have a history object yet if we're run as part of a cron schedule
+//    updateHistoryFromListener(AllJobStatus.RUNNING, context.getTrigger().getJobDataMap());
+  }
+
+  @Override
+  public void jobExecutionVetoed(JobExecutionContext context)
+  {
+    updateHistoryFromListener(AllJobStatus.CANCELED, context.getTrigger().getJobDataMap());
+  }
+
+  @Override
+  public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
+  {
+    // Do nothing. Our history is updated at the end of the execute method, because it can either be Success or Failure.
+  }
+  
+  @Override
+  public boolean equals(Object obj)
+  {
+      if (this == obj)
+          return true;
+      if (obj == null)
+          return false;
+      if (getClass() != obj.getClass())
+          return false;
+      
+      JobKey myKey = this.buildJobKey();
+      JobKey hisKey = ( (QuartzRunwayJob) obj ).buildJobKey();
+      
+      return myKey.equals(hisKey);
   }
 
 }

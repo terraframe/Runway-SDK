@@ -21,6 +21,12 @@ package com.runwaysdk.system.scheduler;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
+/**
+ * This class allows one to use the ExecutableJob Runway features without creating a custom metadata class. This is 
+ * currently very useful for test code.
+ * 
+ * @author rrowlands
+ */
 public class QualifiedTypeJob extends QualifiedTypeJobBase
 {
   private static final long serialVersionUID = 1991343666;
@@ -31,10 +37,35 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
   {
     super();
   }
+  
+  @Override
+  public QuartzRunwayJob getQuartzJob()
+  {
+    ExecutableJobIF executableJob = getQualifiedJob();
+    
+    if (executableJob.getQuartzJob(this) != null)
+    {
+      return executableJob.getQuartzJob(this);
+    }
+    else
+    {
+      return super.getQuartzJob();
+    }
+  }
 
   @Override
   public void execute(ExecutionContext executionContext)
   {
+    this.getQualifiedJob().execute(executionContext);
+  }
+  
+  private synchronized ExecutableJobIF getQualifiedJob()
+  {
+    if (this.executableJobIF != null)
+    {
+      return this.executableJobIF;
+    }
+    
     String className = this.getClassName();
 
     try
@@ -59,14 +90,14 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
       {
         throw new ProgrammingErrorException("Could not instantiate Job class [" + className + "]", e);
       }
-
-      this.executableJobIF.execute(executionContext);
     }
     catch (Throwable e)
     {
       e.printStackTrace();
       throw new ProgrammingErrorException("The CustomJob with class [" + className + "] could not be initialized.", e);
     }
+    
+    return this.executableJobIF;
   }
 
   public static QualifiedTypeJob newInstance(Class<? extends ExecutableJobIF> ej)

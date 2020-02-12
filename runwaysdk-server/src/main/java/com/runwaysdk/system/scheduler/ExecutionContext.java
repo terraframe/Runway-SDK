@@ -21,7 +21,8 @@
  */
 package com.runwaysdk.system.scheduler;
 
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.system.SingleActor;
+import com.runwaysdk.system.metadata.MdDimension;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -43,64 +44,87 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
  ******************************************************************************/
 public class ExecutionContext
 {
-  enum Context
-  {
-    EXECUTION,
-    LISTENER
-  }
-  
   private ExecutableJob job;
+  
   private JobHistory history;
+  
+  private JobHistoryRecord jobHistoryRecord;
   
   private AllJobStatus status;
   
-  ExecutionContext(ExecutableJob job, JobHistory history)
-  {
-    this.job = job;
-    this.history = history;
-    this.status = null;
-  }
+  private SingleActor runAsUser;
   
-  /**
-   * @return
-   */
+  private MdDimension runAsDimension;
+  
+  private String executableJobToString;
+
   public ExecutableJob getJob()
   {
-    return this.job;
+    return job;
   }
-  
-  public JobHistory getJobHistory() {
-    return this.history;
-  }
-  
-  public void setStatus(AllJobStatus status)
+
+  public void setJob(ExecutableJob job)
   {
-    this.status = status;
+    this.job = job;
   }
-  
+
+  public JobHistory getHistory()
+  {
+    return history;
+  }
+
+  public void setHistory(JobHistory history)
+  {
+    this.history = history;
+  }
+
+  public JobHistoryRecord getJobHistoryRecord()
+  {
+    return jobHistoryRecord;
+  }
+
+  public void setJobHistoryRecord(JobHistoryRecord jobHistoryRecord)
+  {
+    this.jobHistoryRecord = jobHistoryRecord;
+  }
+
   public AllJobStatus getStatus()
   {
     return status;
   }
-  
-  /**
-   * 
-   * @param job
-   * @return
-   */
-  public static ExecutionContext factory(Context context, ExecutableJob job, JobHistory history)
+
+  public void setStatus(AllJobStatus status)
   {
-    if(context == Context.EXECUTION)
-    {
-      return new ExecutionContext(job, history);
-    }
-    else if(context == Context.LISTENER)
-    {
-      return new ListenerContext(job);
-    }
-    else
-    {
-      throw new ProgrammingErrorException("Context ["+context+"] not supported.");
-    }
+    this.status = status;
+  }
+
+  public SingleActor getRunAsUser()
+  {
+    return runAsUser;
+  }
+
+  public void setRunAsUser(SingleActor runAsUser)
+  {
+    this.runAsUser = runAsUser;
+  }
+
+  public MdDimension getRunAsDimension()
+  {
+    return runAsDimension;
+  }
+
+  public void setRunAsDimension(MdDimension runAsDimension)
+  {
+    this.runAsDimension = runAsDimension;
+  }
+
+  public String getExecutableJobToString()
+  {
+    return executableJobToString;
+  }
+
+  public void setExecutableJobToString(String executableJobToString)
+  {
+    this.executableJobToString = executableJobToString;
   }
 }

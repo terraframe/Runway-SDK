@@ -1,25 +1,26 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -969836430)
-public abstract class AbstractJobDTOBase extends com.runwaysdk.business.BusinessDTO
+@com.runwaysdk.business.ClassSignature(hash = -1416317659)
+public abstract class JobHasStageDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
-  public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJob";
-  private static final long serialVersionUID = -969836430;
+  public final static String CLASS = "com.runwaysdk.system.scheduler.JobHasStage";
+  private static final long serialVersionUID = -1416317659;
   
-  protected AbstractJobDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  public JobHasStageDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
-    super(clientRequest);
+    super(clientRequest, parentOid, childOid);
+    
   }
   
   /**
-  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.
+  * Copy Constructor: Duplicates the values and attributes of the given RelationshipDTO into a new DTO.
   * 
-  * @param businessDTO The BusinessDTO to duplicate
+  * @param relationshipDTO The RelationshipDTO to duplicate
   * @param clientRequest The clientRequest this DTO should use to communicate with the server.
   */
-  protected AbstractJobDTOBase(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+  protected JobHasStageDTOBase(com.runwaysdk.business.RelationshipDTO relationshipDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
-    super(businessDTO, clientRequest);
+    super(relationshipDTO, clientRequest);
   }
   
   protected java.lang.String getDeclaredType()
@@ -29,12 +30,8 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String CRONEXPRESSION = "cronExpression";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String LASTRUN = "lastRun";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
@@ -105,68 +102,6 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(CREATEDBY).getAttributeMdDTO();
   }
   
-  public String getCronExpression()
-  {
-    return getValue(CRONEXPRESSION);
-  }
-  
-  public void setCronExpression(String value)
-  {
-    if(value == null)
-    {
-      setValue(CRONEXPRESSION, "");
-    }
-    else
-    {
-      setValue(CRONEXPRESSION, value);
-    }
-  }
-  
-  public boolean isCronExpressionWritable()
-  {
-    return isWritable(CRONEXPRESSION);
-  }
-  
-  public boolean isCronExpressionReadable()
-  {
-    return isReadable(CRONEXPRESSION);
-  }
-  
-  public boolean isCronExpressionModified()
-  {
-    return isModified(CRONEXPRESSION);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getCronExpressionMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(CRONEXPRESSION).getAttributeMdDTO();
-  }
-  
-  public com.runwaysdk.system.scheduler.AbstractJobDisplayLabelDTO getDisplayLabel()
-  {
-    return (com.runwaysdk.system.scheduler.AbstractJobDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();
-  }
-  
-  public boolean isDisplayLabelWritable()
-  {
-    return isWritable(DISPLAYLABEL);
-  }
-  
-  public boolean isDisplayLabelReadable()
-  {
-    return isReadable(DISPLAYLABEL);
-  }
-  
-  public boolean isDisplayLabelModified()
-  {
-    return isModified(DISPLAYLABEL);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDisplayLabelMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DISPLAYLABEL).getAttributeMdDTO();
-  }
-  
   public com.runwaysdk.system.metadata.MdDomainDTO getEntityDomain()
   {
     if(getValue(ENTITYDOMAIN) == null || getValue(ENTITYDOMAIN).trim().equals(""))
@@ -216,52 +151,6 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(ENTITYDOMAIN).getAttributeMdDTO();
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO> getJobOperation()
-  {
-    return (java.util.List<com.runwaysdk.system.scheduler.AllJobOperationDTO>) com.runwaysdk.transport.conversion.ConversionFacade.convertEnumDTOsFromEnumNames(getRequest(), com.runwaysdk.system.scheduler.AllJobOperationDTO.CLASS, getEnumNames(JOBOPERATION));
-  }
-  
-  public java.util.List<String> getJobOperationEnumNames()
-  {
-    return getEnumNames(JOBOPERATION);
-  }
-  
-  public void addJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
-  {
-    addEnumItem(JOBOPERATION, enumDTO.toString());
-  }
-  
-  public void removeJobOperation(com.runwaysdk.system.scheduler.AllJobOperationDTO enumDTO)
-  {
-    removeEnumItem(JOBOPERATION, enumDTO.toString());
-  }
-  
-  public void clearJobOperation()
-  {
-    clearEnum(JOBOPERATION);
-  }
-  
-  public boolean isJobOperationWritable()
-  {
-    return isWritable(JOBOPERATION);
-  }
-  
-  public boolean isJobOperationReadable()
-  {
-    return isReadable(JOBOPERATION);
-  }
-  
-  public boolean isJobOperationModified()
-  {
-    return isModified(JOBOPERATION);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO getJobOperationMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(JOBOPERATION).getAttributeMdDTO();
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -297,43 +186,6 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
   public final com.runwaysdk.transport.metadata.AttributeCharacterMdDTO getKeyNameMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(KEYNAME).getAttributeMdDTO();
-  }
-  
-  public java.util.Date getLastRun()
-  {
-    return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(LASTRUN));
-  }
-  
-  public void setLastRun(java.util.Date value)
-  {
-    if(value == null)
-    {
-      setValue(LASTRUN, "");
-    }
-    else
-    {
-      setValue(LASTRUN, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
-    }
-  }
-  
-  public boolean isLastRunWritable()
-  {
-    return isWritable(LASTRUN);
-  }
-  
-  public boolean isLastRunReadable()
-  {
-    return isReadable(LASTRUN);
-  }
-  
-  public boolean isLastRunModified()
-  {
-    return isModified(LASTRUN);
-  }
-  
-  public final com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO getLastRunMd()
-  {
-    return (com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO) getAttributeDTO(LASTRUN).getAttributeMdDTO();
   }
   
   public java.util.Date getLastUpdateDate()
@@ -534,72 +386,40 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(SITEMASTER).getAttributeMdDTO();
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.scheduler.MultiStageJobDTO> getAllMultiStageJob()
+  public com.runwaysdk.system.scheduler.MultiStageJobDTO getParent()
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.MultiStageJobDTO>) getRequest().getParents(this.getOid(), com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
+    return com.runwaysdk.system.scheduler.MultiStageJobDTO.get(getRequest(), super.getParentOid());
   }
   
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.scheduler.MultiStageJobDTO> getAllMultiStageJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+    public com.runwaysdk.system.scheduler.AbstractJobDTO getChild()
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.MultiStageJobDTO>) clientRequestIF.getParents(oid, com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
+    return com.runwaysdk.system.scheduler.AbstractJobDTO.get(getRequest(), super.getChildOid());
   }
   
-  @SuppressWarnings("unchecked")
-  public java.util.List<? extends com.runwaysdk.system.scheduler.JobHasStageDTO> getAllMultiStageJobRelationships()
+  public static com.runwaysdk.system.scheduler.JobHasStageDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHasStageDTO>) getRequest().getParentRelationships(this.getOid(), com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  @SuppressWarnings("unchecked")
-  public static java.util.List<? extends com.runwaysdk.system.scheduler.JobHasStageDTO> getAllMultiStageJobRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
-  {
-    return (java.util.List<? extends com.runwaysdk.system.scheduler.JobHasStageDTO>) clientRequestIF.getParentRelationships(oid, com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  public com.runwaysdk.system.scheduler.JobHasStageDTO addMultiStageJob(com.runwaysdk.system.scheduler.MultiStageJobDTO parent)
-  {
-    return (com.runwaysdk.system.scheduler.JobHasStageDTO) getRequest().addParent(parent.getOid(), this.getOid(), com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.scheduler.JobHasStageDTO addMultiStageJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.scheduler.MultiStageJobDTO parent)
-  {
-    return (com.runwaysdk.system.scheduler.JobHasStageDTO) clientRequestIF.addParent(parent.getOid(), oid, com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  public void removeMultiStageJob(com.runwaysdk.system.scheduler.JobHasStageDTO relationship)
-  {
-    getRequest().deleteParent(relationship.getOid());
-  }
-  
-  public static void removeMultiStageJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.scheduler.JobHasStageDTO relationship)
-  {
-    clientRequestIF.deleteParent(relationship.getOid());
-  }
-  
-  public void removeAllMultiStageJob()
-  {
-    getRequest().deleteParents(this.getOid(), com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  public static void removeAllMultiStageJob(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
-  {
-    clientRequestIF.deleteParents(oid, com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
-  }
-  
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
-  {
-    com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);
+    com.runwaysdk.business.RelationshipDTO dto = (com.runwaysdk.business.RelationshipDTO) clientRequest.get(oid);
     
-    return (com.runwaysdk.system.scheduler.AbstractJobDTO) dto;
+    return (com.runwaysdk.system.scheduler.JobHasStageDTO) dto;
   }
   
+  public static com.runwaysdk.system.scheduler.JobHasStageQueryDTO parentQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid)
+  {
+    com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
+    queryDTO.addCondition("parent_oid", "EQ", parentOid);
+    return (com.runwaysdk.system.scheduler.JobHasStageQueryDTO) clientRequest.queryRelationships(queryDTO);
+  }
+  public static com.runwaysdk.system.scheduler.JobHasStageQueryDTO childQuery(com.runwaysdk.constants.ClientRequestIF clientRequest, String childOid)
+  {
+    com.runwaysdk.business.RelationshipQueryDTO queryDTO = (com.runwaysdk.business.RelationshipQueryDTO) clientRequest.getQuery(com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS);
+    queryDTO.addCondition("child_oid", "EQ", childOid);
+    return (com.runwaysdk.system.scheduler.JobHasStageQueryDTO) clientRequest.queryRelationships(queryDTO);
+  }
   public void apply()
   {
     if(isNewInstance())
     {
-      getRequest().createBusiness(this);
+      getRequest().createRelationship(this);
     }
     else
     {
@@ -611,9 +431,9 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     getRequest().delete(this.getOid());
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
+  public static com.runwaysdk.system.scheduler.JobHasStageQueryDTO getAllInstances(com.runwaysdk.constants.ClientRequestIF clientRequest, String sortAttribute, Boolean ascending, Integer pageSize, Integer pageNumber)
   {
-    return (com.runwaysdk.system.scheduler.AbstractJobQueryDTO) clientRequest.getAllInstances(com.runwaysdk.system.scheduler.AbstractJobDTO.CLASS, sortAttribute, ascending, pageSize, pageNumber);
+    return (com.runwaysdk.system.scheduler.JobHasStageQueryDTO) clientRequest.getAllInstances(com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS, sortAttribute, ascending, pageSize, pageNumber);
   }
   
   public void lock()
@@ -621,12 +441,12 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     getRequest().lock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
+  public static com.runwaysdk.system.scheduler.JobHasStageDTO lock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
     Object[] _parameters = new Object[]{oid};
-    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.AbstractJobDTO.CLASS, "lock", _declaredTypes);
-    return (com.runwaysdk.system.scheduler.AbstractJobDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS, "lock", _declaredTypes);
+    return (com.runwaysdk.system.scheduler.JobHasStageDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   public void unlock()
@@ -634,12 +454,12 @@ public abstract class AbstractJobDTOBase extends com.runwaysdk.business.Business
     getRequest().unlock(this);
   }
   
-  public static com.runwaysdk.system.scheduler.AbstractJobDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
+  public static com.runwaysdk.system.scheduler.JobHasStageDTO unlock(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String oid)
   {
     String[] _declaredTypes = new String[]{"java.lang.String"};
     Object[] _parameters = new Object[]{oid};
-    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.AbstractJobDTO.CLASS, "unlock", _declaredTypes);
-    return (com.runwaysdk.system.scheduler.AbstractJobDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
+    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.scheduler.JobHasStageDTO.CLASS, "unlock", _declaredTypes);
+    return (com.runwaysdk.system.scheduler.JobHasStageDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
 }

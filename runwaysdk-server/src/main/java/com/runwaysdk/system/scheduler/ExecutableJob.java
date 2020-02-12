@@ -20,9 +20,7 @@ package com.runwaysdk.system.scheduler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +31,9 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
-public abstract class ExecutableJob extends ExecutableJobBase implements ExecutableJobIF
+public abstract class ExecutableJob extends ExecutableJobBase
 {
   private static final long        serialVersionUID = 328266996;
-
-  private Map<String, JobListener> listeners;
 
   private final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
@@ -46,8 +42,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   public ExecutableJob()
   {
     super();
-    
-    this.listeners = new LinkedHashMap<String, JobListener>();
   }
   
   public QuartzRunwayJob getQuartzJob()
@@ -66,24 +60,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   {
     this.quartzJob = quartzJob;
   }
-
-  /**
-   * 
-   * @param jobListener
-   */
-  public void addJobListener(JobListener jobListener)
-  {
-    this.listeners.put(jobListener.getName(), jobListener);
-  }
-
-  /**
-   * 
-   * @return
-   */
-  public Map<String, JobListener> getJobListeners()
-  {
-    return this.listeners;
-  }
   
   /**
    * Creates, configures and applies a new JobHistory that will be used to record history for the current job execution context.
@@ -95,7 +71,7 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   {
     JobHistory history = new JobHistory();
     history.setStartTime(new Date());
-    history.addStatus(AllJobStatus.RUNNING);
+    history.addStatus(AllJobStatus.NEW);
     history.apply();
     
     return history;
@@ -201,7 +177,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   /**
    * Defines what the job should actually do when executed (or started). Must be overridden with actual behavior.
    */
-  @Override
   abstract public void execute(ExecutionContext executionContext);
 
   public String getLocalizedDescription()
@@ -216,11 +191,6 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   
   private JobHistory executableJobStart()
   {
-    for (JobListener jobListener : this.listeners.values())
-    {
-      SchedulerManager.addJobListener(this, jobListener);
-    }
-    
     JobHistory history = this.createNewHistory();
     
     JobHistoryRecord record = new JobHistoryRecord(this, history);
@@ -251,27 +221,53 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
   {
     if (canResume())
     {
-      for (JobListener jobListener : this.listeners.values())
-      {
-        SchedulerManager.addJobListener(this, jobListener);
-      }
-      
       this.getQuartzJob().start(jhr);
     }
     else
     {
       JobHistory jh = jhr.getChild();
       
+      jh.appLock();
       jh.clearStatus();
       jh.addStatus(AllJobStatus.FAILURE);
       
       jh.setEndTime(new Date());
       
-      String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobCannotResume", "The server was shutdown while the job was running."); // TODO : Maybe read the locale from the job owner's locale
+      // TODO : Maybe read the locale from the job owner's locale
+      String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobCannotResume", "The server was shutdown while the job was running.");
       jh.getHistoryInformation().setValue(msg);
       
       jh.apply();
     }
+  }
+  
+  @Request
+  protected void handleSchedulerMisfire(JobHistoryRecord record)
+  {
+    JobHistory jh = record.getChild();
+    
+    jh.appLock();
+    jh.clearStatus();
+    jh.addStatus(AllJobStatus.FAILURE);
+    
+    jh.setEndTime(new Date());
+    
+    // TODO : Maybe read the locale from the job owner's locale
+    String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobMisfire", "The job could not be scheduled as requested, the system is out of resources (scheduler misfire).");
+    jh.getHistoryInformation().setValue(msg);
+    
+    jh.apply();
+  }
+  
+  @Request
+  protected void handleQueued(JobHistoryRecord record)
+  {
+    JobHistory jh = record.getChild();
+    
+    jh.appLock();
+    jh.clearStatus();
+    jh.addStatus(AllJobStatus.QUEUED);
+    jh.apply();
   }
   
   public boolean canResume()
@@ -344,5 +340,4 @@ public abstract class ExecutableJob extends ExecutableJobBase implements Executa
       return "[" + clazz + "] - " + this.getOid();
     }
   }
-
 }
