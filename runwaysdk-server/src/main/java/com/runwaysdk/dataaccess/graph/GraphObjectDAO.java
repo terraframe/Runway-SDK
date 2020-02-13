@@ -668,6 +668,11 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     {
       GraphDBService.getInstance().insert(request, this);
       this.setAppliedToDB(true);
+      
+      // isNew=false is supposed to happen at the end of the transaction. Since we aren't managing
+      // that with graph objects, we're just not going to set isNew to false (ever). This decision
+      // was made by @nmceachen and @rrowlands to facilitate the needs of the GeoRegistry data importer.
+      this.setIsNew(true);
     }
     else
     {

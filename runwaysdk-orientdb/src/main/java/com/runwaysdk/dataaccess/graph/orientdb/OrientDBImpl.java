@@ -1251,7 +1251,7 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateDAO(OElement vertex, GraphObjectDAO vertexDAO)
   {
-//    vertexDAO.setIsNew(false);
+    vertexDAO.setIsNew(false);
     vertexDAO.setAppliedToDB(true);
 
     Attribute[] attributes = vertexDAO.getAttributeArray();
