@@ -348,7 +348,6 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     else
     {
       // This happens normally when a job is scheduled to run (not run via invoking start)
-      logger.info("Map [" + map.toString() + "] does not contain key " + HISTORY_RECORD_ID); // TODO delete
     }
   }
   
@@ -368,7 +367,6 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     else
     {
       // A trigger may or may not have a history record associated with it.
-      logger.info("Map [" + triggerDataMap.toString() + "] does not contain key " + HISTORY_RECORD_ID); // TODO delete
     }
   }
 

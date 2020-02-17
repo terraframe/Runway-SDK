@@ -25,10 +25,14 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 
 public enum Operation implements Serializable {
   /**
-   * Reads the data from a type
+   * Allows for read access of a type.
    */
   READ("567c687f-cd66-3436-af9f-e54517000058", "475d5b55-eb91-3e36-8e49-24ad37000058", false),
 
+  /**
+   * Allows for read access of all attributes of a type. To grant full permissions on a type this
+   * should be combined with READ as well.
+   */
   READ_ALL("064c2c3c-677b-3aee-ade1-e37464000058"),
   
   /**
@@ -37,10 +41,14 @@ public enum Operation implements Serializable {
   DENY_READ("475d5b55-eb91-3e36-8e49-24ad37000058", "567c687f-cd66-3436-af9f-e54517000058", true),
 
   /**
-   * Writes the data to a type
+   * Allows for write access of a type.
    */
   WRITE("e02145d2-afbd-3cec-a330-2ef4b1000058", "cd935282-741f-3880-96f7-d8ac22000058", false),
 
+  /**
+   * Allows for write access of all attributes of a type. To grant full permissions on a type this
+   * should be combined with WRITE as well.
+   */
   WRITE_ALL("46f5b01c-6e0d-3b20-b9a2-e4c8d3000058"),
   
   /**

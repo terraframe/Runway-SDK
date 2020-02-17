@@ -87,7 +87,6 @@ public abstract class ExecutableJob extends ExecutableJobBase
       
       if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
       {
-        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
         downstream.executableJobStart();
       }
     }
@@ -135,8 +134,8 @@ public abstract class ExecutableJob extends ExecutableJobBase
       t = t.getCause();
     }
     
-    // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
-    // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
+    // TODO : We should be saving the exception type, and then later when they want to view the exception we can create the actual message
+    // in a view based on their locale.
     if (t instanceof SmartException)
     {
       SmartException se = ( (SmartException) t );

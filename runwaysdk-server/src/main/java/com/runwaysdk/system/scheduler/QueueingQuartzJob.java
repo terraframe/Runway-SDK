@@ -131,8 +131,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     {
       String historyId = (String) context.get(HISTORY_RECORD_ID);
       
-      logger.info("History was executed [" + historyId + "]"); // TODO delete
-      
       Queue<String> queue = getQueue();
       
       if (queue.peek() != null && !queue.peek().equals(historyId))
@@ -146,15 +144,9 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       {
         String nextHistoryId = queue.peek();
         
-        logger.info("Starting next history [" + nextHistoryId + "]"); // TODO delete
-        
         JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
         ExecutableJob execJob = history.getParent();
         execJob.getQuartzJob().start(history);
-      }
-      else
-      {
-        logger.info("Next job to execute does not exist"); // TODO delete
       }
     }
     finally
@@ -186,8 +178,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       record.apply();
       
       historyId = record.getOid();
-      
-      logger.info("historyId was null. Created a new one with id [" + historyId + "]"); // TODO delete
     }
     
     try
@@ -220,7 +210,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
         {
           queue.add(historyId);
           
-          logger.info("Adding " + historyId + " to queue and canceling."); // TODO delete
           this.handleQueued(execJobId, historyId);
           
           return true;
@@ -229,15 +218,11 @@ public class QueueingQuartzJob extends QuartzRunwayJob
         {
           queue.add(historyId);
           
-          logger.info("Adding [" + historyId + "] to the queue and allowing execution"); // TODO delete
-          
           return false;
         }
       }
       else
       {
-        logger.info("Rejecting execution. We are already queued"); // TODO delete
-        
         return true; // If the job is already queued then just ignore the firing.
       }
     }
