@@ -58,7 +58,7 @@ public class AttributeCharacter extends AttributeChar
   
   /**
    * Returns the concrete attribute metadata that defines this attribute.  If this is defined 
-   * by aa concrete attribute, this object is returned.  If it is a virtual attribute, then the 
+   * by a concrete attribute, this object is returned.  If it is a virtual attribute, then the 
    * concrete attribute it references is returned.
    * 
    * @return MdAttributeDAOIF that defines the this attribute

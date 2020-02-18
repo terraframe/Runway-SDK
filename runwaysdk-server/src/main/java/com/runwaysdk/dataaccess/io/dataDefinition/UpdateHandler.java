@@ -51,6 +51,8 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     this.addHandler(XMLTags.MD_EXCEPTION_TAG, new MdExceptionHandler(manager));
     this.addHandler(XMLTags.MD_VIEW_TAG, new MdViewHandler(manager));
     this.addHandler(XMLTags.MD_UTIL_TAG, new MdUtilHandler(manager));
+    this.addHandler(XMLTags.MD_VERTEX_TAG, new MdVertexHandler(manager));
+    this.addHandler(XMLTags.MD_EDGE_TAG, new MdEdgeHandler(manager));
     this.addHandler(XMLTags.MD_WEB_FORM_TAG, new MdWebFormHandler(manager));
 
     // Data handlers
@@ -62,7 +64,10 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
+   * @see
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java
+   * .lang.String, org.xml.sax.Attributes,
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF,
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
@@ -74,7 +79,10 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
+   * @see
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.
+   * lang.String, java.lang.String, java.lang.String,
+   * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
@@ -85,7 +93,9 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
   /*
    * (non-Javadoc)
    * 
-   * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
+   * @see
+   * com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.
+   * lang.String)
    */
   @Override
   public boolean modifiesState(String localName)

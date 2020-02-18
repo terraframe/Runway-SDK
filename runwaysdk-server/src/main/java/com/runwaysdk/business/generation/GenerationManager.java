@@ -19,7 +19,6 @@
 package com.runwaysdk.business.generation;
 
 import java.lang.annotation.Annotation;
-import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 

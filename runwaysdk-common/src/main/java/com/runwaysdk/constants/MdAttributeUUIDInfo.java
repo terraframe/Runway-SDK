@@ -25,6 +25,8 @@ public interface MdAttributeUUIDInfo extends MdAttributePrimitiveInfo
   /**
    * Class.
    */
-  public static final String CLASS   = Constants.METADATA_PACKAGE+".MdAttributeUUID";
+  public static final String CLASS                      = Constants.METADATA_PACKAGE+".MdAttributeUUID";
+  
+  public static final int UUID_STRING_LENGTH            = 36;
 
 }

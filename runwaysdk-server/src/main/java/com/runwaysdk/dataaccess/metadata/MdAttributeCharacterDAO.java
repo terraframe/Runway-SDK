@@ -31,10 +31,12 @@ import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeLengthCharacterException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeInteger;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeCharacter_G;
 import com.runwaysdk.transport.metadata.AttributeCharacterMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeCharacterMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -83,6 +85,10 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeCharacter_E(this));
+    }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeCharacter_G(this));
     }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {

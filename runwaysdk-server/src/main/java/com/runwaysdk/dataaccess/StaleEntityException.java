@@ -22,7 +22,6 @@ import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Entity;
 
-
 /**
  * Thrown when chnages are made to a stale (out of date) entity.
  * 
@@ -38,74 +37,85 @@ public class StaleEntityException extends DataAccessException
   /**
    * Entity object that is stale.
    */
-  private EntityDAO entityDAO;
-  
+  private ComponentDAO      entityDAO;
+
   /**
    * Constructs a new StaleEntityException with the specified developer message.
    * 
    * @param devMessage
-   *          The non-localized developer error message. Contains specific data access
-   *          layer information useful for application debugging. The developer message is
-   *          saved for later retrieval by the {@link #getMessage()} method.
+   *          The non-localized developer error message. Contains specific data
+   *          access layer information useful for application debugging. The
+   *          developer message is saved for later retrieval by the
+   *          {@link #getMessage()} method.
    * @param entityDAO
    *          Entity object that is stale.
    */
-  public StaleEntityException(String devMessage, EntityDAO entityDAO)
+  public StaleEntityException(String devMessage, ComponentDAO entityDAO)
   {
     super(devMessage);
     this.entityDAO = entityDAO;
   }
 
   /**
-   * Constructs a new StaleEntityException with the specified developer message and cause.
+   * Constructs a new StaleEntityException with the specified developer message
+   * and cause.
    * <p>
-   * Note that the detail message associated with <code>cause</code> is <i>not</i>
-   * automatically incorporated in this StaleEntityException's detail message.
+   * Note that the detail message associated with <code>cause</code> is
+   * <i>not</i> automatically incorporated in this StaleEntityException's detail
+   * message.
    * 
    * @param devMessage
-   *          The non-localized developer error message. Contains specific data access
-   *          layer information useful for application debugging. The developer message is
-   *          saved for later retrieval by the {@link #getMessage()} method.
+   *          The non-localized developer error message. Contains specific data
+   *          access layer information useful for application debugging. The
+   *          developer message is saved for later retrieval by the
+   *          {@link #getMessage()} method.
    * @param cause
-   *          the cause (which is saved for later retrieval by the {@link #getCause()}
-   *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
-   *          is nonexistent or unknown.)
+   *          the cause (which is saved for later retrieval by the
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
    * @param entityDAO
    *          Entity object that is stale.
    */
-  public StaleEntityException(String devMessage, Throwable cause, EntityDAO entityDAO)
+  public StaleEntityException(String devMessage, Throwable cause, ComponentDAO entityDAO)
   {
     super(devMessage, cause);
     this.entityDAO = entityDAO;
   }
 
   /**
-   * Constructs a new StaleEntityException with the specified cause and a developer
-   * message taken from the cause. This constructor is useful if the StaleEntityException
-   * is a wrapper for another throwable.
+   * Constructs a new StaleEntityException with the specified cause and a
+   * developer message taken from the cause. This constructor is useful if the
+   * StaleEntityException is a wrapper for another throwable.
    * 
    * @param cause
-   *          the cause (which is saved for later retrieval by the {@link #getCause()}
-   *          method). (A <tt>null</tt> value is permitted, and indicates that the cause
-   *          is nonexistent or unknown.)
+   *          the cause (which is saved for later retrieval by the
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
    */
-  public StaleEntityException(Throwable cause, EntityDAO entityDAO)
+  public StaleEntityException(Throwable cause, ComponentDAO entityDAO)
   {
     super(cause);
     this.entityDAO = entityDAO;
   }
 
   /**
-   * Uses the stored parameters and the given Locale to produce an error message suitable
-   * for display to end users.
+   * Uses the stored parameters and the given Locale to produce an error message
+   * suitable for display to end users.
    * 
    * @param entity
    *          The stale entity
    */
   public String getLocalizedMessage()
   {
-    Entity entity = BusinessFacade.get(this.entityDAO);
-    
-    return ServerExceptionMessageLocalizer.staleEntityException(this.getLocale(), entity);
+    if (entityDAO instanceof EntityDAOIF)
+    {
+      Entity entity = BusinessFacade.get((EntityDAOIF) this.entityDAO);
+
+      return ServerExceptionMessageLocalizer.staleEntityException(this.getLocale(), entity);
+    }
+
+    String label = this.entityDAO.getMdClassDAO().getDisplayLabel(this.getLocale());
+
+    return ServerExceptionMessageLocalizer.staleEntityException(this.getLocale(), label);
   }
 }

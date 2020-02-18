@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>com.runwaysdk</groupId>
 		<artifactId>runwaysdk-root</artifactId>
-		<version>3.0.22-SNAPSHOT</version>
+		<version>3.0.34-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runwaysdk-server</artifactId>
@@ -32,6 +32,11 @@
 	</repositories>
 
 	<dependencies>
+        <dependency>
+          <groupId>com.orientechnologies</groupId>
+          <artifactId>orientdb-client</artifactId>
+          <version>3.0.0</version>
+        </dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>

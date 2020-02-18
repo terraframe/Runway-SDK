@@ -158,10 +158,13 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
    */
   public synchronized void initEnumMappingCache(String enumIdList)
   {
-    StringTokenizer stringTokenizer = new StringTokenizer(enumIdList, ",", false);
-    while (stringTokenizer.hasMoreTokens())
+    if (enumIdList != null)
     {
-      this.enumItemIdSet.add(stringTokenizer.nextToken());
+      StringTokenizer stringTokenizer = new StringTokenizer(enumIdList, ",", false);
+      while (stringTokenizer.hasMoreTokens())
+      {
+        this.enumItemIdSet.add(stringTokenizer.nextToken());
+      }
     }
   }
 
@@ -366,9 +369,9 @@ public class AttributeEnumeration extends Attribute implements AttributeEnumerat
   }
 
   /**
-   * This is used to validate the default value of the given {@link#
-   * MdAttributeIF}. Runs validation tests that are common to all Attribute
-   * classes, but not the required attribute test.
+   * This is used to validate the default value of the given
+   * {@link# MdAttributeIF}. Runs validation tests that are common to all
+   * Attribute classes, but not the required attribute test.
    * 
    * @param mdAttributeIF
    * @param valueToValidate

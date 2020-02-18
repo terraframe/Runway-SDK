@@ -23,13 +23,13 @@ import java.io.File;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
-import com.runwaysdk.util.ClasspathResource;
 import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.dataaccess.io.FileStreamSource;
 import com.runwaysdk.dataaccess.io.ResourceStreamSource;
 import com.runwaysdk.dataaccess.io.StreamSource;
 import com.runwaysdk.dataaccess.io.XMLParseException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.resource.ClasspathResource;
 
 public class VersionHandler extends SAXSourceParser
 {

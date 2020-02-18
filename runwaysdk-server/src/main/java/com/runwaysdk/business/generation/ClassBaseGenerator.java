@@ -387,7 +387,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       }
       else if (m.getMdAttributeConcrete() instanceof MdAttributeReferenceDAOIF)
       {
-        addReferenceGetter(m);
+        addReferenceGetter((MdAttributeReferenceDAOIF) m);
       }
       else
       {
@@ -405,7 +405,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
       if (!GenerationUtil.isSpecialCaseSetter(m))
       {
         addSetter(m);
-        
+
         if (m.getMdAttributeConcrete() instanceof MdAttributeReferenceDAOIF)
         {
           addReferenceSetter(m);
@@ -421,7 +421,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttributeHash to generate an equals method for
    */
-  private void addEquals(MdAttributeDAOIF m)
+  protected void addEquals(MdAttributeDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -439,7 +439,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addGetter(MdAttributeDAOIF m)
+  protected void addGetter(MdAttributeDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -457,7 +457,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addReferenceGetter(MdAttributeDAOIF m)
+  protected void addReferenceGetter(MdAttributeReferenceDAOIF m)
   {
     VisibilityModifier getterVisibility = m.getGetterVisibility();
 
@@ -498,7 +498,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addSetter(MdAttributeDAOIF m)
+  protected void addSetter(MdAttributeDAOIF m)
   {
     // do not generate a setter for a system attribute.
     if (m.isSystem())
@@ -529,16 +529,16 @@ public abstract class ClassBaseGenerator extends TypeGenerator
    * @param m
    *          MdAttribute to generate
    */
-  private void addReferenceSetter(MdAttributeDAOIF m)
+  protected void addReferenceSetter(MdAttributeDAOIF m)
   {
     // do not generate a setter for a system attribute.
     if (m.isSystem())
     {
       return;
     }
-    
+
     VisibilityModifier setterVisibility = m.getSetterVisibility();
-    
+
     String attributeName = CommonGenerationUtil.upperFirstCharacter(m.definesAttribute());
     getWriter().writeLine(setterVisibility.getJavaModifier() + " void set" + attributeName + "Id(" + String.class.getName() + " oid)");
     getWriter().openBracket();
@@ -553,14 +553,14 @@ public abstract class ClassBaseGenerator extends TypeGenerator
     getWriter().closeBracket();
     getWriter().writeLine("");
   }
-  
+
   /**
    * Generates a Validate method for the given attribute in the base .java file
    * 
    * @param m
    *          MdAttribute to generate
    */
-  private void addValidator(MdAttributeDAOIF m)
+  protected void addValidator(MdAttributeDAOIF m)
   {
     VisibilityModifier setterVisibility = m.getSetterVisibility();
 

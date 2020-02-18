@@ -20,9 +20,7 @@ package com.runwaysdk.dataaccess;
 
 import java.util.List;
 
-import com.runwaysdk.ComponentIF;
-
-public interface EntityDAOIF extends ComponentIF
+public interface EntityDAOIF extends ComponentDAOIF
 {
   /**
    * Column name of the attribute that specifies the OID.

@@ -67,6 +67,8 @@
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdEdge" type="mdEdge" />            
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
     </xs:choice>
@@ -97,6 +99,8 @@
       <xs:element name="mdView" type="mdView" />
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
+      <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdEdge" type="mdEdge" />      
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
   </xs:complexType>
@@ -733,13 +737,6 @@
   </xs:complexType>
 
   <!--Data for the mdRelationship type -->
-  <xs:complexType name="mdRelationshipBase">
-    <xs:complexContent>
-      <xs:extension base="mdElement">
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
   <xs:complexType name="mdRelationship">
     <xs:sequence>
       <!--The parent mdBusiness of the mdRelationship -->
@@ -953,6 +950,8 @@
       <xs:element name="localChar" type="localChar" />
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
+      <xs:element name="embedded" type="embedded" />
+      <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
 
@@ -1045,6 +1044,12 @@
   </xs:attributeGroup>
 
   <xs:attributeGroup name="attributeStruct">
+    <xs:attributeGroup ref="attribute" />
+    <!--The fully qualified path of type that defines the struct -->
+    <xs:attribute name="type" type="xs:string" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="attributeEmbedded">
     <xs:attributeGroup ref="attribute" />
     <!--The fully qualified path of type that defines the struct -->
     <xs:attribute name="type" type="xs:string" />
@@ -1144,6 +1149,11 @@
     <xs:attributeGroup ref="attributeStruct" />
   </xs:complexType>
 
+  <!-- local character: a localized character attribute -->
+  <xs:complexType name="localCharEmbedded">
+    <xs:attributeGroup ref="attributeEmbedded" />
+  </xs:complexType>
+
   <!-- text character: a localized character attribute -->
   <xs:complexType name="localText">
     <xs:attributeGroup ref="attributeStruct" />
@@ -1160,6 +1170,11 @@
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="struct">
     <xs:attributeGroup ref="attributeStruct" />
+  </xs:complexType>
+
+  <!-- referenceName: Must reference a defined mdBusiness type -->
+  <xs:complexType name="embedded">
+    <xs:attributeGroup ref="attributeEmbedded" />
   </xs:complexType>
 
   <!-- Defines the hash encryption attribute -->
@@ -1468,5 +1483,68 @@
       <xs:enumeration value="WRITE_CHILD" />
     </xs:restriction>
   </xs:simpleType>
+  
+  <!-- 
+    Graph database add-ons
+   -->
+   
+  <xs:complexType name="mdGraphClassOptions">
+    <xs:sequence>
+      <xs:element name="attributes" type="attributes" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+   
+  <xs:complexType name="mdGraphClass">  
+    <xs:complexContent>
+      <xs:extension base="mdClass">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="attributes" type="attributes" minOccurs="0" />
+        </xs:choice>
+        <xs:attribute name="dbClassName" type="xs:string" use="optional" />
+        <xs:attribute name="enableChangeOverType" type="xs:boolean" use="optional" />
+        <xs:attribute name="frequency" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdVertexBase">
+    <xs:complexContent>
+      <xs:extension base="mdGraphClass">
+        <xs:attribute name="isAbstract" type="xs:boolean" use="optional" />      
+        <!--extends: The name of the mdVertex being extended -->
+        <xs:attribute name="extends" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdVertex">
+    <xs:complexContent>
+      <xs:extension base="mdVertexBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdGraphClassOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdEdgeBase">
+    <xs:complexContent>
+      <xs:extension base="mdGraphClass">
+        <xs:attribute name="parent" type="xs:string" />
+        <xs:attribute name="child" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdEdge">
+    <xs:complexContent>
+      <xs:extension base="mdEdgeBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdGraphClassOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
 
 </xs:schema>

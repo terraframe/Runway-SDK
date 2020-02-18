@@ -69,7 +69,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Constructs a TransientDAO from the given hashtable of Attributes.
+   * Constructs a {@link TransientDAO} from the given hashtable of Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -170,9 +170,9 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   /**
    * Not to be called from the constructor.
    */
-  public void setTypeName(String entityType)
+  public void setTypeName(String transientType)
   {
-    this.componentType = entityType;
+    this.componentType = transientType;
   }
 
   /**
@@ -192,6 +192,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    *           if the attribute with the given name does not exist for the class
    *           of the Component
    */
+  @Override
   public AttributeIF getAttributeIF(String name)
   {
     AttributeIF returnAttribute = (AttributeIF) this.attributeMap.get(name);
@@ -213,6 +214,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    * @return true if the component has an attribute with the given name, false
    *         otherwise.
    */
+  @Override
   public boolean hasAttribute(String name)
   {
     if (this.attributeMap.get(name) != null)
@@ -231,6 +233,7 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    * <b>Precondition:</b> true<br>
    * <b>Postcondition:</b> array.length = attributeMap.size();
    */
+  @Override
   public AttributeIF[] getAttributeArrayIF()
   {
     AttributeIF[] array = new Attribute[this.attributeMap.size()];
@@ -256,13 +259,13 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
   }
 
   /**
-   * Returns a MdTransient that defines this object's classs.
+   * Returns a {@link MdTransientDAOIF} that defines this object's class.
    * 
    * <br/>
    * <b>Precondition:</b> true <br/>
    * <b>Postcondition:</b> true
    * 
-   * @return a MdTransient that defines this object's classs.
+   * @return a {@link MdTransientDAOIF} that defines this object's class.
    */
   public MdTransientDAOIF getMdTransientDAO()
   {
@@ -391,22 +394,22 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    * @param name
    * @param _object
    */
-  public void setValue(String name, Object _object)
+  public void setValue(String name, Object object)
   {
-    if (_object instanceof String)
+    if (object instanceof String)
     {
-      this.setValue(name, (String) _object);
+      this.setValue(name, (String) object);
     }
     else
     {
       Attribute attribute = this.getAttribute(name);
 
-      attribute.setValue(_object);
+      attribute.setValue(object);
     }
   }
 
   /**
-   * Adds an item to an enumerated atribute. If the attribute does not allow
+   * Adds an item to an enumerated attribute. If the attribute does not allow
    * multiplicity, the <code>enumItemID</code> replaces the previous item.
    * 
    * @param name

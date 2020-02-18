@@ -1,0 +1,75 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness 
+        label="MdGraphClass" 
+        name="com.runwaysdk.system.metadata.MdGraphClass" 
+        extends="com.runwaysdk.system.metadata.MdClass"
+        isAbstract="true"
+        generateController="false" >
+        <attributes>
+          <char name="dbClassName" label="Database Class Name" description="The name of the class in the database" required="true" size="31" indexType="unique index"/>
+          <boolean name="enableChangeOverTime" label="Enable change over time" immutable="true" required="false" defaultValue="false" description="Indicates if change over time is enabled for the class" />                    
+        </attributes>
+      </mdBusiness>
+      
+      <mdBusiness 
+        label="MdVertex" 
+        name="com.runwaysdk.system.metadata.MdVertex" 
+        extends="com.runwaysdk.system.metadata.MdGraphClass"
+        isAbstract="false"
+        generateController="false" >
+        <attributes>
+          <boolean name="isAbstract" label="Is Abstract" required="true" defaultValue="false" description="Indicates if the class is abstract" />
+          <reference name="superMdVertex" type="com.runwaysdk.system.metadata.MdVertex" label="Super MdVertex" description="The super vertex class" required="false" />
+        </attributes>
+      </mdBusiness>
+      
+      <mdBusiness 
+        label="MdEdge" 
+        name="com.runwaysdk.system.metadata.MdEdge" 
+        extends="com.runwaysdk.system.metadata.MdGraphClass"
+        isAbstract="false"
+        generateController="false" >
+        <attributes>
+          <reference name="parentMdVertex" type="com.runwaysdk.system.metadata.MdVertex" label="Parent MdVertex" description="The parent vertex vlass in the edge type" required="true" />
+          <reference name="childMdVertex" type="com.runwaysdk.system.metadata.MdVertex" label="Child MdVertex" description="The child vertex vlass in the edge type" required="true" />
+        </attributes>
+      </mdBusiness>
+      
+      <mdTree 
+        name="com.runwaysdk.system.metadata.VertexInheritance" 
+         label="Vertex Inheritance" 
+         extends="com.runwaysdk.system.metadata.MetadataRelationship"
+         composition="false" >
+        <parent cardinality="1" name="com.runwaysdk.system.metadata.MdVertex" method="superVertexClass"/>
+        <child cardinality="*" name="com.runwaysdk.system.metadata.MdVertex" method="subVertexClasses"/>
+      </mdTree>
+
+    </create>
+    <update></update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>

@@ -1021,35 +1021,7 @@ public class Oracle extends AbstractDatabase
       }
     }
     return attributeNames;
-
-
   }
-// Heads up: clean up
-//  /**
-//   * Returns a list of string names of the attributes that participate in a
-//   * group unique with the given name.
-//   *
-//   * @param indexName
-//   * @param conn it is up to the client to manage the connection object.
-//   * @param attributeNames
-//   */
-//  public List<String> getGroupIndexAttributesFromIndexName(String indexName, Connection conn)
-//  {
-//    String statement = " SELECT column_name \n" + "   FROM user_ind_columns \n"
-//        + " WHERE index_name = '" + indexName.toUpperCase() + "' \n";
-//
-//    List result = this.query(statement);
-//
-//    List<String> attributeNames = new LinkedList<String>();
-//
-//    for (int i = 0; i < result.size(); i++)
-//    {
-//      String attrName = ( ( (DynaBean) result.get(i) ).get("column_name").toString() ).toLowerCase();
-//      attributeNames.add(attrName);
-//    }
-//
-//    return attributeNames;
-//  }
 
   /**
    * @see com.runwaysdk.dataaccess.AbstractDatabase#addDecFieldAlterTable(java.lang.String,
@@ -1165,46 +1137,6 @@ public class Oracle extends AbstractDatabase
 
     return returnResult;
   }
-
-// Heads up: clean up
-//  /**
-//   * @see com.runwaysdk.dataaccess.AbstractDatabase#tableExists(java.lang.String)
-//   */
-//  public boolean tableExists(String tableName)
-//  {
-//    List<DynaBean> rows = query("SELECT table_name FROM user_tables WHERE table_name = '"
-//        + tableName.toUpperCase() + "'");
-//
-//    if (rows.size() == 0)
-//    {
-//      return false;
-//    }
-//    else
-//    {
-//      return true;
-//    }
-//  }
-
-
-//Heads up: clean up
-// /**
-//  * @see com.runwaysdk.dataaccess.AbstractDatabase#getFields(java.lang.String)
-//  */
-// public List<String> getFields(String table)
-// {
-//   String queryString = "SELECT column_name \n" + "  FROM user_tab_columns \n"
-//       + " WHERE table_name = '" + table.toUpperCase() + "'";
-//
-//   List<DynaBean> rows = query(queryString);
-//   LinkedList<String> fields = new LinkedList<String>();
-//
-//   Iterator<DynaBean> i = rows.iterator();
-//   while (i.hasNext())
-//   {
-//     fields.add( ( (String) i.next().get("column_name") ).toLowerCase());
-//   }
-//   return fields;
-// }
 
   /**
    * @see com.runwaysdk.dataaccess.AbstractDatabase#getColumnNames(java.lang.String)

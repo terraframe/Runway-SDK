@@ -24,6 +24,8 @@ package com.runwaysdk.dataaccess;
 
 import java.util.Locale;
 
+import com.runwaysdk.constants.IndexTypes;
+
 
 /**
  * @author nathan
@@ -43,6 +45,10 @@ public interface MdAttributeConcreteDAOIF extends MdAttributeDAOIF
    * Column name of the attribute that indicates what kind of index this attribute has.
    */
   public static final String INDEX_TYPE_COLUMN        = "index_type";
+  /**
+   * Column name of the attribute that has the name of the index in the database.
+   */
+  public static final String INDEX_TYPE_NAME        = "index_name";
   /**
    * Column Name of the attribute that specifies the database column name.
    */
@@ -99,7 +105,7 @@ public interface MdAttributeConcreteDAOIF extends MdAttributeDAOIF
    * @return the display label of this metadata object
    */
   public String getDisplayLabel(Locale locale);
-
+  
   /**
    * Returns true if the attribute should be unique, false otherwise.
    *

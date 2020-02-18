@@ -65,12 +65,14 @@ import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
+import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -136,6 +138,8 @@ import com.runwaysdk.constants.TransactionRecordInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -180,6 +184,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
@@ -187,6 +192,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -247,6 +253,8 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.metadata.ontology.OntologyStrategyDAO;
 import com.runwaysdk.dataaccess.transaction.ImportLogDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
@@ -293,6 +301,10 @@ public class BusinessDAOFactory
     map.put(IndicatorCompositeInfo.CLASS, new IndicatorCompositeDAO());
     map.put(IndicatorPrimitiveInfo.CLASS, new IndicatorPrimitiveDAO());
     map.put(MdAttributeIndicatorInfo.CLASS, new MdAttributeIndicatorDAO());
+
+    // Graoh Database
+    map.put(MdVertexInfo.CLASS, new MdVertexDAO());
+    map.put(MdEdgeInfo.CLASS, new MdEdgeDAO());
 
     map.put(MdTableInfo.CLASS, new MdTableDAO());
     map.put(MdIndexInfo.CLASS, new MdIndexDAO());
@@ -352,6 +364,8 @@ public class BusinessDAOFactory
     map.put(MdAttributeLocalTextInfo.CLASS, new MdAttributeLocalTextDAO());
     map.put(MdAttributeHashInfo.CLASS, new MdAttributeHashDAO());
     map.put(MdAttributeSymmetricInfo.CLASS, new MdAttributeSymmetricDAO());
+    map.put(MdAttributeEmbeddedInfo.CLASS, new MdAttributeEmbeddedDAO());
+    map.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, new MdAttributeLocalCharacterEmbeddedDAO());
 
     // web form
     map.put(MdWebFormInfo.CLASS, new MdWebFormDAO());
@@ -432,14 +446,14 @@ public class BusinessDAOFactory
     }
 
     boolean isUser = MdElementDAO.isSubEntity(type, UserInfo.CLASS);
-    
+
     if (isUser)
     {
       return new UserDAO(attributeMap, type);
     }
-    
+
     boolean isSingleActor = MdElementDAO.isSubEntity(type, SingleActorInfo.CLASS);
-    
+
     if (isSingleActor)
     {
       return new SingleActorDAO(attributeMap, type);
@@ -485,8 +499,8 @@ public class BusinessDAOFactory
   /**
    * Returns a BusinessDAO of the given type with the given key in the database.
    * This method does the same thing as get(String oid), but is faster. If you
-   * know the type of the oid, use this method. Otherwise use the get(String oid)
-   * method.
+   * know the type of the oid, use this method. Otherwise use the get(String
+   * oid) method.
    * 
    * <br/>
    * <b>Precondition:</b> key != null <br/>
@@ -634,10 +648,11 @@ public class BusinessDAOFactory
    *          {@link MdAttribute} and the value is the MdEntity that defines the
    *          attribute. This is used to improve performance.
    * @param MdAttributeIFList
-   *          contains {@link MdAttribute} objects for the attributes used in this query
+   *          contains {@link MdAttribute} objects for the attributes used in
+   *          this query
    * @param resultSet
    *          ResultSet object from a query.
-   * @return {@link BusinessDAO}  from a row from the given resultset
+   * @return {@link BusinessDAO} from a row from the given resultset
    */
 
   public static BusinessDAO buildObjectFromQuery(String type, Map<String, ColumnInfo> columnInfoMap, Map<String, MdTableClassIF> definedByTableClasMap, List<? extends MdAttributeConcreteDAOIF> MdAttributeIFList, ResultSet results)

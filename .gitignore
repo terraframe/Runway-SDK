@@ -1,3 +1,6 @@
+**/.settings/**
+**/.classpath
+**/.project
 /target
 /logs
 /cache

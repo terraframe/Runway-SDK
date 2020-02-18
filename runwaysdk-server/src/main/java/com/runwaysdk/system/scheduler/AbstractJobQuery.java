@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 29012506)
+@com.runwaysdk.business.ClassSignature(hash = -737854743)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -159,23 +159,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
   {
     return getJobOperation(null);
@@ -294,6 +277,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -456,6 +456,122 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   }
 
 
+  public com.runwaysdk.query.Condition multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.getBusinessQuery().isChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.getBusinessQuery().isChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.getBusinessQuery().isChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.getBusinessQuery().isNotChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.
  * This type is used when a join is performed on this class as a reference.
@@ -478,9 +594,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableUUID getOid();
-    public com.runwaysdk.query.SelectableUUID getOid(String alias);
-    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -499,6 +612,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -515,6 +631,30 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.scheduler.AbstractJob abstractJob);
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.scheduler.AbstractJob abstractJob);
+
+
+  public com.runwaysdk.query.Condition multiStageJob();
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery);
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob();
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob();
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery);
 
   }
 
@@ -631,23 +771,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
   {
     return getJobOperation(null);
@@ -750,6 +873,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY,  alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
   {
     return getOwner(null);
@@ -818,6 +958,122 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.AbstractJob.TYPE, alias, displayLabel);
 
   }
+
+  public com.runwaysdk.query.Condition multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.isChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.isChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.isChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.isChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.isNotChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    return this.isNotChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.scheduler.JobHasStage.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(multiStageJobQuery));
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.isNotChildIn(jobHasStageQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_multiStageJob(com.runwaysdk.system.scheduler.MultiStageJobQuery multiStageJobQuery, com.runwaysdk.system.scheduler.JobHasStageQuery jobHasStageQuery)
+  {
+    jobHasStageQuery.AND(jobHasStageQuery.hasParent(multiStageJobQuery));
+    return this.isNotChildIn_SUBSELECT(jobHasStageQuery);
+  }
+
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -903,9 +1159,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableUUID getOid();
-    public com.runwaysdk.query.SelectableUUID getOid(String alias);
-    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation();
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias);
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation(String alias, String displayLabel);
@@ -924,6 +1177,9 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -1105,23 +1361,6 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.ENTITYDOMAIN,  alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
-
-  }
   public com.runwaysdk.system.scheduler.JobOperationQuery.AllJobOperationQueryIF getJobOperation()
   {
     return getJobOperation(null);
@@ -1222,6 +1461,23 @@ public  class AbstractJobQuery extends com.runwaysdk.query.GeneratedBusinessQuer
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.AbstractJob.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.AbstractJob.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()

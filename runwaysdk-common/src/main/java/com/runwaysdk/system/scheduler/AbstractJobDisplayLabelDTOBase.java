@@ -18,11 +18,11 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1925191885)
+@com.runwaysdk.business.ClassSignature(hash = 291190540)
 public abstract class AbstractJobDisplayLabelDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJobDisplayLabel";
-  private static final long serialVersionUID = -1925191885;
+  private static final long serialVersionUID = 291190540;
   
   protected AbstractJobDisplayLabelDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -45,9 +45,10 @@ public abstract class AbstractJobDisplayLabelDTOBase extends com.runwaysdk.busin
     return CLASS;
   }
   
+  public static java.lang.String D2_DEFAULTLOCALE = "d2_defaultLocale";
   public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {

@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.business.Business;
@@ -42,6 +43,8 @@ import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
+import com.runwaysdk.dataaccess.EnumerationItemDAO;
+import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -111,17 +114,17 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Returns a MdAttributeIF that uses the database index of a given name.
+   * Returns a {@link MdAttributeConcreteDAOIF} that uses the database index of a given name.
    * 
    * <br/>
    * <b>Precondition:</b> indexName != null <br/>
    * <b>Precondition:</b> !indexName.trim().equals("") <br/>
    * <b>Postcondition:</b> Returns a MdAttributeIF where
-   * (MdAttributeIF.getIndexName().equals(indexName)
+   * ({@link MdAttributeConcreteDAOIF}.getIndexName().equals(indexName)
    * 
    * @param indexName
    *          Name of the database index.
-   * @return MdAttributeIF that uses the database index of a given name.
+   * @return {@link MdAttributeConcreteDAOIF} that uses the database index of a given name.
    */
   public static MdAttributeConcreteDAOIF getMdAttributeWithIndex(String indexName)
   {
@@ -259,6 +262,27 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public String getIndexName()
   {
     return this.getAttributeIF(MdAttributeConcreteInfo.INDEX_NAME).getValue();
+  }
+  
+  /**
+   * Returns the {@link IndexTypes} of this {@link MdAttributeConcreteDAOIF}.
+   * 
+   * @return the {@link IndexTypes} of this {@link MdAttributeConcreteDAOIF}.
+   */
+  public IndexTypes getIndexType()
+  {
+    AttributeEnumerationIF attributeIndex = (AttributeEnumerationIF)this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+    
+    Set<String> itemOids = attributeIndex.getEnumItemIdList();
+    
+    EnumerationItemDAOIF enumItem = null;
+    
+    for (String oid: itemOids)
+    {
+      enumItem = EnumerationItemDAO.get(oid);
+    }
+    
+    return IndexTypes.valueOf(enumItem.getName());
   }
 
   /**
@@ -749,7 +773,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * <br/>
    * <b>Postcondition: </b> BusinessDAO and all dependencies are removed from
    * the runway <br/>
-   * <b>Postcondition: </b> Coresponding column from the defining table is
+   * <b>Postcondition: </b> Corresponding column from the defining table is
    * dropped
    * 
    * @param p_mdAttribute
@@ -851,10 +875,10 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       throw new InvalidColumnNameException(error, columnName);
     }
 
-    if (ReservedWords.sqlContains(columnName))
-    {
-      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
-    }
+//    if (ReservedWords.sqlContains(columnName))
+//    {
+//      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
+//    }
   }
 
 }

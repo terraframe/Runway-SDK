@@ -84,7 +84,7 @@ public class AttributeCharacterParseException extends AttributeParseException
    */
   public AttributeCharacterParseException(Throwable cause, String attributeDisplayLabel, String invalidValue)
   {
-    super(cause, attributeDisplayLabel, invalidValue);;
+    super(cause, attributeDisplayLabel, invalidValue);
   }
 
   /**

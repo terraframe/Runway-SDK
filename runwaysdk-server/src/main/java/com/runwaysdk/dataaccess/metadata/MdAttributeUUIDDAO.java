@@ -29,8 +29,10 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeUUID_G;
 import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeUUIDMdSession;
@@ -87,6 +89,10 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
     }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeUUID_G(this));
+    }
     else
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_T(this));
@@ -130,7 +136,8 @@ public class MdAttributeUUIDDAO extends MdAttributePrimitiveDAO implements MdAtt
   @Override
   protected String generatedServerSetter(String attributeName)
   {
-    String conversion = "java.lang.String.toString(value)";
+//    String conversion = "java.lang.String.toString(value)";
+    String conversion = "value";
     return this.setterWrapper(attributeName, conversion);
   }
 

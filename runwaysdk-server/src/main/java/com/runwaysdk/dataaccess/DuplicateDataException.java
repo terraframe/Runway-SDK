@@ -38,18 +38,32 @@ public class DuplicateDataException extends DataAccessException
   /**
    * The type of the attribute being set.
    */
-  protected MdEntityDAOIF mdEntityIF;
+  protected MdClassDAOIF      mdClassDAOIF;
+  
+//  /**
+//   * The attribute being set
+//   */
+//  protected List<AttributeIF> attributeIFList;
   
   /**
    * The attribute being set
-   */
-  protected List<AttributeIF> attributeIFList;
+   */ 
+  protected List<String>      localizedAttrLabels;
 
   /**
    * The duplicate value
    */
   protected List<String>      valueList;
-
+  
+  
+  public DuplicateDataException(String devMessage, List<String> localizedAttrLabels, MdClassDAOIF mdClassIF, List<String> valueList)
+  {
+    super(devMessage);
+    this.mdClassDAOIF = mdClassIF;
+    this.localizedAttrLabels = localizedAttrLabels;
+    this.valueList = valueList;
+  }
+  
   /**
    * Constructs a new DuplicateDataException with the specified developer
    * message.
@@ -59,18 +73,19 @@ public class DuplicateDataException extends DataAccessException
    *          access layer information useful for application debugging. The
    *          developer message is saved for later retrieval by the
    *          {@link #getMessage()} method.
-   * @param mdEntityIF
+   * @param mdClassIF
    *          The object type being set. 
    * @param attributeIFList
    *          The attributes being set.
    * @param valueList
    *          The invalid values.
    */
-  public DuplicateDataException(String devMessage, MdEntityDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
+  public DuplicateDataException(String devMessage, MdClassDAOIF mdClassIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(devMessage);
-    this.mdEntityIF = mdEntityIF;
-    this.attributeIFList = attributeIFList;
+    this.mdClassDAOIF = mdClassIF;
+//    this.attributeIFList = attributeIFList;
+    this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
 
@@ -91,18 +106,19 @@ public class DuplicateDataException extends DataAccessException
    *          {@link #getCause()} method). (A <tt>null</tt> value is
    *          permitted, and indicates that the cause is nonexistent or
    *          unknown.)
-   * @param mdEntityIF
+   * @param mdClassIF
    *          The object type being set. 
    * @param attributeIFList
    *          The attributes being set.
    * @param valueList
    *          The invalid values.
    */
-  public DuplicateDataException(String devMessage, Throwable cause, MdEntityDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
+  public DuplicateDataException(String devMessage, Throwable cause, MdClassDAOIF mdClassIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(devMessage, cause);
-    this.mdEntityIF = mdEntityIF;
-    this.attributeIFList = attributeIFList;
+    this.mdClassDAOIF = mdClassIF;
+//    this.attributeIFList = attributeIFList;
+    this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
   
@@ -151,11 +167,22 @@ public class DuplicateDataException extends DataAccessException
   public DuplicateDataException(Throwable cause, MdElementDAOIF mdEntityIF, List<AttributeIF> attributeIFList, List<String> valueList)
   {
     super(cause);
-    this.mdEntityIF = mdEntityIF;
-    this.attributeIFList = attributeIFList;
+    this.mdClassDAOIF = mdEntityIF;
+//    this.attributeIFList = attributeIFList;
+    this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
 
+  
+  private List<String> getLocalAttrNames(List<AttributeIF> attributeIFList)
+  {
+    List<String> returnList = new LinkedList<String>();
+    
+    attributeIFList.forEach(a -> returnList.add(a.getDisplayLabel(this.getLocale())));
+
+    return returnList;
+  }
+  
   /**
    * Fetches the localized message template and plugs in the correct parameters
    * to set the business error message.
@@ -163,11 +190,11 @@ public class DuplicateDataException extends DataAccessException
    */
   public String getLocalizedMessage()
   {
-    if (attributeIFList.size() == 1)
+    if (this.localizedAttrLabels.size() == 1)
     {
-      String displayLabel = attributeIFList.get(0).getDisplayLabel(this.getLocale());
-      String value = attributeIFList.get(0).getValue();
-      return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), displayLabel, value);
+      String displayLabel = localizedAttrLabels.get(0);
+      String value = this.valueList.get(0);
+      return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabel, value);
     }
     else
     {
@@ -175,7 +202,7 @@ public class DuplicateDataException extends DataAccessException
       String values = "";
       
       boolean firstIteration = true;
-      for (AttributeIF attributeIF : attributeIFList)
+      for (String localizedLabel : this.localizedAttrLabels)
       {
         if (!firstIteration)
         {
@@ -185,7 +212,7 @@ public class DuplicateDataException extends DataAccessException
         {
           firstIteration = false;
         }
-        displayLabels += "["+attributeIF.getDisplayLabel(this.getLocale())+"]";
+        displayLabels += "["+localizedLabel+"]";
       }
       
       firstIteration = true;
@@ -202,9 +229,57 @@ public class DuplicateDataException extends DataAccessException
         values += "["+value+"]";
       }
             
-      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdEntityIF.getDisplayLabel(this.getLocale()), displayLabels, values);
+      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabels, values);
     }
-    
-
   }
+  
+//  /**
+//   * Fetches the localized message template and plugs in the correct parameters
+//   * to set the business error message.
+//   * 
+//   */
+//  public String getLocalizedMessage()
+//  {
+//    if (attributeIFList.size() == 1)
+//    {
+//      String displayLabel = attributeIFList.get(0).getDisplayLabel(this.getLocale());
+//      String value = attributeIFList.get(0).getValue();
+//      return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabel, value);
+//    }
+//    else
+//    {
+//      String displayLabels = "";
+//      String values = "";
+//      
+//      boolean firstIteration = true;
+//      for (AttributeIF attributeIF : attributeIFList)
+//      {
+//        if (!firstIteration)
+//        {
+//          displayLabels += ", ";
+//        }
+//        else
+//        {
+//          firstIteration = false;
+//        }
+//        displayLabels += "["+attributeIF.getDisplayLabel(this.getLocale())+"]";
+//      }
+//      
+//      firstIteration = true;
+//      for (String value : valueList)
+//      {
+//        if (!firstIteration)
+//        {
+//          values += ", ";
+//        }
+//        else
+//        {
+//          firstIteration = false;
+//        }
+//        values += "["+value+"]";
+//      }
+//            
+//      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabels, values);
+//    }
+//  }
 }

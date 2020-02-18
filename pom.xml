@@ -23,7 +23,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>3.0.22-SNAPSHOT</version>
+  <version>3.0.34-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>
@@ -39,6 +39,7 @@
     <module>runwaysdk-archetype</module>
     <module>runwaysdk-gis</module>
     <module>runwaysdk-solr</module>
+    <module>runwaysdk-orientdb</module>
   </modules>
   
   <inceptionYear>2004</inceptionYear>

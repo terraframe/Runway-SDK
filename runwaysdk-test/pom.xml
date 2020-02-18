@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.0.22-SNAPSHOT</version>
+    <version>3.0.34-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-test</artifactId>
@@ -52,12 +52,17 @@
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-client</artifactId>
+      <artifactId>runwaysdk-gis-client</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>
-      <artifactId>runwaysdk-server</artifactId>
+      <artifactId>runwaysdk-gis-server</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-orientdb</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

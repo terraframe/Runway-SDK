@@ -40,12 +40,16 @@ import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 public class TransactionState 
 {
 
   private Connection                           ddlConn;
+  
+  private GraphRequest                       ddlGraphRequest;
 
   private ReentrantLock                        transactionStateLock;
 
@@ -112,6 +116,7 @@ public class TransactionState
     this.init();
 
     this.ddlConn = mainTransactionState.ddlConn;
+    this.ddlGraphRequest = mainTransactionState.ddlGraphRequest;
     this.transactionRecordDAO = mainTransactionState.transactionRecordDAO;
     this.metadataTempColumnCounter = mainTransactionState.metadataTempColumnCounter;
   }
@@ -145,6 +150,8 @@ public class TransactionState
     this.metadataTempColumnCounter = 0;
     
     this.transactionId = ServerIDGenerator.nextID();
+    
+    this.ddlGraphRequest = null;
   }
 
   public String getTransactionId()
@@ -200,6 +207,7 @@ public class TransactionState
   {
     this.transactionStateLock = transactionState.transactionStateLock;
     this.ddlConn = transactionState.ddlConn;
+    this.ddlGraphRequest = transactionState.ddlGraphRequest;
     this.transactionRecordDAO = transactionState.transactionRecordDAO;
 
     if (this.transactionCache instanceof TransactionCache && transactionState.transactionCache instanceof ThreadTransactionCache)
@@ -322,6 +330,7 @@ public class TransactionState
     }
   }
 
+  
   /**
    * Indicates whether a DDL connection has already been made for this
    * transaction.
@@ -335,6 +344,57 @@ public class TransactionState
     try
     {
       if (this.ddlConn == null)
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
+  /**
+   * Return the {@link GraphRequest} for DDL commands.
+   * 
+   * @return {@link GraphRequest} connection for DDL commands.
+   */
+  protected GraphRequest getDDLGraphDBRequest()
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      if (this.ddlGraphRequest == null)
+      {
+        this.ddlGraphRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+      }
+        
+      return this.ddlGraphRequest;
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
+  
+  /**
+   * Indicates whether a Graph DB DDL connection has already been made for this
+   * transaction.
+   * 
+   * @return indicates whether a DDL connection has already been made for this
+   *         transaction.
+   */
+  protected boolean getRequestAlreadyHasGraphDDLConnection()
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      if (this.ddlGraphRequest == null)
       {
         return false;
       }

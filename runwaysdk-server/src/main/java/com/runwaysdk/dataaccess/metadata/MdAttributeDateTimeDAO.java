@@ -30,8 +30,10 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeConcrete_G;
 import com.runwaysdk.transport.metadata.AttributeDateTimeMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeDateTimeMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -78,6 +80,10 @@ public class MdAttributeDateTimeDAO extends MdAttributeMomentDAO implements MdAt
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_E(this));
+    }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_G(this));
     }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {

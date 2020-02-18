@@ -82,7 +82,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   protected String          dbColumnType;
 
   /**
-   * @param mdAttribute
+   * @param {@link MdAttributeConcreteDAO}
    */
   public MdAttributeConcrete_E(MdAttributeConcreteDAO mdAttribute)
   {
@@ -103,9 +103,9 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   }
 
   /**
-   * Returns the MdEntityIF that defines this MdAttribute.
+   * Returns the {@link MdEntityDAOIF} that defines this MdAttribute.
    *
-   * @return the MdEntityIF that defines this MdAttribute.
+   * @return the {@link MdEntityDAOIF} that defines this MdAttribute.
    */
   public MdEntityDAOIF definedByClass()
   {

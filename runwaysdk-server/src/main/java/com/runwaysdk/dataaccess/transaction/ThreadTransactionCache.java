@@ -53,8 +53,8 @@ import com.runwaysdk.util.IdParser;
 
 public class ThreadTransactionCache extends AbstractTransactionCache
 {
-  private TransactionCache transactionCache;
-  
+  private TransactionCache         transactionCache;
+
   /**
    * Key: {@link EntityDAO} oid. Value: {@link EntityDAO}
    */
@@ -136,7 +136,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     super.deletedMdType(mdTypeIF);
   }
-  
+
   @Override
   public boolean hasAddedChildren(String businessDAOid, String relationshipType)
   {
@@ -154,18 +154,19 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     return super.hasAddedParents(businessDAOid, relationshipType);
   }
-  
+
   @Override
   public boolean hasRemovedParents(String businessDAOid, String relationshipType)
   {
     return super.hasRemovedParents(businessDAOid, relationshipType);
   }
 
-
   /**
-   * Returns child relationships for the object with the given oid in the transaction.
+   * Returns child relationships for the object with the given oid in the
+   * transaction.
    * 
-   * @param relationshipList relationships returned from the global source.
+   * @param relationshipList
+   *          relationships returned from the global source.
    * @param businessDAOid
    * @param relationshipType
    * 
@@ -175,10 +176,13 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     return super.getChildren(this.getTransactionCache().getChildren(relationshipList, businessDAOid, relationshipType), businessDAOid, relationshipType);
   }
+
   /**
-   * Returns parent relationships for the object with the given oid in the transaction.
+   * Returns parent relationships for the object with the given oid in the
+   * transaction.
    * 
-   * @param relationshipList relationships returned from the global source.
+   * @param relationshipList
+   *          relationships returned from the global source.
    * @param businessDAOid
    * @param relationshipType
    * 
@@ -188,7 +192,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     return super.getParents(this.getTransactionCache().getParents(relationshipList, businessDAOid, relationshipType), businessDAOid, relationshipType);
   }
-  
+
   @Override
   public MdAttributeDAOIF getAddedMdAttribute(String mdAttributeKey)
   {
@@ -218,6 +222,15 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     return childMdRelationshipDAOidSet;
   }
 
+  @Override
+  public Set<String> getChildMdEdgeDAOids(String mdVertexDAOid)
+  {
+    Set<String> childMdEdgeDAOidSet = new HashSet<String>();
+    childMdEdgeDAOidSet.addAll(super.getChildMdEdgeDAOids(mdVertexDAOid));
+    childMdEdgeDAOidSet.addAll(this.getTransactionCache().getChildMdEdgeDAOids(mdVertexDAOid));
+    return childMdEdgeDAOidSet;
+  }
+
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAO(java.lang.String)
    */
@@ -225,26 +238,28 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   public EntityDAOIF getEntityDAO(String oid)
   {
     EntityDAOIF entityDAOIF = null;
-    
+
     this.transactionStateLock.lock();
     try
     {
-      // 1) Check to see if the object's type has been modified in this transaction.
-      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(oid); 
+      // 1) Check to see if the object's type has been modified in this
+      // transaction.
+      String mdTypeRootId = IdParser.parseMdTypeRootIdFromId(oid);
       boolean typeInTransaction = this.typeRootIdsInTransaction.contains(mdTypeRootId);
-      
-      // 2) If the object's type is not in the transaction, then we know that we need to fetch it 
-      // from the global cache 
+
+      // 2) If the object's type is not in the transaction, then we know that we
+      // need to fetch it
+      // from the global cache
       if (!typeInTransaction)
       {
         // By returning null the calling aspect advice will fetch the object
         // from the global cache
         return null;
-      }      
+      }
       else // (typeInTransaction)
       {
         // 3) Determine if the object's type is cached or not
-        MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF)ObjectCache.getMdClassDAOByRootId(mdTypeRootId);
+        MdEntityDAOIF mdEntityDAOIF = (MdEntityDAOIF) ObjectCache.getMdClassDAOByRootId(mdTypeRootId);
 
         // 4) If the type IS cached...
         if (!mdEntityDAOIF.isNotCached())
@@ -253,42 +268,43 @@ public class ThreadTransactionCache extends AbstractTransactionCache
           TransactionItemAction transactionCacheItem = this.updatedEntityDAOIdMap.get(oid);
           if (transactionCacheItem != null)
           {
-            entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(oid);
+            entityDAOIF = (EntityDAOIF) this.transactionObjectCache.get(oid);
           }
-          
-          // 4.2) If it is not in the transaction cache, fetch it from the main thread
+
+          // 4.2) If it is not in the transaction cache, fetch it from the main
+          // thread
           if (entityDAOIF == null)
           {
             entityDAOIF = this.getTransactionCache().getEntityDAO(oid);
-          }   
+          }
         }
         else // (mdEntityDAOIF.isNotCached())
         {
-          // 5) If the object is not cached, 
+          // 5) If the object is not cached,
           if (this.isNewUncachedEntity(oid))
           {
             entityDAOIF = ObjectCache._internalGetEntityDAO(oid);
-            ((EntityDAO)entityDAOIF).setIsNew(true);
+            ( (EntityDAO) entityDAOIF ).setIsNew(true);
           }
         }
       }
 
       return entityDAOIF;
-      
+
     }
     finally
     {
       this.transactionStateLock.unlock();
     }
   }
- 
+
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getEntityDAOIFfromCache(java.lang.String)
    */
   public EntityDAOIF getEntityDAOIFfromCache(String oid)
   {
-    EntityDAOIF entityDAOIF = (EntityDAOIF)this.transactionObjectCache.get(oid);
-    
+    EntityDAOIF entityDAOIF = (EntityDAOIF) this.transactionObjectCache.get(oid);
+
     if (entityDAOIF == null)
     {
       entityDAOIF = this.getTransactionCache().getEntityDAOIFfromCache(oid);
@@ -296,9 +312,10 @@ public class ThreadTransactionCache extends AbstractTransactionCache
 
     return entityDAOIF;
   }
-  
+
   /**
-   * Stores an {@link EntityDAO} that was modified in this transaction in a transaction cache.
+   * Stores an {@link EntityDAO} that was modified in this transaction in a
+   * transaction cache.
    * 
    * @param entityDAO
    */
@@ -315,7 +332,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
       this.transactionStateLock.unlock();
     }
   }
-      
+
   /**
    * Changes the oid of the {@link EntityDAO} in the transaction cache.
    * 
@@ -329,7 +346,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     try
     {
       super.changeEntityIdInCache(oldId, entityDAO);
-      
+
       this.transactionObjectCache.put(entityDAO.getOid(), entityDAO);
       this.transactionObjectCache.remove(oldId);
     }
@@ -338,7 +355,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
       this.transactionStateLock.unlock();
     }
   }
-  
+
   @Override
   public EntityDAOIF getEntityDAO(String type, String key)
   {
@@ -373,6 +390,19 @@ public class ThreadTransactionCache extends AbstractTransactionCache
     if (mdClass == null)
     {
       mdClass = this.getTransactionCache().getMdClass(type);
+    }
+
+    return mdClass;
+  }
+
+  @Override
+  public MdClassDAOIF getMdClassByTableName(String tableName)
+  {
+    MdClassDAOIF mdClass = super.getMdClassByTableName(tableName);
+
+    if (mdClass == null)
+    {
+      mdClass = this.getTransactionCache().getMdClassByTableName(tableName);
     }
 
     return mdClass;
@@ -429,6 +459,17 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   }
 
   @Override
+  public Set<String> getParentMdEdgeDAOids(String mdVertexDAOid)
+  {
+    Set<String> parentMdEdgeDAOidsSet = new HashSet<String>();
+
+    parentMdEdgeDAOidsSet.addAll(super.getParentMdEdgeDAOids(mdVertexDAOid));
+    parentMdEdgeDAOidsSet.addAll(this.getTransactionCache().getParentMdEdgeDAOids(mdVertexDAOid));
+
+    return parentMdEdgeDAOidsSet;
+  }
+
+  @Override
   public RoleDAOIF getRoleIF(String roleName)
   {
     RoleDAOIF roleDAO = super.getRoleIF(roleName);
@@ -444,8 +485,7 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   @Override
   public boolean hasExecutedEntityDeleteMethod(EntityDAO entityDAO, String signature)
   {
-    return (super.hasExecutedEntityDeleteMethod(entityDAO,signature) ||
-            this.getTransactionCache().hasExecutedEntityDeleteMethod(entityDAO,signature));
+    return ( super.hasExecutedEntityDeleteMethod(entityDAO, signature) || this.getTransactionCache().hasExecutedEntityDeleteMethod(entityDAO, signature) );
   }
 
   /**
@@ -454,10 +494,9 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   @Override
   public boolean hasBeenDeletedInTransaction(EntityDAO entityDAO)
   {
-    return (super.hasBeenDeletedInTransaction(entityDAO) ||
-        this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO));
+    return ( super.hasBeenDeletedInTransaction(entityDAO) || this.getTransactionCache().hasBeenDeletedInTransaction(entityDAO) );
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#removeHasBeenDeletedInTransaction(com.runwaysdk.dataaccess.EntityDAO)
    */
@@ -466,13 +505,13 @@ public class ThreadTransactionCache extends AbstractTransactionCache
   {
     super.removeHasBeenDeletedInTransaction(entityDAO);
   }
-  
+
   @Override
   public boolean removeExecutedDeleteMethod(EntityDAO entityDAO, String signature)
   {
     return super.removeExecutedDeleteMethod(entityDAO, signature);
   }
-  
+
   @Override
   public void modifiedMdAttribute_CodeGen(MdAttributeDAO mdAttribute)
   {

@@ -94,7 +94,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     super(attributeMap, classType);
   }
-  
+
   /**
    * Returns the name of the table used to store instances of the class that
    * this object defines.
@@ -125,18 +125,17 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    */
   public abstract BusinessDAOIF getCacheAlgorithm();
 
-
   /**
-   * Returns true if objects defined by this type are not cached in the global cache, 
-   * false otherwise.
+   * Returns true if objects defined by this type are not cached in the global
+   * cache, false otherwise.
    * 
-   * @return true if objects defined by this type are not cached in the global cache, 
-   * false otherwise.
+   * @return true if objects defined by this type are not cached in the global
+   *         cache, false otherwise.
    */
   public boolean isNotCached()
   {
     CacheStrategy cacheStrategy = ObjectCache.getTypeCollection(this.definesType());
-    
+
     if (cacheStrategy instanceof CacheNoneStrategy)
     {
       return true;
@@ -211,13 +210,13 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   }
 
   /**
-   * @return TRUE if IDs that are generated are deterministic, FALSE 
-   * otherwise. Deterministic IDs are generated from a hash of the KeyName value.
+   * @return TRUE if IDs that are generated are deterministic, FALSE otherwise.
+   *         Deterministic IDs are generated from a hash of the KeyName value.
    */
   public boolean hasDeterministicIds()
   {
-    AttributeBooleanIF attrBool = (AttributeBooleanIF)this.getAttributeIF(MdEntityInfo.HAS_DETERMINISTIC_IDS);
-    
+    AttributeBooleanIF attrBool = (AttributeBooleanIF) this.getAttributeIF(MdEntityInfo.HAS_DETERMINISTIC_IDS);
+
     if (attrBool.getBooleanValue())
     {
       return true;
@@ -227,7 +226,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
       return false;
     }
   }
-  
+
   /**
    * Returns an array of MdEntityDAOIF that defines immediate subentites of this
    * entity.
@@ -339,7 +338,6 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     return (MdAttributeConcreteDAOIF) super.definesAttribute(attributeName);
   }
 
-
   /**
    * Returns a complete list of MdAttributeDAOIF objects defined for this
    * instance of Entity. This list includes attributes inherited from
@@ -352,7 +350,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   {
     return (List<? extends MdAttributeConcreteDAOIF>) super.getAllDefinedMdAttributes();
   }
-  
+
   /**
    * Returns a map of MdAttributeDAOIF objects defined by this entity type plus
    * all attributes defined by parent entities.
@@ -452,17 +450,19 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
 
     return mdEntity;
   }
-  
+
   /**
-   * Returns the <code>MdEntityDAOIF</code> instance that defines the given table name.
+   * Returns the <code>MdEntityDAOIF</code> instance that defines the given
+   * table name.
    * 
    * @param tableName
    * 
-   * @return <code>MdEntityDAOIF</code> that defines the table with the given name.
+   * @return <code>MdEntityDAOIF</code> that defines the table with the given
+   *         name.
    */
   public static MdEntityDAOIF getMdEntityByTableName(String tableName)
   {
-    MdEntityDAOIF mdEntity = ObjectCache.getMdEntityByTableName(tableName);
+    MdEntityDAOIF mdEntity = (MdEntityDAOIF) ObjectCache.getMdClassByTableName(tableName);
 
     if (mdEntity == null)
     {
@@ -475,10 +475,34 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     return mdEntity;
   }
 
+  @Override
+  public String apply()
+  {
+    boolean applied = this.isAppliedToDB();
+
+    if (this.isNew() && !applied)
+    {
+      // Supply a table name if one was not provided
+      Attribute tableNameAttribute = this.getAttribute(MdEntityInfo.TABLE_NAME);
+      if (!tableNameAttribute.isModified() || tableNameAttribute.getValue().trim().length() == 0)
+      {
+        // Create a table name
+        String tableName = MdTypeDAO.createTableName(MetadataDAO.convertCamelCaseToUnderscore(this.getTypeName()));
+        tableNameAttribute.setValue(tableName);
+      }
+      else
+      {
+        tableNameAttribute.setValue(tableNameAttribute.getValue().toLowerCase());
+      }
+    }
+
+    return super.apply();
+  }
+
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an OID is created.
-   * If this is not a new BusinessDAO, then records are modified in the
+   * BusinessDAO, then records are created in the database and an OID is
+   * created. If this is not a new BusinessDAO, then records are modified in the
    * database.
    * 
    * <br/>
@@ -542,16 +566,19 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     else
     {
       Attribute keyAttribute = this.getAttribute(MdEntityInfo.KEY);
-      // This should never actually be modified so for now skip updating the indexes
+      // This should never actually be modified so for now skip updating the
+      // indexes
       if (keyAttribute.isModified())
       {
-//        List<RelationshipDAOIF> relList = this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
-//        
-//        for (RelationshipDAOIF relationshipDAOIF : relList)
-//        {
-//          MdIndexDAO mdIndexDAO = (MdIndexDAO)relationshipDAOIF.getChild().getBusinessDAO();
-//          mdIndexDAO.apply();
-//        }
+        // List<RelationshipDAOIF> relList =
+        // this.getChildren(RelationshipTypes.ENTITY_INDEX.getType());
+        //
+        // for (RelationshipDAOIF relationshipDAOIF : relList)
+        // {
+        // MdIndexDAO mdIndexDAO =
+        // (MdIndexDAO)relationshipDAOIF.getChild().getBusinessDAO();
+        // mdIndexDAO.apply();
+        // }
       }
     }
 
@@ -864,6 +891,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * @return command object that either creates or updates Java artifacts for
    *         this type.
    */
+  @Override
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
     Command command;
@@ -889,6 +917,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * 
    * @return command object that deletes Java artifacts for this type.
    */
+  @Override
   public Command getDeleteJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdEntityCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE, conn);
@@ -902,6 +931,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * 
    * @return command object that cleans Java artifacts for this type.
    */
+  @Override
   public Command getCleanJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdEntityCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN, conn);

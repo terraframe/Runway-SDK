@@ -20,8 +20,6 @@ package com.runwaysdk.dataaccess.database;
 
 import java.util.UUID;
 
-import com.runwaysdk.ConfigurationException;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.util.IDGenerator;
 
 /**

@@ -72,10 +72,10 @@ public interface AttributeIF extends Serializable
   public MdAttributeDAOIF getMdAttribute();
 
   /**
-   * Returns all MdAttributes that are involved in building the select clause.
-   * @return all MdAttributes that are involved in building the select clause.
+   * Returns all {@link MdAttributeConcreteDAOIF}s that are involved in building the select clause.
+   * @return all {@link MdAttributeConcreteDAOIF}s  that are involved in building the select clause.
    */
-  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes();
+  public Set<MdAttributeConcreteDAOIF> getAllMdAttributes();
 
   /**
    * Returns the MdAttributeIF that defines the this attribute.

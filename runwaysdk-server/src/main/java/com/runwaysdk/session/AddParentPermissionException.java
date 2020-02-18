@@ -19,10 +19,10 @@
 package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.RelationshipMetadata;
 
 public class AddParentPermissionException extends RelationshipPermissionException
 {
@@ -39,27 +39,27 @@ public class AddParentPermissionException extends RelationshipPermissionExceptio
    *          access layer information useful for application debugging. The
    *          developer message is saved for later retrieval by the
    *          {@link #getMessage()} method.
-   * @param parentBusiness
-   *          The parentBusiness being added to the child
-   * @param childBusiness
-   *          The childBusiness that this child is added to
+   * @param parentMutable
+   *          The parentMutable being added to the child
+   * @param childMutable
+   *          The childMutable that this child is added to
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public AddParentPermissionException(String devMessage, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF,  SingleActorDAOIF user)
+  public AddParentPermissionException(String devMessage, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, Operation.ADD_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, Operation.ADD_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
    * Constructs a new PermissionException with the specified developer message
    * and cause.
    * <p>
-   * Note that the detail message associated with <code>cause</code> is <i>not</i>
-   * automatically incorporated in this PermissionException's detail message.
+   * Note that the detail message associated with <code>cause</code> is
+   * <i>not</i> automatically incorporated in this PermissionException's detail
+   * message.
    *
    * @param devMessage
    *          The non-localized developer error message. Contains specific data
@@ -68,22 +68,20 @@ public class AddParentPermissionException extends RelationshipPermissionExceptio
    *          {@link #getMessage()} method.
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness being added to the child
-   * @param childBusiness
-   *          The childBusiness that this child is added to
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
+   * @param parentMutable
+   *          The parentMutable being added to the child
+   * @param childMutable
+   *          The childMutable that this child is added to
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public AddParentPermissionException(String devMessage, Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public AddParentPermissionException(String devMessage, Throwable cause, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, cause, Operation.ADD_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, cause, Operation.ADD_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -93,22 +91,20 @@ public class AddParentPermissionException extends RelationshipPermissionExceptio
    *
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness being added to the child
-   * @param childBusiness
-   *          The childBusiness that this child is added to
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
+   * @param parentMutable
+   *          The parentMutable being added to the child
+   * @param childMutable
+   *          The childMutable that this child is added to
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public AddParentPermissionException(Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public AddParentPermissionException(Throwable cause, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(cause, Operation.ADD_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(cause, Operation.ADD_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -118,6 +114,6 @@ public class AddParentPermissionException extends RelationshipPermissionExceptio
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.addParentPermissionException(this.getLocale(), this.parentBusiness, this.childBusiness, this.mdRelationshipIF.getParentDisplayLabel(this.getLocale()));
+    return ServerExceptionMessageLocalizer.addParentPermissionException(this.getLocale(), this.parentMutable, this.childMutable, this.mdRelationshipIF.getParentDisplayLabel(this.getLocale()));
   }
 }

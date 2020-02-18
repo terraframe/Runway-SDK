@@ -28,6 +28,7 @@ import com.google.inject.Injector;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Struct;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
@@ -472,6 +473,14 @@ public class SessionFacade
     return session.checkRelationshipAccess(o, business, mdRelationshipId);
   }
 
+  public static boolean checkEdgeAccess(String sessionId, Operation o, VertexObject vertex, String mdEdgeId)
+  {
+    SessionCache cache = SessionFacade.getSessionCache();
+    Session session = cache.getSession(sessionId);
+    
+    return session.checkEdgeAccess(o, vertex, mdEdgeId);
+  }
+  
   /**
    * Check if the {@link UserDAO} of the {@link Session} has
    * {@link Operation} access on an instance

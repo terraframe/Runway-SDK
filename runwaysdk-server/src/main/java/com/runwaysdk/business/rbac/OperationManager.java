@@ -26,10 +26,12 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdSessionDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
@@ -182,11 +184,11 @@ public class OperationManager
       businessDAO = ( (MdClassDimensionDAOIF) businessDAO ).definingMdClass();
     }
 
-    if (businessDAO instanceof MdBusinessDAOIF || businessDAO instanceof MdStructDAOIF)
+    if (businessDAO instanceof MdBusinessDAOIF || businessDAO instanceof MdStructDAOIF || businessDAO instanceof MdVertexDAOIF)
     {
       return mdBusinessOperations;
     }
-    else if (businessDAO instanceof MdRelationshipDAOIF)
+    else if (businessDAO instanceof MdRelationshipDAOIF || businessDAO instanceof MdEdgeDAOIF)
     {
       return mdRelationshipOperations;
     }

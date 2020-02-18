@@ -52,7 +52,6 @@ import com.runwaysdk.session.Session;
 /**
  * Root Attribute class. All attributes have the following properties in common.
  * 
- * @author Eric
  * @version $Revision: 1.24 $
  * @since 1.4
  */
@@ -694,11 +693,11 @@ public abstract class Attribute implements AttributeIF, Serializable
   }
 
   /**
-   * Returns all MdAttributes that are involved in building the select clause.
+   * Returns all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
    * 
-   * @return all MdAttributes that are involved in building the select clause.
+   * @return all {@link MdAttributeConcreteDAOIF} that are involved in building the select clause.
    */
-  public Set<MdAttributeConcreteDAOIF> getAllEntityMdAttributes()
+  public Set<MdAttributeConcreteDAOIF> getAllMdAttributes()
   {
     Set<MdAttributeConcreteDAOIF> set = new HashSet<MdAttributeConcreteDAOIF>();
     set.add(this.getMdAttribute());
@@ -750,8 +749,8 @@ public abstract class Attribute implements AttributeIF, Serializable
   public abstract Attribute attributeClone();
 
   /**
-  *
-  */
+   *
+   */
   public Attribute attributeCopy()
   {
     return this.attributeClone();

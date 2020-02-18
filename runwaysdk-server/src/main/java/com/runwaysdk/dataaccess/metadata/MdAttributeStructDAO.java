@@ -66,7 +66,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
   }
 
   /**
-   * Constructs a MdAttributeStruct from the given hashtable of Attributes.
+   * Constructs a {@link MdAttributeStructDAO} from the given hashtable of {@link Attribute}s.
    *
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -81,8 +81,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     super(attributeMap, classType);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
@@ -221,6 +220,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
    * @return the <code>MdStructDAOIF</code> that defines the class used to store
    *         the values of the struct attribute.
    */
+  @Override
   public MdStructDAOIF getMdStructDAOIF()
   {
     if (this.getAttributeIF(MdAttributeStructInfo.MD_STRUCT).getValue().trim().equals(""))
@@ -235,8 +235,7 @@ public class MdAttributeStructDAO extends MdAttributeConcreteDAO implements MdAt
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */

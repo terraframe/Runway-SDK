@@ -28,23 +28,30 @@ import org.aspectj.lang.JoinPoint;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 
 public class RequestState
 {
-  private boolean             debug = false;
+  private boolean                     debug = false;
 
   // Connection used for DML statements
-  private volatile Connection conn;
+  private volatile Connection         conn;
+  
+  protected GraphRequest            graphDBRequest;
 
-  private volatile Thread     mainThread;
+  private volatile Thread             mainThread;
 
-  protected SessionIF         session;
+  protected SessionIF                 session;
 
   protected RequestState()
   {
-    this.conn = Database.getConnectionRaw();
-    this.session = null;
-    this.mainThread = Thread.currentThread();
+    this.conn               = Database.getConnectionRaw();
+
+    this.graphDBRequest     = GraphDBService.getInstance().getGraphDBRequest();
+
+    this.session            = null;
+    this.mainThread         = Thread.currentThread();
   }
 
   /**
@@ -65,6 +72,11 @@ public class RequestState
   protected Connection getDatabaseConnection()
   {
     return this.conn;
+  }
+
+  public GraphRequest getGraphDBRequest()
+  {
+    return this.graphDBRequest;
   }
   
   public synchronized Boolean isSessionNull() {
@@ -87,7 +99,7 @@ public class RequestState
    * @param joinPoint
    */
   protected synchronized void commitConnection(JoinPoint joinPoint)
-  {
+  { 
     if (conn != null)
     {
       try
@@ -121,6 +133,9 @@ public class RequestState
    */
   protected synchronized void commitAndCloseConnection(JoinPoint joinPoint)
   {
+    // Close the graph db connection, but do not commit it
+    this.graphDBRequest.close();
+    
     if (conn != null)
     {
       try
@@ -156,6 +171,8 @@ public class RequestState
    */
   protected synchronized void rollbackConnection(JoinPoint joinPoint)
   {
+    this.graphDBRequest.rollback();
+    
     if (conn != null)
     {
       try
@@ -184,6 +201,9 @@ public class RequestState
    */
   protected synchronized void rollbackAndCloseConnection(JoinPoint joinPoint)
   {
+    this.graphDBRequest.rollback();
+    this.graphDBRequest.close();
+    
     if (conn != null)
     {
       try

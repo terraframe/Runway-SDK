@@ -20,7 +20,7 @@
 DROP INDEX ac4fac4tskng9hvkhbpbsx0yi61kqo;
 DELETE FROM class_attribute_concrete WHERE oid = '5b68d41a-f6a5-3b5a-973e-c316800000f5';
 DELETE FROM class_attribute WHERE oid = '5b68d41a-f6a5-3b5a-973e-c316800000f5';
-DELETE FROM metadata_relationship WHERE oid = '5b68d41a-f6a5-3b5a-973e-c316800000f5' AND seq = 2665;
+DELETE FROM metadata_relationship WHERE oid = '5b68d41a-f6a5-3b5a-973e-c316800000f5';
 DELETE FROM md_attribute_indicies WHERE set_id='034f0hok2g7fek7v7doso5x4iw7hugxi';
 DELETE FROM visibilitymodifier WHERE set_id='21n3rt68z4jhpmi86yeblp1xg79aglfy';
 DELETE FROM visibilitymodifier WHERE set_id='xgyl8vjbwh027qnrcjjtmkc6m4j00ni4';
@@ -30,7 +30,7 @@ DELETE FROM md_attribute_reference WHERE oid = '0366a90a-4522-3e1b-b9e4-8d345000
 DELETE FROM md_attribute_ref WHERE oid = '0366a90a-4522-3e1b-b9e4-8d34500000da';
 DELETE FROM md_attribute_concrete WHERE oid = '0366a90a-4522-3e1b-b9e4-8d34500000da';
 DELETE FROM md_attribute WHERE oid = '0366a90a-4522-3e1b-b9e4-8d34500000da';
-DELETE FROM metadata WHERE oid = '0366a90a-4522-3e1b-b9e4-8d34500000da' AND seq = 3399;
+DELETE FROM metadata WHERE oid = '0366a90a-4522-3e1b-b9e4-8d34500000da';
 INSERT INTO md_attribute_indicies (set_id, item_id)  VALUES  ('74bng61co5bn5lf6qcp13uzntrc2axlp', '72b5580c-2a6f-3250-9435-1be1f2000055');
 INSERT INTO visibilitymodifier (set_id, item_id)  VALUES  ('0ti39ngpu43p1p9pzwamigu3d7gc8uer', '02d46938-021e-3bb4-bb8f-4a31c5000071');
 INSERT INTO visibilitymodifier (set_id, item_id)  VALUES  ('8pude63lhxzpp7qo28vzdw37193zq5qz', '02d46938-021e-3bb4-bb8f-4a31c5000071');

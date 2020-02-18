@@ -32,10 +32,6 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdTableDAO;
 import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 public class MdTableTestSuite
 {
   /**

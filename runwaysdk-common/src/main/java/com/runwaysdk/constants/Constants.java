@@ -65,11 +65,13 @@ public class Constants
 
   public static final String SYSTEM_BUSINESS_PACKAGE       = ROOT_PACKAGE + ".business";
 
+  public static final String SYSTEM_GRAPH_PACKAGE          = ROOT_PACKAGE + ".graph";
+
   public static final String GENERATION_BUSINESS_PACKAGE   = SYSTEM_BUSINESS_PACKAGE + ".generation";
 
   public static final String FACADE_PACKAGE                = ROOT_PACKAGE + ".facade";
 
-  public static final String SCHEDULER_PACKAGE                = SYSTEM_PACKAGE + ".scheduler";
+  public static final String SCHEDULER_PACKAGE             = SYSTEM_PACKAGE + ".scheduler";
 
   public static final String DATAACCESS_PACKAGE            = ROOT_PACKAGE + ".dataaccess";
 

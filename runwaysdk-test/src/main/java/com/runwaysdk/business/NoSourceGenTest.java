@@ -37,7 +37,6 @@ import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.generation.loader.GeneratedLoader;
-import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.session.Request;
 
 public class NoSourceGenTest

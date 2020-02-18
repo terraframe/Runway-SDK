@@ -27,8 +27,10 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeConcrete_G;
 import com.runwaysdk.transport.metadata.caching.AttributeIntegerMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -47,13 +49,14 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
     super();
   }
 
-
   public MdAttributeIntegerDAO(Map<String, Attribute> attributeMap, String type)
   {
     super(attributeMap, type);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdAttributeIntegerDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -61,13 +64,16 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
     return new MdAttributeIntegerDAO(attributeMap, MdAttributeIntegerInfo.CLASS);
   }
 
-
   @Override
   protected void initializeStrategyObject()
   {
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_E(this));
+    }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_G(this));
     }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
@@ -80,7 +86,7 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   }
 
   /**
-   * Called for java class generation.  Returns the java type of this attribute
+   * Called for java class generation. Returns the java type of this attribute
    * (int), which is used in the generated classes for type safety.
    *
    * @return The java type of this attribute (int)
@@ -89,7 +95,7 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   {
     return "Integer";
   }
-  
+
   /**
    * Returns the java class object for the attribute type.
    * 
@@ -101,17 +107,23 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   }
 
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
    *
-   * @return string representing the query attribute class for attributes of this type.
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
     return com.runwaysdk.query.SelectableInteger.class.getName();
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(
+   * java.lang.String)
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
@@ -134,7 +146,9 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
     object.setValue(this.definesAttribute(), "" + EntityGenerator.getRandom().nextInt());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeIntegerDAO getBusinessDAO()
@@ -143,9 +157,9 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   }
 
   /**
-   * Returns a new MdAttributeInteger.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
+   * Returns a new MdAttributeInteger. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    *
    * @return MdAttributeInteger.
    */
@@ -154,8 +168,11 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
     return (MdAttributeIntegerDAO) BusinessDAO.newInstance(MdAttributeIntegerInfo.CLASS);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
+   * java.lang.String)
    */
   public static MdAttributeIntegerDAOIF get(String oid)
   {
@@ -167,18 +184,18 @@ public class MdAttributeIntegerDAO extends MdAttributeNumberDAO implements MdAtt
   {
     visitor.visitInteger(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
     AttributeIntegerMdSession attrSes = new AttributeIntegerMdSession();
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */

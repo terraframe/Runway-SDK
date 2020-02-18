@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1398711414)
+@com.runwaysdk.business.ClassSignature(hash = -741779755)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,7 @@ package com.runwaysdk.system.scheduler;
  */
 public class AbstractJobDisplayLabelQueryDTO extends com.runwaysdk.business.StructQueryDTO
 {
-private static final long serialVersionUID = -1398711414;
+private static final long serialVersionUID = -741779755;
 
   protected AbstractJobDisplayLabelQueryDTO(String type)
   {

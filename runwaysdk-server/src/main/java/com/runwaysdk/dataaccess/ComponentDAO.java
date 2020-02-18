@@ -105,16 +105,13 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   {
     return this.getValue(ComponentInfo.KEY);
   }
-
-
-
   
   /**
-   * Returns a MdClassIF  that defines this Component's class.
+   * Returns a {@link MdClassDAOIF}  that defines this Component's class.
    *
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
    *
-   * @return a MdClassIF  that defines this Component's class.
+   * @return a {@link MdClassDAOIF}   that defines this Component's class.
    */
   public MdClassDAOIF getMdClassDAO()
   {

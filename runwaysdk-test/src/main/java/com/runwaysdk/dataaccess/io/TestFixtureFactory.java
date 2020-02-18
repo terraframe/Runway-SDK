@@ -18,10 +18,14 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.EntityDTO;
+import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.UserDAO;
@@ -46,6 +50,7 @@ import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
 import com.runwaysdk.constants.MdAttributeDimensionInfo;
 import com.runwaysdk.constants.MdAttributeDoubleInfo;
+import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
@@ -105,6 +110,8 @@ import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MethodActorInfo;
 import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EnumerationItemDAO;
@@ -134,12 +141,14 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -195,11 +204,41 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
+import com.runwaysdk.gis.constants.MdAttributeMultiLineStringInfo;
+import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
+import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributePointInfo;
+import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdGeoVertexInfo;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.system.FieldOperation;
+import com.runwaysdk.system.gis.geo.AllowedIn;
+import com.runwaysdk.system.gis.geo.GeoEntity;
+import com.runwaysdk.system.gis.geo.LocatedIn;
+import com.runwaysdk.system.gis.geo.Universal;
+import com.runwaysdk.system.gis.geo.UniversalInput;
+import com.runwaysdk.system.gis.geo.UniversalView;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.vault.VaultDAO;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Defines some utility methods to build test fixtures for the test cases.
@@ -212,71 +251,95 @@ public class TestFixtureFactory
 
   public static class TestFixConst
   {
-    public static final String TEST_LOCAL_STRUCT_NAME   = "LocalStruct";
+    public static final String TEST_LOCAL_STRUCT_NAME     = "LocalStruct";
 
-    public static final String TEST_STRUCT1             = "Struct1";
+    public static final String TEST_STRUCT1               = "Struct1";
 
-    public static final String TEST_PACKAGE             = "test.xmlclasses";
+    public static final String TEST_PACKAGE               = "test.xmlclasses";
 
-    public static final String TEST_CLASS1              = "Class1";
+    public static final String TEST_CLASS1                = "Class1";
 
-    public static final String TEST_CLASS1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
+    public static final String TEST_CLASS1_TYPE           = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_CLASS1);
 
-    public static final String TEST_TABLE1              = "MdTable1";
+    public static final String TEST_VERTEX1               = "Vertex1";
 
-    public static final String TEST_TABLE1_TYPE         = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_TABLE1);
+    public static final String TEST_VERTEX1_TYPE          = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_VERTEX1);
 
-    public static final String TEST_SESSION_LIMIT       = "10";
+    public static final String TEST_EMBEDDED_VERTEX1      = "EmbeddedVertex1";
 
-    public static final String TEST_PASSWORD            = "blah";
+    public static final String TEST_EMBEDDED_VERTEX1_TYPE = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_EMBEDDED_VERTEX1);
 
-    public static final String TEST_USER                = "testUser";
+    public static final String TEST_ENUM_CLASS            = "EnumClassTest";
 
-    public static final String TEST_ROLE2_DISPLAY_LABEL = "Test Role 2";
+    public static final String TEST_ENUM_CLASS1_TYPE      = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_ENUM_CLASS);
 
-    public static final String TEST_ROLE2_NAME          = "runway.testRole2";
+    public static final String TEST_TABLE1                = "MdTable1";
 
-    public static final String TEST_ROLE1_DISPLAY_LABEL = "Test Role";
+    public static final String TEST_TABLE1_TYPE           = EntityDAOFactory.buildType(TEST_PACKAGE, TEST_TABLE1);
 
-    public static final String TEST_ROLE1_NAME          = "runway.testRole";
+    public static final String TEST_SESSION_LIMIT         = "10";
 
-    public static final String TEST_METHOD_RETURN_TYPE  = "void";
+    public static final String TEST_PASSWORD              = "blah";
 
-    public static String       TEST_METHOD_NAME         = "checkin";
+    public static final String TEST_USER                  = "testUser";
 
-    public static final String ATTRIBUTE_BOOLEAN        = "testBoolean";
+    public static final String TEST_ROLE2_DISPLAY_LABEL   = "Test Role 2";
 
-    public static final String ATTRIBUTE_CHARACTER      = "testCharacter";
+    public static final String TEST_ROLE2_NAME            = "runway.testRole2";
 
-    public static final String ATTRIBUTE_TEXT           = "testText";
+    public static final String TEST_ROLE1_DISPLAY_LABEL   = "Test Role";
 
-    public static final String ATTRIBUTE_CLOB           = "testClob";
+    public static final String TEST_ROLE1_NAME            = "runway.testRole";
 
-    public static final String ATTRIBUTE_INTEGER        = "testInteger";
+    public static final String TEST_METHOD_RETURN_TYPE    = "void";
 
-    public static final String ATTRIBUTE_LONG           = "testLong";
+    public static String       TEST_METHOD_NAME           = "checkin";
 
-    public static final String ATTRIBUTE_FLOAT          = "testFloat";
+    public static final String ATTRIBUTE_BOOLEAN          = "testBoolean";
 
-    public static final String ATTRIBUTE_DOUBLE         = "testDouble";
+    public static final String ATTRIBUTE_CHARACTER        = "testCharacter";
 
-    public static final String ATTRIBUTE_DECIMAL        = "testDecimal";
+    public static final String ATTRIBUTE_TEXT             = "testText";
 
-    public static final String ATTRIBUTE_DATETIME       = "testDateTime";
+    public static final String ATTRIBUTE_CLOB             = "testClob";
 
-    public static final String ATTRIBUTE_DATE           = "testDate";
+    public static final String ATTRIBUTE_INTEGER          = "testInteger";
 
-    public static final String ATTRIBUTE_TIME           = "testTime";
+    public static final String ATTRIBUTE_LONG             = "testLong";
 
-    public static final String ATTRIBUTE_SIZE           = "200";
+    public static final String ATTRIBUTE_FLOAT            = "testFloat";
 
-    public static final String ATTRIBUTE_DEFAULT_LOCALE = "Character Set Test";
+    public static final String ATTRIBUTE_DOUBLE           = "testDouble";
 
-    public static final String TEST_CLASS2              = "Class2";
+    public static final String ATTRIBUTE_DECIMAL          = "testDecimal";
 
-    public static final String METHOD_NAME              = "testMethod";
+    public static final String ATTRIBUTE_DATETIME         = "testDateTime";
 
-    public static final String METHOD_DEFAULT_LOCALE    = "Test Method";
+    public static final String ATTRIBUTE_DATE             = "testDate";
+
+    public static final String ATTRIBUTE_TIME             = "testTime";
+
+    public static final String ATTRIBUTE_POINT            = "testPoint";
+
+    public static final String ATTRIBUTE_LINESTRING       = "testLineString";
+
+    public static final String ATTRIBUTE_POLYGON          = "testPolygon";
+
+    public static final String ATTRIBUTE_MULTI_POINT      = "testMultiPoint";
+
+    public static final String ATTRIBUTE_MULTI_LINESTRING = "testMultiLineString";
+
+    public static final String ATTRIBUTE_MULTI_POLYGON    = "testMultiPolygon";
+
+    public static final String ATTRIBUTE_SIZE             = "200";
+
+    public static final String ATTRIBUTE_DEFAULT_LOCALE   = "Character Set Test";
+
+    public static final String TEST_CLASS2                = "Class2";
+
+    public static final String METHOD_NAME                = "testMethod";
+
+    public static final String METHOD_DEFAULT_LOCALE      = "Test Method";
 
   }
 
@@ -542,8 +605,13 @@ public class TestFixtureFactory
 
   public static MdBusinessDAO createEnumClass1()
   {
+    return createEnumClass(TestFixConst.TEST_ENUM_CLASS);
+  }
+
+  public static MdBusinessDAO createEnumClass(String name)
+  {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-    mdBusiness.setValue(MdBusinessInfo.NAME, "EnumClassTest");
+    mdBusiness.setValue(MdBusinessInfo.NAME, name);
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration mdBusiness Test");
     mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
@@ -648,14 +716,29 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addLocalCharacterAttribute(mdEntity, "testLocalCharacter");
   }
 
-  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeLocalCharacterDAO addLocalCharacterAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeLocalCharacterDAO mdAttribute = MdAttributeLocalCharacterDAO.newInstance();
+    mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
+    mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeLocalCharacterEmbeddedDAO addLocalCharacterEmbeddedAttribute(MdClassDAO mdEntity)
+  {
+    return TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdEntity, "testLocalCharacterEmbedded");
+  }
+
+  public static MdAttributeLocalCharacterEmbeddedDAO addLocalCharacterEmbeddedAttribute(MdClassDAO mdEntity, String attributeName)
+  {
+    MdAttributeLocalCharacterEmbeddedDAO mdAttribute = MdAttributeLocalCharacterEmbeddedDAO.newInstance();
     mdAttribute.setValue(MdAttributeStructInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeStructInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Local Character Test");
     mdAttribute.setValue(MdAttributeStructInfo.DEFINING_MD_CLASS, mdEntity.getOid());
@@ -684,7 +767,7 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeEnumerationDAO addEnumerationAttribute(MdEntityDAOIF mdEntity, MdEnumerationDAOIF mdEnumeration)
+  public static MdAttributeEnumerationDAO addEnumerationAttribute(MdClassDAOIF mdEntity, MdEnumerationDAOIF mdEnumeration)
   {
     MdAttributeEnumerationDAO mdAttribute = MdAttributeEnumerationDAO.newInstance();
     mdAttribute.setValue(MdAttributeEnumerationInfo.NAME, "testEnumeration");
@@ -692,6 +775,24 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeEnumerationInfo.SELECT_MULTIPLE, MdAttributeBooleanInfo.FALSE);
     mdAttribute.setValue(MdAttributeEnumerationInfo.MD_ENUMERATION, mdEnumeration.getOid());
     mdAttribute.setValue(MdAttributeEnumerationInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+
+    return mdAttribute;
+  }
+
+  /**
+   * 
+   * @param mdClass
+   *          the class to which the attribute will be added
+   * @param embeddedMdClass
+   *          the class that defines the embedded attributes
+   * @return
+   */
+  public static MdAttributeEmbeddedDAO addEmbeddedttribute(MdClassDAOIF mdClass, MdClassDAOIF embeddedMdClass)
+  {
+    MdAttributeEmbeddedDAO mdAttribute = MdAttributeEmbeddedDAO.newInstance();
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.NAME, "testEmbedded");
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.EMBEDDED_MD_CLASS, embeddedMdClass.getOid());
+    mdAttribute.setValue(MdAttributeEmbeddedInfo.DEFINING_MD_CLASS, mdClass.getOid());
 
     return mdAttribute;
   }
@@ -720,7 +821,7 @@ public class TestFixtureFactory
     return mdAttributeDimension;
   }
 
-  public static MdAttributeFileDAO addFileAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeFileDAO addFileAttribute(MdClassDAO mdEntity)
   {
     MdAttributeFileDAO mdAttribute = MdAttributeFileDAO.newInstance();
     mdAttribute.setValue(MdAttributeFileInfo.NAME, "testFile");
@@ -735,12 +836,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE);
   }
 
-  public static MdAttributeDateDAO addDateAttribute(MdEntityDAO mdEntity, IndexTypes indexType)
+  public static MdAttributeDateDAO addDateAttribute(MdClassDAO mdEntity, IndexTypes indexType)
   {
     return TestFixtureFactory.addDateAttribute(mdEntity, TestFixConst.ATTRIBUTE_DATE, indexType);
   }
@@ -780,12 +881,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDecimalDAO addDecimalAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDecimalAttribute(mdEntity, TestFixConst.ATTRIBUTE_DECIMAL);
   }
 
-  public static MdAttributeDecimalDAO addDecimalAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeDecimalDAO addDecimalAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeDecimalDAO mdAttribute = MdAttributeDecimalDAO.newInstance();
     mdAttribute.setValue(MdAttributeDecimalInfo.NAME, attributeName);
@@ -798,12 +899,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity)
+  public static MdAttributeDoubleDAO addDoubleAttribute(MdClassDAO mdEntity)
   {
     return TestFixtureFactory.addDoubleAttribute(mdEntity, TestFixConst.ATTRIBUTE_DOUBLE);
   }
 
-  public static MdAttributeDoubleDAO addDoubleAttribute(MdEntityDAO mdEntity, String attributeName)
+  public static MdAttributeDoubleDAO addDoubleAttribute(MdClassDAO mdEntity, String attributeName)
   {
     MdAttributeDoubleDAO mdAttribute = MdAttributeDoubleDAO.newInstance();
     mdAttribute.setValue(MdAttributeDoubleInfo.NAME, attributeName);
@@ -956,12 +1057,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity)
   {
     return addTextAttribute(mdEntity, TestFixConst.ATTRIBUTE_TEXT);
   }
 
-  public static MdAttributeTextDAO addTextAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeTextDAO addTextAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeTextDAO mdAttribute = MdAttributeTextDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -970,12 +1071,12 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity)
   {
     return addClobAttribute(mdEntity, TestFixConst.ATTRIBUTE_CLOB);
   }
 
-  public static MdAttributeClobDAO addClobAttribute(MdEntityDAOIF mdEntity, String attributeName)
+  public static MdAttributeClobDAO addClobAttribute(MdClassDAOIF mdEntity, String attributeName)
   {
     MdAttributeClobDAO mdAttribute = MdAttributeClobDAO.newInstance();
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
@@ -996,6 +1097,102 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeTimeInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTimeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Time Set Test");
     mdAttribute.setValue(MdAttributeTimeInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributePointDAO addPointAttribute(MdClassDAOIF mdEntity)
+  {
+    return addPointAttribute(mdEntity, TestFixConst.ATTRIBUTE_POINT);
+  }
+
+  public static MdAttributePointDAO addPointAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributePointDAO mdAttribute = MdAttributePointDAO.newInstance();
+    mdAttribute.setValue(MdAttributePointInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributePointInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Point Set Test");
+    mdAttribute.setValue(MdAttributePointInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributePointInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeMultiPointDAO addMultiPointAttribute(MdClassDAOIF mdEntity)
+  {
+    return addMultiPointAttribute(mdEntity, TestFixConst.ATTRIBUTE_MULTI_POINT);
+  }
+
+  public static MdAttributeMultiPointDAO addMultiPointAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeMultiPointDAO mdAttribute = MdAttributeMultiPointDAO.newInstance();
+    mdAttribute.setValue(MdAttributeMultiPointInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeMultiPointInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiPoint Set Test");
+    mdAttribute.setValue(MdAttributeMultiPointInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeMultiPointInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeMultiPolygonDAO addMultiPolygonAttribute(MdClassDAOIF mdEntity)
+  {
+    return addMultiPolygonAttribute(mdEntity, TestFixConst.ATTRIBUTE_MULTI_POLYGON);
+  }
+
+  public static MdAttributeMultiPolygonDAO addMultiPolygonAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeMultiPolygonDAO mdAttribute = MdAttributeMultiPolygonDAO.newInstance();
+    mdAttribute.setValue(MdAttributeMultiPolygonInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeMultiPolygonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiPolygon Set Test");
+    mdAttribute.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeMultiPolygonInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeMultiLineStringDAO addMultiLineStringAttribute(MdClassDAOIF mdEntity)
+  {
+    return addMultiLineStringAttribute(mdEntity, TestFixConst.ATTRIBUTE_MULTI_LINESTRING);
+  }
+
+  public static MdAttributeMultiLineStringDAO addMultiLineStringAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeMultiLineStringDAO mdAttribute = MdAttributeMultiLineStringDAO.newInstance();
+    mdAttribute.setValue(MdAttributeMultiLineStringInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeMultiLineStringInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "MultiLineString Set Test");
+    mdAttribute.setValue(MdAttributeMultiLineStringInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeMultiLineStringInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributePolygonDAO addPolygonAttribute(MdClassDAOIF mdEntity)
+  {
+    return addPolygonAttribute(mdEntity, TestFixConst.ATTRIBUTE_POLYGON);
+  }
+
+  public static MdAttributePolygonDAO addPolygonAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributePolygonDAO mdAttribute = MdAttributePolygonDAO.newInstance();
+    mdAttribute.setValue(MdAttributePolygonInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributePolygonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Polygon Set Test");
+    mdAttribute.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributePolygonInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeLineStringDAO addLineStringAttribute(MdClassDAOIF mdEntity)
+  {
+    return addLineStringAttribute(mdEntity, TestFixConst.ATTRIBUTE_LINESTRING);
+  }
+
+  public static MdAttributeLineStringDAO addLineStringAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeLineStringDAO mdAttribute = MdAttributeLineStringDAO.newInstance();
+    mdAttribute.setValue(MdAttributeLineStringInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeLineStringInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "LineString Set Test");
+    mdAttribute.setValue(MdAttributeLineStringInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeLineStringInfo.SRID, "4326");
 
     return mdAttribute;
   }
@@ -1109,8 +1306,12 @@ public class TestFixtureFactory
       catch (DataNotFoundException dataNotFoundException)
       {
         System.out.println("[" + component.getKey() + "] of type [" + component.getType() + "] could not be deleted ");
-        
+
         dataNotFoundException.printStackTrace();
+      }
+      catch (RuntimeException ex)
+      {
+        ex.printStackTrace();
       }
     }
   }
@@ -1548,6 +1749,56 @@ public class TestFixtureFactory
     return mdBusiness;
   }
 
+  public static MdVertexDAO createMdVertex()
+  {
+    return createMdVertex(TestFixConst.TEST_VERTEX1);
+  }
+
+  public static MdVertexDAO createMdVertex(String name)
+  {
+    MdVertexDAO mdVertex = MdVertexDAO.newInstance();
+    mdVertex.setValue(MdVertexInfo.NAME, name);
+    mdVertex.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdVertex Set Test");
+    mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdVertex Attributes Test");
+
+    return mdVertex;
+  }
+
+  public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child)
+  {
+    return createMdEdge(parent, child, "TestEdge");
+  }
+
+  public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child, String name)
+  {
+    return createMdEdge(parent.getOid(), child.getOid(), name);
+  }
+
+  public static MdEdgeDAO createMdEdge(String parentOid, String childOid, String name)
+  {
+    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+    mdEdge.setValue(MdEdgeInfo.NAME, name);
+    mdEdge.setValue(MdEdgeInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdEdge Set Test");
+    mdEdge.setStructValue(MdEdgeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdEdge Attributes Test");
+    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, parentOid);
+    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, childOid);
+
+    return mdEdge;
+  }
+
+  public static MdGeoVertexDAO createMdGeoVertex(String name)
+  {
+    MdGeoVertexDAO mdGeoVertex = MdGeoVertexDAO.newInstance();
+    mdGeoVertex.setValue(MdGeoVertexInfo.NAME, name);
+    mdGeoVertex.setValue(MdGeoVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdGeoVertex.setStructValue(MdGeoVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdGeoVertex Set Test");
+    mdGeoVertex.setStructValue(MdGeoVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdGeoVertex Attributes Test");
+
+    return mdGeoVertex;
+  }
+
   /**
    * @return
    */
@@ -1731,6 +1982,234 @@ public class TestFixtureFactory
     mdTable.setStructValue(MdTableInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdTable Attributes Test");
 
     return mdTable;
+  }
+
+  /**
+   * Creates a universal with the given name and parent.
+   * 
+   * @param name
+   * @param allowedInParent
+   * @return
+   */
+  public static TermAndRel createUniversal(String name, UniversalView... allowedInParents)
+  {
+    Universal uni = new Universal();
+    uni.getDisplayLabel().setValue(name);
+
+    return Universal.create(uni, allowedInParents[0].getUniversal().getOid(), AllowedIn.CLASS);
+  }
+
+  public static UniversalInput convertToInput(UniversalView view)
+  {
+    UniversalInput input = new UniversalInput();
+
+    input.setUniversal(view.getUniversal());
+    input.setDisplayLabel(view.getDisplayLabel());
+    input.setDescription(view.getDescription());
+
+    return input;
+  }
+
+  /**
+   * Deletes the Universal based on a valid UniversalView.
+   * 
+   * @param view
+   */
+  public static void deleteUniversal(UniversalView view)
+  {
+    if (view != null)
+    {
+      Universal u = view.getUniversal();
+      if (u.isAppliedToDB())
+      {
+        u.delete();
+      }
+    }
+  }
+
+  /**
+   * @param name
+   * @return
+   */
+  public static Universal createUniversal(String name)
+  {
+    Universal universal = new Universal();
+    universal.setUniversalId(name);
+    universal.getDisplayLabel().setValue(name);
+    universal.getDescription().setValue(name);
+
+    return universal;
+  }
+
+  /**
+   * @param name
+   * @return
+   */
+  public static Universal createAndApplyUniversal(String name)
+  {
+    Universal universal = TestFixtureFactory.createUniversal(name);
+    universal.apply();
+
+    return universal;
+  }
+
+  public static Universal createAndApplyUniversal(String name, Universal parent)
+  {
+    Universal universal = TestFixtureFactory.createUniversal(name);
+    universal.apply();
+
+    universal.addLink(parent, AllowedIn.CLASS);
+
+    return universal;
+  }
+
+  /**
+   * @param universalNames
+   */
+  public static void deleteUniversals(String... universalNames)
+  {
+    for (String name : universalNames)
+    {
+      try
+      {
+        Universal.getByKey(name).delete();
+        ;
+      }
+      catch (DataNotFoundException e)
+      {
+        // Do nothing
+      }
+    }
+  }
+
+  public static AllowedIn createAllowedIn(Universal universal)
+  {
+    return TestFixtureFactory.createAllowedIn(Universal.getRoot(), universal);
+  }
+
+  public static AllowedIn createAllowedIn(Universal parent, Universal child)
+  {
+    return new AllowedIn(parent, child);
+  }
+
+  public static GeoEntity createAndApplyGeoEntity(String geoId, Universal universal)
+  {
+    GeoEntity entity = new GeoEntity();
+    entity.setGeoId(geoId);
+    entity.getDisplayLabel().setValue(geoId);
+    entity.setUniversal(universal);
+    entity.apply();
+
+    return entity;
+  }
+
+  public static GeoEntity createAndApplyGeoEntity(String geoId, Universal universal, GeoEntity parent)
+  {
+    GeoEntity retGeo = createAndApplyGeoEntity(geoId, universal);
+
+    retGeo.addLink(parent, LocatedIn.CLASS);
+
+    return retGeo;
+  }
+
+  public static void deleteGeoEntities(String... geoIds)
+  {
+    for (String geoId : geoIds)
+    {
+      try
+      {
+        GeoEntity.getByKey(geoId).delete();
+      }
+      catch (DataNotFoundException e)
+      {
+        // Do nothing
+      }
+    }
+  }
+
+  public static Polygon getPolygon()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20), new Coordinate(10, 10) });
+    return value;
+  }
+
+  public static Polygon getPolygon2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Polygon value = factory.createPolygon(new Coordinate[] { new Coordinate(30, 30), new Coordinate(30, 20), new Coordinate(20, 20), new Coordinate(30, 30) });
+    return value;
+  }
+
+  public static Point getPoint()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(104.9903, 39.7392));
+    return value;
+  }
+
+  public static Point getPoint2()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    Point value = factory.createPoint(new Coordinate(107.9903, 31.7392));
+    return value;
+  }
+
+  public static LineString getLineString()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    LineString value = factory.createLineString(new Coordinate[] { new Coordinate(10, 10), new Coordinate(10, 20), new Coordinate(20, 20) });
+    return value;
+  }
+
+  public static MultiPoint getMultiPoint()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiPoint value = factory.createMultiPoint(new Point[] { TestFixtureFactory.getPoint() });
+    return value;
+  }
+
+  public static MultiPolygon getMultiPolygon()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiPolygon value = factory.createMultiPolygon(new Polygon[] { TestFixtureFactory.getPolygon() });
+    return value;
+  }
+
+  public static MultiLineString getMultiLineString()
+  {
+    GeometryFactory factory = new GeometryFactory();
+    MultiLineString value = factory.createMultiLineString(new LineString[] { TestFixtureFactory.getLineString() });
+
+    return value;
+  }
+
+  public static Calendar getDate()
+  {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+    cal.clear();
+    cal.set(2019, 3, 15);
+
+    return cal;
+  }
+
+  public static void deleteMdClass(String className)
+  {
+    MdClassDAOIF mdClassDAOIF = null;
+
+    try
+    {
+      mdClassDAOIF = MdClassDAO.getMdClassDAO(className);
+    }
+    catch (DataNotFoundException ex)
+    {
+    }
+
+    if (mdClassDAOIF != null)
+    {
+      mdClassDAOIF.getBusinessDAO().delete();
+    }
   }
 
 }

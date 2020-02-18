@@ -37,6 +37,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdGeoVertexInfo;
 import com.runwaysdk.gis.constants.MdWebPointInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
@@ -45,6 +46,7 @@ import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdWebPointDAO;
+import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.gis.transport.conversion.business.GISMutableDTOToMutable;
 import com.runwaysdk.query.GISAttributeEnumerationFactory;
 import com.runwaysdk.query.GISAttributeReferenceFactory;
@@ -73,6 +75,7 @@ public class GISServerInitializer implements ServerInitializerIF
 
     // Register DAO factory
     ConcurrentHashMap<String, BusinessDAO> businessDAOMap = new ConcurrentHashMap<String, BusinessDAO>();
+    businessDAOMap.put(MdGeoVertexInfo.CLASS, new MdGeoVertexDAO());
     businessDAOMap.put(MdAttributePointInfo.CLASS, new MdAttributePointDAO());
     businessDAOMap.put(MdAttributeLineStringInfo.CLASS, new MdAttributeLineStringDAO());
     businessDAOMap.put(MdAttributePolygonInfo.CLASS, new MdAttributePolygonDAO());

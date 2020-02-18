@@ -42,6 +42,7 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.HardCodedMetadataIterator;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
@@ -259,6 +260,9 @@ public class Database
   public static void initialSetup(String rootUser, String rootPass, String rootDb)
   {
     instance().initialSetup(rootUser, rootPass, rootDb);
+    
+    // this is put here because the relational database and the graph database (if any) need to be created together
+    GraphDBService.getInstance().initializeDB();
   }
 
   /**

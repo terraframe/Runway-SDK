@@ -1,0 +1,74 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness name="com.runwaysdk.system.scheduler.MultiStageJob" extends="com.runwaysdk.system.scheduler.ExecutableJob">
+      </mdBusiness>
+      
+      <mdBusiness name="com.runwaysdk.system.scheduler.JobStage" extends="com.runwaysdk.system.scheduler.ExecutableJob" isAbstract="true">
+      </mdBusiness>
+      
+      <mdRelationship name="com.runwaysdk.system.scheduler.JobHasStage">
+        <parent cardinality="1" name="com.runwaysdk.system.scheduler.MultiStageJob" method="MultiStageJob"/>
+        <child cardinality="*" name="com.runwaysdk.system.scheduler.AbstractJob" method="Stage"/>
+      </mdRelationship>
+      
+      <object
+        key="QUEUED"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="QUEUED" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Queued" />
+        </attributeStruct>
+      </object>
+      
+      <object
+        key="NEW"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="NEW" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="New" />
+        </attributeStruct>
+      </object>
+    </create>
+    <update>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.system.scheduler.MultiStageJob" type="com.runwaysdk.system.metadata.MdBusiness"/>
+      <object key="com.runwaysdk.system.scheduler.JobStage" type="com.runwaysdk.system.metadata.MdBusiness"/>
+      <object key="com.runwaysdk.system.scheduler.JobHasStage" type="com.runwaysdk.system.metadata.MdRelationship"/>
+      <object key="com.runwaysdk.system.scheduler.ExecutableJob.maxConcurrentJobs" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+    </delete>
+  </undoIt>
+</version>

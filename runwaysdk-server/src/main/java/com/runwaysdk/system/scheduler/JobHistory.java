@@ -40,7 +40,7 @@ public class JobHistory extends JobHistoryBase
   public static void clearHistory()
   {
     JobHistoryQuery query = new JobHistoryQuery(new QueryFactory());
-    query.WHERE(query.getStatus().notContainsAny(AllJobStatus.RUNNING));
+    query.WHERE(query.getStatus().notContainsAny(AllJobStatus.RUNNING, AllJobStatus.QUEUED));
     OIterator<? extends JobHistory> jhs = query.getIterator();
     
     while (jhs.hasNext())

@@ -40,7 +40,7 @@ public class MdAttributeCharacter_E extends MdAttributeConcrete_E
   private static final long serialVersionUID = 7151262644959678739L;
 
   /**
-   * @param mdAttribute
+   * @param {@link MdAttributeConcreteDAO}
    */
   public MdAttributeCharacter_E(MdAttributeConcreteDAO mdAttribute)
   {

@@ -42,9 +42,6 @@ import com.runwaysdk.dataaccess.metadata.MdTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
 import com.runwaysdk.session.Request;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestSuite;
-
 public class MdAttributeMultiTermTest
 {
   /**

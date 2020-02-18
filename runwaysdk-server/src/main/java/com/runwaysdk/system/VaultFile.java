@@ -19,21 +19,26 @@
 package com.runwaysdk.system;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.VaultFileInfo;
+import com.runwaysdk.resource.ApplicationResource;
+import com.runwaysdk.resource.CloseableFile;
+import com.runwaysdk.resource.ResourceException;
 import com.runwaysdk.session.CreatePermissionException;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.session.SessionIF;
 import com.runwaysdk.vault.VaultFileDAO;
 
-public class VaultFile extends VaultFileBase
+public class VaultFile extends VaultFileBase implements ApplicationResource
 {
   private static final long serialVersionUID = 1229405886296L;
   
@@ -71,7 +76,44 @@ public class VaultFile extends VaultFileBase
   public File getFile()
   {
     VaultFileDAO fileDAO = (VaultFileDAO) BusinessFacade.getEntityDAO(this);
+    
     return fileDAO.getFile();
+  }
+  
+  /**
+   * Returns a temporary file with the proper name and extension of the vault file (not scrambled). This new
+   * temp file should be cleaned up after usage with the AutoCloseable Java paradigm.
+   */
+  public CloseableFile openNewFile()
+  {
+    VaultFileDAO fileDAO = (VaultFileDAO) BusinessFacade.getEntityDAO(this);
+    
+    try
+    {
+      File scrambledVF = fileDAO.getFile();
+      
+      CloseableFile tempFile = new CloseableFile(new File(scrambledVF.getParent(), this.getName()).toURI(), true);
+      // TODO : And if this tempFile already exists?
+      
+      FileUtils.copyFile(scrambledVF, tempFile);
+      
+      tempFile.deleteOnExit();
+      
+      return tempFile;
+    }
+    catch (IOException e)
+    {
+      throw new ResourceException(e);
+    }
+  }
+  
+  /**
+   * Synonym for getFile.
+   */
+  @Override
+  public File getUnderlyingFile()
+  {
+    return this.getFile();
   }
   
   public InputStream getFileStream()
@@ -96,6 +138,42 @@ public class VaultFile extends VaultFileBase
         throw new CreatePermissionException(errorMsg, entity, user);
       }
     }
+  }
+
+  @Override
+  public InputStream openNewStream()
+  {
+    return this.getFileStream();
+  }
+
+  @Override
+  public String getName()
+  {
+    return this.getFileName() + "." + this.getFileExtension();
+  }
+
+  @Override
+  public String getBaseName()
+  {
+    return FilenameUtils.getBaseName(this.getName());
+  }
+
+  @Override
+  public String getNameExtension()
+  {
+    return FilenameUtils.getExtension(this.getName());
+  }
+
+  @Override
+  public boolean isRemote()
+  {
+    return false;
+  }
+
+  @Override
+  public void close()
+  {
+    
   }
   
 }

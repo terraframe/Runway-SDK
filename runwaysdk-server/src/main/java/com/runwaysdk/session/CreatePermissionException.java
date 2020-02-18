@@ -20,6 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.Entity;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
@@ -43,7 +44,7 @@ public class CreatePermissionException extends PermissionException
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(String devMessage, Entity entity, SingleActorDAOIF user)
+  public CreatePermissionException(String devMessage, Mutable entity, SingleActorDAOIF user)
   {
     super(devMessage, entity, Operation.CREATE, user);
   }
@@ -52,8 +53,9 @@ public class CreatePermissionException extends PermissionException
    * Constructs a new PermissionException with the specified developer message
    * and cause.
    * <p>
-   * Note that the detail message associated with <code>cause</code> is <i>not</i>
-   * automatically incorporated in this PermissionException's detail message.
+   * Note that the detail message associated with <code>cause</code> is
+   * <i>not</i> automatically incorporated in this PermissionException's detail
+   * message.
    *
    * @param devMessage
    *          The non-localized developer error message. Contains specific data
@@ -62,15 +64,14 @@ public class CreatePermissionException extends PermissionException
    *          {@link #getMessage()} method.
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
    * @param entity
    *          The entity that was being created
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(String devMessage, Throwable cause, Entity entity, SingleActorDAOIF user)
+  public CreatePermissionException(String devMessage, Throwable cause, Mutable entity, SingleActorDAOIF user)
   {
     super(devMessage, cause, entity, Operation.CREATE, user);
   }
@@ -82,15 +83,14 @@ public class CreatePermissionException extends PermissionException
    *
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
    * @param entity
    *          The entity that was being created
    * @param user
    *          The user attempting the operation
    */
-  public CreatePermissionException(Throwable cause, Entity entity, SingleActorDAOIF user)
+  public CreatePermissionException(Throwable cause, Mutable entity, SingleActorDAOIF user)
   {
     super(cause, entity, Operation.CREATE, user);
   }

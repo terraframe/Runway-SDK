@@ -25,13 +25,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.runwaysdk.util.ClasspathResource;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.util.ServerInitializerFacade;
 
 /**
@@ -53,7 +54,7 @@ public class InstallerCP
   public static void install(String rootUser, String rootPass, String rootDb, String xsd) throws IOException
   {
     Database.initialSetup(rootUser, rootPass, rootDb);
-
+    
     InputStream xsdIS = InstallerCP.class.getClassLoader().getResourceAsStream(xsd);
     if (xsdIS == null)
     {
@@ -90,11 +91,11 @@ public class InstallerCP
             xmlFilesIS[i] = new FileInputStream(targetMetadata);
           }
           catch (Exception e) {
-            xmlFilesIS[i] = cpr.getStream();
+            xmlFilesIS[i] = cpr.openNewStream();
           }
         }
         else {
-          xmlFilesIS[i] = cpr.getStream();
+          xmlFilesIS[i] = cpr.openNewStream();
         }
       }
     }

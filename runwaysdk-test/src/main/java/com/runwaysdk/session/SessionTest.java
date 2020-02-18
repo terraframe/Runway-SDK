@@ -18,9 +18,7 @@
  */
 package com.runwaysdk.session;
 
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.After;
@@ -43,7 +41,6 @@ import com.runwaysdk.business.rbac.UserDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -53,7 +50,6 @@ import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
-import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;

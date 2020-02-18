@@ -1,0 +1,74 @@
+<!--
+
+    Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+
+    This file is part of Runway SDK(tm).
+
+    Runway SDK(tm) is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    Runway SDK(tm) is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <enumerationMaster name="com.runwaysdk.system.graph.ChangeFrequencyMaster" label="Geometry Types Master" generateController="false" />
+
+      <object key="ANNUAL" type="com.runwaysdk.system.graph.ChangeFrequencyMaster">
+        <attribute name="enumName" value="ANNUAL" />
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="Annual" />
+        </attributeStruct>
+      </object>
+
+      <object key="QUARTER" type="com.runwaysdk.system.graph.ChangeFrequencyMaster">
+        <attribute name="enumName" value="QUARTER" />
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="Quarter" />
+        </attributeStruct>
+      </object>
+
+      <object key="MONTHLY" type="com.runwaysdk.system.graph.ChangeFrequencyMaster">
+        <attribute name="enumName" value="MONTHLY" />
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="Monthly" />
+        </attributeStruct>
+      </object>
+
+      <object key="DAILY" type="com.runwaysdk.system.graph.ChangeFrequencyMaster">
+        <attribute name="enumName" value="DAILY" />
+        <attributeStruct name="displayLabel">
+          <attribute name="defaultLocale" value="Daily" />
+        </attributeStruct>
+      </object>
+
+      <mdEnumeration name="com.runwaysdk.system.graph.ChangeFrequency" type="com.runwaysdk.system.graph.ChangeFrequencyMaster">
+        <includeAll />
+      </mdEnumeration>
+    </create>
+    <update>
+      <mdBusiness name="com.runwaysdk.system.metadata.MdGraphClass">
+        <create>
+          <attributes>
+            <enumeration name="frequency" label="Frequency" required="false" type="com.runwaysdk.system.graph.ChangeFrequency" immutable="true" selectMultiple="false" />
+          </attributes>
+        </create>
+      </mdBusiness>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object type="com.runwaysdk.system.graph.ChangeFrequency" key="com.runwaysdk.system.metadata.MdEnumeration"></object>
+      <object type="com.runwaysdk.system.graph.ChangeFrequencyMaster" key="com.runwaysdk.system.metadata.MdBusiness"></object>
+    </delete>
+  </undoIt>
+</version>

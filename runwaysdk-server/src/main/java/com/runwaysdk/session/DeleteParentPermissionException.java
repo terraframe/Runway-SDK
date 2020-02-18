@@ -19,10 +19,10 @@
 package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.Business;
+import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
-import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
+import com.runwaysdk.dataaccess.RelationshipMetadata;
 
 public class DeleteParentPermissionException extends RelationshipPermissionException
 {
@@ -39,27 +39,27 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *          access layer information useful for application debugging. The
    *          developer message is saved for later retrieval by the
    *          {@link #getMessage()} method.
-   * @param parentBusiness
-   *          The parentBusiness that this child is deleted from
-   * @param childBusiness
-   *          The childBusiness being removed from the parent
+   * @param parentMutable
+   *          The parentMutable that this child is deleted from
+   * @param childMutable
+   *          The childMutable being removed from the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public DeleteParentPermissionException(String devMessage, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public DeleteParentPermissionException(String devMessage, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, Operation.DELETE_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
    * Constructs a new PermissionException with the specified developer message
    * and cause.
    * <p>
-   * Note that the detail message associated with <code>cause</code> is <i>not</i>
-   * automatically incorporated in this PermissionException's detail message.
+   * Note that the detail message associated with <code>cause</code> is
+   * <i>not</i> automatically incorporated in this PermissionException's detail
+   * message.
    *
    * @param devMessage
    *          The non-localized developer error message. Contains specific data
@@ -68,22 +68,20 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *          {@link #getMessage()} method.
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness that this child is deleted from
-   * @param childBusiness
-   *          The childBusiness being removed from the parent
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
+   * @param parentMutable
+   *          The parentMutable that this child is deleted from
+   * @param childMutable
+   *          The childMutable being removed from the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public DeleteParentPermissionException(String devMessage, Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public DeleteParentPermissionException(String devMessage, Throwable cause, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(devMessage, cause, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(devMessage, cause, Operation.DELETE_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -93,22 +91,20 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    *
    * @param cause
    *          the cause (which is saved for later retrieval by the
-   *          {@link #getCause()} method). (A <tt>null</tt> value is
-   *          permitted, and indicates that the cause is nonexistent or
-   *          unknown.)
-   * @param parentBusiness
-   *          The parentBusiness that this child is deleted from
-   * @param childBusiness
-   *          The childBusiness being removed from the parent
+   *          {@link #getCause()} method). (A <tt>null</tt> value is permitted,
+   *          and indicates that the cause is nonexistent or unknown.)
+   * @param parentMutable
+   *          The parentMutable that this child is deleted from
+   * @param childMutable
+   *          The childMutable being removed from the parent
    * @param mdRelationshipIF
    *          Type of the relationship
    * @param user
    *          The user attempting the operation
    */
-  public DeleteParentPermissionException(Throwable cause, Business parentBusiness, Business childBusiness,
-      MdRelationshipDAOIF mdRelationshipIF, SingleActorDAOIF user)
+  public DeleteParentPermissionException(Throwable cause, Mutable parentMutable, Mutable childMutable, RelationshipMetadata mdRelationshipIF, SingleActorDAOIF user)
   {
-    super(cause, Operation.DELETE_PARENT, parentBusiness, childBusiness, mdRelationshipIF, user);
+    super(cause, Operation.DELETE_PARENT, parentMutable, childMutable, mdRelationshipIF, user);
   }
 
   /**
@@ -118,6 +114,6 @@ public class DeleteParentPermissionException extends RelationshipPermissionExcep
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.deleteParentPermissionException(this.getLocale(), this.childBusiness, this.parentBusiness, this.mdRelationshipIF.getParentDisplayLabel(this.getLocale()));
+    return ServerExceptionMessageLocalizer.deleteParentPermissionException(this.getLocale(), this.childMutable, this.parentMutable, this.mdRelationshipIF.getParentDisplayLabel(this.getLocale()));
   }
 }

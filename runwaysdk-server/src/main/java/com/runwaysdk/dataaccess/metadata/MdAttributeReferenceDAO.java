@@ -34,9 +34,12 @@ import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeReference_G;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeUUID_G;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -135,6 +138,10 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
     if (this.definedByClass() instanceof MdEntityDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeReference_E(this));
+    }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeReference_G(this));
     }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {

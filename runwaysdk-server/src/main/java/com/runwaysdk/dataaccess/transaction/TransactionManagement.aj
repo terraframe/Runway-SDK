@@ -30,6 +30,7 @@ import com.runwaysdk.ProblemIF;
 import com.runwaysdk.business.generation.CompilerException;
 import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.business.generation.GenerationUtil;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -37,11 +38,13 @@ import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.AddGroupIndexDDLCommand;
-import com.runwaysdk.dataaccess.database.EntityDAOFactory;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.PermissionCache;
 import com.runwaysdk.session.RequestManagement;
+import com.runwaysdk.session.Session;
+import com.runwaysdk.session.SessionIF;
 
 public privileged aspect TransactionManagement extends AbstractTransactionManagement
 {
@@ -437,7 +440,40 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   @Override
   protected void dmlCommit() throws SQLException
-  {
+  { 
+    // If an error is generated when the graph database commits, then convert the error 
+    // to a runway error and rollback the transaction for the relational database.
+    try
+    {
+      this.getGraphDBRequest().commit();
+    }
+    catch (RuntimeException graphDbEx)
+    {
+      try
+      {
+        SessionIF sessionIF = Session.getCurrentSession();
+        java.util.Locale locale;
+      
+        if (sessionIF == null)
+        {
+          locale = CommonProperties.getDefaultLocale();
+        }
+        else
+        {
+          locale = sessionIF.getLocale();
+        }
+        
+        throw GraphDBService.getInstance().processException(locale, graphDbEx);
+      }
+      finally
+      {
+        if (this.conn != null)
+        {
+          this.conn.rollback();
+        }
+      }
+    }  
+      
     if (this.conn != null)
     {
       this.conn.commit();
@@ -451,6 +487,8 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   @Override
   protected void dmlRollback() throws SQLException
   {
+    this.getGraphDBRequest().rollback();
+    
     if (this.conn != null)
     {
       this.conn.rollback();

@@ -57,10 +57,6 @@ import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
 
-import junit.extensions.TestSetup;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 public class XMLTermExporterTest
 {
   private static String                termAId;

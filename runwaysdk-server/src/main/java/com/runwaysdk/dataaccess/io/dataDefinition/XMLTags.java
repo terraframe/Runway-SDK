@@ -104,7 +104,7 @@ public interface XMLTags
    * The xml name of the abstract attribute in the class tag
    */
   public static final String   ABSTRACT_ATTRIBUTE               = "isAbstract";
-  
+
   /**
    * The xml name of the generate source attribute in the class tag
    */
@@ -178,6 +178,11 @@ public interface XMLTags
   public static final String   LOCAL_CHARACTER_TAG              = "localChar";
 
   /**
+   * The xml tag for an MdAttributeLocalCharacter
+   */
+  public static final String   LOCAL_CHARACTER_EMBEDDED_TAG     = "localCharEmbedded";
+
+  /**
    * The xml tag for an MdAttributeText
    */
   public static final String   TEXT_TAG                         = "text";
@@ -202,7 +207,7 @@ public interface XMLTags
    * The xml tag for an {@link MdAttributeUUIDDAOIF}
    */
   public static final String   UUID_TAG                         = "uuid";
-  
+
   /**
    * The xml tag for an {@link MdAttributeIntegerDAOIF}
    */
@@ -247,6 +252,11 @@ public interface XMLTags
    * The xml tag for an MdAttributeStruct
    */
   public static final String   STRUCT_TAG                       = "struct";
+
+  /**
+   * The xml tag for an MdAttributeStruct
+   */
+  public static final String   EMBEDDED_TAG                     = "embedded";
 
   /**
    * The xml tag for an MdAttributeReference
@@ -394,7 +404,8 @@ public interface XMLTags
   public static final String   REMOVE_ENUM_ITEM_TAG             = "removeEnumItem";
 
   /**
-   * The xml name of the oid attribute for enumeration_instance and instance tags
+   * The xml name of the oid attribute for enumeration_instance and instance
+   * tags
    */
   public static final String   ID_ATTRIBUTE                     = "oid";
 
@@ -986,4 +997,14 @@ public interface XMLTags
   public static final String   SELECTABLE                       = "selectable";
 
   public static final String   MD_TABLE_TAG                     = "mdTable";
+
+  public static final String   MD_VERTEX_TAG                    = "mdVertex";
+
+  public static final String   MD_EDGE_TAG                      = "mdEdge";
+
+  public static final String   DATABASE_CLASS_NAME              = "dbClassName";
+
+  public static final String   ENABLE_CHANGE_OVER_TIME          = "enableChangeOverTime";
+
+  public static final String   FREQUENCY                        = "frequency";
 }

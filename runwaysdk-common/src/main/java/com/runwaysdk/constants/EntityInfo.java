@@ -21,9 +21,9 @@ package com.runwaysdk.constants;
 public interface EntityInfo extends ComponentInfo
 {
   /**
-   * The Class. Unlike other CLASS constants, this does <i>not</i>
+   * This class, unlike other CLASS constants, this does <i>not</i>
    * correlate directly with the database. This class is extended by generated
-   * classes (which do have database counterparts), but Entity.java
+   * classes (which do have database counterparts), but {@link ENtity}
    * exists only as part of the bridge between layers.
    */
   public static final String CLASS = Constants.SYSTEM_BUSINESS_PACKAGE+".Entity";

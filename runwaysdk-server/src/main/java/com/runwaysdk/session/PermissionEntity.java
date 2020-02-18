@@ -29,6 +29,7 @@ import com.runwaysdk.business.Element;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.Struct;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.ElementInfo;
@@ -111,7 +112,7 @@ public abstract class PermissionEntity implements Serializable
    *
    * @return
    */
-  public abstract SingleActorDAOIF getUser(); 
+  public abstract SingleActorDAOIF getUser();
 
   /**
    * @return The current dimension of the permission entity
@@ -387,7 +388,7 @@ public abstract class PermissionEntity implements Serializable
 
       if (dimension != null)
       {
-        String key = MdClassDimensionDAO.getPermissionKey((MdClassDAOIF)mdTypeIF, dimension);
+        String key = MdClassDimensionDAO.getPermissionKey((MdClassDAOIF) mdTypeIF, dimension);
 
         if (permissions.containsKey(key))
         {
@@ -475,6 +476,66 @@ public abstract class PermissionEntity implements Serializable
         {
           operations.addAll(permissions.get(key));
         }
+      }
+
+      return operations;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  protected boolean checkEdgeAccess(Operation o, VertexObject vertex, String mdEdgeId)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      if (this.isAdmin)
+      {
+        return true;
+      }
+
+      Set<Operation> operations = this.getEdgeOperations(vertex, mdEdgeId);
+
+      // Check for permissions on the type, regardless of state
+      if (operations.contains(o))
+      {
+        return true;
+      }
+
+      if (this.checkRelationshipAccess(o, operations))
+      {
+        return true;
+      }
+
+      return false;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /**
+   * Load directional permissions
+   *
+   * @param business
+   * @param mdRelationshipId
+   * @return
+   */
+  protected Set<Operation> getEdgeOperations(VertexObject vertex, String mdEdgeId)
+  {
+    this.permissionLock.lock();
+
+    try
+    {
+      Set<Operation> operations = new TreeSet<Operation>();
+
+      // Load mdRelationshipId permissions
+      if (permissions.containsKey(mdEdgeId))
+      {
+        operations.addAll(permissions.get(mdEdgeId));
       }
 
       return operations;
@@ -871,4 +932,5 @@ public abstract class PermissionEntity implements Serializable
       this.permissionLock.unlock();
     }
   }
+
 }

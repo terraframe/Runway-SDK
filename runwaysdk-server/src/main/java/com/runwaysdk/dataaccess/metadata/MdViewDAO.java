@@ -70,7 +70,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Constructs a MdView from the given hashtable of Attributes.
+   * Constructs a {@link MdViewDAO} from the given hashtable of Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -79,15 +79,13 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * 
    * @param attributeMap
    * @param type
-   * @param useCache
    */
   public MdViewDAO(Map<String, Attribute> attributeMap, String type)
   {
     super(attributeMap, type);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
@@ -97,10 +95,10 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns a new MdView. Some attributes will contain default values, as
+   * Returns a new {@link MdViewDAO}. Some attributes will contain default values, as
    * defined in the attribute metadata. Otherwise, the attributes will be blank.
    * 
-   * @return instance of MdView.
+   * @return instance of {@link MdViewDAO}.
    */
   public static MdViewDAO newInstance()
   {
@@ -127,6 +125,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * @return true if this class is the root class of a hierarchy, false
    *         otherwise.
    */
+  @Override
   public boolean isRootOfHierarchy()
   {
     String superMdViewId = this.getAttributeIF(MdViewInfo.SUPER_MD_VIEW).getValue();
@@ -145,8 +144,9 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * belongs to. returns a reference to itself if it is the root.
    * 
    * @return MdViewIF that is the root of the hierarchy that this type belongs
-   *         to. returns a reference to inself if it is the root.
+   *         to. returns a reference to itself if it is the root.
    */
+  @Override
   public MdViewDAOIF getRootMdClassDAO()
   {
     return (MdViewDAOIF) super.getRootMdClassDAO();
@@ -159,6 +159,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * @return an array of MdViewIF that defines immediate subclasses of this
    *         class.
    */
+  @Override
   public List<MdViewDAOIF> getSubClasses()
   {
     List<RelationshipDAOIF> subClassRelationshipArray = this.getChildren(RelationshipTypes.VIEW_INHERITANCE.getType());
@@ -173,14 +174,15 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns a list of MdViewIF objects that are subclasses of the given entity.
+   * Returns a list of {@link MdViewDAOIF} objects that are subclasses of the given entity.
    * Only non abstract entities are returned (i.e. entities that can be
    * instantiated)
    * 
-   * @return list of MdViewIF objects that are subclasses of the given entity.
+   * @return list of {@link MdViewDAOIF} objects that are subclasses of the given entity.
    *         Only non abstract entities are returned (i.e. entities that can be
    *         instantiated)
    */
+  @Override
   @SuppressWarnings("unchecked")
   public List<? extends MdViewDAOIF> getAllConcreteSubClasses()
   {
@@ -188,12 +190,13 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns a list of MdViewIF objects that represent entites that are
+   * Returns a list of {@link MdViewDAOIF} objects that represent entities that are
    * subclasses of the given entity, including all recursive entities.
    * 
-   * @return list of MdViewIF objects that represent entites that are subclasses
+   * @return list of  {@link MdViewDAOIF} objects that represent entities that are subclasses
    *         of the given entity, including all recursive entities.
    */
+  @Override
   @SuppressWarnings("unchecked")
   public List<? extends MdViewDAOIF> getAllSubClasses()
   {
@@ -201,10 +204,10 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns an MdViewIF representing the superclass of this class, or null if
+   * Returns an {@link MdViewDAOIF} representing the superclass of this class, or null if
    * this class is basic.
    * 
-   * @return an MdViewIF representing the superclass of this class, or null if
+   * @return an {@link MdViewDAOIF} representing the superclass of this class, or null if
    *         the class is basic.
    */
   public MdViewDAOIF getSuperClass()
@@ -221,10 +224,10 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns a list of MdViewIF instances representing every parent of this
-   * MdViewIF partaking in an inheritance relationship.
+   * Returns a list of {@link MdViewDAOIF} instances representing every parent of this
+   * {@link MdViewDAOIF} partaking in an inheritance relationship.
    * 
-   * @return a list of MdViewIF instances that are parents of this class.
+   * @return a list of {@link MdViewDAOIF} instances that are parents of this class.
    */
   @SuppressWarnings("unchecked")
   public List<MdViewDAOIF> getSuperClasses()
@@ -285,7 +288,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns an MdViewIF instance of the metadata for the given type.
+   * Returns an {@link MdViewDAOIF} instance of the metadata for the given type.
    * 
    * <br/>
    * <b>Precondition:</b> veiwType != null <br/>
@@ -295,7 +298,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * given class (MdViewIF().definesType().equals(veiwType)
    * 
    * @param veiwType
-   * @return MdViewIF instance of the metadata for the given type.
+   * @return {@link MdViewDAOIF} instance of the metadata for the given type.
    */
   public static MdViewDAOIF getMdViewDAO(String viewType)
   {
@@ -308,15 +311,16 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
   }
 
   /**
-   * Returns a list of all generators used to generate source for this MdType.
+   * Returns a list of all generators used to generate source for this {@link MdViewDAOIF}.
    * 
-   * @return
+   * @return list of all generators used to generate source for this {@link MdViewDAOIF}.
    */
+  @Override
   public List<GeneratorIF> getGenerators()
   {
     List<GeneratorIF> list = new LinkedList<GeneratorIF>();
 
-    // Dont generate reserved types
+    // Don't generate reserved types
     if (GenerationUtil.isSkipCompileAndCodeGeneration(this))
     {
       return list;
@@ -343,6 +347,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * @return command object that either creates or updates Java artifacts for
    *         this type.
    */
+  @Override
   public Command getCreateUpdateJavaArtifactCommand(Connection conn)
   {
     Command command;
@@ -368,6 +373,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * 
    * @return command object that deletes Java artifacts for this type.
    */
+  @Override
   public Command getDeleteJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.DELETE, conn);
@@ -381,6 +387,7 @@ public class MdViewDAO extends MdSessionDAO implements MdViewDAOIF
    * 
    * @return command object that cleans Java artifacts for this type.
    */
+  @Override
   public Command getCleanJavaArtifactCommand(Connection conn)
   {
     return new JavaArtifactMdViewCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN, conn);

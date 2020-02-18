@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.business.ontology;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.runwaysdk.ClasspathTestRunner;

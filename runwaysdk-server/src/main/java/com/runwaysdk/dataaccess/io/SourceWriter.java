@@ -67,6 +67,7 @@ public class SourceWriter
   public SourceWriter(File file)
   {
     file.getParentFile().mkdirs();
+    
     try
     {
       writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
@@ -75,6 +76,11 @@ public class SourceWriter
     {
       throw new FileWriteException(file, e);
     }
+  }
+  
+  public SourceWriter(BufferedWriter writer)
+  {
+    this.writer = writer;
   }
   
   protected BufferedWriter getWriter()
