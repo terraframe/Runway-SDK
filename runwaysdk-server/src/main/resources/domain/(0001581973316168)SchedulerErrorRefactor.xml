@@ -1,0 +1,19 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create></create>
+    <update>
+      <mdBusiness name="com.runwaysdk.system.scheduler.JobHistory">
+        <create>
+          <attributes>
+            <text name="errorJson" label="errorJson" required="false" />
+          </attributes>
+        </create>
+      </mdBusiness>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.system.scheduler.JobHistory.errorJson" type="com.runwaysdk.system.metadata.MdAttribute"/>
+    </delete>
+  </undoIt>
+</version>

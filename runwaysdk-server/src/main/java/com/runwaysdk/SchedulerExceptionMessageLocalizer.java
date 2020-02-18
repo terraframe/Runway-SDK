@@ -16,26 +16,28 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.system.scheduler;
+package com.runwaysdk;
 
-public class JobStageDTO extends JobStageDTOBase
+import java.util.Locale;
+
+import com.runwaysdk.constants.CommonProperties;
+
+
+/**
+ * Provides typesafe getter for access to localized business-layer error
+ * messages.
+ * 
+ * @author Richard Rowlands
+ */
+public class SchedulerExceptionMessageLocalizer
 {
-  private static final long serialVersionUID = -1627781327;
-  
-  public JobStageDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  public static String schedulerJobCannotResumeException(Locale locale)
   {
-    super(clientRequest);
+    return LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobCannotResume", "The server was shutdown while the job was running.");
   }
-  
-  /**
-  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.
-  * 
-  * @param businessDTO The BusinessDTO to duplicate
-  * @param clientRequest The clientRequest this DTO should use to communicate with the server.
-  */
-  protected JobStageDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+
+  public static String schedulerMisfireException(Locale locale)
   {
-    super(businessDTO, clientRequest);
+    return LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobMisfire", "The job could not be scheduled as requested, the system is out of resources (scheduler misfire).");
   }
-  
 }

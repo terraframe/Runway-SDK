@@ -30,6 +30,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -41,13 +42,18 @@ import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 
 import com.runwaysdk.ClientSession;
+import com.runwaysdk.ProblemException;
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
+import com.runwaysdk.session.Session;
+import com.runwaysdk.system.metadata.BackupReadException;
 
 public class SchedulerTest
 {
@@ -298,15 +304,30 @@ public class SchedulerTest
     }
   }
 
-  /*
-   * Basic job that errors when executed.
-   */
-  public static class TestErrorJob implements ExecutableJobIF
+  public static class TestSmartErrorJob implements ExecutableJobIF
   {
     @Override
     public void execute(ExecutionContext executionContext)
     {
-      throw new ProgrammingErrorException("Failed on purpose.");
+      try
+      {
+        Thread.sleep(100);
+      }
+      catch (InterruptedException e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+      }
+      
+      ExecutableJob job = executionContext.getJob();
+      String oid = job.getOid();
+      
+      TestRecord testRecord = TestRecord.records.get(oid);
+      testRecord.record();
+      
+      BackupReadException ex = new BackupReadException();
+      ex.setLocation("/test/123");
+      throw ex;
     }
     
     @Override
@@ -315,7 +336,70 @@ public class SchedulerTest
       return null;
     }
   }
-
+  
+  public static class TestRunwayErrorJob implements ExecutableJobIF
+  {
+    @Override
+    public void execute(ExecutionContext executionContext) throws Throwable
+    {
+      try
+      {
+        Thread.sleep(100);
+      }
+      catch (InterruptedException e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+      }
+      
+      ExecutableJob job = executionContext.getJob();
+      String oid = job.getOid();
+      
+      TestRecord testRecord = TestRecord.records.get(oid);
+      testRecord.record();
+      
+      throw buildRunwayJobError();
+    }
+    
+    @Override
+    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    {
+      return null;
+    }
+  }
+  
+  public static class TestArithmeticErrorJob implements ExecutableJobIF
+  {
+    @Override
+    public void execute(ExecutionContext executionContext) throws Throwable
+    {
+      try
+      {
+        Thread.sleep(100);
+      }
+      catch (InterruptedException e)
+      {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+      }
+      
+      ExecutableJob job = executionContext.getJob();
+      String oid = job.getOid();
+      
+      TestRecord testRecord = TestRecord.records.get(oid);
+      testRecord.record();
+      
+      int fail = 10 / 0;
+      System.out.println(fail);
+    }
+    
+    @Override
+    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    {
+      return null;
+    }
+  }
+  
   @BeforeClass
   @Request
   public static void classSetUp()
@@ -382,7 +466,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-  @Test
+//  @Test
   public void testCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -434,7 +518,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-  @Test
+//  @Test
   public void testManuallyStartJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -467,7 +551,7 @@ public class SchedulerTest
         Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
-        Assert.assertTrue(updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
       }
       else
       {
@@ -489,7 +573,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-  @Test
+//  @Test
   public void testModifyCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -546,7 +630,7 @@ public class SchedulerTest
    * Tests the clearHistory MdMethod defined on JobHistory.
    */
   @Request
-  @Test
+//  @Test
   public void testClearHistory()
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestJob.class);
@@ -600,7 +684,7 @@ public class SchedulerTest
   }
 
   @Request
-  @Test
+//  @Test
   public void testQueueDifferentJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -661,7 +745,7 @@ public class SchedulerTest
   }
   
   @Request
-  @Test
+//  @Test
   public void testQueueSameJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -715,7 +799,7 @@ public class SchedulerTest
   }
   
   @Request
-  @Test
+//  @Test
   public void testQueueManyJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -904,7 +988,7 @@ public class SchedulerTest
     Thread.sleep(100);
   }
   
-  @Test
+//  @Test
   @Request
   public void testQueueMultithreading() throws InterruptedException
   {
@@ -1032,5 +1116,226 @@ public class SchedulerTest
   private JobHistoryRecord getRecord(ExecutableJob execJob, JobHistory hist)
   {
     return hist.getJobRel(execJob).getAll().get(0);
+  }
+  
+//  @Test
+  @Request
+  public void testMultiStageJob() throws Exception
+  {
+    
+  }
+  
+  /**
+   * Tests a job which errors out.
+   * 
+   * @throws InterruptedException
+   */
+  @Request
+  @Test
+  public void testSmartJobError() throws Throwable
+  {
+    ExecutableJob job = QualifiedTypeJob.newInstance(TestSmartErrorJob.class);
+    job.getDisplayLabel().setValue("testSmartJobError");
+
+    try
+    {
+      job.apply();
+
+      TestRecord tr = TestRecord.newRecord(job);
+
+      JobHistory history = job.start();
+      Date startTime = history.getStartTime();
+
+      Assert.assertNotNull(startTime);
+      Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
+      
+      this.waitUntilRunning(history);
+      
+      history = JobHistory.get(history.getOid());
+      Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
+
+      wait(tr, 10);
+      
+      if (tr.isExecuted() && tr.getCount() == 1)
+      {
+        Thread.sleep(1000);
+        
+        JobHistory updated = JobHistory.getByKey(history.getKey());
+        Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
+        Assert.assertNotNull(updated.getEndTime());
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        
+        BackupReadException ex = new BackupReadException();
+        ex.setLocation("/test/123");
+        
+        String json = updated.getErrorJson();
+        System.out.println(json);
+        
+        JSONObject jo = new JSONObject(json);
+        Assert.assertEquals(ex.getType(), jo.get("type"));
+        
+        Assert.assertEquals(2, jo.getJSONArray("attributes").length());
+        
+        String msg = ex.localize(Session.getCurrentLocale());
+        Assert.assertEquals(msg, jo.get("message"));
+        Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+      }
+      else
+      {
+        Assert.fail("The job was not completed.");
+      }
+    }
+    finally
+    {
+      Thread.sleep(1000);
+      ExecutableJob.get(job.getOid()).delete();
+      clearHistory();
+    }
+  }
+  
+  @Request
+  @Test
+  public void testArithmeticJobError() throws Throwable
+  {
+    ExecutableJob job = QualifiedTypeJob.newInstance(TestArithmeticErrorJob.class);
+    job.getDisplayLabel().setValue("testBasicJobError");
+
+    try
+    {
+      job.apply();
+
+      TestRecord tr = TestRecord.newRecord(job);
+
+      JobHistory history = job.start();
+      Date startTime = history.getStartTime();
+
+      Assert.assertNotNull(startTime);
+      Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
+      
+      this.waitUntilRunning(history);
+      
+      history = JobHistory.get(history.getOid());
+      Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
+
+      wait(tr, 10);
+      
+      if (tr.isExecuted() && tr.getCount() == 1)
+      {
+        Thread.sleep(1000);
+        
+        JobHistory updated = JobHistory.getByKey(history.getKey());
+        Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
+        Assert.assertNotNull(updated.getEndTime());
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        
+        ArithmeticException ex = null;
+        try
+        {
+          int fail = 10 / 0;
+          System.out.println(fail);
+        }
+        catch (ArithmeticException e)
+        {
+          ex = e;
+        }
+        
+        String json = updated.getErrorJson();
+        System.out.println(json);
+        
+        JSONObject jo = new JSONObject(json);
+        Assert.assertEquals(ex.getClass().getName(), jo.get("type"));
+        
+        String msg = ex.getMessage();
+        Assert.assertEquals(msg, jo.get("message"));
+        Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+      }
+      else
+      {
+        Assert.fail("The job was not completed.");
+      }
+    }
+    finally
+    {
+      Thread.sleep(1000);
+      ExecutableJob.get(job.getOid()).delete();
+      clearHistory();
+    }
+  }
+  
+  private static RunwayException buildRunwayJobError()
+  {
+//    LinkageError le = new LinkageError();
+//    
+//    List<ProblemIF> problems = new ArrayList<ProblemIF>();
+//    problems.add(new WKTParsingProblem());
+//    
+//    ProblemException probEx = new ProblemException(le, problems);
+//    
+//    return probEx;
+    
+    return new SchedulerJobCannotResumeException("");
+  }
+  
+  @Request
+  @Test
+  public void testRunwayJobError() throws Throwable
+  {
+    ExecutableJob job = QualifiedTypeJob.newInstance(TestRunwayErrorJob.class);
+    job.getDisplayLabel().setValue("testRunwayErrorJob");
+
+    try
+    {
+      job.apply();
+
+      TestRecord tr = TestRecord.newRecord(job);
+
+      JobHistory history = job.start();
+      Date startTime = history.getStartTime();
+
+      Assert.assertNotNull(startTime);
+      Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
+      
+      this.waitUntilRunning(history);
+      
+      history = JobHistory.get(history.getOid());
+      Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
+
+      wait(tr, 10);
+      
+      if (tr.isExecuted() && tr.getCount() == 1)
+      {
+        Thread.sleep(1000);
+        
+        JobHistory updated = JobHistory.getByKey(history.getKey());
+        Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
+        Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
+        Assert.assertNotNull(updated.getEndTime());
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        
+        String json = updated.getErrorJson();
+        System.out.println(json);
+        
+        RunwayException rwEx = buildRunwayJobError();
+        
+        JSONObject jo = new JSONObject(json);
+        Assert.assertEquals(rwEx.getClass().getName(), jo.get("type"));
+        
+        String msg = rwEx.getLocalizedMessage();
+        Assert.assertEquals(msg, jo.get("message"));
+        Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+      }
+      else
+      {
+        Assert.fail("The job was not completed.");
+      }
+    }
+    finally
+    {
+      Thread.sleep(1000);
+      ExecutableJob.get(job.getOid()).delete();
+      clearHistory();
+    }
   }
 }

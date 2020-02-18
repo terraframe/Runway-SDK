@@ -41,7 +41,7 @@ package com.runwaysdk.system.scheduler;
  ******************************************************************************/
 public interface ExecutableJobIF
 {
-  public void execute(ExecutionContext executionContext);
+  public void execute(ExecutionContext executionContext) throws Throwable;
   
   public QuartzRunwayJob getQuartzJob(ExecutableJob execJob);
 

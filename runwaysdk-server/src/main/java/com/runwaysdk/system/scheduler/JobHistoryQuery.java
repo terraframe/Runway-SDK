@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1571029100)
+@com.runwaysdk.business.ClassSignature(hash = 523319655)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -136,6 +118,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getErrorJson()
+  {
+    return getErrorJson(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment()
   {
     return getHistoryComment(null);
@@ -180,23 +179,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION);
 
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, mdAttributeIF, this, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -277,6 +259,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.scheduler.JobHistory.LOCKEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.scheduler.JobHistory.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -652,15 +651,15 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getErrorJson();
+    public com.runwaysdk.query.SelectableChar getErrorJson(String alias);
+    public com.runwaysdk.query.SelectableChar getErrorJson(String alias, String displayLabel);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment(String alias, String displayLabel);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableUUID getOid();
-    public com.runwaysdk.query.SelectableUUID getOid(String alias);
-    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -673,6 +672,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -824,6 +826,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.ENTITYDOMAIN,  alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getErrorJson()
+  {
+    return getErrorJson(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment()
   {
     return getHistoryComment(null);
@@ -856,23 +875,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, com.runwaysdk.system.metadata.MdAttributeLocalText.CLASS, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -941,6 +943,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()
@@ -1281,15 +1300,15 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain();
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias);
     public com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF getEntityDomain(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableChar getErrorJson();
+    public com.runwaysdk.query.SelectableChar getErrorJson(String alias);
+    public com.runwaysdk.query.SelectableChar getErrorJson(String alias, String displayLabel);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment(String alias, String displayLabel);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation();
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias);
     public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel);
-    public com.runwaysdk.query.SelectableUUID getOid();
-    public com.runwaysdk.query.SelectableUUID getOid(String alias);
-    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getKeyName();
     public com.runwaysdk.query.SelectableChar getKeyName(String alias);
     public com.runwaysdk.query.SelectableChar getKeyName(String alias, String displayLabel);
@@ -1302,6 +1321,9 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy();
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias);
     public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getOid();
+    public com.runwaysdk.query.SelectableUUID getOid(String alias);
+    public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner();
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias);
     public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner(String alias, String displayLabel);
@@ -1478,6 +1500,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.ENTITYDOMAIN,  alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableChar getErrorJson()
+  {
+    return getErrorJson(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableChar getErrorJson(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.scheduler.JobHistory.ERRORJSON, alias, displayLabel);
+
+  }
   public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentQuery.JobHistoryHistoryCommentQueryStructIF getHistoryComment()
   {
     return getHistoryComment(null);
@@ -1510,23 +1549,6 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF getHistoryInformation(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.scheduler.JobHistoryHistoryInformationQuery.JobHistoryHistoryInformationQueryStructIF)this.attributeFactory(com.runwaysdk.system.scheduler.JobHistory.HISTORYINFORMATION, com.runwaysdk.system.metadata.MdAttributeLocalText.CLASS, alias, displayLabel);
-
-  }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getKeyName()
@@ -1595,6 +1617,23 @@ public  class JobHistoryQuery extends com.runwaysdk.query.GeneratedBusinessQuery
   public com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF getLockedBy(String alias, String displayLabel)
   {
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.get(com.runwaysdk.system.scheduler.JobHistory.LOCKEDBY,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.scheduler.JobHistory.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.ActorQuery.ActorQueryReferenceIF getOwner()

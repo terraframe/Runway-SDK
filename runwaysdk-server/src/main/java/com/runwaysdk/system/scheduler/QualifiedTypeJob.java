@@ -54,7 +54,7 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
   }
 
   @Override
-  public void execute(ExecutionContext executionContext)
+  public void execute(ExecutionContext executionContext) throws Throwable
   {
     this.getQualifiedJob().execute(executionContext);
   }

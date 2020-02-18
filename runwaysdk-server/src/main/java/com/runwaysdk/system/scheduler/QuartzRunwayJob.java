@@ -137,14 +137,14 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   {
     ExecutionContext executionContext = buildExecutionContext(context);
     
-    String errorMessage = null;
+    Throwable error = null;
     
     // If the job wants to be run as a particular user then we need to create a session and a request for that user.
     try
     {
       if (executionContext.getRunAsUser() == null)
       {
-        errorMessage = executeAsSystem(executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
+        executeAsSystem(executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
       }
       else
       {
@@ -152,7 +152,7 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
         
         try
         {
-          errorMessage = executeAsUser(sessionId, executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
+          executeAsUser(sessionId, executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
         }
         finally
         {
@@ -162,14 +162,16 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     }
     catch (Throwable t)
     {
-      logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ".", t);
-      errorMessage = ExecutableJob.getMessageFromException(t);
+      error = t;
+      
+      String errorMessage = ExecutableJob.getMessageFromException(t);
+      logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ". " + errorMessage, t);
     }
     finally
     {
-      execJob.writeHistory(executionContext.getHistory(), executionContext, errorMessage);
+      execJob.writeHistory(executionContext.getHistory(), executionContext, error);
       
-      execJob.executeDownstreamJobs(executionContext.getJob(), errorMessage);
+      execJob.executeDownstreamJobs(executionContext.getJob(), error);
     }
   }
   
@@ -195,37 +197,25 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   }
   
   @Request(RequestType.SESSION)
-  public String executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
+  public void executeAsUser(String sessionId, ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws Throwable
   {
-    return executeJobWithinExistingRequest(job, history, record, executionContext);
+    executeJobWithinExistingRequest(job, history, record, executionContext);
   }
   
   @Request
-  public String executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws JobExecutionException
+  public void executeAsSystem(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws Throwable
   {
-    return executeJobWithinExistingRequest(job, history, record, executionContext);
+    executeJobWithinExistingRequest(job, history, record, executionContext);
   }
   
-  public String executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext)
+  public void executeJobWithinExistingRequest(ExecutableJob job, JobHistory history, JobHistoryRecord record, ExecutionContext executionContext) throws Throwable
   {
-    String errorMessage = null;
-    
     history.appLock();
     history.clearStatus();
     history.addStatus(AllJobStatus.RUNNING);
     history.apply();
     
-    try
-    {
-      job.execute(executionContext);
-    }
-    catch (Throwable t)
-    {
-      logger.error("An error occurred while executing job " + job.toString() + ".", t);
-      errorMessage = ExecutableJob.getMessageFromException(t);
-    }
-    
-    return errorMessage;
+    job.execute(executionContext);
   }
 
   /**

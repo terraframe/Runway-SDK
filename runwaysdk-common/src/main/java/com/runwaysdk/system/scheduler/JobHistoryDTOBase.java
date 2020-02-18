@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1079826147)
+@com.runwaysdk.business.ClassSignature(hash = 1579362878)
 public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistory";
-  private static final long serialVersionUID = -1079826147;
+  private static final long serialVersionUID = 1579362878;
   
   protected JobHistoryDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -49,13 +31,14 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public static java.lang.String ERRORJSON = "errorJson";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -101,7 +84,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -175,7 +158,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -210,6 +193,43 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
   public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getEntityDomainMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(ENTITYDOMAIN).getAttributeMdDTO();
+  }
+  
+  public String getErrorJson()
+  {
+    return getValue(ERRORJSON);
+  }
+  
+  public void setErrorJson(String value)
+  {
+    if(value == null)
+    {
+      setValue(ERRORJSON, "");
+    }
+    else
+    {
+      setValue(ERRORJSON, value);
+    }
+  }
+  
+  public boolean isErrorJsonWritable()
+  {
+    return isWritable(ERRORJSON);
+  }
+  
+  public boolean isErrorJsonReadable()
+  {
+    return isReadable(ERRORJSON);
+  }
+  
+  public boolean isErrorJsonModified()
+  {
+    return isModified(ERRORJSON);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeTextMdDTO getErrorJsonMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeTextMdDTO) getAttributeDTO(ERRORJSON).getAttributeMdDTO();
   }
   
   public com.runwaysdk.system.scheduler.JobHistoryHistoryCommentDTO getHistoryComment()
@@ -336,7 +356,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -373,7 +393,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -410,7 +430,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
