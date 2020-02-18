@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;

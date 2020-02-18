@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,7 +102,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.metadata.ReservedWordException;
 import com.runwaysdk.dataaccess.metadata.ReservedWords;
-import com.runwaysdk.system.metadata.MdAttributeUUID;
 import com.runwaysdk.util.Base64;
 
 /**

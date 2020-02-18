@@ -24,8 +24,6 @@ package com.runwaysdk.dataaccess;
 
 import java.util.Locale;
 
-import com.runwaysdk.constants.IndexTypes;
-
 
 /**
  * @author nathan

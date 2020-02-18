@@ -23,7 +23,6 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeUUIDDAO;
 import com.runwaysdk.transport.metadata.AttributeUUIDMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;

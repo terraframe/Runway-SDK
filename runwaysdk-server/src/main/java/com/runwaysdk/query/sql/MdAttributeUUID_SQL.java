@@ -18,10 +18,6 @@
  */
 package com.runwaysdk.query.sql;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;

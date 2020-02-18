@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.BusinessFacade;
-import com.runwaysdk.business.generation.BusinessBaseGenerator;
 import com.runwaysdk.constants.BusinessDTOInfo;
 import com.runwaysdk.constants.JSON;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;

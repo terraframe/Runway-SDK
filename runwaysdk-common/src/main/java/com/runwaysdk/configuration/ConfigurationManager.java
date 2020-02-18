@@ -26,8 +26,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import com.runwaysdk.resource.ClasspathResource;
-
 /**
  * Manages access to all configuration resources used by Runway SDK and provides an inversion of control mechanism for configuration resolving.
  * 

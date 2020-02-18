@@ -37,7 +37,6 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;

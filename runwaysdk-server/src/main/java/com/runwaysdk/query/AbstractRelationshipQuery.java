@@ -25,7 +25,6 @@ import java.util.Set;
 
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;

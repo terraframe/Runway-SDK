@@ -19,7 +19,6 @@
 package com.runwaysdk.session;
 
 import com.runwaysdk.ServerExceptionMessageLocalizer;
-import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.Mutable;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;

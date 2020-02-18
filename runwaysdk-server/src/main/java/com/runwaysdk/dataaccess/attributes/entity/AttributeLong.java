@@ -21,8 +21,6 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
-import java.math.BigDecimal;
-
 import com.runwaysdk.dataaccess.AttributeLongIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeValueException;

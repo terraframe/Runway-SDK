@@ -58,7 +58,6 @@ import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
-import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;

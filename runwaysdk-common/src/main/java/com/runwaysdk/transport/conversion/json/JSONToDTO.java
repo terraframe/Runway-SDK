@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;

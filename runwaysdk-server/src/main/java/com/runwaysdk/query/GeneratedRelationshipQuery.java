@@ -21,7 +21,6 @@ package com.runwaysdk.query;
 import com.runwaysdk.business.RelationshipQuery;
 import com.runwaysdk.constants.EntityInfo;
 import com.runwaysdk.constants.RelationshipInfo;
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;

@@ -25,7 +25,6 @@ import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdAttribute;
 import com.runwaysdk.system.metadata.MdAttributeBoolean;
 import com.runwaysdk.system.metadata.MdAttributeConcrete;

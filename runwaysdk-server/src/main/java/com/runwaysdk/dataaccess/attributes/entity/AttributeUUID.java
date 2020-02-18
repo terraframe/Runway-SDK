@@ -21,8 +21,6 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
-import java.util.UUID;
-
 import com.runwaysdk.dataaccess.AttributeUUIDIF;
 
 /**

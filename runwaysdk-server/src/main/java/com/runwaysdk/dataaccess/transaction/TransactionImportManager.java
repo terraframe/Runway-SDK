@@ -39,7 +39,6 @@ import com.runwaysdk.dataaccess.resolver.DefaultConflictResolver;
 import com.runwaysdk.dataaccess.resolver.IConflictResolver;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.FileIO;
-import com.runwaysdk.util.UpdateDatabaseSourceAndClasses;
 import com.runwaysdk.vault.VaultDAO;
 import com.runwaysdk.vault.VaultDAOIF;
 import com.runwaysdk.vault.WebFileDAO;

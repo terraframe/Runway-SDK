@@ -30,7 +30,6 @@ import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.util.ServerInitializerFacade;

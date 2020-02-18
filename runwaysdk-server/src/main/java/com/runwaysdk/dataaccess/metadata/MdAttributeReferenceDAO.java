@@ -39,7 +39,6 @@ import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.metadata.graph.MdAttributeReference_G;
-import com.runwaysdk.dataaccess.metadata.graph.MdAttributeUUID_G;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.metadata.AttributeReferenceMdDTO;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;

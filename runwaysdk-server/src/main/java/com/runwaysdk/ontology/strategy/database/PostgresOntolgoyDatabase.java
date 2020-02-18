@@ -55,7 +55,6 @@ import com.runwaysdk.system.metadata.MdEntity;
 import com.runwaysdk.system.metadata.MdRelationship;
 import com.runwaysdk.system.metadata.MdTerm;
 import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategy;
-import com.runwaysdk.util.IdParser;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.

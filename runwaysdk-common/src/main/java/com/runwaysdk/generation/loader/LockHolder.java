@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.generation.loader;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.logging.LogLevel;

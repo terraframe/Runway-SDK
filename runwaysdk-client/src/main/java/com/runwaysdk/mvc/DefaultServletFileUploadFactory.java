@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.mvc;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
