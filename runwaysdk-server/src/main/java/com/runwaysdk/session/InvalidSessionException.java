@@ -102,7 +102,7 @@ public class InvalidSessionException extends BusinessException
       }
     }
     catch (Throwable t) {
-      return ServerExceptionMessageLocalizer.invalidSessionException(this.getLocale());
+      return CommonExceptionMessageLocalizer.invalidSessionException(this.getLocale());
     }
   }
 }

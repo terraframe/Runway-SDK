@@ -42,7 +42,6 @@ import java.util.UUID;
  * 
  * @author Eric Grunzke
  */
-@SuppressWarnings("restriction")
 public class IDGenerator
 {
   /**

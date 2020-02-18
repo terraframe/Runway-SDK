@@ -235,7 +235,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * during this transaction. The key is the key of the object. The value is the
    * oid of the{@link MdAttributeDAO} object.
    */
-  protected DualHashBidiMap                                  addedMdAttrubiteKeyMap;
+  protected DualHashBidiMap<String, String>                  addedMdAttrubiteKeyMap;
 
   /**
    * Contains a reference to all {@link MdAttributeDAOIF} objects that were
@@ -478,7 +478,6 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
    * <b>Postcondition:</b> true
    * 
    */
-  @SuppressWarnings("rawtypes")
   protected AbstractTransactionCache(ReentrantLock transactionStateLock)
   {
     this.transactionStateLock = transactionStateLock;
@@ -507,7 +506,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
 
     this.updatedTransitionMap = new HashMap<String, Set<String>>();
 
-    this.addedMdAttrubiteKeyMap = new DualHashBidiMap();
+    this.addedMdAttrubiteKeyMap = new DualHashBidiMap<String, String>();
 
     // Used for determining which Types need classes to be generated or
     // regenerated.

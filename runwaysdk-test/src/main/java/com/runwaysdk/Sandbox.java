@@ -110,102 +110,102 @@ public class Sandbox
   }
   
   
-  private static void testEmbeddedClass()
-  {
+//  private static void testEmbeddedClass()
+//  {
+////    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+////    GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+////    
+////    OrientDBRequest ddlOrientDBRequest = (OrientDBRequest) graphDDLRequest;
+////    ODatabaseSession db = ddlOrientDBRequest.getODatabaseSession();
+////    
+////    // make sure the DDL graph request is current on the active thread.
+////    db.activateOnCurrentThread();
+////    
+////    OClass outerOClass = db.createVertexClass("OuterClass");
+////    
+////    // Add string to an inner class
+////    OClass innerOClass = db.createVertexClass("InnerClass");
+////    OProperty oProperty = innerOClass.createProperty("testChar", OType.STRING);
+////    oProperty.setMax("16");
+////    
+////    outerOClass.createProperty("innerClass", OType.EMBEDDED, innerOClass);
+//    
+//    
 //    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-//    GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+//    OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+//    ODatabaseSession db = orientDBRequest.getODatabaseSession();
 //    
-//    OrientDBRequest ddlOrientDBRequest = (OrientDBRequest) graphDDLRequest;
-//    ODatabaseSession db = ddlOrientDBRequest.getODatabaseSession();
-//    
-//    // make sure the DDL graph request is current on the active thread.
 //    db.activateOnCurrentThread();
 //    
-//    OClass outerOClass = db.createVertexClass("OuterClass");
+//    OClass outerOClass = db.getClass("OuterClass");
+//    OClass innerOClass = db.getClass("InnerClass");
 //    
-//    // Add string to an inner class
-//    OClass innerOClass = db.createVertexClass("InnerClass");
-//    OProperty oProperty = innerOClass.createProperty("testChar", OType.STRING);
-//    oProperty.setMax("16");
+//    OVertex outerVertex = db.newVertex(outerOClass);
 //    
-//    outerOClass.createProperty("innerClass", OType.EMBEDDED, innerOClass);
-    
-    
-    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-    OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
-    ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    
-    db.activateOnCurrentThread();
-    
-    OClass outerOClass = db.getClass("OuterClass");
-    OClass innerOClass = db.getClass("InnerClass");
-    
-    OVertex outerVertex = db.newVertex(outerOClass);
-    
-    OVertex innerVertex = db.newVertex(innerOClass);
-    innerVertex.setProperty("testChar", "Test Character");
-    
-    outerVertex.setProperty("innerClass", innerVertex);
-    
-    outerVertex.save();
-    
-    ORID orid = outerVertex.getIdentity();
-System.out.println(orid.toString());
-//    String statement = "SELECT FROM OuterClass ORID = ?";
-    String statement = "SELECT FROM ["+orid.toString()+ "]";
-    
-//    try (OResultSet rs = db.query(statement, orid))
-    try (OResultSet rs = db.query(statement))
-    {
-      if (rs.hasNext())
-      {
-        OResult result = rs.next();
-        
-        if (result.isElement())
-        {
-          OElement element = result.toElement();
-          
-          Object value = element.getProperty("innerClass");
-          OVertex doc = (OVertex) value;
-          
-System.out.println("Heads up: "+element.getIdentity().toString()+"  "+doc.getProperty("testChar"));
-         
-        }
-      }
-    }
-  }
+//    OVertex innerVertex = db.newVertex(innerOClass);
+//    innerVertex.setProperty("testChar", "Test Character");
+//    
+//    outerVertex.setProperty("innerClass", innerVertex);
+//    
+//    outerVertex.save();
+//    
+//    ORID orid = outerVertex.getIdentity();
+//System.out.println(orid.toString());
+////    String statement = "SELECT FROM OuterClass ORID = ?";
+//    String statement = "SELECT FROM ["+orid.toString()+ "]";
+//    
+////    try (OResultSet rs = db.query(statement, orid))
+//    try (OResultSet rs = db.query(statement))
+//    {
+//      if (rs.hasNext())
+//      {
+//        OResult result = rs.next();
+//        
+//        if (result.isElement())
+//        {
+//          OElement element = result.toElement();
+//          
+//          Object value = element.getProperty("innerClass");
+//          OVertex doc = (OVertex) value;
+//          
+//System.out.println("Heads up: "+element.getIdentity().toString()+"  "+doc.getProperty("testChar"));
+//         
+//        }
+//      }
+//    }
+//  }
   
-  private static void testCreateGeoVertexClass()
-  {
-    MdGeoVertexDAO mdGeoVertex = TestFixtureFactory.createMdGeoVertex("TestProvince");
-    mdGeoVertex.apply();
-  }
-  
-  private static void testDeleteeGeoVertexClass()
-  {
-    String geoVertexType = TestFixConst.TEST_PACKAGE+".TestProvince";
-    MdGeoVertexDAO.getMdGeoVertexDAO(geoVertexType).getBusinessDAO().delete();
-  }
-//  TestFixConst.TEST_PACKAGE
-  
-  
-  
-  private static void testCreateVertexClass()
-  {
-    MdVertexDAO mdVertexDAO = MdVertexDAO.newInstance();
-    mdVertexDAO.setValue(MdVertexInfo.NAME, "TestVertexClass");
-    mdVertexDAO.setValue(MdVertexInfo.PACKAGE, "test");
-    mdVertexDAO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Vertex Class");
-    mdVertexDAO.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdVertexDAO.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdVertexDAO.apply();
-  }
-  
-  private static void testDeleteVertexClass()
-  {
-    MdVertexDAOIF mdVertexDAOIF = MdVertexDAO.getMdVertexDAO("test.TestVertexClass");
-    mdVertexDAOIF.getBusinessDAO().delete();
-  }
+//  private static void testCreateGeoVertexClass()
+//  {
+//    MdGeoVertexDAO mdGeoVertex = TestFixtureFactory.createMdGeoVertex("TestProvince");
+//    mdGeoVertex.apply();
+//  }
+//  
+//  private static void testDeleteeGeoVertexClass()
+//  {
+//    String geoVertexType = TestFixConst.TEST_PACKAGE+".TestProvince";
+//    MdGeoVertexDAO.getMdGeoVertexDAO(geoVertexType).getBusinessDAO().delete();
+//  }
+////  TestFixConst.TEST_PACKAGE
+//  
+//  
+//  
+//  private static void testCreateVertexClass()
+//  {
+//    MdVertexDAO mdVertexDAO = MdVertexDAO.newInstance();
+//    mdVertexDAO.setValue(MdVertexInfo.NAME, "TestVertexClass");
+//    mdVertexDAO.setValue(MdVertexInfo.PACKAGE, "test");
+//    mdVertexDAO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Vertex Class");
+//    mdVertexDAO.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+//    mdVertexDAO.setValue(MdTypeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+//    mdVertexDAO.apply();
+//  }
+//  
+//  private static void testDeleteVertexClass()
+//  {
+//    MdVertexDAOIF mdVertexDAOIF = MdVertexDAO.getMdVertexDAO("test.TestVertexClass");
+//    mdVertexDAOIF.getBusinessDAO().delete();
+//  }
   
   @Request
   private static void testCreateDB()
