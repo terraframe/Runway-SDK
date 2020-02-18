@@ -21,17 +21,6 @@
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
     <create>
-      <mdBusiness name="com.runwaysdk.system.scheduler.MultiStageJob" extends="com.runwaysdk.system.scheduler.ExecutableJob">
-      </mdBusiness>
-      
-      <mdBusiness name="com.runwaysdk.system.scheduler.JobStage" extends="com.runwaysdk.system.scheduler.ExecutableJob" isAbstract="true">
-      </mdBusiness>
-      
-      <mdRelationship name="com.runwaysdk.system.scheduler.JobHasStage">
-        <parent cardinality="1" name="com.runwaysdk.system.scheduler.MultiStageJob" method="MultiStageJob"/>
-        <child cardinality="*" name="com.runwaysdk.system.scheduler.AbstractJob" method="Stage"/>
-      </mdRelationship>
-      
       <object
         key="QUEUED"
         type="com.runwaysdk.system.scheduler.JobStatus">
@@ -65,10 +54,8 @@
   </doIt>
   <undoIt>
     <delete>
-      <object key="com.runwaysdk.system.scheduler.MultiStageJob" type="com.runwaysdk.system.metadata.MdBusiness"/>
-      <object key="com.runwaysdk.system.scheduler.JobStage" type="com.runwaysdk.system.metadata.MdBusiness"/>
-      <object key="com.runwaysdk.system.scheduler.JobHasStage" type="com.runwaysdk.system.metadata.MdRelationship"/>
-      <object key="com.runwaysdk.system.scheduler.ExecutableJob.maxConcurrentJobs" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+      <object key="QUEUED" type="com.runwaysdk.system.scheduler.JobStatus"/>
+      <object key="NEW" type="com.runwaysdk.system.scheduler.JobStatus"/>
     </delete>
   </undoIt>
 </version>

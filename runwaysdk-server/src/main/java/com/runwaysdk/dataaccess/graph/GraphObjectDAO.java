@@ -635,7 +635,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   {
     GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
-    if (!this.isAppliedToDB)
+    if (this.isAppliedToDB)
     {
       GraphDBService.getInstance().delete(request, this);
     }

@@ -25,9 +25,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.business.SmartException;
-import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
@@ -78,39 +76,39 @@ public abstract class ExecutableJob extends ExecutableJobBase
   }
   
   @Request
-  protected void executeDownstreamJobs(ExecutableJob job, String errorMessage) {
+  protected void executeDownstreamJobs(ExecutableJob job, Throwable error) {
     List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
     if (lDownstreamRel.size() > 0)
     {
       DownstreamJobRelationship rel = lDownstreamRel.get(0);
       ExecutableJob downstream = rel.getChild();
       
-      if ( (errorMessage == null) || (errorMessage != null && rel.getTriggerOnFailure()) )
+      if ( (error == null) || (error != null && rel.getTriggerOnFailure()) )
       {
-        // TODO : This is kind of a hack because directly invoking start() here will cause a NullPointerException in the @Authenticate (in ReportJob.start)
         downstream.executableJobStart();
       }
     }
   }
 
   @Request
-  protected void writeHistory(JobHistory history, ExecutionContext executionContext, String errorMessage)
+  protected void writeHistory(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
-    writeHistoryInTrans(history, executionContext, errorMessage);
+    writeHistoryInTrans(history, executionContext, error);
   }
   @Transaction
-  protected void writeHistoryInTrans(JobHistory history, ExecutionContext executionContext,
-      String errorMessage)
+  protected void writeHistoryInTrans(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
     JobHistory jh = JobHistory.get(history.getOid());
 
     jh.appLock();
     jh.setEndTime(new Date());
     jh.clearStatus();
-    if (errorMessage != null)
+    
+    if (error != null)
     {
-      jh.getHistoryInformation().setValue(errorMessage);
       jh.addStatus(AllJobStatus.FAILURE);
+      
+      jh.setError(error);
     }
     else
     {
@@ -126,6 +124,9 @@ public abstract class ExecutableJob extends ExecutableJobBase
     jh.apply();
   }
   
+  /**
+   * Gets an exception message for the given throwable. Should not be used for SmartException or RunwayException.
+   */
   public static String getMessageFromException(Throwable t)
   {
     String errorMessage = null;
@@ -135,8 +136,6 @@ public abstract class ExecutableJob extends ExecutableJobBase
       t = t.getCause();
     }
     
-    // TODO : If this is a Runway exception then the localized exception is only available at the DTO layer (for good reason). We should be sending the exception type
-    // to the client, having them instantiate it, and then returning the localized value from that dto. Instead, we'll just do something dumb in the meantime here.
     if (t instanceof SmartException)
     {
       SmartException se = ( (SmartException) t );
@@ -176,8 +175,9 @@ public abstract class ExecutableJob extends ExecutableJobBase
 
   /**
    * Defines what the job should actually do when executed (or started). Must be overridden with actual behavior.
+   * @throws Throwable 
    */
-  abstract public void execute(ExecutionContext executionContext);
+  abstract public void execute(ExecutionContext executionContext) throws Throwable;
 
   public String getLocalizedDescription()
   {
@@ -233,9 +233,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
       
       jh.setEndTime(new Date());
       
-      // TODO : Maybe read the locale from the job owner's locale
-      String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobCannotResume", "The server was shutdown while the job was running.");
-      jh.getHistoryInformation().setValue(msg);
+      jh.setError(new SchedulerJobCannotResumeException());
       
       jh.apply();
     }
@@ -252,9 +250,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     
     jh.setEndTime(new Date());
     
-    // TODO : Maybe read the locale from the job owner's locale
-    String msg = LocalizationFacade.getMessage(CommonProperties.getDefaultLocale(), "SchedulerJobMisfire", "The job could not be scheduled as requested, the system is out of resources (scheduler misfire).");
-    jh.getHistoryInformation().setValue(msg);
+    jh.setError(new SchedulerMisfireException());
     
     jh.apply();
   }

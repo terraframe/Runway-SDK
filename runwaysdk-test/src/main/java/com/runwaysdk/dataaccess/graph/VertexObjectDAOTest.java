@@ -311,12 +311,12 @@ public class VertexObjectDAOTest
     }
     finally
     {
-      if (vertexDAO1 != null && !vertexDAO1.isNew())
+      if (vertexDAO1 != null && vertexDAO1.isAppliedToDB())
       {
         vertexDAO1.delete();
       }
 
-      if (vertexDAO2 != null && !vertexDAO2.isNew())
+      if (vertexDAO2 != null && vertexDAO2.isAppliedToDB())
       {
         vertexDAO2.delete();
       }
@@ -348,12 +348,12 @@ public class VertexObjectDAOTest
     }
     finally
     {
-      if (vertexDAO1 != null && !vertexDAO1.isNew())
+      if (vertexDAO1 != null && vertexDAO1.isAppliedToDB())
       {
         vertexDAO1.delete();
       }
 
-      if (vertexDAO2 != null && !vertexDAO2.isNew())
+      if (vertexDAO2 != null && vertexDAO2.isAppliedToDB())
       {
         vertexDAO2.delete();
       }
