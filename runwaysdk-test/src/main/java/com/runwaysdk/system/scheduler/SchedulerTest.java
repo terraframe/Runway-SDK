@@ -551,7 +551,7 @@ public class SchedulerTest
         Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
-        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
       }
       else
       {
@@ -1069,10 +1069,24 @@ public class SchedulerTest
     
     Thread.sleep(1000);
     
-    while (pool.size() > 0)
+    while (true)
     {
+      Thread.sleep(10);
+      
       synchronized(pool)
       {
+        if (pool.size() == 0)
+        {
+          if (t1.isAlive() || t2.isAlive())
+          {
+            continue;
+          }
+          else
+          {
+            break;
+          }
+        }
+        
         JobHistory jh = JobHistory.get(pool.peek().getOid());
         jh.lock();
         
@@ -1164,7 +1178,7 @@ public class SchedulerTest
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
-        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
         
         BackupReadException ex = new BackupReadException();
         ex.setLocation("/test/123");
@@ -1228,7 +1242,7 @@ public class SchedulerTest
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
-        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
         
         ArithmeticException ex = null;
         try
@@ -1312,7 +1326,7 @@ public class SchedulerTest
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
-        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime));
+        Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
         
         String json = updated.getErrorJson();
         System.out.println(json);

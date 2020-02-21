@@ -129,6 +129,9 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     context.put(HISTORY_RECORD_ID, record.getOid());
     context.put(EXECUTABLE_JOB_ID, execJob.getOid());
     
+    jobDataMap.put(HISTORY_RECORD_ID, record.getOid());
+    triggerDataMap.put(HISTORY_RECORD_ID, record.getOid());
+    
     return ec;
   }
   
@@ -319,12 +322,10 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   {
     try
     {
-      JobDataMap map = context.getTrigger().getJobDataMap();
+      ExecutableJob execJob = ExecutableJob.get((String) context.get(EXECUTABLE_JOB_ID));
+      JobHistoryRecord history = JobHistoryRecord.get((String) context.get(HISTORY_RECORD_ID));
       
-      ExecutableJob execJob = ExecutableJob.get(map.getString(EXECUTABLE_JOB_ID));
-      JobHistory history = JobHistory.get(map.getString(HISTORY_RECORD_ID));
-      
-      execJob.afterJobExecute(history.getStatus().get(0));
+      execJob.afterJobExecute(history.getChild());
     }
     catch (Throwable t)
     {

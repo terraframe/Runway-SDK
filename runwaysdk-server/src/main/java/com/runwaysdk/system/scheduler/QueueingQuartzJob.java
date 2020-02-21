@@ -175,6 +175,8 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     {
       startExecJob.getQuartzJob().start(startRecord);
     }
+    
+    super.jobWasExecuted(context, jobException);
   }
   
   @Override

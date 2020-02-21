@@ -42,7 +42,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     super();
   }
   
-  public void afterJobExecute(AllJobStatus finalStatus)
+  public void afterJobExecute(JobHistory history)
   {
     // Do nothing. This is mostly useful for subclasses.
   }
