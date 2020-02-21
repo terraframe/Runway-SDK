@@ -21,11 +21,9 @@ package com.runwaysdk.system.scheduler;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.Trigger;
@@ -46,15 +44,27 @@ public class QueueingQuartzJob extends QuartzRunwayJob
 {
   private static HashMap<String, Queue<String>> queueMap = new HashMap<String, Queue<String>>();
   
-  private Lock lock = new ReentrantLock();
+  private static Semaphore lock = new Semaphore(1);
   
   private Logger logger = LoggerFactory.getLogger(QueueingQuartzJob.class);
+  
+  private String queueGroup;
+  
+  public QueueingQuartzJob(ExecutableJob execJob, String queueGroup)
+  {
+    super(execJob);
+    this.queueGroup = queueGroup;
+  }
   
   public QueueingQuartzJob(ExecutableJob execJob)
   {
     super(execJob);
+    this.queueGroup = QueueingQuartzJob.class.getName();
   }
   
+  /**
+   * This constructor is invoked directly by Quartz. Do not invoke it because the job will not be configured properly!
+   */
   public QueueingQuartzJob()
   {
     super();
@@ -62,7 +72,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   
   public String getQueueGroup()
   {
-    return QueueingQuartzJob.class.getName();
+    return this.queueGroup;
   }
   
   private Queue<String> getQueue()
@@ -88,11 +98,13 @@ public class QueueingQuartzJob extends QuartzRunwayJob
    * 
    * (non-Javadoc)
    */
+  @Override
   public void start(JobHistoryRecord record)
   {
-    this.queue(this.getExecutableJob().getOid(), record.getOid());
-    
-    super.start(record);
+    if (!this.queue(this.getExecutableJob().getOid(), record.getOid()))
+    {
+      super.start(record);
+    }
   }
   
   /**
@@ -114,7 +126,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   {
     try
     {
-      boolean didLock = lock.tryLock(5, TimeUnit.MINUTES);
+      boolean didLock = lock.tryAcquire(300, TimeUnit.SECONDS);
       
       if (!didLock)
       {
@@ -126,6 +138,9 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     {
       logger.error("Was interrupted unexpectedly", e);
     }
+    
+    ExecutableJob startExecJob = null;
+    JobHistoryRecord startRecord = null;
     
     try
     {
@@ -146,12 +161,19 @@ public class QueueingQuartzJob extends QuartzRunwayJob
         
         JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
         ExecutableJob execJob = history.getParent();
-        execJob.getQuartzJob().start(history);
+        
+        startExecJob = execJob;
+        startRecord = history;
       }
     }
     finally
     {
-      lock.unlock();
+      lock.release();
+    }
+    
+    if (startExecJob != null && startRecord != null)
+    {
+      startExecJob.getQuartzJob().start(startRecord);
     }
   }
   
@@ -182,7 +204,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     
     try
     {
-      boolean didLock = lock.tryLock(5, TimeUnit.MINUTES);
+      boolean didLock = lock.tryAcquire(300, TimeUnit.SECONDS);
       
       if (!didLock)
       {
@@ -228,7 +250,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     }
     finally
     {
-      lock.unlock();
+      lock.release();
     }
   }
   

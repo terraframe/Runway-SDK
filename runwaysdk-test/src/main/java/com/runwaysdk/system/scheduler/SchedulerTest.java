@@ -466,7 +466,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-//  @Test
+  @Test
   public void testCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -518,7 +518,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-//  @Test
+  @Test
   public void testManuallyStartJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -573,7 +573,7 @@ public class SchedulerTest
    * @throws InterruptedException
    */
   @Request
-//  @Test
+  @Test
   public void testModifyCRONSchedule() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestJob.class);
@@ -630,7 +630,7 @@ public class SchedulerTest
    * Tests the clearHistory MdMethod defined on JobHistory.
    */
   @Request
-//  @Test
+  @Test
   public void testClearHistory()
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestJob.class);
@@ -684,7 +684,7 @@ public class SchedulerTest
   }
 
   @Request
-//  @Test
+  @Test
   public void testQueueDifferentJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -745,7 +745,7 @@ public class SchedulerTest
   }
   
   @Request
-//  @Test
+  @Test
   public void testQueueSameJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -799,7 +799,7 @@ public class SchedulerTest
   }
   
   @Request
-//  @Test
+  @Test
   public void testQueueManyJobs() throws InterruptedException
   {
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
@@ -988,7 +988,7 @@ public class SchedulerTest
     Thread.sleep(100);
   }
   
-//  @Test
+  @Test
   @Request
   public void testQueueMultithreading() throws InterruptedException
   {
@@ -1118,7 +1118,7 @@ public class SchedulerTest
     return hist.getJobRel(execJob).getAll().get(0);
   }
   
-//  @Test
+  @Test
   @Request
   public void testMultiStageJob() throws Exception
   {

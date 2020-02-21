@@ -93,6 +93,11 @@ public class ExecutionContext
     return status;
   }
 
+  /**
+   * If specified, this will be the JobHistory's final status when the job completes execution.
+   * 
+   * @param status
+   */
   public void setStatus(AllJobStatus status)
   {
     this.status = status;

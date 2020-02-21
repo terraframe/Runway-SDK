@@ -67,6 +67,9 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   
   private ExecutableJob execJob;
   
+  /**
+   * This constructor is invoked directly by Quartz. Do not invoke it because the job will not be configured properly!
+   */
   public QuartzRunwayJob()
   {
     // If you invoke the constructor you need to initialize the job afterwards. (Otherwise required stuff will null out)
@@ -278,6 +281,10 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     {
       trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression));
     }
+    else
+    {
+      trigger.startNow();
+    }
     
     trigger.usingJobData(EXECUTABLE_JOB_ID, detail.getJobDataMap().getString(EXECUTABLE_JOB_ID));
     
@@ -305,6 +312,24 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     }
     
     return name;
+  }
+  
+  @Request
+  protected void invokeAfterJobExecute(JobExecutionContext context)
+  {
+    try
+    {
+      JobDataMap map = context.getTrigger().getJobDataMap();
+      
+      ExecutableJob execJob = ExecutableJob.get(map.getString(EXECUTABLE_JOB_ID));
+      JobHistory history = JobHistory.get(map.getString(HISTORY_RECORD_ID));
+      
+      execJob.afterJobExecute(history.getStatus().get(0));
+    }
+    catch (Throwable t)
+    {
+      logger.error("Error thrown while invoking afterJobExecute.", t);
+    }
   }
   
   @Request
@@ -401,7 +426,7 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   @Override
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
   {
-    // Do nothing. Our history is updated at the end of the execute method, because it can either be Success or Failure.
+    this.invokeAfterJobExecute(context);
   }
   
   @Override

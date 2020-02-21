@@ -42,6 +42,11 @@ public abstract class ExecutableJob extends ExecutableJobBase
     super();
   }
   
+  public void afterJobExecute(AllJobStatus finalStatus)
+  {
+    // Do nothing. This is mostly useful for subclasses.
+  }
+  
   public QuartzRunwayJob getQuartzJob()
   {
     if (quartzJob != null)
@@ -50,7 +55,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     }
     else
     {
-      return new QuartzRunwayJob(this);
+      return this.createQuartzRunwayJob();
     }
   }
   
@@ -75,6 +80,11 @@ public abstract class ExecutableJob extends ExecutableJobBase
     return history;
   }
   
+  protected QuartzRunwayJob createQuartzRunwayJob()
+  {
+    return new QuartzRunwayJob(this);
+  }
+  
   @Request
   protected void executeDownstreamJobs(ExecutableJob job, Throwable error) {
     List<? extends DownstreamJobRelationship> lDownstreamRel = job.getAlldownstreamJobRel().getAll();
@@ -91,12 +101,12 @@ public abstract class ExecutableJob extends ExecutableJobBase
   }
 
   @Request
-  protected void writeHistory(JobHistory history, ExecutionContext executionContext, Throwable error)
+  protected AllJobStatus writeHistory(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
-    writeHistoryInTrans(history, executionContext, error);
+    return writeHistoryInTrans(history, executionContext, error);
   }
   @Transaction
-  protected void writeHistoryInTrans(JobHistory history, ExecutionContext executionContext, Throwable error)
+  protected AllJobStatus writeHistoryInTrans(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
     JobHistory jh = JobHistory.get(history.getOid());
 
@@ -122,6 +132,8 @@ public abstract class ExecutableJob extends ExecutableJobBase
       }
     }
     jh.apply();
+    
+    return jh.getStatus().get(0);
   }
   
   /**

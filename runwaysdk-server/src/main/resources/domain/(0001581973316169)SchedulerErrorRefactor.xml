@@ -1,6 +1,20 @@
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
-    <create></create>
+    <create>
+      <object
+        key="FEEDBACK"
+        type="com.runwaysdk.system.scheduler.JobStatus">
+        <attribute
+          name="enumName"
+          value="FEEDBACK" />
+        <attributeStruct
+          name="displayLabel">
+          <attribute
+            name="defaultLocale"
+            value="Awaiting User Feedback" />
+        </attributeStruct>
+      </object>
+    </create>
     <update>
       <mdBusiness name="com.runwaysdk.system.scheduler.JobHistory">
         <create>
