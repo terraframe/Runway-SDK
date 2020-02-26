@@ -408,7 +408,7 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   @Override
   public void triggerComplete(Trigger trigger, JobExecutionContext context, CompletedExecutionInstruction triggerInstructionCode)
   {
-    // Do nothing. Our history is updated at the end of the execute method, because it can either be Success or Failure.
+    this.invokeAfterJobExecute(context);
   }
 
   @Override
@@ -427,7 +427,8 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   @Override
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
   {
-    this.invokeAfterJobExecute(context);
+    // triggerComplete is the last listener to be invoked so we'll do it there instead.
+//    this.invokeAfterJobExecute(context);
   }
   
   @Override

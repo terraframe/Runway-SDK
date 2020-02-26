@@ -36,6 +36,18 @@ public class StopTransactionException extends RuntimeException
     this.doNotLog = doNotLog;
   }
   
+  public StopTransactionException(Throwable cause)
+  {
+    super(cause);
+  }
+  
+  public StopTransactionException(Throwable cause, boolean doNotLog)
+  {
+    super(cause);
+    
+    this.doNotLog = doNotLog;
+  }
+  
   public boolean shouldLog()
   {
     return !this.doNotLog;
