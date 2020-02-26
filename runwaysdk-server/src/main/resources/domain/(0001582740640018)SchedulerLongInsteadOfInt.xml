@@ -1,0 +1,32 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <delete>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.workProgress" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistoryView.workTotal" type="com.runwaysdk.system.metadata.MdAttributeVirtual"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistory.workProgress" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+      <object key="com.runwaysdk.system.scheduler.JobHistory.workTotal" type="com.runwaysdk.system.metadata.MdAttributeInteger"/>
+    </delete>
+    <update>
+      <mdBusiness name="com.runwaysdk.system.scheduler.JobHistory">
+        <create>
+          <attributes>
+            <long name="workProgress" label="Work Progress" defaultValue="0" />
+            <long name="workTotal" label="Work Progress" defaultValue="0" />
+          </attributes>
+        </create>
+      </mdBusiness>
+      
+      <mdView name="com.runwaysdk.system.scheduler.JobHistoryView">
+        <create>
+          <attributes>
+            <virtual name="workProgress" concrete="workProgress" type="com.runwaysdk.system.scheduler.JobHistory"/>
+            <virtual name="workTotal" concrete="workTotal" type="com.runwaysdk.system.scheduler.JobHistory"/>
+          </attributes>
+        </create>
+      </mdView>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>

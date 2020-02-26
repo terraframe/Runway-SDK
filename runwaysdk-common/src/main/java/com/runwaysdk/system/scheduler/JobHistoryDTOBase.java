@@ -1,10 +1,10 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1579362878)
+@com.runwaysdk.business.ClassSignature(hash = -44311462)
 public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistory";
-  private static final long serialVersionUID = 1579362878;
+  private static final long serialVersionUID = -44311462;
   
   protected JobHistoryDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -600,12 +600,12 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     return (com.runwaysdk.transport.metadata.AttributeEnumerationMdDTO) getAttributeDTO(STATUS).getAttributeMdDTO();
   }
   
-  public Integer getWorkProgress()
+  public Long getWorkProgress()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKPROGRESS));
   }
   
-  public void setWorkProgress(Integer value)
+  public void setWorkProgress(Long value)
   {
     if(value == null)
     {
@@ -613,7 +613,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
     else
     {
-      setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+      setValue(WORKPROGRESS, java.lang.Long.toString(value));
     }
   }
   
@@ -637,12 +637,12 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(WORKPROGRESS).getAttributeMdDTO();
   }
   
-  public Integer getWorkTotal()
+  public Long getWorkTotal()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKTOTAL));
   }
   
-  public void setWorkTotal(Integer value)
+  public void setWorkTotal(Long value)
   {
     if(value == null)
     {
@@ -650,7 +650,7 @@ public abstract class JobHistoryDTOBase extends com.runwaysdk.business.BusinessD
     }
     else
     {
-      setValue(WORKTOTAL, java.lang.Integer.toString(value));
+      setValue(WORKTOTAL, java.lang.Long.toString(value));
     }
   }
   

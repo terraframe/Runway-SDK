@@ -1,6 +1,6 @@
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1064131518)
+@com.runwaysdk.business.ClassSignature(hash = 1753820634)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,7 +35,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
   public static java.lang.String TYPE = "type";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = 1064131518;
+  private static final long serialVersionUID = 1753820634;
   
   public JobHistoryBase()
   {
@@ -510,9 +510,9 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(TYPE);
   }
   
-  public Integer getWorkProgress()
+  public Long getWorkProgress()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKPROGRESS));
   }
   
   public void validateWorkProgress()
@@ -520,13 +520,13 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     this.validateAttribute(WORKPROGRESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getWorkProgressMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLongDAOIF getWorkProgressMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(WORKPROGRESS);
+    return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(WORKPROGRESS);
   }
   
-  public void setWorkProgress(Integer value)
+  public void setWorkProgress(Long value)
   {
     if(value == null)
     {
@@ -534,13 +534,13 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+      setValue(WORKPROGRESS, java.lang.Long.toString(value));
     }
   }
   
-  public Integer getWorkTotal()
+  public Long getWorkTotal()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKTOTAL));
   }
   
   public void validateWorkTotal()
@@ -548,13 +548,13 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     this.validateAttribute(WORKTOTAL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getWorkTotalMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLongDAOIF getWorkTotalMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistory.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
+    return (com.runwaysdk.dataaccess.MdAttributeLongDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
   }
   
-  public void setWorkTotal(Integer value)
+  public void setWorkTotal(Long value)
   {
     if(value == null)
     {
@@ -562,7 +562,7 @@ public abstract class JobHistoryBase extends com.runwaysdk.business.Business
     }
     else
     {
-      setValue(WORKTOTAL, java.lang.Integer.toString(value));
+      setValue(WORKTOTAL, java.lang.Long.toString(value));
     }
   }
   

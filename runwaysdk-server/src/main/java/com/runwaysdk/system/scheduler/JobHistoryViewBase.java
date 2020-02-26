@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1867947578)
+@com.runwaysdk.business.ClassSignature(hash = -1518825943)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -44,15 +26,15 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String OID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
+  public static java.lang.String OID = "oid";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String STATUSLABEL = "statusLabel";
   public static java.lang.String WORKPROGRESS = "workProgress";
   public static java.lang.String WORKTOTAL = "workTotal";
-  private static final long serialVersionUID = -1867947578;
+  private static final long serialVersionUID = -1518825943;
   
   public JobHistoryViewBase()
   {
@@ -211,22 +193,6 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(HISTORYINFORMATION);
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
-  }
-  
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.scheduler.AllJobOperation> getJobOperation()
   {
@@ -291,6 +257,22 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     {
       setValue(LASTRUN, new java.text.SimpleDateFormat(com.runwaysdk.constants.Constants.DATETIME_FORMAT).format(value));
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobHistoryView.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public java.util.Date getStartTime()
@@ -387,9 +369,9 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public Integer getWorkProgress()
+  public Long getWorkProgress()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKPROGRESS));
   }
   
   public void validateWorkProgress()
@@ -403,7 +385,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(WORKPROGRESS);
   }
   
-  public void setWorkProgress(Integer value)
+  public void setWorkProgress(Long value)
   {
     if(value == null)
     {
@@ -411,13 +393,13 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+      setValue(WORKPROGRESS, java.lang.Long.toString(value));
     }
   }
   
-  public Integer getWorkTotal()
+  public Long getWorkTotal()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKTOTAL));
   }
   
   public void validateWorkTotal()
@@ -431,7 +413,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     return (com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF)mdClassIF.definesAttribute(WORKTOTAL);
   }
   
-  public void setWorkTotal(Integer value)
+  public void setWorkTotal(Long value)
   {
     if(value == null)
     {
@@ -439,7 +421,7 @@ public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
     }
     else
     {
-      setValue(WORKTOTAL, java.lang.Integer.toString(value));
+      setValue(WORKTOTAL, java.lang.Long.toString(value));
     }
   }
   

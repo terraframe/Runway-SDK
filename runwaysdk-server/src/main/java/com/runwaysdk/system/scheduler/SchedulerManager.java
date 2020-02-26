@@ -261,6 +261,11 @@ public class SchedulerManager implements JobListener, TriggerListener
   {
     try
     {
+      if (!scheduler().isStarted())
+      {
+        throw new ProgrammingErrorException("The scheduler has not been started!");
+      }
+      
       JobDetail detail = quartzJob.getJobDetail();
       
       Trigger trigger = quartzJob.buildTrigger(detail, null, record);

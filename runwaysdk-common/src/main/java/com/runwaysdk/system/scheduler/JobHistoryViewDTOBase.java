@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1558831942)
+@com.runwaysdk.business.ClassSignature(hash = -559616087)
 public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  private static final long serialVersionUID = 1558831942;
+  private static final long serialVersionUID = -559616087;
   
   protected JobHistoryViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -41,9 +23,9 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
   public static java.lang.String ENDTIME = "endTime";
   public static java.lang.String HISTORYCOMMENT = "historyComment";
   public static java.lang.String HISTORYINFORMATION = "historyInformation";
-  public static java.lang.String OID = "oid";
   public static java.lang.String JOBOPERATION = "jobOperation";
   public static java.lang.String LASTRUN = "lastRun";
+  public static java.lang.String OID = "oid";
   public static java.lang.String STARTTIME = "startTime";
   public static java.lang.String STATUS = "status";
   public static java.lang.String STATUSLABEL = "statusLabel";
@@ -463,12 +445,12 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(STATUSLABEL).getAttributeMdDTO();
   }
   
-  public Integer getWorkProgress()
+  public Long getWorkProgress()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKPROGRESS));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKPROGRESS));
   }
   
-  public void setWorkProgress(Integer value)
+  public void setWorkProgress(Long value)
   {
     if(value == null)
     {
@@ -476,7 +458,7 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     }
     else
     {
-      setValue(WORKPROGRESS, java.lang.Integer.toString(value));
+      setValue(WORKPROGRESS, java.lang.Long.toString(value));
     }
   }
   
@@ -500,12 +482,12 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     return (com.runwaysdk.transport.metadata.AttributeNumberMdDTO) getAttributeDTO(WORKPROGRESS).getAttributeMdDTO();
   }
   
-  public Integer getWorkTotal()
+  public Long getWorkTotal()
   {
-    return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(WORKTOTAL));
+    return com.runwaysdk.constants.MdAttributeLongUtil.getTypeSafeValue(getValue(WORKTOTAL));
   }
   
-  public void setWorkTotal(Integer value)
+  public void setWorkTotal(Long value)
   {
     if(value == null)
     {
@@ -513,7 +495,7 @@ public abstract class JobHistoryViewDTOBase extends com.runwaysdk.business.ViewD
     }
     else
     {
-      setValue(WORKTOTAL, java.lang.Integer.toString(value));
+      setValue(WORKTOTAL, java.lang.Long.toString(value));
     }
   }
   
