@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.graph.attributes;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -65,31 +66,81 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   {
     return (MdAttributeEnumerationDAOIF) super.getMdAttributeConcrete();
   }
-
-  @Override
-  public synchronized void setValue(Object value)
+  
+  public void setValue(Object value, Date startDate)
   {
-    if (this.getObjectValue().size() == 1 && this.getObjectValue().contains(value))
+    this.validate(value, startDate);
+
+    Set<String> setValue = null;
+    if (value instanceof String)
     {
-      return;
+      Set<String> set = this.getObjectValue();
+      set.clear();
+      set.add((String) value);
+      setValue = set;
+    }
+    
+    if (startDate == null)
+    {
+      if (this.valuesOverTime.size() > 0)
+      {
+        this.valuesOverTime.last().setValue(setValue);
+      }
+      else
+      {
+        Date date = new Date();
+
+        this.valuesOverTime.add(new ValueOverTime(date, date, setValue));
+      }
     }
     else
     {
-      if (value instanceof String)
-      {
-        this.validate(value);
+      ValueOverTime vot = this.getValueOverTime(startDate);
 
+      if (vot != null)
+      {
+        vot.setValue(setValue);
+      }
+      else
+      {
+        this.valuesOverTime.add(new ValueOverTime(startDate, null, setValue));
+      }
+    }
+
+    this.setValue(value);
+  }
+  
+  @Override
+  public synchronized void setValue(Object value)
+  {
+    this.validate(value);
+    
+    if (value instanceof String)
+    {
+      if (this.getObjectValue().size() == 1 && this.getObjectValue().contains(value))
+      {
+        return;
+      }
+      else
+      {
         this.clearItems();
 
         this.getObjectValue().add((String) value);
+      }
+    }
+    else if (value == null)
+    {
+      if (this.getObjectValue().size() == 0)
+      {
+        return;
       }
       else
       {
         this.setValueInternal(value);
       }
-
-      this.setModified(true);
     }
+    
+    this.setModified(true);
   }
 
   @SuppressWarnings("unchecked")

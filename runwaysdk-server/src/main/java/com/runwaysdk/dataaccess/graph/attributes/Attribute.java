@@ -80,7 +80,7 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
-  private ValueOverTimeCollection        valuesOverTime;
+  protected ValueOverTimeCollection        valuesOverTime;
 
   /**
    * Creates an attribute with the given name and initializes the value to
