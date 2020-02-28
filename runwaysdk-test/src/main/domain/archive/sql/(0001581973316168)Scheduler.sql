@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 UPDATE metadata SET seq= 5754 , last_update_date= '2020-02-17 17:36:41'  WHERE oid='c73b3365-8784-3c09-834f-7afca400003a';
 INSERT INTO metadata_display_label ( oid, default_locale, key_name, site_master) VALUES ('6a1dd6fb-658d-4848-be6b-5c0a5400011f', 'errorJson', '6a1dd6fb-658d-4848-be6b-5c0a5400011f', 'www.runwaysdk.com');
 INSERT INTO md_attribute_indicies (set_id, item_id)  VALUES  ('3c883103-ebf4-4763-bb68-8e72ea', '9a7f73ee-81a9-32e9-884e-c4be61000055');

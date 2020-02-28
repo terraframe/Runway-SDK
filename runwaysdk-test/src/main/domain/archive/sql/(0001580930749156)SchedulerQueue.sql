@@ -1,3 +1,22 @@
+--
+-- Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+--
+-- This file is part of Runway SDK(tm).
+--
+-- Runway SDK(tm) is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+--
+-- Runway SDK(tm) is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
+--
+-- You should have received a copy of the GNU Lesser General Public
+-- License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+--
+
 INSERT INTO metadata_display_label ( oid, default_locale, key_name, site_master) VALUES ('dbe3c0c8-df62-4fa3-b42f-4afef600011f', 'Queued', 'dbe3c0c8-df62-4fa3-b42f-4afef600011f', 'www.runwaysdk.com');
 INSERT INTO job_status ( oid) VALUES ('6a4a42dc-89ff-451c-ab24-6714e00000e7');
 INSERT INTO enumeration_master ( entity_domain, last_updated_by, created_by, owner, last_update_date, site_master, display_label, enum_name, locked_by, create_date, oid, type, seq, key_name) VALUES (NULL, '4f664e38-0546-31c7-a379-5492ef00003c', '4f664e38-0546-31c7-a379-5492ef00003c', '4f664e38-0546-31c7-a379-5492ef00003c', '2020-02-17 17:35:52', 'www.runwaysdk.com', 'dbe3c0c8-df62-4fa3-b42f-4afef600011f', 'QUEUED', NULL, '2020-02-17 17:35:52', '6a4a42dc-89ff-451c-ab24-6714e00000e7', 'com.runwaysdk.system.scheduler.JobStatus', 5750, 'com.runwaysdk.system.scheduler.JobStatus.QUEUED');
