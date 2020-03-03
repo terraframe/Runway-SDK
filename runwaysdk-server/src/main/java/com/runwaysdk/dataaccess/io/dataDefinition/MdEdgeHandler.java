@@ -29,7 +29,6 @@ import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
-import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, HandlerFactoryIF
 {
@@ -128,13 +127,6 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.ENABLE_CHANGE_OVER_TIME, attributes, XMLTags.ENABLE_CHANGE_OVER_TIME);
-
-    String frequency = attributes.getValue(XMLTags.FREQUENCY);
-
-    if (frequency != null)
-    {
-      mdEdgeDAO.addItem(MdVertexInfo.FREQUENCY, ChangeFrequency.valueOf(frequency).getOid());
-    }
 
     // Import optional reference attributes
     String parent = attributes.getValue(XMLTags.PARENT_TAG);

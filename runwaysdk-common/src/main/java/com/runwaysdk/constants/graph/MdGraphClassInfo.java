@@ -42,9 +42,4 @@ public interface MdGraphClassInfo extends MdClassInfo
    * Flag indicating if the type has change over time enabled
    */
   public static final String ENABLE_CHANGE_OVER_TIME = "enableChangeOverTime";
-
-  /**
-   * Change over time frequency type
-   */
-  public static final String FREQUENCY               = "frequency";
 }

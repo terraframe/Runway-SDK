@@ -1005,6 +1005,4 @@ public interface XMLTags
   public static final String   DATABASE_CLASS_NAME              = "dbClassName";
 
   public static final String   ENABLE_CHANGE_OVER_TIME          = "enableChangeOverTime";
-
-  public static final String   FREQUENCY                        = "frequency";
 }

@@ -27,7 +27,6 @@ import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
-import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF, HandlerFactoryIF
 {
@@ -131,13 +130,6 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.PUBLISH, attributes, XMLTags.PUBLISH_ATTRIBUTE);
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
     ImportManager.setValue(mdVertexDAO, MdVertexInfo.ENABLE_CHANGE_OVER_TIME, attributes, XMLTags.ENABLE_CHANGE_OVER_TIME);
-
-    String frequency = attributes.getValue(XMLTags.FREQUENCY);
-
-    if (frequency != null)
-    {
-      mdVertexDAO.addItem(MdVertexInfo.FREQUENCY, ChangeFrequency.valueOf(frequency).getOid());
-    }
 
     // Import optional reference attributes
     String extend = attributes.getValue(XMLTags.EXTENDS_ATTRIBUTE);

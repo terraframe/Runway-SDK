@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk;
 
@@ -32,6 +32,7 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
@@ -39,6 +40,7 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.orientdb.OrientDBRequest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.session.Request;
@@ -75,7 +77,7 @@ public class Sandbox
   public static void main(String[] args)
   {
     long daysBetween = ChronoUnit.MONTHS.between(LocalDate.parse("2016-08-31"), LocalDate.parse("2016-12-20"));
-    
+
     System.out.println(daysBetween);
 
     // UUID uuid1 = UUID.nameUUIDFromBytes( ("Test String" ).getBytes());
@@ -85,9 +87,7 @@ public class Sandbox
     // System.out.println(uuid2.getMostSignificantBits()+"
     // "+uuid2.getLeastSignificantBits());
 
-    // Versioning.run(new String[] {
-    // "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain",
-    // XMLConstants.VERSION_XSD });
+    Versioning.run(new String[] { "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain", XMLConstants.VERSION_XSD });
 
     // ServerProperties.setAllowModificationOfMdAttribute(true);
     //
