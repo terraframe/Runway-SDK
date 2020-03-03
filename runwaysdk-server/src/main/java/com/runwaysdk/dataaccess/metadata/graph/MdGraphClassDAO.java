@@ -26,8 +26,6 @@ import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
-import com.runwaysdk.dataaccess.AttributeEnumerationIF;
-import com.runwaysdk.dataaccess.EnumerationItemDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -153,21 +151,6 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
     }
 
     return false;
-  }
-
-  @Override
-  public String getFrequency()
-  {
-    AttributeEnumerationIF attribute = (AttributeEnumerationIF) this.getAttributeIF(MdGraphClassInfo.FREQUENCY);
-
-    EnumerationItemDAOIF[] items = attribute.dereference();
-
-    if (items.length > 0)
-    {
-      return items[0].getName();
-    }
-
-    return null;
   }
 
   /**

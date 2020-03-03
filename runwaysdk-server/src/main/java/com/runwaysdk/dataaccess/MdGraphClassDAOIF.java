@@ -118,6 +118,4 @@ public interface MdGraphClassDAOIF extends MdClassDAOIF
   public String getDBClassName();
 
   public boolean isEnableChangeOverTime();
-
-  public abstract String getFrequency();
 }

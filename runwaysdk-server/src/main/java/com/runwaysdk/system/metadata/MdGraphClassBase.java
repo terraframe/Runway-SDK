@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1187782609)
+@com.runwaysdk.business.ClassSignature(hash = 1293346322)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,8 +31,7 @@ public abstract class MdGraphClassBase extends com.runwaysdk.system.metadata.MdC
   public final static String CLASS = "com.runwaysdk.system.metadata.MdGraphClass";
   public static java.lang.String DBCLASSNAME = "dbClassName";
   public static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
-  public static java.lang.String FREQUENCY = "frequency";
-  private static final long serialVersionUID = -1187782609;
+  private static final long serialVersionUID = 1293346322;
   
   public MdGraphClassBase()
   {
@@ -93,44 +92,6 @@ public abstract class MdGraphClassBase extends com.runwaysdk.system.metadata.MdC
     {
       setValue(ENABLECHANGEOVERTIME, java.lang.Boolean.toString(value));
     }
-  }
-  
-  @SuppressWarnings("unchecked")
-  public java.util.List<com.runwaysdk.system.graph.ChangeFrequency> getFrequency()
-  {
-    return (java.util.List<com.runwaysdk.system.graph.ChangeFrequency>) getEnumValues(FREQUENCY);
-  }
-  
-  public void addFrequency(com.runwaysdk.system.graph.ChangeFrequency value)
-  {
-    if(value != null)
-    {
-      addEnumItem(FREQUENCY, value.getOid());
-    }
-  }
-  
-  public void removeFrequency(com.runwaysdk.system.graph.ChangeFrequency value)
-  {
-    if(value != null)
-    {
-      removeEnumItem(FREQUENCY, value.getOid());
-    }
-  }
-  
-  public void clearFrequency()
-  {
-    clearEnum(FREQUENCY);
-  }
-  
-  public void validateFrequency()
-  {
-    this.validateAttribute(FREQUENCY);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getFrequencyMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdGraphClass.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(FREQUENCY);
   }
   
   protected String getDeclaredType()

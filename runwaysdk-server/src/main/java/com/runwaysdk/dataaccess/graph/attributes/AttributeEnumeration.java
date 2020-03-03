@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess.graph.attributes;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -69,7 +68,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   
   public void setValue(Object value, Date startDate)
   {
-    this.validate(value, startDate);
+    this.validate(value);
 
     Set<String> setValue = null;
     if (value instanceof String)

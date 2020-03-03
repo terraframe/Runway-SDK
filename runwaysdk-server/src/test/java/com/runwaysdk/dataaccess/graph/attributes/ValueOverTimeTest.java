@@ -28,10 +28,6 @@ import java.util.TimeZone;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
-import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
-import com.runwaysdk.system.graph.ChangeFrequency;
-
 public class ValueOverTimeTest
 {
   private DateFormat dateFormat;
@@ -43,9 +39,9 @@ public class ValueOverTimeTest
   }
 
   @Test
-  public void testAnnual() throws ParseException
+  public void testMultiValue() throws ParseException
   {
-    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.ANNUAL);
+    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection();
 
     List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
 
@@ -59,62 +55,14 @@ public class ValueOverTimeTest
   }
 
   @Test
-  public void testQuarterly() throws ParseException
-  {
-    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.QUARTER);
-
-    List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
-
-    testValues.add(new ValueOverTime(dateFormat.parse("01-01-2019"), dateFormat.parse("03-31-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("04-01-2019"), dateFormat.parse("12-31-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("01-01-2020"), dateFormat.parse("03-31-2020"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("04-01-2020"), dateFormat.parse("06-30-2020"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("07-01-2020"), dateFormat.parse("12-31-2020"), 0));
-
-    genericTest(valuesOverTime, testValues);
-  }
-
-  @Test
-  public void testMonthly() throws ParseException
-  {
-    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.MONTHLY);
-
-    List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
-
-    testValues.add(new ValueOverTime(dateFormat.parse("01-01-2019"), dateFormat.parse("01-31-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("02-01-2019"), dateFormat.parse("02-28-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("03-01-2019"), dateFormat.parse("05-31-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("06-01-2019"), dateFormat.parse("06-30-2019"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("07-01-2019"), dateFormat.parse("07-31-2019"), 0));
-
-    genericTest(valuesOverTime, testValues);
-  }
-
-  @Test
-  public void testDaily() throws ParseException
-  {
-    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.DAILY);
-
-    List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
-
-    testValues.add(new ValueOverTime(dateFormat.parse("01-01-1990"), dateFormat.parse("01-15-1990"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("01-16-1990"), dateFormat.parse("03-01-1990"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("03-02-1990"), dateFormat.parse("01-31-1991"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("02-01-1991"), dateFormat.parse("03-01-1991"), 0));
-    testValues.add(new ValueOverTime(dateFormat.parse("03-02-1991"), dateFormat.parse("05-01-1991"), 0));
-
-    genericTest(valuesOverTime, testValues);
-  }
-  
-  @Test
   public void testOverwrite() throws ParseException
   {
-    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection(ChangeFrequency.DAILY);
-    
+    ValueOverTimeCollection valuesOverTime = new ValueOverTimeCollection();
+
     List<ValueOverTime> testValues = new LinkedList<ValueOverTime>();
     testValues.add(new ValueOverTime(dateFormat.parse("01-01-1990"), dateFormat.parse("01-15-1990"), 0));
     testValues.add(new ValueOverTime(dateFormat.parse("01-01-1990"), dateFormat.parse("01-15-1990"), 6));
-    
+
     for (int i : new int[] { 0, 1 })
     {
       valuesOverTime.add(new ValueOverTime(testValues.get(i).getStartDate(), null, testValues.get(i).getValue()));

@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class ValueOverTime implements Comparable<ValueOverTime>
 {
@@ -251,49 +250,5 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     }
    
     return "value [" + value + "] from " + startDate + " to " + endDate;
-  }
-
-  public void validate(ChangeFrequency frequency)
-  {
-//    if (startDate != null)
-//    {
-//      if (frequency != null)
-//      {
-//        if (frequency.equals(ChangeFrequency.ANNUAL))
-//        {
-//          LocalDate expectedStartDate = startDate.with(TemporalAdjusters.firstDayOfYear());
-//          // LocalDate expectedEndDate =
-//          // lEndDate.with(TemporalAdjusters.lastDayOfYear());
-//
-//          // if (!lStartDate.equals(expectedStartDate) ||
-//          // !lEndDate.equals(expectedEndDate))
-//          if (!startDate.equals(expectedStartDate))
-//          {
-//            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
-//          }
-//        }
-//        else if (frequency.equals(ChangeFrequency.QUARTER))
-//        {
-//          LocalDate expectedStartDate = startDate.with(new FirstDayOfQuarter());
-//          // LocalDate expectedEndDate = lEndDate.with(new LastDayOfQuarter());
-//
-//          if (!startDate.equals(expectedStartDate))
-//          {
-//            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
-//          }
-//        }
-//        else if (frequency.equals(ChangeFrequency.MONTHLY))
-//        {
-//          LocalDate expectedStartDate = startDate.with(TemporalAdjusters.firstDayOfMonth());
-//          // LocalDate expectedEndDate =
-//          // lEndDate.with(TemporalAdjusters.lastDayOfMonth());
-//
-//          if (!startDate.equals(expectedStartDate))
-//          {
-//            throw new AttributeFrequencyException("Invalid frequency", frequency.name(), this.getStartDate());
-//          }
-//        }
-//      }
-//    }
   }
 }

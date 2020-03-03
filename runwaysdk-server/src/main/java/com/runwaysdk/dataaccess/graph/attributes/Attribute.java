@@ -29,14 +29,12 @@ import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
-import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.attributes.SystemAttributeProblem;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.system.graph.ChangeFrequency;
 
 public abstract class Attribute implements AttributeIF
 {
@@ -302,7 +300,7 @@ public abstract class Attribute implements AttributeIF
 
   public void setValue(Object value, Date startDate)
   {
-    this.validate(value, startDate);
+    this.validate(value);
 
     
     if (startDate == null)
@@ -391,42 +389,6 @@ public abstract class Attribute implements AttributeIF
 
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttribute();
     this.validateMutable(mdAttributeIF);
-  }
-
-  /**
-   * Check to see if the given value is valid {@link GraphObjectDAO}.
-   *
-   * <br>
-   * <b>Precondition: </b> true <br>
-   * <b>Postcondition: </b> true
-   *
-   * @param valueToValidate
-   *          The value to be checked if its required in the the defining
-   *          {@link GraphObjectDAO}
-   * @param {@link
-   *          MdAttributeDAOIF} The Metatdata TransientDAO that defines the
-   *          Attribute
-   *
-   * @throws EmptyValueProblem
-   *           if this attribute is required for its defining
-   *           {@link GraphObjectDAO} but contains an empty value.
-   */
-  public void validate(Object valueToValidate, Date startDate)
-  {
-    this.validate(valueToValidate);
-
-    if (startDate != null)
-    {
-      // Validate the frequency
-      MdGraphClassDAOIF definedByClass = (MdGraphClassDAOIF) this.mdAttributeDAOIF.definedByClass();
-
-      String frequency = definedByClass.getFrequency();
-
-      if (frequency != null)
-      {
-        new ValueOverTime(startDate, null, valueToValidate).validate(ChangeFrequency.valueOf(frequency));
-      }
-    }
   }
 
   /**

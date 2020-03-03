@@ -30,26 +30,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONArray;
-
-import com.runwaysdk.system.graph.ChangeFrequency;
 
 public class ValueOverTimeCollection implements Collection<ValueOverTime>
 {
   private LinkedList<ValueOverTime> valuesOverTime;
-
-  private ChangeFrequency           frequency;
-
-  public ChangeFrequency getFrequency()
-  {
-    return this.frequency;
-  }
-
-  public ValueOverTimeCollection(ChangeFrequency frequency)
-  {
-    this.valuesOverTime = new LinkedList<ValueOverTime>();
-    this.frequency = frequency;
-  }
 
   public ValueOverTimeCollection()
   {
@@ -133,7 +117,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       {
         afterIndex = i;
       }
-      else if (vot.getStartDate().equals(testVot.getStartDate()) && (testVot.getEndDate().equals(vot.getEndDate()) || (vot.getEndDate() == null && testVot.getEndDate().equals(ValueOverTime.INFINITY_END_DATE))))
+      else if (vot.getStartDate().equals(testVot.getStartDate()) && ( testVot.getEndDate().equals(vot.getEndDate()) || ( vot.getEndDate() == null && testVot.getEndDate().equals(ValueOverTime.INFINITY_END_DATE) ) ))
       {
         if (vot.getValue().equals(testVot.getValue()))
         {
@@ -204,16 +188,6 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
 
   public void validate()
   {
-    // Validate each ValueOverTime individually (will make sure they conform to
-    // the frequency)
-    if (frequency != null)
-    {
-      for (ValueOverTime vot : this)
-      {
-        vot.validate(frequency);
-      }
-    }
-
     // Make sure there are no gaps
     for (int i = 0; i < this.size() - 1; ++i)
     {

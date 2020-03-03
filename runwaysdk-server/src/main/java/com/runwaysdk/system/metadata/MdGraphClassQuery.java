@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -488189736)
+@com.runwaysdk.business.ClassSignature(hash = -1758604087)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -90,43 +90,6 @@ public  class MdGraphClassQuery extends com.runwaysdk.system.metadata.MdClassQue
     return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdGraphClass.ENABLECHANGEOVERTIME, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency()
-  {
-    return getFrequency(null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY);
-
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, mdAttributeIF, this, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias, String displayLabel)
-  {
-
-    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY);
-
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, mdAttributeIF, this, alias, displayLabel);
-
-  }
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY)) 
-    {
-       return new com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -165,9 +128,6 @@ public  class MdGraphClassQuery extends com.runwaysdk.system.metadata.MdClassQue
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime();
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime(String alias);
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime(String alias, String displayLabel);
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency();
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias);
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdGraphClass mdGraphClass);
 
@@ -237,37 +197,6 @@ public  class MdGraphClassQuery extends com.runwaysdk.system.metadata.MdClassQue
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdGraphClass.ENABLECHANGEOVERTIME, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency()
-  {
-    return getFrequency(null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias)
-  {
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.get(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.get(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, alias, displayLabel);
-
-  }
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY)) 
-    {
-       return new com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
   }
 
 /**
@@ -283,9 +212,6 @@ public  class MdGraphClassQuery extends com.runwaysdk.system.metadata.MdClassQue
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime();
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime(String alias);
     public com.runwaysdk.query.SelectableBoolean getEnableChangeOverTime(String alias, String displayLabel);
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency();
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias);
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdGraphClass ... mdGraphClass);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdGraphClass ... mdGraphClass);
@@ -404,36 +330,5 @@ public  class MdGraphClassQuery extends com.runwaysdk.system.metadata.MdClassQue
     return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdGraphClass.ENABLECHANGEOVERTIME, alias, displayLabel);
 
   }
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency()
-  {
-    return getFrequency(null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias)
-  {
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.get(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, alias, null);
-
-  }
- 
-  public com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF getFrequency(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQueryIF)this.get(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY, alias, displayLabel);
-
-  }
-  protected com.runwaysdk.query.AttributeEnumeration enumerationFactory( com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  String mdEnumerationTableName, com.runwaysdk.dataaccess.MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
-  {
-    String name = mdAttributeIF.definesAttribute();
-    
-    if (name.equals(com.runwaysdk.system.metadata.MdGraphClass.FREQUENCY)) 
-    {
-       return new com.runwaysdk.system.graph.ChangeFrequencyMasterQuery.ChangeFrequencyQuery((com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-    else 
-    {
-      return super.enumerationFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
-    }
-  }
-
   }
 }

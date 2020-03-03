@@ -32,6 +32,7 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.XMLConstants;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
@@ -39,6 +40,7 @@ import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.orientdb.OrientDBRequest;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
+import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.session.Request;
@@ -75,7 +77,7 @@ public class Sandbox
   public static void main(String[] args)
   {
     long daysBetween = ChronoUnit.MONTHS.between(LocalDate.parse("2016-08-31"), LocalDate.parse("2016-12-20"));
-    
+
     System.out.println(daysBetween);
 
     // UUID uuid1 = UUID.nameUUIDFromBytes( ("Test String" ).getBytes());
@@ -85,9 +87,7 @@ public class Sandbox
     // System.out.println(uuid2.getMostSignificantBits()+"
     // "+uuid2.getLeastSignificantBits());
 
-    // Versioning.run(new String[] {
-    // "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain",
-    // XMLConstants.VERSION_XSD });
+    Versioning.run(new String[] { "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain", XMLConstants.VERSION_XSD });
 
     // ServerProperties.setAllowModificationOfMdAttribute(true);
     //
