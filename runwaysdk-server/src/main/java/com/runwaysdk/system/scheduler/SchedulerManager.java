@@ -80,6 +80,7 @@ public class SchedulerManager implements JobListener, TriggerListener
     if (instance == null)
     {
       instance = new SchedulerManager();
+      
       instance.initialize();
     }
     
@@ -120,8 +121,6 @@ public class SchedulerManager implements JobListener, TriggerListener
         throw new ProgrammingErrorException("Error occurred when initializing the Scheduler Manager.", e);
       }
     }
-    
-    resumeRunningJobs();
   }
   
   @Request
@@ -163,6 +162,8 @@ public class SchedulerManager implements JobListener, TriggerListener
     {
       throw new ProgrammingErrorException(e.getLocalizedMessage(), e);
     }
+    
+    instance.resumeRunningJobs();
 
     /*
      * Schedule all of the jobs which have cron expressions
