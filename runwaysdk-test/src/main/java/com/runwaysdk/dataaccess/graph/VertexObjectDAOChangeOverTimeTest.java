@@ -34,7 +34,6 @@ import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.attributes.AttributeFrequencyException;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
@@ -56,7 +55,6 @@ import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.system.graph.ChangeFrequency;
 import com.vividsolutions.jts.geom.Point;
 
 public class VertexObjectDAOChangeOverTimeTest
@@ -115,7 +113,6 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.setValue(MdVertexInfo.ENABLE_CHANGE_OVER_TIME, MdAttributeBooleanInfo.TRUE);
-    mdVertexDAO.addItem(MdVertexInfo.FREQUENCY, ChangeFrequency.ANNUAL.getOid());
     mdVertexDAO.apply();
 
     mdCharacterAttribute = TestFixtureFactory.addCharacterAttribute(mdVertexDAO);
