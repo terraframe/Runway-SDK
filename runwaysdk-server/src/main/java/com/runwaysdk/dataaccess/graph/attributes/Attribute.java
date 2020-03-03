@@ -300,7 +300,7 @@ public abstract class Attribute implements AttributeIF
 
   public void setValue(Object value, Date startDate)
   {
-    this.validate(value, startDate);
+    this.validate(value);
 
     
     if (startDate == null)
