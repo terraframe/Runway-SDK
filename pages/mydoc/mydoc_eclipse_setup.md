@@ -35,9 +35,11 @@ This is especially important for projects (like AMI or DDMS) which include third
 
 1. Disable unnecessary validation at the workspace level. If there is particular validation that you don't care about (like JSPS or the like) you may do that here. This will speed up your Eclipse builds.
     * Eclipse Worksapce Preferences -> Validation
-2. If disabling Javascript validation at the workspace level does not work, you may need to disable it by excluding the source.
+2. In my experience, disabling Javascript validation at the workspace level does not work. You should also disable it by excluding the source using the Javascript Include Path configuration.
     * Right click your project -> Properties. Javascript -> Include Path. Click "Source" tab.
     * You may either manually exclude the source with a wildcard, or you can remove the source entirely from the "Include path"
+    * If you choose to remove the source entirely from the include path then you are done. If you choose to exclude via a wildcard, then be sure to include the target directory as well as any lib or ng2 module directories.
+    * Make sure to do this for ALL web projects, since this configuration is project specific. This may also include test projects (i.e. georegistry-test) if they are web projects.
 
 ## Add XML Catalog for working with Runway metadata schema files
 
