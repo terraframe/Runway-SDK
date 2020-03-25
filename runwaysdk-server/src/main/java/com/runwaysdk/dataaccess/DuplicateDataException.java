@@ -166,6 +166,27 @@ public class DuplicateDataException extends DataAccessException
   }
 
   /**
+   * Constructs a new DuplicateDataException with the specified cause and a
+   * developer message taken from the cause. Do not call this constructor
+   * unless you absolutely have to, it's much preferred to specify the
+   * AttributeIF's.
+   * 
+   * @param devMsg
+   * @param localizedAttrLabels2
+   * @param mdClassDAO
+   * @param valueList2
+   */
+  public DuplicateDataException(String devMsg, List<String> localizedAttrLabels2, MdClassDAOIF mdClassDAO, List<String> valueList2)
+  {
+    super(devMsg);
+    
+    this.mdClassDAOIF = mdClassDAO;
+    this.attributeIFList = new LinkedList<AttributeIF>();
+    this.localizedAttrLabels = localizedAttrLabels2;
+    this.valueList = valueList2;
+  }
+
+  /**
    * Returns the list of attribute(s) which the system was attempting to set and could not.
    */
   public List<AttributeIF> getAttributes()
