@@ -250,5 +250,21 @@ public class LocalizationFacade
       localizer.install(locale);
     }
   }
+  
+  /**
+   * Uninstalls the given locale into the system. If the locale does not exist
+   * a ProgrammingErrorException will be thrown.
+   * 
+   * @param locale
+   */
+  public static void uninstall(Locale locale)
+  {
+    RunwayLocalizationProviderIF localizer = getLocalizer();
+
+    if (localizer != null)
+    {
+      localizer.uninstall(locale);
+    }
+  }
 
 }

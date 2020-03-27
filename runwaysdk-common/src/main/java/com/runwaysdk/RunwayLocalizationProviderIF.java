@@ -34,5 +34,7 @@ public interface RunwayLocalizationProviderIF
   
   public void install(Locale locale);
   
+  public void uninstall(Locale locale);
+  
   public List<Locale> getInstalledLocales();
 }

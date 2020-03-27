@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.RunwayLocalizationProviderIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -74,6 +75,32 @@ public class RunwayServerLocalizationProvider implements RunwayLocalizationProvi
     sl.setLocaleLabel(displayName);
     sl.getDisplayLabel().setDefaultValue(displayName);
     sl.apply();
+  }
+  
+  @Override
+  @Transaction
+  public void uninstall(Locale locale)
+  {
+    String enumName = locale.toLanguageTag().replace("-", "_");
+    
+    SupportedLocaleQuery slq = new SupportedLocaleQuery(new QueryFactory());
+    slq.WHERE(slq.getEnumName().EQ(enumName));
+    
+    if (slq.getCount() != 1)
+    {
+      throw new ProgrammingErrorException("Locale [" + locale.toLanguageTag() + "] not found.");
+    }
+    
+    OIterator<? extends SupportedLocale> it = slq.getIterator();
+    
+    try
+    {
+      it.next().delete();
+    }
+    finally
+    {
+      it.close();
+    }
   }
   
   /**
