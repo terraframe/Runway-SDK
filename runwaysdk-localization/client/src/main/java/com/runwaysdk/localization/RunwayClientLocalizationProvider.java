@@ -78,6 +78,12 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
   {
     invoke("install", new Class<?>[] {Locale.class}, locale);
   }
+  
+  @Override
+  public void uninstall(Locale locale)
+  {
+    invoke("uninstall", new Class<?>[] {Locale.class}, locale);
+  }
 
   @SuppressWarnings("unchecked")
   @Override

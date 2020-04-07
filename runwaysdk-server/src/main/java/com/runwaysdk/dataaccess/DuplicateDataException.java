@@ -40,29 +40,20 @@ public class DuplicateDataException extends DataAccessException
    */
   protected MdClassDAOIF      mdClassDAOIF;
   
-//  /**
-//   * The attribute being set
-//   */
-//  protected List<AttributeIF> attributeIFList;
-  
   /**
    * The attribute being set
+   */
+  protected List<AttributeIF> attributeIFList;
+  
+  /**
+   * The display labels of the attributes being set
    */ 
   protected List<String>      localizedAttrLabels;
 
   /**
-   * The duplicate value
+   * The duplicate value(s)
    */
   protected List<String>      valueList;
-  
-  
-  public DuplicateDataException(String devMessage, List<String> localizedAttrLabels, MdClassDAOIF mdClassIF, List<String> valueList)
-  {
-    super(devMessage);
-    this.mdClassDAOIF = mdClassIF;
-    this.localizedAttrLabels = localizedAttrLabels;
-    this.valueList = valueList;
-  }
   
   /**
    * Constructs a new DuplicateDataException with the specified developer
@@ -84,7 +75,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage);
     this.mdClassDAOIF = mdClassIF;
-//    this.attributeIFList = attributeIFList;
+    this.attributeIFList = attributeIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
@@ -117,7 +108,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage, cause);
     this.mdClassDAOIF = mdClassIF;
-//    this.attributeIFList = attributeIFList;
+    this.attributeIFList = attributeIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
@@ -145,6 +136,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage, cause);
     this.valueList = new LinkedList<String>();
+    this.attributeIFList = new LinkedList<AttributeIF>();
   }
 
   /**
@@ -168,11 +160,48 @@ public class DuplicateDataException extends DataAccessException
   {
     super(cause);
     this.mdClassDAOIF = mdEntityIF;
-//    this.attributeIFList = attributeIFList;
+    this.attributeIFList = attributeIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(attributeIFList);
     this.valueList = valueList;
   }
 
+  /**
+   * Constructs a new DuplicateDataException with the specified cause and a
+   * developer message taken from the cause. Do not call this constructor
+   * unless you absolutely have to, it's much preferred to specify the
+   * AttributeIF's.
+   * 
+   * @param devMsg
+   * @param localizedAttrLabels2
+   * @param mdClassDAO
+   * @param valueList2
+   */
+  public DuplicateDataException(String devMsg, List<String> localizedAttrLabels2, MdClassDAOIF mdClassDAO, List<String> valueList2)
+  {
+    super(devMsg);
+    
+    this.mdClassDAOIF = mdClassDAO;
+    this.attributeIFList = new LinkedList<AttributeIF>();
+    this.localizedAttrLabels = localizedAttrLabels2;
+    this.valueList = valueList2;
+  }
+
+  /**
+   * Returns the list of attribute(s) which the system was attempting to set and could not.
+   */
+  public List<AttributeIF> getAttributes()
+  {
+    return this.attributeIFList;
+  }
+  
+  /**
+   * Returns the list of values which were attempted to being set.
+   * @return
+   */
+  public List<String> getValues()
+  {
+    return this.valueList;
+  }
   
   private List<String> getLocalAttrNames(List<AttributeIF> attributeIFList)
   {

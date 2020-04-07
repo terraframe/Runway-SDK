@@ -34,8 +34,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.dbcp.datasources.SharedPoolDataSource;
 
 import com.google.inject.Inject;
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.DatabaseProperties;

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -29,6 +29,7 @@ import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 
+import ognl.DefaultMemberAccess;
 import ognl.ExpressionSyntaxException;
 import ognl.Ognl;
 import ognl.OgnlClassResolver;
@@ -130,7 +131,7 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
             throw new InvalidExpressionSyntaxException(devMessage, _mdAttributeIndicator, e);
           }
 
-          OgnlContext ognlContext = new OgnlContext();
+          OgnlContext ognlContext = new OgnlContext(null, null, new DefaultMemberAccess(true));
 
           Object expressionValue;
 
@@ -139,7 +140,7 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
             // I am offended that I even have to do this. OGNL stores reflection
             // method definitions which cause
             // problems when classes are reloaded.
-            OgnlClassResolver.clearOgnlRuntimeMethodCache();
+//            OgnlClassResolver.clearOgnlRuntimeMethodCache();
             expressionValue = Ognl.getValue(expression, ognlContext, this);
 
             returnVal = expressionValue;
@@ -159,7 +160,7 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
 
       return returnVal;
     }
-    
+
     return null;
   }
 
@@ -195,7 +196,7 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
     else if (rightObjectValue instanceof Boolean)
     {
       Boolean doubleVal = (Boolean) rightObjectValue;
-      
+
       if (!doubleVal)
       {
         return true;

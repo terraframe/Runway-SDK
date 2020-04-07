@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -104,7 +104,7 @@ public class ExcelExportSheet
   {
     this.expectedColumns.add(column);
   }
-  
+
   public Sheet getSheet()
   {
     return sheet;
@@ -216,12 +216,12 @@ public class ExcelExportSheet
       String sheetName = this.getFormattedSheetName();
 
       this.sheet = workbook.createSheet(sheetName);
-      
-      if(this.sheet instanceof SXSSFSheet)
+
+      if (this.sheet instanceof SXSSFSheet)
       {
-        ((SXSSFSheet)this.sheet).trackAllColumnsForAutoSizing();
+        ( (SXSSFSheet) this.sheet ).trackAllColumnsForAutoSizing();
       }
-      
+
       Drawing<?> drawing = sheet.createDrawingPatriarch();
 
       Row typeRow = sheet.createRow(0);
@@ -263,7 +263,7 @@ public class ExcelExportSheet
     return typeName;
   }
 
-  protected void writeHeader(Sheet sheet, Drawing drawing, Row nameRow, Row labelRow, int i, ExcelColumn column, CellStyle boldStyle)
+  protected void writeHeader(Sheet sheet, Drawing<?> drawing, Row nameRow, Row labelRow, int i, ExcelColumn column, CellStyle boldStyle)
   {
     CreationHelper helper = sheet.getWorkbook().getCreationHelper();
 

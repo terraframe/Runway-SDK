@@ -3,22 +3,23 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -48,7 +49,7 @@ public abstract class FieldColumn extends ExcelColumn
    */
   public abstract String javaType();
 
-  protected abstract int getExpectedFieldType();
+  protected abstract CellType getExpectedFieldType();
 
   protected abstract Object getCellValue(Cell cell) throws Exception;
 
@@ -56,17 +57,17 @@ public abstract class FieldColumn extends ExcelColumn
 
   public Object getValue(Cell cell) throws Exception
   {
-    int fieldType = this.getExpectedFieldType();
+    CellType fieldType = this.getExpectedFieldType();
 
-    if (cell.getCellType() == fieldType)
+    if (cell.getCellType().equals(fieldType))
     {
       return this.getCellValue(cell);
     }
-    else if (cell.getCellType() == Cell.CELL_TYPE_BLANK)
+    else if (cell.getCellType().equals(CellType.BLANK))
     {
       return null;
     }
-    else if (cell.getCellType() == Cell.CELL_TYPE_STRING)
+    else if (cell.getCellType().equals(CellType.STRING))
     {
       String value = cell.getRichStringCellValue().getString();
 

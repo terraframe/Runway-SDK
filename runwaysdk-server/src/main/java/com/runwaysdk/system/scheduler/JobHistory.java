@@ -150,7 +150,7 @@ public class JobHistory extends JobHistoryBase
       }
       catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
       {
-        logger.error("Could not get error from type.", e);
+        logger.debug("Could not get error from type.", e);
       }
       
       if (json.has("message"))

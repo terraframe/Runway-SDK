@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.patcher;
 
@@ -162,17 +162,15 @@ public class RunwayPatcher
   {
     String sqlStmt = "SELECT relname FROM pg_class WHERE relname = '" + tableName + "'";
 
-    Connection conx = Database.getConnectionRaw();
-    String selectStatement = sqlStmt;
-
-    Statement statement = null;
-    ResultSet resultSet = null;
-
-    try
+    boolean returnResult = false;
+    
+    try (Connection conx = Database.getConnectionRaw())
     {
-      statement = conx.createStatement();
+      ResultSet resultSet = null;
 
-      boolean isResultSet = statement.execute(selectStatement);
+      Statement statement = conx.createStatement();
+
+      boolean isResultSet = statement.execute(sqlStmt);
 
       while (true)
       {
@@ -188,49 +186,38 @@ public class RunwayPatcher
 
         isResultSet = statement.getMoreResults();
       }
+
+      if (resultSet.next())
+      {
+        returnResult = true;
+      }
+
     }
     catch (SQLException ex)
     {
       Database.throwDatabaseException(ex);
     }
-    finally
-    {
-      try
-      {
-        Database.closeConnection(conx);
-      }
-      catch (SQLException e)
-      {
-        Database.throwDatabaseException(e);
-      }
-    }
 
-    boolean returnResult = false;
-
-    try
-    {
-      if (resultSet.next())
-      {
-        returnResult = true;
-      }
-    }
-    catch (SQLException sqlEx1)
-    {
-      Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement2 = resultSet.getStatement();
-        resultSet.close();
-        statement2.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
-    }
+    // try
+    // {
+    // }
+    // catch (SQLException sqlEx1)
+    // {
+    // Database.throwDatabaseException(sqlEx1);
+    // }
+    // finally
+    // {
+    // try
+    // {
+    // java.sql.Statement statement2 = resultSet.getStatement();
+    // resultSet.close();
+    // statement2.close();
+    // }
+    // catch (SQLException sqlEx2)
+    // {
+    // Database.throwDatabaseException(sqlEx2);
+    // }
+    // }
 
     return returnResult;
   }
@@ -270,7 +257,8 @@ public class RunwayPatcher
           template = "postgres";
         }
 
-        Database.close();
+//        Database.close();
+//
         Database.initialSetup(rootUser, rootPass, template);
       }
 

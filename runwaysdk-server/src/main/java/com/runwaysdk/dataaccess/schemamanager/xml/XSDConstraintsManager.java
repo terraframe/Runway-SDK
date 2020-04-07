@@ -24,8 +24,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -49,26 +49,26 @@ public class XSDConstraintsManager
 {
   class ParseLogger implements ErrorHandler
   {
-    private Log log = LogFactory.getLog(XSDConstraintsManager.class);
+    private Logger log = LoggerFactory.getLogger(XSDConstraintsManager.class);
 
     @Override
     public void error(SAXParseException arg0) throws SAXException
     {
-      log.error(arg0);
+      log.error("Parse Error", arg0);
       throw new XMLParseException("An error occurred while parsing an XSD.", arg0);
     }
 
     @Override
     public void fatalError(SAXParseException arg0) throws SAXException
     {
-      log.fatal(arg0);
+      log.error("Fatal parse Error", arg0);
       throw new XMLParseException("An error occurred while parsing an XSD.", arg0);
     }
 
     @Override
     public void warning(SAXParseException arg0) throws SAXException
     {
-      log.warn(arg0);
+      log.warn("Parse warning", arg0);
     }
 
     /**
@@ -76,7 +76,7 @@ public class XSDConstraintsManager
      */
     public void fatal(Exception e)
     {
-      this.log.fatal(e);
+      this.log.error("Fatal parse Error", e);
     }
   }
 

@@ -32,9 +32,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.annotation.SuppressAjWarnings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemIF;
@@ -76,8 +76,8 @@ import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.database.MetadataDisplayLabelDDLCommand;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
-import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdMethodDAO;
@@ -108,7 +108,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
   protected TransactionState transactionState;
 
-  protected Log              log                    = LogFactory.getLog(AbstractTransactionManagement.class.getName());
+  protected Logger              log                    = LoggerFactory.getLogger(AbstractTransactionManagement.class.getName());
 
   protected boolean          haveCommited           = false;
 

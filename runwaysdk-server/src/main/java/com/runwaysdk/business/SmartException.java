@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.slf4j.event.Level;
+
 import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;
@@ -32,11 +34,9 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdLocalizableDAOIF;
 import com.runwaysdk.dataaccess.TransientDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.Loggable;
 import com.runwaysdk.session.Session;
 
-public abstract class SmartException extends RuntimeException implements RunwayExceptionIF, MutableWithStructs, LocalizableIF, Serializable, Loggable
+public abstract class SmartException extends RuntimeException implements RunwayExceptionIF, MutableWithStructs, LocalizableIF, Serializable
 {
   /**
    * 
@@ -50,8 +50,6 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   private TransientDAO      transientDAO;
 
   private Locale            locale;
-
-  private LogLevel          logLevel;
 
   public SmartException()
   {
@@ -78,20 +76,6 @@ public abstract class SmartException extends RuntimeException implements RunwayE
   {
     super(cause);
     transientDAO = TransientDAO.newInstance(getDeclaredType());
-  }
-
-  /**
-   * From Loggable interface, used to get and set at what level this exception
-   * should be logged.
-   */
-  public LogLevel getLogLevel()
-  {
-    return logLevel;
-  }
-
-  public void setLogLevel(LogLevel lvl)
-  {
-    logLevel = lvl;
   }
 
   /**

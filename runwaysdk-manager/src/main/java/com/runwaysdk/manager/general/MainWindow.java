@@ -75,7 +75,7 @@ import com.runwaysdk.session.Request;
 
 public class MainWindow extends ApplicationWindow implements IWindow, IAdminModule
 {
-  private static final Log   log         = LogFactory.getLog(MainWindow.class);
+  private static final Log   log         = LoggerFactory.getLogger(MainWindow.class);
 
   public static final String EDIT_PREFIX = "Edit ";
 

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -70,6 +70,7 @@ import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
 
+import ognl.DefaultMemberAccess;
 import ognl.ExpressionSyntaxException;
 import ognl.Ognl;
 import ognl.OgnlClassResolver;
@@ -77,7 +78,9 @@ import ognl.OgnlContext;
 import ognl.OgnlException;
 
 /**
- * The root class of the business layer, Entity is the parent of all generated java classes. Entity provides access to the Data Access layer, and all associated functionality.
+ * The root class of the business layer, Entity is the parent of all generated
+ * java classes. Entity provides access to the Data Access layer, and all
+ * associated functionality.
  * 
  * @author Eric Grunzke
  */
@@ -91,19 +94,23 @@ public abstract class Entity implements Mutable, Serializable
   public final static String CLASS            = Entity.class.getName();
 
   /**
-   * All interaction with the core is delegated through this object. This should NOT be accessed outside of this class.
+   * All interaction with the core is delegated through this object. This should
+   * NOT be accessed outside of this class.
    */
   EntityDAO                  entityDAO;
 
   /**
-   * Blank constructor can be used for new or existing instances. It is <b>critical</b> that subclasses call {@link Entity#setDataEntity(EntityDAO)} to correclty initialize the entity.
+   * Blank constructor can be used for new or existing instances. It is
+   * <b>critical</b> that subclasses call
+   * {@link Entity#setDataEntity(EntityDAO)} to correclty initialize the entity.
    */
   Entity()
   {
   }
 
   /**
-   * Default visibility is on purpose: we don't want all generated classes to see this method.
+   * Default visibility is on purpose: we don't want all generated classes to
+   * see this method.
    * 
    * @param entityDAO
    */
@@ -113,7 +120,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Default visibility is on purpose: we don't want all generated classes to see this method.
+   * Default visibility is on purpose: we don't want all generated classes to
+   * see this method.
    * 
    * @return the EntityDAO
    */
@@ -123,7 +131,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Indicates if this is a new instance. If it is new, then the records that represent this ComponentIF have not been created.
+   * Indicates if this is a new instance. If it is new, then the records that
+   * represent this ComponentIF have not been created.
    */
   public boolean isNew()
   {
@@ -131,7 +140,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Indicates whether the delete method has completed execution and the object has been deleted;
+   * Indicates whether the delete method has completed execution and the object
+   * has been deleted;
    */
   public boolean isDeleted()
   {
@@ -139,8 +149,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Indicates if this instance has been applied to the db. Note that an instance can be both new and applied to the db at the same time, if a transaction method calls {@link #apply()} then continues
-   * with more logic.
+   * Indicates if this instance has been applied to the db. Note that an
+   * instance can be both new and applied to the db at the same time, if a
+   * transaction method calls {@link #apply()} then continues with more logic.
    * 
    * @return
    */
@@ -164,16 +175,19 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns a BusinessDAO representing the attribute metadata of the attribute with the given name.
+   * Returns a BusinessDAO representing the attribute metadata of the attribute
+   * with the given name.
    * 
    * <br/>
    * <b>Precondition:</b> name != null <br/>
    * <b>Precondition:</b> !name.trim().equals("") <br/>
-   * <b>Precondition:</b> name is a valid attribute with respect the this Component's class.
+   * <b>Precondition:</b> name is a valid attribute with respect the this
+   * Component's class.
    * 
    * @param name
    *          of the attribute.
-   * @return BusinessDAO representing the attribute metadata of the attribute with the given name
+   * @return BusinessDAO representing the attribute metadata of the attribute
+   *         with the given name
    */
   public MdAttributeConcreteDAOIF getMdAttributeDAO(String name)
   {
@@ -181,12 +195,14 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns a LinkedList of BusinessDAOs representing metadata for each attribute defined for this object's class.
+   * Returns a LinkedList of BusinessDAOs representing metadata for each
+   * attribute defined for this object's class.
    * 
    * <br/>
    * <b>Precondition:</b> true
    * 
-   * @return List of BusinessDAOs representing metadata for each attribute defined for this object's class.
+   * @return List of BusinessDAOs representing metadata for each attribute
+   *         defined for this object's class.
    */
   public List<? extends MdAttributeConcreteDAOIF> getMdAttributeDAOs()
   {
@@ -194,11 +210,13 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns true if the object has an attribute with the given name, false otherwise. It is case sensitive.
+   * Returns true if the object has an attribute with the given name, false
+   * otherwise. It is case sensitive.
    * 
    * @param name
    *          name of the attribute.
-   * @return true if the object has an attribute with the given name, false otherwise. It is case sensitive.
+   * @return true if the object has an attribute with the given name, false
+   *         otherwise. It is case sensitive.
    */
   public boolean hasAttribute(String name)
   {
@@ -206,7 +224,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe getter that takes the attribute name as a String, and returns the value as a String
+   * A generic, type-unsafe getter that takes the attribute name as a String,
+   * and returns the value as a String
    * 
    * @param name
    *          String name of the desired attribute
@@ -223,18 +242,21 @@ public abstract class Entity implements Mutable, Serializable
    * @param name
    * @return object stored on the attribute.
    */
-  public Object getObjectValue(String name)
+  @SuppressWarnings("unchecked")
+  public <T> T getObjectValue(String name)
   {
-    return this.entityDAO.getObjectValue(name);
+    return (T) this.entityDAO.getObjectValue(name);
   }
 
   /**
-   * Validates the attribute with the given name. If the attribute is not valid, then an AttributeException exception is thrown.
+   * Validates the attribute with the given name. If the attribute is not valid,
+   * then an AttributeException exception is thrown.
    * 
    * <br/>
    * <b>Precondition:</b> name != null <br/>
    * <b>Precondition:</b> !name.trim().equals("") <br/>
-   * <b>Precondition:</b> An attribute of the given name exists for instances of this class
+   * <b>Precondition:</b> An attribute of the given name exists for instances of
+   * this class
    * 
    * @param name
    *          name of the attribute
@@ -247,7 +269,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe setter that takes the attribute name a and value as Strings
+   * A generic, type-unsafe setter that takes the attribute name a and value as
+   * Strings
    * 
    * @param name
    *          String name of the attribute
@@ -267,7 +290,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe setter that takes the attribute name a and value as an Object.
+   * A generic, type-unsafe setter that takes the attribute name a and value as
+   * an Object.
    * 
    * @param name
    *          String name of the attribute
@@ -280,7 +304,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe getter that takes a blob attribute name as a String, and returns the value as a byte array
+   * A generic, type-unsafe getter that takes a blob attribute name as a String,
+   * and returns the value as a byte array
    * 
    * @param blobName
    *          Name of the blob attribute
@@ -292,7 +317,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe getter that takes a blob attribute name as a String, and returns the value as a byte array
+   * A generic, type-unsafe getter that takes a blob attribute name as a String,
+   * and returns the value as a byte array
    * 
    * @param blobName
    *          Name of the blob attribute
@@ -304,8 +330,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns a list of selected values for the given enumerated attribute. The declared type of the list is BusinessEnumeration, but each entry is instantiated through reflection, which allows for
-   * accurate actual types.
+   * Returns a list of selected values for the given enumerated attribute. The
+   * declared type of the list is BusinessEnumeration, but each entry is
+   * instantiated through reflection, which allows for accurate actual types.
    * 
    * @param name
    *          Name of the attribute enumeration
@@ -321,8 +348,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns a list of selected values for the given enumerated attribute. The declared type of the list is BusinessEnumeration, but each enity is instantiated through reflection, which allows for
-   * accurate actual types.
+   * Returns a list of selected values for the given enumerated attribute. The
+   * declared type of the list is BusinessEnumeration, but each enity is
+   * instantiated through reflection, which allows for accurate actual types.
    * 
    * @param ids
    *          List of ids to instantiate
@@ -363,7 +391,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe method for adding an item to an enumerated attribute that takes the attribute name and enumeration item as Strings
+   * A generic, type-unsafe method for adding an item to an enumerated attribute
+   * that takes the attribute name and enumeration item as Strings
    * 
    * @param name
    *          String name of the enumerated attribute
@@ -376,7 +405,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Replaces the items of an enumerated attribute. If the attribute does not allow multiplicity, then the {@code values} collection must contain only one item.
+   * Replaces the items of an enumerated attribute. If the attribute does not
+   * allow multiplicity, then the {@code values} collection must contain only
+   * one item.
    * 
    * @param name
    *          Name of the enumerated attribute
@@ -389,7 +420,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic, type-unsafe method for removing an item from an enumerated attribute that takes the attribute name and enumeration item as Strings
+   * A generic, type-unsafe method for removing an item from an enumerated
+   * attribute that takes the attribute name and enumeration item as Strings
    * 
    * @param name
    *          String name of the enumerated attribute
@@ -402,7 +434,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * A generic method for clearing out all selected items on an enumerated attribute.
+   * A generic method for clearing out all selected items on an enumerated
+   * attribute.
    * 
    * @param name
    *          String name of the enumerated attribute
@@ -413,7 +446,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns the type of this Entity. Generic entity objects can represent specific types - this method returns the declared type of the object.
+   * Returns the type of this Entity. Generic entity objects can represent
+   * specific types - this method returns the declared type of the object.
    * 
    * @return The declared type of this object
    */
@@ -430,7 +464,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns the Id used for AttributeProblems (not messages). New instances that fail will have a different OID on the client.
+   * Returns the Id used for AttributeProblems (not messages). New instances
+   * that fail will have a different OID on the client.
    * 
    * @return problem notification oid.
    */
@@ -513,10 +548,14 @@ public abstract class Entity implements Mutable, Serializable
   public abstract void appLock(String userId);
 
   /**
-   * Persists this entity and all changes to the database. <code><b>new</b></code> instances of Entity are <i>not</i> persisted until <code>apply()</code> is called. Similarly, changes made to
-   * instances through the generated java classes are not persisted until <code>apply()</code> is called.
+   * Persists this entity and all changes to the database.
+   * <code><b>new</b></code> instances of Entity are <i>not</i> persisted until
+   * <code>apply()</code> is called. Similarly, changes made to instances
+   * through the generated java classes are not persisted until
+   * <code>apply()</code> is called.
    * 
-   * <b>Precondition:</b> Session user has a lock on this object, assuming this object has a ComponentIF.LOCKED_BY field.
+   * <b>Precondition:</b> Session user has a lock on this object, assuming this
+   * object has a ComponentIF.LOCKED_BY field.
    */
   public void apply()
   {
@@ -574,15 +613,16 @@ public abstract class Entity implements Mutable, Serializable
               throw new InvalidExpressionSyntaxException(devMessage, mdAttributePrimitiveDAOIF, e);
             }
 
-            OgnlContext ognlContext = new OgnlContext();
+            OgnlContext ognlContext = new OgnlContext(null, null, new DefaultMemberAccess(true));
 
             Object expressionValue;
 
             try
             {
-              // I am offended that I even have to do this. OGNL stores reflection method definitions which cause
+              // I am offended that I even have to do this. OGNL stores
+              // reflection method definitions which cause
               // problems when classes are reloaded.
-              OgnlClassResolver.clearOgnlRuntimeMethodCache();
+              // OgnlClassResolver.clearOgnlRuntimeMethodCache();
               expressionValue = Ognl.getValue(expression, ognlContext, this);
             }
             catch (RuntimeException e)
@@ -642,8 +682,10 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Deletes this entity from the database. Any attempt to {@link Entity#apply()} this entity will throw an exception, so it is the responsibility of the developer to remove references to deleted
-   * instances of Entity.
+   * Deletes this entity from the database. Any attempt to
+   * {@link Entity#apply()} this entity will throw an exception, so it is the
+   * responsibility of the developer to remove references to deleted instances
+   * of Entity.
    */
   public void delete()
   {
@@ -651,15 +693,20 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * When an object at the business layer is converted into a DTO, this method is invoked to ensure there are not any READ violations that are enforced programatically. This method should be
-   * ovewritten in business classes if special programatic READ permissions need to be implemented. This method should throw an exception if declarative READ permissions are not adequate.
+   * When an object at the business layer is converted into a DTO, this method
+   * is invoked to ensure there are not any READ violations that are enforced
+   * programatically. This method should be ovewritten in business classes if
+   * special programatic READ permissions need to be implemented. This method
+   * should throw an exception if declarative READ permissions are not adequate.
    */
   public void customReadCheck()
   {
   }
 
   /**
-   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
+   * Returns an object of the specified type with the specified oid from the
+   * database without using reflection. The returned Entity is not typesafe,
+   * meaning that its actual type just a Entity.
    * 
    * @param oid
    *          OID of the instance to get.
@@ -673,7 +720,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns an object of the specified type with the specified oid from the database without using reflection. The returned Entity is not typesafe, meaning that its actual type just a Entity.
+   * Returns an object of the specified type with the specified oid from the
+   * database without using reflection. The returned Entity is not typesafe,
+   * meaning that its actual type just a Entity.
    * 
    * @param oid
    *          OID of the instance to get.
@@ -706,8 +755,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Using reflection, get returns an object of the specified type with the specified oid from the database. The returned Entity is typesafe, meaning that its actual type is that specified by the type
-   * parameter.
+   * Using reflection, get returns an object of the specified type with the
+   * specified oid from the database. The returned Entity is typesafe, meaning
+   * that its actual type is that specified by the type parameter.
    * 
    * @param oid
    *          OID of the instance to get
@@ -734,7 +784,9 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Writes to standard out all attribute names and their values of this BusinessDAO instance. All values that are keys are dereferenced and the values referenced by those keys are returned.
+   * Writes to standard out all attribute names and their values of this
+   * BusinessDAO instance. All values that are keys are dereferenced and the
+   * values referenced by those keys are returned.
    * 
    * <br/>
    * <b>Precondition:</b> true
@@ -746,7 +798,8 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * Returns if an attribute of the Entity has been modified from its orginal value loaded from the database.
+   * Returns if an attribute of the Entity has been modified from its orginal
+   * value loaded from the database.
    * 
    * @param name
    *          The name of the attribute
@@ -758,8 +811,10 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * @return Key is a required field, but the default implementation is an empty string. However, this method should be overwritten in child classes to return meaningful key values. Key values must be
-   *         unique for all entities which are part of the same type hierarchy.
+   * @return Key is a required field, but the default implementation is an empty
+   *         string. However, this method should be overwritten in child classes
+   *         to return meaningful key values. Key values must be unique for all
+   *         entities which are part of the same type hierarchy.
    */
   protected String buildKey()
   {
@@ -775,11 +830,13 @@ public abstract class Entity implements Mutable, Serializable
   }
 
   /**
-   * *************************************************************************** ****
+   * ***************************************************************************
+   * ****
    */
   /** Generated accessor methods * */
   /**
-   * *************************************************************************** ****
+   * ***************************************************************************
+   * ****
    */
 
   public static java.lang.String KEYNAME    = "keyName";

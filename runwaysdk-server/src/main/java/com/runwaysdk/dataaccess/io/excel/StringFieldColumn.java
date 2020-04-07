@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -64,9 +65,9 @@ public class StringFieldColumn extends FieldColumn
   }
 
   @Override
-  protected int getExpectedFieldType()
+  protected CellType getExpectedFieldType()
   {
-    return Cell.CELL_TYPE_STRING;
+    return CellType.STRING;
   }
 
 }

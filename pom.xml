@@ -23,7 +23,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>3.0.36-SNAPSHOT</version>
+  <version>3.0.42-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>
@@ -436,6 +436,19 @@
 	      <artifactId>maven-release-plugin</artifactId>
 	      <version>2.5.3</version>
       </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>5.3.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
       <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

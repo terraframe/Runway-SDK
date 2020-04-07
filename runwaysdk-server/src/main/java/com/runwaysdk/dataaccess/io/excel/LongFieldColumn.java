@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.io.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 import com.runwaysdk.dataaccess.MdWebLongDAOIF;
 
@@ -50,9 +51,9 @@ public class LongFieldColumn extends FieldColumn
   }
 
   @Override
-  protected int getExpectedFieldType()
+  protected CellType getExpectedFieldType()
   {
-    return Cell.CELL_TYPE_NUMERIC;
+    return CellType.NUMERIC;
   }
 
 }

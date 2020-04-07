@@ -21,10 +21,9 @@ package com.runwaysdk.gis.constants;
 import java.net.MalformedURLException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.business.BusinessDTO;
-import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.business.BusinessDTO;import com.runwaysdk.constants.CommonProperties;
 
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
@@ -136,7 +135,7 @@ public class GeoserverProperties
         // We don't know if this is being called via client or server code, so log
         // the error and throw an NPE to the calling code for its error handling mechanism.
         String msg = "The "+GeoserverProperties.class.getSimpleName()+"."+GeoServerRESTReader.class.getSimpleName()+" is null.";
-        LogFactory.getLog(GeoserverProperties.class.getClass()).error(msg, e);
+        LoggerFactory.getLogger(GeoserverProperties.class.getClass()).error(msg, e);
         
         throw new RuntimeException(msg);
       }

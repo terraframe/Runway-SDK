@@ -34,27 +34,4 @@ public class OgnlClassResolver implements ClassResolver
   {
     return LoaderDecorator.load(className);
   }
-  
-  /** 
-   * Clears the cache of reflected methods in Ognl.
-   */
-  public static void clearOgnlRuntimeMethodCache()
-  {
-    synchronized (OgnlRuntime.cacheGetMethod)
-    {
-      OgnlRuntime.cacheGetMethod.clear();
-    }
   }
-  
-  /** 
-   * Returns the count of cached reflected methods in Ognl.
-   */
-  public static int methodCacheCount()
-  {
-    synchronized (OgnlRuntime.cacheGetMethod)
-    {
-     return OgnlRuntime.cacheGetMethod.size();
-    }
-  }
-  
-}

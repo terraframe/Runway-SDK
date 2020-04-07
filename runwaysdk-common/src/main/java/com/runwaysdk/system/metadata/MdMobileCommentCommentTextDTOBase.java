@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 2074291951)
+@com.runwaysdk.business.ClassSignature(hash = 907349085)
 public abstract class MdMobileCommentCommentTextDTOBase extends com.runwaysdk.business.LocalStructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileCommentCommentText";
-  private static final long serialVersionUID = 2074291951;
+  private static final long serialVersionUID = 907349085;
   
   protected MdMobileCommentCommentTextDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
