@@ -23,7 +23,7 @@ package com.runwaysdk.format;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -90,7 +90,7 @@ public class DisplayException extends AbstractFormatException
   @Override
   protected void logException()
   {
-    Log log = this.getLog();
+    Logger log = this.getLog();
     if(log.isDebugEnabled())
     {
       String template = "Error in [%s] when displaying [%s] with locale [%s].";

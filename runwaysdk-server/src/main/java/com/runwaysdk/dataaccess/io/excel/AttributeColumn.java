@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.excel;
 
@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 
 import com.runwaysdk.business.BusinessEnumeration;
@@ -118,28 +119,25 @@ public class AttributeColumn extends ExcelColumn
     /*
      * Check for null values
      */
-    if (cell.getCellType() == Cell.CELL_TYPE_BLANK)
+    if (cell.getCellType().equals(CellType.BLANK))
     {
       return null;
     }
-    else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+    else if (cell.getCellType().equals(CellType.FORMULA))
     {
-      switch (cell.getCachedFormulaResultType())
+      if (cell.getCachedFormulaResultType().equals(CellType.STRING))
       {
-        case Cell.CELL_TYPE_STRING:
-          String value = cell.getRichStringCellValue().getString();
+        String value = cell.getRichStringCellValue().getString();
 
-          if (value == null || value.length() == 0)
-          {
-            return null;
-          }
-
-          break;
-        case Cell.CELL_TYPE_BLANK:
+        if (value == null || value.length() == 0)
+        {
           return null;
+        }
       }
+
+      return null;
     }
-    else if (cell.getCellType() == Cell.CELL_TYPE_STRING)
+    else if (cell.getCellType().equals(CellType.STRING))
     {
       String value = cell.getRichStringCellValue().getString();
 
@@ -172,7 +170,7 @@ public class AttributeColumn extends ExcelColumn
     else if (type.equals(Integer.class.getName()))
     {
       return ExcelUtil.getInteger(cell);
-//      return new Integer(new Double(cell.getNumericCellValue()).intValue());
+      // return new Integer(new Double(cell.getNumericCellValue()).intValue());
     }
     else if (type.equals(Boolean.class.getName()))
     {

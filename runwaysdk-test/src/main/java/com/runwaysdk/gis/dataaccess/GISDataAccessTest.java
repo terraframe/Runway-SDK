@@ -53,6 +53,8 @@ import com.vividsolutions.jts.io.WKTReader;
 
 public class GISDataAccessTest extends GISAbstractTest
 {
+  
+  
   @Request
   @Test
   public void testInvalidDimension()

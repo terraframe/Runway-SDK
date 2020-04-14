@@ -21,8 +21,8 @@ package com.runwaysdk.dataaccess.io;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class RunwayClasspathEntityResolver implements EntityResolver
 {
-  private Log log = LogFactory.getLog(RunwayClasspathEntityResolver.class);
+  private Logger log = LoggerFactory.getLogger(RunwayClasspathEntityResolver.class);
 
   public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
   {
@@ -78,7 +78,7 @@ public class RunwayClasspathEntityResolver implements EntityResolver
     }
     catch (Exception e)
     {
-      log.fatal("Runway SAX parser unable to resolve resource on classpath [" + systemId + "].", e);
+      log.error("Runway SAX parser unable to resolve resource on classpath [" + systemId + "].", e);
       return null;
     }
   }

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.system.gis.mapping;
 
@@ -34,8 +34,8 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.constants.DatabaseProperties;
@@ -72,7 +72,7 @@ public class GeoserverFacade extends GeoserverFacadeBase
 
   public static int          MAXY_INDEX       = 3;
 
-  private static Log         log              = LogFactory.getLog(GeoserverFacade.class);
+  private static Logger      log              = LoggerFactory.getLogger(GeoserverFacade.class);
 
   /**
    * Checks if a given File is a cache directory for the workspace.
@@ -85,10 +85,10 @@ public class GeoserverFacade extends GeoserverFacadeBase
       return file.isDirectory() && file.getName().startsWith(getWorkspace());
     }
   }
-  
+
   public static void refresh()
   {
-    if(getPublisher().reload())
+    if (getPublisher().reload())
     {
       log.info("Reloaded geoserver.");
     }
@@ -97,53 +97,53 @@ public class GeoserverFacade extends GeoserverFacadeBase
       log.warn("Failed to reload geoserver.");
     }
   }
-  
+
   public static void removeStore()
   {
-    if(getPublisher().removeDatastore(getWorkspace(), getStore(), true))
+    if (getPublisher().removeDatastore(getWorkspace(), getStore(), true))
     {
-      log.info("Removed the datastore ["+getStore()+"].");
+      log.info("Removed the datastore [" + getStore() + "].");
     }
     else
     {
-      log.warn("Failed to remove the datastore ["+getStore()+"].");
+      log.warn("Failed to remove the datastore [" + getStore() + "].");
     }
   }
 
   public static void removeWorkspace()
   {
-    if(getPublisher().removeWorkspace(getWorkspace(), true))
+    if (getPublisher().removeWorkspace(getWorkspace(), true))
     {
-      log.info("Removed the workspace ["+getWorkspace()+"].");
+      log.info("Removed the workspace [" + getWorkspace() + "].");
     }
     else
     {
-      log.warn("Failed to remove the workspace ["+getWorkspace()+"].");
+      log.warn("Failed to remove the workspace [" + getWorkspace() + "].");
     }
   }
-  
+
   public static void publishWorkspace()
   {
     try
     {
-      if(getPublisher().createWorkspace(getWorkspace(), new URI(getLocalPath())))
+      if (getPublisher().createWorkspace(getWorkspace(), new URI(getLocalPath())))
       {
-        log.info("Created the workspace ["+getWorkspace()+"].");
+        log.info("Created the workspace [" + getWorkspace() + "].");
       }
       else
       {
-        log.warn("Failed to create the workspace ["+getWorkspace()+"].");
+        log.warn("Failed to create the workspace [" + getWorkspace() + "].");
       }
     }
     catch (URISyntaxException e)
     {
-      throw new ConfigurationException("The URI ["+getLocalPath()+"] is invalid.", e);
+      throw new ConfigurationException("The URI [" + getLocalPath() + "] is invalid.", e);
     }
   }
-  
+
   /**
-   * FIXME could not find another API call to do this, but one must exist
-   * that isn't deprecated. Look again later.
+   * FIXME could not find another API call to do this, but one must exist that
+   * isn't deprecated. Look again later.
    */
   public static void publishStore()
   {
@@ -157,17 +157,17 @@ public class GeoserverFacade extends GeoserverFacadeBase
     encoder.setSchema(DatabaseProperties.getNamespace());
     encoder.setNamespace(getWorkspace());
     encoder.setEnabled(true);
-    
-    if(getPublisher().createPostGISDatastore(getWorkspace(), encoder))
+
+    if (getPublisher().createPostGISDatastore(getWorkspace(), encoder))
     {
-      log.info("Published the store ["+getStore()+"].");
+      log.info("Published the store [" + getStore() + "].");
     }
     else
     {
-      log.warn("Failed to publish the store ["+getStore()+"].");
+      log.warn("Failed to publish the store [" + getStore() + "].");
     }
   }
-  
+
   /**
    * Checks if the given style exists in geoserver.
    * 
@@ -428,7 +428,7 @@ public class GeoserverFacade extends GeoserverFacadeBase
     File cacheRoot = new File(getGeoserverGWCDir());
     return cacheRoot.listFiles(new CacheFilter());
   }
-  
+
   public static void removeCache(File cache)
   {
     if (cache.exists())
@@ -565,14 +565,11 @@ public class GeoserverFacade extends GeoserverFacadeBase
     }
 
     ValueQuery collected = new ValueQuery(union.getQueryFactory());
-    collected.SELECT(collected.aSQLAggregateClob("collected", "st_collect(" + GEOM_COLUMN + ")",
-        "collected"));
+    collected.SELECT(collected.aSQLAggregateClob("collected", "st_collect(" + GEOM_COLUMN + ")", "collected"));
     collected.FROM("(" + union.getSQL() + ")", "unioned");
 
     ValueQuery outer = new ValueQuery(union.getQueryFactory());
-    outer.SELECT(union.aSQLAggregateDouble("minx", "st_xmin(collected)"), union.aSQLAggregateDouble(
-        "miny", "st_ymin(collected)"), union.aSQLAggregateDouble("maxx", "st_xmax(collected)"), union
-        .aSQLAggregateDouble("maxy", "st_ymax(collected)"));
+    outer.SELECT(union.aSQLAggregateDouble("minx", "st_xmin(collected)"), union.aSQLAggregateDouble("miny", "st_ymin(collected)"), union.aSQLAggregateDouble("maxx", "st_xmax(collected)"), union.aSQLAggregateDouble("maxy", "st_ymax(collected)"));
 
     outer.FROM("(" + collected.getSQL() + ")", "collected");
 
@@ -604,8 +601,7 @@ public class GeoserverFacade extends GeoserverFacadeBase
   public static void initializeGeoServer()
   {
     // FIXME Is this needed for the project?
-//    Initializer.init();
+    // Initializer.init();
   }
 
 }
-

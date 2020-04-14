@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mobile;
 
@@ -24,8 +24,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
-import org.apache.commons.collections.BidiMap;
-import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -39,11 +39,11 @@ import com.runwaysdk.session.Request;
 
 public class IdConversionTest
 {
-  private static IdConverter idConverter;
+  private static IdConverter      idConverter;
 
-  private static String      customUsernameAndPassword = "Sir LikesToLoginALot";
+  private static String           customUsernameAndPassword = "Sir LikesToLoginALot";
 
-  private BidiMap            mobileIdToSessionId;
+  private BidiMap<String, String> mobileIdToSessionId;
 
   @Request
   @BeforeClass
@@ -141,10 +141,11 @@ public class IdConversionTest
   @Test
   public void testConvertGlobalAndLocalIds()
   {
-    mobileIdToSessionId = new DualHashBidiMap();
+    mobileIdToSessionId = new DualHashBidiMap<String, String>();
 
-    // Maps a session to a bi-directional hash map BidiMap<globalId, localId>
-    final HashMap<String, BidiMap> idMap = new HashMap<String, BidiMap>();
+    // Maps a session to a bi-directional hash map BidiMap<String,
+    // String><globalId, localId>
+    final HashMap<String, BidiMap<String, String>> idMap = new HashMap<String, BidiMap<String, String>>();
 
     // Log all our threads in, and map the session ids to our mobile ids.
     // Do it twice so that we can ensure we can update an existing sessionId
@@ -188,7 +189,7 @@ public class IdConversionTest
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = new DualHashBidiMap();
+          BidiMap<String, String> globalIdToLocalIdMap = new DualHashBidiMap<String, String>();
           idMap.put(mobileId, globalIdToLocalIdMap);
 
           for (String globalId : globalIds)
@@ -215,12 +216,11 @@ public class IdConversionTest
     {
       Thread t = new Thread()
       {
-        @SuppressWarnings("unchecked")
         public void run()
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = idMap.get(mobileId);
+          BidiMap<String, String> globalIdToLocalIdMap = idMap.get(mobileId);
           Collection<String> localIds = globalIdToLocalIdMap.values();
 
           for (String localId : localIds)
@@ -249,7 +249,7 @@ public class IdConversionTest
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = idMap.get(mobileId);
+          BidiMap<String, String> globalIdToLocalIdMap = idMap.get(mobileId);
 
           for (String globalId : globalIds)
           {
@@ -299,7 +299,7 @@ public class IdConversionTest
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = idMap.get(mobileId);
+          BidiMap<String, String> globalIdToLocalIdMap = idMap.get(mobileId);
 
           for (String globalId : globalIds)
           {
@@ -332,7 +332,7 @@ public class IdConversionTest
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = new DualHashBidiMap();
+          BidiMap<String, String> globalIdToLocalIdMap = new DualHashBidiMap<String, String>();
           idMap.put(mobileId, globalIdToLocalIdMap);
 
           for (String globalId : globalIds)
@@ -361,7 +361,7 @@ public class IdConversionTest
         {
           onThreadStart(mobileId);
 
-          BidiMap globalIdToLocalIdMap = idMap.get(mobileId);
+          BidiMap<String, String> globalIdToLocalIdMap = idMap.get(mobileId);
           Collection<String> localIds = globalIdToLocalIdMap.values();
 
           for (String localId : localIds)

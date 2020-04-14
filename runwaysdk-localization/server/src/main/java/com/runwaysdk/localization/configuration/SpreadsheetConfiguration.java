@@ -23,19 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.runwaysdk.SystemException;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.dataaccess.MdDimensionDAOIF;
-import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
-import com.runwaysdk.localization.LocaleDimension;
 import com.runwaysdk.localization.progress.LocalizationImportProgressMonitorIF;
 import com.runwaysdk.localization.progress.LocalizationImportProgressMonitorLogger;
 
@@ -91,7 +85,7 @@ public class SpreadsheetConfiguration
       
       progressMonitor.onFinishImport();
     }
-    catch (EncryptedDocumentException | InvalidFormatException | IOException e)
+    catch (EncryptedDocumentException | IOException e)
     {
       throw new RuntimeException(e);
     }

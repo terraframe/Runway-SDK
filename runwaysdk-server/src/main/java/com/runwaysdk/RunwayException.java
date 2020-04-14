@@ -3,25 +3,23 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk;
 
 import java.util.Locale;
 
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.Loggable;
 import com.runwaysdk.session.Session;
 
 /**
@@ -37,7 +35,7 @@ import com.runwaysdk.session.Session;
  * 
  * @author Eric Grunzke
  */
-public abstract class RunwayException extends RuntimeException implements RunwayExceptionIF, Loggable
+public abstract class RunwayException extends RuntimeException implements RunwayExceptionIF
 {
   /**
    * 
@@ -48,8 +46,6 @@ public abstract class RunwayException extends RuntimeException implements Runway
    * The locale of the session user.
    */
   private Locale            locale;
-
-  private LogLevel          logLevel;
 
   /**
    * Constructs a new <code>RunwayException</code> with the specified developer
@@ -70,8 +66,10 @@ public abstract class RunwayException extends RuntimeException implements Runway
 
   /**
    * Constructs a new <code>RunwayException</code> with the specified detail
-   * message and cause. <p> Note that the detail message associated with
-   * <code>cause</code> is <i>not</i> automatically incorporated in this
+   * message and cause.
+   * <p>
+   * Note that the detail message associated with <code>cause</code> is
+   * <i>not</i> automatically incorporated in this
    * <code>RunwayException</code>'s detail message.
    * 
    * @param devMessage
@@ -102,20 +100,6 @@ public abstract class RunwayException extends RuntimeException implements Runway
   public RunwayException(Throwable cause)
   {
     super(cause);
-  }
-
-  /**
-   * From Loggable interface, used to get and set at what level this exception
-   * should be logged.
-   */
-  public LogLevel getLogLevel()
-  {
-    return logLevel;
-  }
-
-  public void setLogLevel(LogLevel lvl)
-  {
-    logLevel = lvl;
   }
 
   /**

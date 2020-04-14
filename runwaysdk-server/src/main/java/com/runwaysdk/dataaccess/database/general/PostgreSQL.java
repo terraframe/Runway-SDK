@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Sep 17, 2005
@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -42,7 +43,6 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.postgresql.ds.PGPoolingDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
 import org.slf4j.Logger;
@@ -100,6 +100,8 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * @author nathan
@@ -108,13 +110,12 @@ import com.runwaysdk.query.SubSelectReturnedMultipleRowsException;
 public class PostgreSQL extends AbstractDatabase
 {
   public static final String ROOT_SEQUENCE          = "root_sequence";
-  
+
   public static final String OBJECT_UPDATE_SEQUENCE = "object_sequence_unique_id";
-  
+
   public static final String TRANSACTION_SEQUENCE   = "transaction_record_sequence";
-  
+
   public static final String PRIMARY_KEY_SUFFIX     = "_pkey";
-  
 
   private Logger             logger                 = LoggerFactory.getLogger(PostgreSQL.class);
 
@@ -127,14 +128,27 @@ public class PostgreSQL extends AbstractDatabase
   public PostgreSQL()
   {
     super();
+
+    try
+    {
+      Class.forName("org.postgresql.Driver");
+    }
+    catch (ClassNotFoundException e)
+    {
+    }
+
     this.databaseNamespace = DatabaseProperties.getNamespace();
 
     // The container is not providing a pooled datasource
+    getDataSource();
+  }
+
+  protected synchronized void getDataSource()
+  {
     if (this.dataSource == null)
     {
       boolean pooling = DatabaseProperties.getConnectionPooling();
 
-      int initialDbConnections = DatabaseProperties.getInitialConnections();
       int maxDbConnections = DatabaseProperties.getMaxConnections();
 
       if (maxDbConnections < 2)
@@ -142,29 +156,42 @@ public class PostgreSQL extends AbstractDatabase
         maxDbConnections = 2;
       }
 
-      BaseDataSource pgDataSource;
-
       if (pooling)
       {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(this.getDatabaseUrl());
+        config.setUsername(DatabaseProperties.getUser());
+        config.setPassword(DatabaseProperties.getPassword());
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMaximumPoolSize(maxDbConnections);
+
         // If environment is configured for connection pooling, pool connections
-        pgDataSource = new PGPoolingDataSource();
-        ( (PGPoolingDataSource) pgDataSource ).setInitialConnections(initialDbConnections);
-        ( (PGPoolingDataSource) pgDataSource ).setMaxConnections(maxDbConnections);
+        this.dataSource = new HikariDataSource(config);
       }
       // If environment is not configured for connection pooling, do not pool
       // connections
       else
       {
-        pgDataSource = new PGSimpleDataSource();
-      }
+        BaseDataSource pgDataSource = new PGSimpleDataSource();
+        pgDataSource.setUrl(this.getDatabaseUrl());
+        pgDataSource.setUser(DatabaseProperties.getUser());
+        pgDataSource.setPassword(DatabaseProperties.getPassword());
 
-      pgDataSource.setServerName(DatabaseProperties.getServerName());
-      pgDataSource.setPortNumber(DatabaseProperties.getPort());
-      pgDataSource.setDatabaseName(DatabaseProperties.getDatabaseName());
-      pgDataSource.setUser(DatabaseProperties.getUser());
-      pgDataSource.setPassword(DatabaseProperties.getPassword());
-      this.dataSource = (DataSource) pgDataSource;
+        this.dataSource = (DataSource) pgDataSource;
+      }
     }
+  }
+
+  protected String getDatabaseUrl()
+  {
+    return getDatabaseUrl(DatabaseProperties.getDatabaseName());
+  }
+
+  protected String getDatabaseUrl(String databaseName)
+  {
+    return "jdbc:postgresql://" + DatabaseProperties.getServerName() + ":" + DatabaseProperties.getPort() + "/" + databaseName;
   }
 
   /**
@@ -196,9 +223,14 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void close()
   {
-    if (this.dataSource instanceof PGPoolingDataSource)
+    if (this.dataSource instanceof HikariDataSource)
     {
-      ( (PGPoolingDataSource) this.dataSource ).close();
+      synchronized (this)
+      {
+        ( (HikariDataSource) this.dataSource ).close();
+
+        this.dataSource = null;
+      }
     }
     else
     {
@@ -247,25 +279,30 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void initialSetup(String rootUser, String rootPass, String rootDb)
   {
+    // Close any sort of connection to the database
+    this.close();
+
     // Set up the root connection
     BaseDataSource pgRootDataSource = new PGSimpleDataSource();
-    pgRootDataSource.setServerName(DatabaseProperties.getServerName());
-    pgRootDataSource.setPortNumber(DatabaseProperties.getPort());
-    pgRootDataSource.setDatabaseName(rootDb);
+    pgRootDataSource.setUrl(this.getDatabaseUrl(rootDb));
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);
     this.rootDataSource = (DataSource) pgRootDataSource;
+
     // this.dropNamespace(rootUser, rootPass);
     this.dropDb();
     this.dropUser();
     this.createDb(rootDb);
     this.createUser();
+
     if (this.hasNamespace())
     {
       this.createNamespace(rootUser, rootPass);
     }
 
     this.createExtension(rootUser, rootPass);
+
+    this.getDataSource();
   }
 
   /**
@@ -288,7 +325,8 @@ public class PostgreSQL extends AbstractDatabase
   {
     String dbName = DatabaseProperties.getDatabaseName();
     LinkedList<String> statements = new LinkedList<String>();
-    statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
+//    statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
+    statements.add("CREATE DATABASE " + dbName + " ENCODING = 'UTF8'");
     executeAsRoot(statements, true);
   }
 
@@ -302,9 +340,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     // root needs to log into the application database to create the schema.
     PGSimpleDataSource tempRootDatasource = new PGSimpleDataSource();
-    tempRootDatasource.setServerName(DatabaseProperties.getServerName());
-    tempRootDatasource.setPortNumber(DatabaseProperties.getPort());
-    tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
+    tempRootDatasource.setUrl(this.getDatabaseUrl());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
@@ -350,9 +386,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     // root needs to log into the application database to create the schema.
     PGSimpleDataSource tempRootDatasource = new PGSimpleDataSource();
-    tempRootDatasource.setServerName(DatabaseProperties.getServerName());
-    tempRootDatasource.setPortNumber(DatabaseProperties.getPort());
-    tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
+    tempRootDatasource.setUrl(this.getDatabaseUrl());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
@@ -413,9 +447,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     // root needs to log into the application database to create the schema.
     PGSimpleDataSource tempRootDatasource = new PGSimpleDataSource();
-    tempRootDatasource.setServerName(DatabaseProperties.getServerName());
-    tempRootDatasource.setPortNumber(DatabaseProperties.getPort());
-    tempRootDatasource.setDatabaseName(DatabaseProperties.getDatabaseName());
+    tempRootDatasource.setUrl(this.getDatabaseUrl());
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
@@ -1810,6 +1842,19 @@ public class PostgreSQL extends AbstractDatabase
         else
         {
           prepStmt.setObject(index, UUID.fromString(va));
+        }
+      }
+      else if (dataType.equals(MdAttributeFloatInfo.CLASS))
+      {
+        if ( ( (String) value ).trim().equals(""))
+        {
+          prepStmt.setNull(index, java.sql.Types.FLOAT);
+        }
+        else
+        {
+          double fl = Double.parseDouble((String) value);
+
+          prepStmt.setDouble(index, fl);
         }
       }
       else

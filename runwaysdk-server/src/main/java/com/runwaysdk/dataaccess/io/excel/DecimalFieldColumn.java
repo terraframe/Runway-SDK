@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.io.excel;
 import java.math.BigDecimal;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 import com.runwaysdk.dataaccess.MdWebDecimalDAOIF;
 
@@ -52,9 +53,9 @@ public class DecimalFieldColumn extends FieldColumn
   }
 
   @Override
-  protected int getExpectedFieldType()
+  protected CellType getExpectedFieldType()
   {
-    return Cell.CELL_TYPE_NUMERIC;
+    return CellType.NUMERIC;
   }
 
 }

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -1084,8 +1084,7 @@ public class EntityGenTest
     BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
-    if (in != out)
-      Assert.fail("Stored and Retrieved Floats have different values.");
+    Assert.assertEquals("Stored and Retrieved Floats have different values: [" + in + "][" + out + "]", in, out, 0.001);
   }
 
   @Request
@@ -1104,8 +1103,7 @@ public class EntityGenTest
     Object object = get.invoke(null, oid);
     float out = (Float) collectionClass.getMethod("getAFloat").invoke(object);
 
-    if (in != out)
-      Assert.fail("Stored and Retrieved Floats have different values.");
+    Assert.assertEquals("Stored and Retrieved Floats have different values.", in, out, 0.001);
   }
 
   @Request
@@ -2989,7 +2987,7 @@ public class EntityGenTest
     try
     {
       modifiers = referenceBaseClass.getDeclaredMethod("addRelParent", colletionClass).getModifiers();
-      
+
       if (!Modifier.isProtected(modifiers))
         Assert.fail("Parent relationship [addRelParent] on generated server base class [" + reference.definesType() + "] was not properly changed to [" + VisibilityModifier.PROTECTED.getJavaModifier() + "] visibility.");
 
@@ -4271,7 +4269,7 @@ public class EntityGenTest
     BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     double out = Double.parseDouble(businessDAO.getValue("aDouble"));
 
-    Assert.assertEquals(in, out, 0);
+    Assert.assertEquals(in, out, 0.001);
   }
 
   @Request
@@ -4280,20 +4278,20 @@ public class EntityGenTest
   {
     GeneratedLoader loader = GeneratedLoader.createClassLoader();
 
-    float in = 123456.789F;
+    float in = 123456.7895F;
+
+    System.out.println(in);
 
     Class<?> collectionClass = loader.loadClass(collectionDTO);
     Object object = collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
-    Method createDTO = collectionClass.getMethod("apply");
-
     collectionClass.getMethod("setAFloat", Float.class).invoke(object, in);
-    createDTO.invoke(object);
+    collectionClass.getMethod("apply").invoke(object);
 
     String oid = (String) collectionClass.getMethod("getOid").invoke(object);
     BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     float out = Float.parseFloat(businessDAO.getValue("aFloat"));
 
-    Assert.assertEquals(in, out, 0);
+    Assert.assertEquals(in, out, 0.001);
   }
 
   @Request

@@ -18,7 +18,8 @@
  */
 package com.runwaysdk.patcher.domain;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -29,7 +30,7 @@ import com.runwaysdk.system.metadata.ontology.DatabaseAllPathsStrategyQuery;
 
 public class OntologyStrategyDataPatcher
 {
-  private static Logger logger = Logger.getLogger(OntologyStrategyDataPatcher.class);
+  private static Logger logger = LoggerFactory.getLogger(OntologyStrategyDataPatcher.class);
   
   public static void main(String[] args)
   {

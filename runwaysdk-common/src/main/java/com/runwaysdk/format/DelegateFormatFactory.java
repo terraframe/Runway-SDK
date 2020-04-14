@@ -20,8 +20,8 @@ package com.runwaysdk.format;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -43,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
  ******************************************************************************/
 public class DelegateFormatFactory implements FormatFactory
 {
-  private static Log log = LogFactory.getLog(DelegateFormatFactory.class);
+  private static Logger log = LoggerFactory.getLogger(DelegateFormatFactory.class);
   
   private class DelegateFormat implements Format<Object>
   {

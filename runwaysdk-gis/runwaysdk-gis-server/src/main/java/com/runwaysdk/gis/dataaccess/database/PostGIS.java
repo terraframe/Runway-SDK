@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.dataaccess.database;
 
@@ -146,27 +146,30 @@ public class PostGIS extends PostgreSQL
   {
     Connection conn = super.getConnectionRaw();
 
-    PGConnection pgConn = (PGConnection) conn;
-
-    return (Connection) mapColumnTypes(pgConn);
-  }
-
-  public static PGConnection mapColumnTypes(PGConnection pgConn)
-  {
     try
     {
-      pgConn.addDataType("geometry", org.postgis.jts.JtsGeometry.class);
-      pgConn.addDataType("public.geometry", org.postgis.jts.JtsGeometry.class);
-      pgConn.addDataType("\"public\".\"geometry\"", org.postgis.jts.JtsGeometry.class);
-      pgConn.addDataType("PGgeometry", org.postgis.jts.JtsGeometry.class);
-      pgConn.addDataType("box3d", org.postgis.PGbox3d.class);
-      pgConn.addDataType("box2d", org.postgis.PGbox2d.class);
+      if (conn.isWrapperFor(PGConnection.class))
+      {
+        mapColumnTypes(conn.unwrap(PGConnection.class));
+      }
     }
     catch (SQLException e)
     {
       String errMsg = e.getMessage();
       throw new ProgrammingErrorException(errMsg, e);
     }
+
+    return conn;
+  }
+
+  public static PGConnection mapColumnTypes(PGConnection pgConn) throws SQLException
+  {
+    pgConn.addDataType("geometry", org.postgis.jts.JtsGeometry.class);
+    pgConn.addDataType("public.geometry", org.postgis.jts.JtsGeometry.class);
+    pgConn.addDataType("\"public\".\"geometry\"", org.postgis.jts.JtsGeometry.class);
+    pgConn.addDataType("PGgeometry", org.postgis.jts.JtsGeometry.class);
+    pgConn.addDataType("box3d", org.postgis.PGbox3d.class);
+    pgConn.addDataType("box2d", org.postgis.PGbox2d.class);
 
     return pgConn;
   }

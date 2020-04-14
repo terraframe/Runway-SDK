@@ -3,32 +3,32 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.format;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class that represents an error when formatting or parsing a value. Instances
- * of this class and its subclasses are expected to be used internally for developers
- * as checked exceptions to handle control flow. This means instances of this class
- * should never propagate up the stack for user-friendly localized messages.
+ * of this class and its subclasses are expected to be used internally for
+ * developers as checked exceptions to handle control flow. This means instances
+ * of this class should never propagate up the stack for user-friendly localized
+ * messages.
  */
 public abstract class AbstractFormatException extends RuntimeException
 {
@@ -41,18 +41,18 @@ public abstract class AbstractFormatException extends RuntimeException
   /**
    * The Log to use to record debugging information.
    */
-  private static Log log = LogFactory.getLog(AbstractFormatException.class);
-  
+  private static Logger     log              = LoggerFactory.getLogger(AbstractFormatException.class);
+
   /**
    * The Format class that attempted to format/parse the target value.
    */
-  private Format<?> format;
-  
+  private Format<?>         format;
+
   /**
    * The Locale used when formatting/parsing the target value.
    */
-  private Locale locale;
-  
+  private Locale            locale;
+
   /**
    * 
    * @param locale
@@ -60,11 +60,11 @@ public abstract class AbstractFormatException extends RuntimeException
   public AbstractFormatException(Throwable cause, Format<?> format, Locale locale)
   {
     super(cause);
-    
+
     this.format = format;
     this.locale = locale;
   }
-  
+
   /**
    * 
    * @param format
@@ -73,7 +73,7 @@ public abstract class AbstractFormatException extends RuntimeException
   public AbstractFormatException(Format<?> format, Locale locale)
   {
     super();
-    
+
     this.format = format;
     this.locale = locale;
   }
@@ -82,11 +82,11 @@ public abstract class AbstractFormatException extends RuntimeException
    * 
    * @return
    */
-  public Log getLog()
+  public Logger getLog()
   {
     return log;
   }
-  
+
   /**
    * 
    * @return
@@ -95,7 +95,7 @@ public abstract class AbstractFormatException extends RuntimeException
   {
     return format;
   }
-  
+
   /**
    * 
    * @return
@@ -104,10 +104,10 @@ public abstract class AbstractFormatException extends RuntimeException
   {
     return locale;
   }
-  
+
   /**
    * Logs information about the subclass state for debugging.
    */
   protected abstract void logException();
-  
+
 }

@@ -20,7 +20,7 @@ package com.runwaysdk.format;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
 
 
 public class FormatException extends AbstractFormatException
@@ -69,7 +69,7 @@ public class FormatException extends AbstractFormatException
   @Override
   protected void logException()
   {
-    Log log = this.getLog();
+    Logger log = this.getLog();
     if(log.isDebugEnabled())
     {
       String template = "Error in [%s] when formatting [%s] with locale [%s].";

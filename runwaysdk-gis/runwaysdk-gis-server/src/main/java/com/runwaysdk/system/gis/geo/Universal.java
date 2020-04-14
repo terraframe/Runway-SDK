@@ -23,8 +23,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import com.runwaysdk.business.Relationship;
 import com.runwaysdk.business.ontology.OntologyStrategyBuilderIF;
@@ -34,7 +35,6 @@ import com.runwaysdk.business.ontology.Term;
 import com.runwaysdk.business.ontology.TermAndRel;
 import com.runwaysdk.dataaccess.transaction.AbortIfProblem;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.logging.LogLevel;
 import com.runwaysdk.query.Condition;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -46,7 +46,7 @@ public class Universal extends UniversalBase
 {
   private static final long  serialVersionUID = 1467479707;
 
-  public static final Log    log              = LogFactory.getLog(Universal.class);
+  public static final Logger    log              = LoggerFactory.getLogger(Universal.class);
 
   /**
    * Constant name for the root node
@@ -107,7 +107,6 @@ public class Universal extends UniversalBase
 
   @Override
   @Transaction
-  @com.runwaysdk.logging.Log(level = LogLevel.DEBUG)
   public void beforeDeleteTerm()
   {
     // Delete all GeoEntites that reference this Universal. This must be done

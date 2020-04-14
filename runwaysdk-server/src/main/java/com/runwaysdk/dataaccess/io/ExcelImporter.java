@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -30,10 +30,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ProblemIF;
@@ -59,8 +62,6 @@ import com.runwaysdk.dataaccess.io.excel.ImportApplyListener;
 import com.runwaysdk.dataaccess.io.excel.ImportListener;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.logging.LogLevel;
-import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.RequestState;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.transport.conversion.ExcelErrors;
@@ -68,29 +69,31 @@ import com.runwaysdk.transport.conversion.ExcelMessage;
 
 public class ExcelImporter
 {
-  private static final String ERROR_SHEET = "Error Messages";
-
-  private ContextBuilderIF    builder;
+  private static final String          ERROR_SHEET = "Error Messages";
+  
+  private ContextBuilderIF             builder;
 
   /**
    * List of sheets in the excel file we're importing
    */
-  private List<ImportContext> contexts;
+  private List<ImportContext>          contexts;
 
   /**
    * The in memory representation of the error xls file
    */
-  private Workbook            errorWorkbook;
+  private Workbook                     errorWorkbook;
 
   /**
    * Optional logger
    */
-  private ExcelImportProgressMonitorIF    monitor;
-  
-  private boolean hasValidSheet;
+  private ExcelImportProgressMonitorIF monitor;
+
+  private boolean                      hasValidSheet;
 
   /**
-   * Constructor for this importer. Opens the stream and parses some header information. The source stream is accepted as is, so any necessary buffering should be handled by the caller.
+   * Constructor for this importer. Opens the stream and parses some header
+   * information. The source stream is accepted as is, so any necessary
+   * buffering should be handled by the caller.
    * 
    * @param stream
    */
@@ -118,7 +121,8 @@ public class ExcelImporter
   }
 
   /**
-   * Opens the stream, parses the types from the sheets and set up context objects for them
+   * Opens the stream, parses the types from the sheets and set up context
+   * objects for them
    * 
    * @param stream
    * @return
@@ -141,7 +145,7 @@ public class ExcelImporter
         if (this.isValidSheet(sheet, sheetName))
         {
           this.hasValidSheet = true;
-          
+
           Row row = sheet.getRow(0);
           Cell cell = row.getCell(0);
           String type = ExcelUtil.getString(cell);
@@ -157,7 +161,7 @@ public class ExcelImporter
       throw new SystemException(e);
     }
   }
-  
+
   public boolean getHasValidSheet()
   {
     return this.hasValidSheet;
@@ -233,19 +237,20 @@ public class ExcelImporter
     for (ImportContext context : contexts)
     {
       Sheet sheet = context.getImportSheet();
-      totalRows += sheet.getLastRowNum() - 2; // zero indexed so add one then we have 3 headers so subtract 3
+      totalRows += sheet.getLastRowNum() - 2; // zero indexed so add one then we
+                                              // have 3 headers so subtract 3
     }
     if (this.monitor != null)
     {
       this.monitor.setTotalRows(totalRows);
     }
-    
+
     // Actually do the import
     long rowNum = 0;
     for (ImportContext context : contexts)
     {
       readSheet(context, rowNum);
-      
+
       Sheet sheet = context.getImportSheet();
       totalRows += sheet.getLastRowNum() - 2;
       rowNum = rowNum + totalRows;
@@ -255,7 +260,7 @@ public class ExcelImporter
         hadErrors = true;
       }
     }
-    
+
     for (ImportContext context : contexts)
     {
       for (ImportListener listener : context.getListeners())
@@ -337,9 +342,9 @@ public class ExcelImporter
     {
       return;
     }
-    
+
     int previousErrorCount = context.getErrorCount();
-    
+
     if (this.monitor != null)
     {
       this.monitor.setCurrentRow(row.getRowNum() + 1 + baseRow);
@@ -381,7 +386,8 @@ public class ExcelImporter
   }
 
   /**
-   * Checks to see if the given row has specified at least one column with a value
+   * Checks to see if the given row has specified at least one column with a
+   * value
    * 
    * @param row
    * @return
@@ -393,26 +399,26 @@ public class ExcelImporter
     while (cellIterator.hasNext())
     {
       Cell cell = cellIterator.next();
-      int cellType = cell.getCellType();
+      CellType cellType = cell.getCellType();
 
-      if (cellType == Cell.CELL_TYPE_FORMULA)
+      if (cellType.equals(CellType.FORMULA))
       {
         cellType = cell.getCachedFormulaResultType();
       }
 
       Object value = null;
 
-      switch (cellType)
+      if (cellType.equals(CellType.STRING))
       {
-        case Cell.CELL_TYPE_STRING:
-          value = ExcelUtil.getString(cell);
-          break;
-        case Cell.CELL_TYPE_BOOLEAN:
-          value = ExcelUtil.getBoolean(cell);
-          break;
-        case Cell.CELL_TYPE_NUMERIC:
-          value = cell.getNumericCellValue();
-          break;
+        value = ExcelUtil.getString(cell);
+      }
+      else if (cellType.equals(CellType.BOOLEAN))
+      {
+        value = ExcelUtil.getBoolean(cell);
+      }
+      else if (cellType.equals(CellType.NUMERIC))
+      {
+        value = cell.getNumericCellValue();
       }
 
       if (value == null)
@@ -426,13 +432,18 @@ public class ExcelImporter
       }
     }
     return false;
+
   }
 
   /**
-   * If there is an exception when we attempt to set a value, we'll get a misleading EmptyValueProblem when we try to apply(), because the exception prevented the value from ever being set. The
-   * original message is more accurate, so we'd like to eliminate the noise of the EmptyValueProblem.
+   * If there is an exception when we attempt to set a value, we'll get a
+   * misleading EmptyValueProblem when we try to apply(), because the exception
+   * prevented the value from ever being set. The original message is more
+   * accurate, so we'd like to eliminate the noise of the EmptyValueProblem.
    * 
-   * This method returns true if the given problem is an instance of EmptyValueProblem and we've already observed an error on this row on the empty attribute.
+   * This method returns true if the given problem is an instance of
+   * EmptyValueProblem and we've already observed an error on this row on the
+   * empty attribute.
    * 
    * @param context
    *          TODO
@@ -480,7 +491,8 @@ public class ExcelImporter
   }
 
   /**
-   * Reads the first two rows, which represent the attribute names and attribute display labels respectively.
+   * Reads the first two rows, which represent the attribute names and attribute
+   * display labels respectively.
    * 
    * @param context
    *          TODO
@@ -496,7 +508,9 @@ public class ExcelImporter
   }
 
   /**
-   * Writes out errors to the correct sheet. Inclusion of the "Column" column is based on the passed parameter. "Row" and "Message" columns are always included.
+   * Writes out errors to the correct sheet. Inclusion of the "Column" column is
+   * based on the passed parameter. "Row" and "Message" columns are always
+   * included.
    * 
    * @param includeColumn
    */
@@ -552,6 +566,9 @@ public class ExcelImporter
 
   public static class ImportContext
   {
+    private Logger log = LoggerFactory.getLogger(ImportContext.class);
+
+
     /**
      * The sheet containing the user input
      */
@@ -583,7 +600,9 @@ public class ExcelImporter
     private List<ImportListener>  listeners;
 
     /**
-     * A wrapper containing all of the {@link ExcelMessage}s that have been created as other {@link Exception}s or {@link ProblemIF}s have been caught, and annotated with row/column information
+     * A wrapper containing all of the {@link ExcelMessage}s that have been
+     * created as other {@link Exception}s or {@link ProblemIF}s have been
+     * caught, and annotated with row/column information
      */
     private ExcelErrors           errors;
 
@@ -760,7 +779,7 @@ public class ExcelImporter
       {
         message += ": " + local;
       }
-      
+
       String attributeName = null;
       if (mdAttribute != null)
       {
@@ -768,17 +787,18 @@ public class ExcelImporter
       }
 
       int count = this.getErrorRowCount();
-      
-      if (CommonExceptionMessageLocalizer.runwayException(Session.getCurrentLocale()).equals(local) || !(cause instanceof RunwayExceptionIF))
+
+      if (CommonExceptionMessageLocalizer.runwayException(Session.getCurrentLocale()).equals(local) || ! ( cause instanceof RunwayExceptionIF ))
       {
-        RunwayLogUtil.logToLevel(LogLevel.ERROR, "An unusual error occurred while importing data in cell (row:column) [" + (count + 1) + ":" + column + "]. " + message, cause);
+        this.log.error("An unusual error occurred while importing data in cell (row:column) [" + ( count + 1 ) + ":" + column + "]. " + message, cause);
       }
 
       this.addError(new ExcelMessage(count + 1, column, message, attributeName));
     }
 
     /**
-     * Reads a single row, instantiating an instance and calling typesafe setters for each attribute
+     * Reads a single row, instantiating an instance and calling typesafe
+     * setters for each attribute
      * 
      * @param row
      */

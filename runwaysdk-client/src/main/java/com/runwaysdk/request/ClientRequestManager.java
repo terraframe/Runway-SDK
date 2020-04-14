@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.request;
 
@@ -28,8 +28,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -47,7 +47,7 @@ import com.runwaysdk.constants.XMLConstants;
  */
 public class ClientRequestManager
 {
-  private Log                          log                = LogFactory.getLog(ClientRequestManager.class);
+  private Logger                       log                = LoggerFactory.getLogger(ClientRequestManager.class);
 
   /**
    * HashMap to hold mappings between labels and Connection objects.
@@ -57,7 +57,8 @@ public class ClientRequestManager
   // /**
   // * The path to the XML file holding the connections.
   // */
-  // private static String CONNECTIONS_XML_FILE = ClientProperties.getConnectionsFile();
+  // private static String CONNECTIONS_XML_FILE =
+  // ClientProperties.getConnectionsFile();
   //
   // /**
   // * The path to the schema file defining the XML connection file.
@@ -99,7 +100,9 @@ public class ClientRequestManager
   }
 
   /**
-   * Constructs a new ConnectionManager object by reading in an xml file detailing connections to servers and then populating a HashMap of Connection objects.
+   * Constructs a new ConnectionManager object by reading in an xml file
+   * detailing connections to servers and then populating a HashMap of
+   * Connection objects.
    */
   private ClientRequestManager()
   {
@@ -156,7 +159,8 @@ public class ClientRequestManager
   }
 
   /**
-   * Parses an XML document to extract connection information, ultimately creating Connection objects.
+   * Parses an XML document to extract connection information, ultimately
+   * creating Connection objects.
    * 
    * @param document
    */
@@ -207,7 +211,8 @@ public class ClientRequestManager
   }
 
   /**
-   * Returns a ClientRequest object associated with the default connection for all connection types.
+   * Returns a ClientRequest object associated with the default connection for
+   * all connection types.
    * 
    * @return ClientRequest object associated with the default connection.
    */
@@ -241,8 +246,10 @@ public class ClientRequestManager
   }
 
   /**
-   * Adds a new connection label, available for use in methods that create a new session. A programmatic way of modifying connections.xml at runtime. The connection is not saved to the connections.xml
-   * file, it is stored in memory.
+   * Adds a new connection label, available for use in methods that create a new
+   * session. A programmatic way of modifying connections.xml at runtime. The
+   * connection is not saved to the connections.xml file, it is stored in
+   * memory.
    * 
    * @param conn
    */

@@ -21,9 +21,9 @@ package com.runwaysdk.business.generation;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.tools.ajc.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.RunwayProperties;
@@ -111,7 +111,7 @@ public class AspectJCompiler extends AbstractCompiler
    */
   private void callAJC(String args[])
   {
-    Log log = LogFactory.getLog(COMPILER_LOG);
+    Logger log = LoggerFactory.getLogger(COMPILER_LOG);
     log.trace(Arrays.deepToString(args));
 
     fails.clear();

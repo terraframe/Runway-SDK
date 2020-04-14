@@ -22,9 +22,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.eclipse.jdt.internal.compiler.batch.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Concrete implementation for programmatic compilation of generated content
@@ -70,7 +70,7 @@ public class EclipseCompiler extends AbstractCompiler
    */
   private void callECJ(String args[])
   {
-    Log log = LogFactory.getLog(COMPILER_LOG);
+    Logger log = LoggerFactory.getLogger(COMPILER_LOG);
     log.trace(Arrays.deepToString(args));
     
     StringWriter output = new StringWriter();

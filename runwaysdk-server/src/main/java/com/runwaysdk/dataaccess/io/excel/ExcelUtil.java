@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.excel;
 
@@ -30,6 +30,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -122,14 +123,14 @@ public class ExcelUtil
       return Boolean.FALSE;
     }
 
-    int cellType = cell.getCellType();
+    CellType cellType = cell.getCellType();
     // In the case of formula, find out what type the formula will produce
-    if (cellType == Cell.CELL_TYPE_FORMULA)
+    if (cellType.equals(CellType.FORMULA))
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == Cell.CELL_TYPE_STRING)
+    if (cellType.equals(CellType.STRING))
     {
       String value = cell.getRichStringCellValue().getString().trim();
 
@@ -144,7 +145,7 @@ public class ExcelUtil
 
       throw new AttributeValueException("[" + value + "] is not a recognized boolean in excel", value);
     }
-    else if (cellType == Cell.CELL_TYPE_NUMERIC)
+    else if (cellType.equals(CellType.NUMERIC))
     {
       Double value = new Double(cell.getNumericCellValue());
 
@@ -168,23 +169,23 @@ public class ExcelUtil
       return null;
     }
 
-    int cellType = cell.getCellType();
+    CellType cellType = cell.getCellType();
 
     // In the case of formula, find out what type the formula will produce
-    if (cellType == Cell.CELL_TYPE_FORMULA)
+    if (cellType.equals(CellType.FORMULA))
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == Cell.CELL_TYPE_BLANK)
+    if (cellType.equals(CellType.BLANK))
     {
       return "";
     }
-    else if (cellType == Cell.CELL_TYPE_NUMERIC)
+    else if (cellType.equals(CellType.NUMERIC))
     {
       return ( new BigDecimal(cell.getNumericCellValue()) ).toString();
     }
-    else if (cellType == Cell.CELL_TYPE_BOOLEAN)
+    else if (cellType.equals(CellType.BOOLEAN))
     {
       return new Boolean(cell.getBooleanCellValue()).toString();
     }
@@ -201,31 +202,31 @@ public class ExcelUtil
       return null;
     }
 
-    int cellType = cell.getCellType();
+    CellType cellType = cell.getCellType();
 
     // In the case of formula, find out what type the formula will produce
-    if (cellType == Cell.CELL_TYPE_FORMULA)
+    if (cellType.equals(CellType.FORMULA))
     {
       cellType = cell.getCachedFormulaResultType();
     }
 
-    if (cellType == Cell.CELL_TYPE_BLANK)
+    if (cellType.equals(CellType.BLANK))
     {
       return null;
     }
-    else if (cellType == Cell.CELL_TYPE_NUMERIC)
+    else if (cellType.equals(CellType.NUMERIC))
     {
       return ( new BigDecimal(cell.getNumericCellValue()) ).intValue();
     }
     else
     {
       String value = cell.getRichStringCellValue().getString().trim();
-      
-      if(value.length() > 0)
+
+      if (value.length() > 0)
       {
         return Integer.parseInt(value);
       }
-      
+
       return null;
     }
   }
@@ -234,14 +235,7 @@ public class ExcelUtil
   {
     BufferedInputStream bis = new BufferedInputStream(i);
 
-    try
-    {
-      return WorkbookFactory.create(bis);
-    }
-    catch (InvalidFormatException e)
-    {
-      throw new FileReadException("Unable to read the file because it is of the incorrect format type.", null);
-    }
+    return WorkbookFactory.create(bis);
   }
 
   public static Workbook createWorkbook(Workbook workbook) throws IOException
