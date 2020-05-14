@@ -137,7 +137,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
   }
   
   /**
-   * Gets an exception message for the given throwable. Should not be used for SmartException or RunwayException.
+   * Gets an exception message for the given throwable.
    */
   public static String getMessageFromException(Throwable t)
   {
