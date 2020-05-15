@@ -34,12 +34,15 @@ import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
+import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
+import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
 import com.runwaysdk.system.metadata.MdDimension;
@@ -170,7 +173,7 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     {
       error = t;
       
-      String errorMessage = ExecutableJob.getMessageFromException(t);
+      String errorMessage = RunwayException.localizeThrowable(t, CommonProperties.getDefaultLocale());
       logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ". " + errorMessage, t);
     }
     finally

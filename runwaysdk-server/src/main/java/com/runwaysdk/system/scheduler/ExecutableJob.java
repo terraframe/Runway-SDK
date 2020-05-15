@@ -18,14 +18,12 @@
  */
 package com.runwaysdk.system.scheduler;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.business.SmartException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
@@ -134,55 +132,6 @@ public abstract class ExecutableJob extends ExecutableJobBase
     jh.apply();
     
     return jh.getStatus().get(0);
-  }
-  
-  /**
-   * Gets an exception message for the given throwable.
-   */
-  public static String getMessageFromException(Throwable t)
-  {
-    String errorMessage = null;
-    
-    if (t instanceof InvocationTargetException)
-    {
-      t = t.getCause();
-    }
-    
-    if (t instanceof SmartException)
-    {
-      SmartException se = ( (SmartException) t );
-      
-      errorMessage = se.localize(com.runwaysdk.session.Session.getCurrentLocale());
-      
-      if (errorMessage == null || errorMessage.length() == 0)
-      {
-        errorMessage = se.getLocalizedMessage();
-      }
-      if (errorMessage == null || errorMessage.length() == 0)
-      {
-        errorMessage = se.getClassDisplayLabel();
-      }
-      if (errorMessage == null || errorMessage.length() == 0)
-      {
-        errorMessage = se.getType();
-      }
-    }
-    else
-    {
-      errorMessage = t.getLocalizedMessage();
-      
-      if (errorMessage == null || errorMessage.length() == 0)
-      {
-        errorMessage = t.getMessage();
-      }
-    }
-    
-    if (errorMessage == null || errorMessage.length() == 0)
-    {
-      errorMessage = t.getClass().getTypeName();
-    }
-    
-    return errorMessage;
   }
 
   /**

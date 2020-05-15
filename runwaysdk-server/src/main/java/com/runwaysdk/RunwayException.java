@@ -18,8 +18,10 @@
  */
 package com.runwaysdk;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
+import com.runwaysdk.business.LocalizableIF;
 import com.runwaysdk.session.Session;
 
 /**
@@ -142,5 +144,66 @@ public abstract class RunwayException extends RuntimeException implements Runway
     String s = getClass().getName();
     String message = this.getMessage();
     return ( message != null ) ? ( s + ": " + message ) : s;
+  }
+  
+  /**
+   * Localizes the throwable in a way that will properly account for Java exceptions and all
+   * built-in Runway exception types (like SmartException). If a message cannot be produced
+   * from the standard methods (i.e. localize), then the class display label or even the
+   * exception's fully qualified classname may be used (in worst case scenario).
+   * 
+   * @param t
+   * @param locale
+   * @return A message (hopefully user-friendly, localized) for the exception.
+   */
+  public static String localizeThrowable(Throwable t, Locale locale)
+  {
+    String errorMessage = null;
+    
+    if (t instanceof InvocationTargetException)
+    {
+      t = t.getCause();
+    }
+    
+    if (t instanceof LocalizableIF)
+    {
+      LocalizableIF localizable = ( (LocalizableIF) t );
+      
+      errorMessage = localizable.localize(locale);
+      
+      if (errorMessage == null || errorMessage.length() == 0)
+      {
+        errorMessage = t.getLocalizedMessage();
+      }
+      if (errorMessage == null || errorMessage.length() == 0)
+      {
+        errorMessage = localizable.getClassDisplayLabel();
+      }
+      if (errorMessage == null || errorMessage.length() == 0)
+      {
+        errorMessage = localizable.getType();
+      }
+    }
+    else
+    {
+      if (t instanceof RunwayException)
+      {
+        ( (RunwayException) t ).setLocale(locale);
+      }
+      
+      errorMessage = t.getLocalizedMessage();
+      
+      if (errorMessage == null || errorMessage.length() == 0)
+      {
+        errorMessage = t.getMessage();
+      }
+    }
+    
+    if (errorMessage == null || errorMessage.length() == 0)
+    {
+      errorMessage = t.getClass().getTypeName();
+    }
+    
+    return errorMessage;
   }
 }

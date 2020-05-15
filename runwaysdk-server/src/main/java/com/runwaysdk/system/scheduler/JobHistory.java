@@ -38,6 +38,7 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
+import com.runwaysdk.session.Session;
 
 public class JobHistory extends JobHistoryBase
 {
@@ -207,7 +208,7 @@ public class JobHistory extends JobHistoryBase
       }
       
       // This here is needed for exceptions that aren't RunwayException or SmartException.
-      String message = ExecutableJob.getMessageFromException(t);
+      String message = RunwayException.localizeThrowable(t, Session.getCurrentLocale());
       json.put("message", message);
       
       return json;
