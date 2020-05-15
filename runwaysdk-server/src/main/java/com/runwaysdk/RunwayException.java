@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
 import com.runwaysdk.business.LocalizableIF;
+import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 
 /**
@@ -156,6 +157,7 @@ public abstract class RunwayException extends RuntimeException implements Runway
    * @param locale
    * @return A message (hopefully user-friendly, localized) for the exception.
    */
+  @Request
   public static String localizeThrowable(Throwable t, Locale locale)
   {
     String errorMessage = null;
