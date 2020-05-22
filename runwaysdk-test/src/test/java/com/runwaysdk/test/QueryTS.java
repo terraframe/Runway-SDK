@@ -16,13 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk;
+package com.runwaysdk.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.runwaysdk.query.QueryTestSuite;
+
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UeberTestSuite.class })
-public class UeberTS
+@Suite.SuiteClasses({ QueryTestSuite.class })
+public class QueryTS
 {
 }

@@ -140,7 +140,22 @@ public class PostgreSQL extends AbstractDatabase
     this.databaseNamespace = DatabaseProperties.getNamespace();
 
     // The container is not providing a pooled datasource
+//    getDataSource();
+  }
+  
+  public void initializeConnection()
+  {
     getDataSource();
+  }
+  
+  public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    // Set up the root connection
+    BaseDataSource pgRootDataSource = new PGSimpleDataSource();
+    pgRootDataSource.setUrl(this.getDatabaseUrl(rootDb));
+    pgRootDataSource.setUser(rootUser);
+    pgRootDataSource.setPassword(rootPass);
+    this.rootDataSource = (DataSource) pgRootDataSource;
   }
 
   protected synchronized void getDataSource()
@@ -280,14 +295,14 @@ public class PostgreSQL extends AbstractDatabase
   public void initialSetup(String rootUser, String rootPass, String rootDb)
   {
     // Close any sort of connection to the database
-    this.close();
+//    this.close();
 
-    // Set up the root connection
-    BaseDataSource pgRootDataSource = new PGSimpleDataSource();
-    pgRootDataSource.setUrl(this.getDatabaseUrl(rootDb));
-    pgRootDataSource.setUser(rootUser);
-    pgRootDataSource.setPassword(rootPass);
-    this.rootDataSource = (DataSource) pgRootDataSource;
+//    // Set up the root connection
+//    BaseDataSource pgRootDataSource = new PGSimpleDataSource();
+//    pgRootDataSource.setUrl(this.getDatabaseUrl(rootDb));
+//    pgRootDataSource.setUser(rootUser);
+//    pgRootDataSource.setPassword(rootPass);
+//    this.rootDataSource = (DataSource) pgRootDataSource;
 
     // this.dropNamespace(rootUser, rootPass);
     this.dropDb();
@@ -302,7 +317,8 @@ public class PostgreSQL extends AbstractDatabase
 
     this.createExtension(rootUser, rootPass);
 
-    this.getDataSource();
+    this.initializeConnection();
+//    this.getDataSource();
   }
 
   /**

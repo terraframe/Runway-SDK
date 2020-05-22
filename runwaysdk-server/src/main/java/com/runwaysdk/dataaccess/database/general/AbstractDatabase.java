@@ -176,6 +176,16 @@ public abstract class AbstractDatabase
       // will initialize the datasource.
     }
   }
+  
+  /**
+   * Initializes this AbstractDatabase object with a connection to the database.
+   */
+  abstract public void initializeConnection();
+
+  /**
+   * Initializes the AbstractDatabase object with a root connection to the database.
+   */
+  abstract public void initializeRootConnection(String rootUser, String rootPass, String rootDb);
 
   /**
    * Installs the runway core. This entails creating a new database, creating a
@@ -352,6 +362,32 @@ public abstract class AbstractDatabase
     {
       this.connlock.unlock();
     }
+  }
+  
+  /**
+   * Returns a connection from the root data source. This assumes that we have logged in as root (i.e. initialzeRootConnection has been invoked).
+   */
+  public Connection getConnectionRoot()
+  {
+    this.connlock.lock();
+    
+    Connection conx = null;
+    
+    try
+    {
+      conx = this.rootDataSource.getConnection();
+      conx.setAutoCommit(false);
+    }
+    catch (SQLException ex)
+    {
+      this.throwDatabaseException(ex);
+    }
+    finally
+    {
+      this.connlock.unlock();
+    }
+    
+    return conx;
   }
 
   /**

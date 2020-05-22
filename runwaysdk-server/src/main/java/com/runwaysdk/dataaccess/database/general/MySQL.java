@@ -178,6 +178,16 @@ public class MySQL extends AbstractDatabase
       }
     }
   }
+  
+  public void initializeConnection()
+  {
+    throw new DatabaseException("Not implemented");
+  }
+  
+  public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    throw new DatabaseException("Not implemented");
+  }
 
   /**
    * Installs the runway core. This entails creating a new database, creating a

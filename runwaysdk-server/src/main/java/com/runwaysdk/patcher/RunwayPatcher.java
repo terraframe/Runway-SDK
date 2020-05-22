@@ -20,6 +20,7 @@ package com.runwaysdk.patcher;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -157,7 +158,111 @@ public class RunwayPatcher
       map.put(getDate(resource), resource);
     }
   }
+  
+  /**
+   * Returns true if a database user exists with the provided name.
+   */
+  private static Boolean rawDatabaseExistCheck(String dbName, String rootUser, String rootPass, String rootDb)
+  {
+    // First check to make sure the user exists
+    String sqlStmt = "SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('" + dbName + "');";
 
+    boolean returnResult = false;
+    
+    try (Connection conx = Database.getConnectionRoot(rootUser, rootPass, rootDb))
+    {
+      ResultSet resultSet = null;
+
+      Statement statement = conx.createStatement();
+
+      boolean isResultSet = statement.execute(sqlStmt);
+
+      while (true)
+      {
+        if (isResultSet)
+        {
+          resultSet = statement.getResultSet();
+          break;
+        }
+        else if (statement.getUpdateCount() == -1)
+        {
+          throw new SQLException("No results were returned by the query.");
+        }
+
+        isResultSet = statement.getMoreResults();
+      }
+
+      if (resultSet.next())
+      {
+        returnResult = true;
+      }
+
+    }
+    catch (SQLException ex)
+    {
+      Database.throwDatabaseException(ex);
+    }
+    
+    Database.close();
+
+    return returnResult;
+  }
+  
+  /**
+   * Returns true if a database user exists with the provided name.
+   */
+  private static Boolean rawDatabaseUserExistCheck(String userName, String rootUser, String rootPass, String rootDb)
+  {
+    // First check to make sure the user exists
+    String sqlStmt = "SELECT 1 FROM pg_roles WHERE rolname='" + userName + "'";
+
+    boolean returnResult = false;
+    
+    try (Connection conx = Database.getConnectionRoot(rootUser, rootPass, rootDb))
+    {
+      ResultSet resultSet = null;
+
+      Statement statement = conx.createStatement();
+
+      boolean isResultSet = statement.execute(sqlStmt);
+
+      while (true)
+      {
+        if (isResultSet)
+        {
+          resultSet = statement.getResultSet();
+          break;
+        }
+        else if (statement.getUpdateCount() == -1)
+        {
+          throw new SQLException("No results were returned by the query.");
+        }
+
+        isResultSet = statement.getMoreResults();
+      }
+
+      if (resultSet.next())
+      {
+        returnResult = true;
+      }
+
+    }
+    catch (SQLException ex)
+    {
+      Database.throwDatabaseException(ex);
+    }
+    
+    Database.close();
+
+    return returnResult;
+  }
+
+  /**
+   * Returns true if the specified table exists in the database.
+   * 
+   * @param tableName
+   * @return
+   */
   private static Boolean rawTableExistCheck(String tableName)
   {
     String sqlStmt = "SELECT relname FROM pg_class WHERE relname = '" + tableName + "'";
@@ -197,27 +302,8 @@ public class RunwayPatcher
     {
       Database.throwDatabaseException(ex);
     }
-
-    // try
-    // {
-    // }
-    // catch (SQLException sqlEx1)
-    // {
-    // Database.throwDatabaseException(sqlEx1);
-    // }
-    // finally
-    // {
-    // try
-    // {
-    // java.sql.Statement statement2 = resultSet.getStatement();
-    // resultSet.close();
-    // statement2.close();
-    // }
-    // catch (SQLException sqlEx2)
-    // {
-    // Database.throwDatabaseException(sqlEx2);
-    // }
-    // }
+    
+    Database.close();
 
     return returnResult;
   }
@@ -227,21 +313,53 @@ public class RunwayPatcher
    */
   public static void bootstrap(String rootUser, String rootPass, String template, Boolean clean)
   {
-    boolean tableExist;
-    try
+    if (template == null)
     {
-      tableExist = rawTableExistCheck("md_class");
+      template = "postgres";
     }
-    catch (DatabaseException ex)
+    
+    boolean userExist = false;
+    boolean dbExist = false;
+    if (rootUser != null && rootPass != null)
     {
-      // An exception can be thrown if the database itself doesn't exist. (not
-      // just the table)
-      tableExist = false;
+      try
+      {
+        dbExist = rawDatabaseExistCheck(DatabaseProperties.getDatabaseName(), rootUser, rootPass, template);
+      }
+      catch (Throwable ex)
+      {
+        dbExist = false;
+      }
+      
+      if (dbExist)
+      {
+        try
+        {
+          userExist = rawDatabaseUserExistCheck(DatabaseProperties.getUser(), rootUser, rootPass, template);
+        }
+        catch (Throwable ex)
+        {
+          userExist = false;
+        }
+      }
+    }
+    
+    boolean tableExist = false;
+    if (userExist && dbExist)
+    {
+      try
+      {
+        tableExist = rawTableExistCheck("md_class");
+      }
+      catch (Throwable ex)
+      {
+        tableExist = false;
+      }
     }
 
-    if (clean == true || !tableExist)
+    if (clean || !dbExist || !userExist || !tableExist)
     {
-      if (clean == true)
+      if (clean)
       {
         logger.info("Destroying ALL data in the [" + DatabaseProperties.getDatabaseName() + "] database and reinstalling Runway.");
       }
@@ -252,13 +370,6 @@ public class RunwayPatcher
 
       if (rootUser != null && rootPass != null)
       {
-        if (template == null)
-        {
-          template = "postgres";
-        }
-
-//        Database.close();
-//
         Database.initialSetup(rootUser, rootPass, template);
       }
 

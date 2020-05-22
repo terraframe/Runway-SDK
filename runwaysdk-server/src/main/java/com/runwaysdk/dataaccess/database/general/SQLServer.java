@@ -134,6 +134,16 @@ public class SQLServer extends AbstractDatabase
       }
     }
   }
+  
+  public void initializeConnection()
+  {
+    throw new DatabaseException("Not implemented");
+  }
+  
+  public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    throw new DatabaseException("Not implemented");
+  }
 
   public void initialSetup(String rootUser, String rootPass, String rootDb)
   {

@@ -32,6 +32,8 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.postgresql.ds.common.BaseDataSource;
 
 import com.google.inject.Inject;
 import com.runwaysdk.RunwayMetadataVersion;
@@ -115,6 +117,16 @@ public class HsqlDB extends AbstractDatabase
 //      rootSource.setPassword(DatabaseProperties.getRootPassword());
 //      this.rootDataSource = rootSource;
     }
+  }
+  
+  public void initializeConnection()
+  {
+    throw new DatabaseException("Not implemented");
+  }
+  
+  public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    throw new DatabaseException("Not implemented");
   }
 
   public void initialSetup(String rootUser, String rootPass, String rootDb)

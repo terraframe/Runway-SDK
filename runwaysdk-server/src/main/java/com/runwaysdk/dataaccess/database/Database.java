@@ -151,6 +151,16 @@ public class Database
   {
     this.database = database;
   }
+  
+  void initializeConnection()
+  {
+    this.database.initializeConnection();
+  }
+  
+  void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    this.database.initializeRootConnection(rootUser, rootPass, rootDb);
+  }
 
   /**
    * The accessor function to the instance of <code>AbstractDatabase</code>.
@@ -162,6 +172,16 @@ public class Database
     if (instance == null)
     {
       instance = new DatabaseInjector().getDatabase();
+    }
+
+    return instance.database;
+  }
+  
+  public synchronized static AbstractDatabase instanceRoot(String rootUser, String rootPass, String rootDb)
+  {
+    if (instance == null)
+    {
+      instance = new DatabaseInjector().getDatabaseRoot(rootUser, rootPass, rootDb);
     }
 
     return instance.database;
@@ -259,7 +279,7 @@ public class Database
    */
   public static void initialSetup(String rootUser, String rootPass, String rootDb)
   {
-    instance().initialSetup(rootUser, rootPass, rootDb);
+    instanceRoot(rootUser, rootPass, rootDb).initialSetup(rootUser, rootPass, rootDb);
     
     // this is put here because the relational database and the graph database (if any) need to be created together
     GraphDBService.getInstance().initializeDB();
@@ -1730,6 +1750,11 @@ public class Database
   public static Connection getConnectionRaw()
   {
     return instance().getConnectionRaw();
+  }
+  
+  public static Connection getConnectionRoot(String rootUser, String rootPass, String rootDb)
+  {
+    return instanceRoot(rootUser, rootPass, rootDb).getConnectionRoot();
   }
 
   /**

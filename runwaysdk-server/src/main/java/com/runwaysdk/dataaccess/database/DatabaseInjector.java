@@ -64,6 +64,19 @@ public class DatabaseInjector
    */
   public Database getDatabase()
   {
-    return injector.getInstance(Database.class);
+    Database db = injector.getInstance(Database.class);
+    db.initializeConnection();
+    return db;
+  }
+  
+  /**
+   * @return The a new instance of a @{link Database} with all of its dependencies
+   * already injected.
+   */
+  public Database getDatabaseRoot(String rootUser, String rootPass, String rootDb)
+  {
+    Database db = injector.getInstance(Database.class);
+    db.initializeRootConnection(rootUser, rootPass, rootDb);
+    return db;
   }
 }

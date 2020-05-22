@@ -109,6 +109,16 @@ public class Oracle extends AbstractDatabase
     this.objectSequenceName      = UNIQUE_OBJECT_ID_SEQUENCE;
     this.transactionSequenceName = TRANSACTION_SEQUENCE;
   }
+  
+  public void initializeConnection()
+  {
+    throw new DatabaseException("Not implemented");
+  }
+  
+  public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
+  {
+    throw new DatabaseException("Not implemented");
+  }
 
   /**
    * The generic implementation of getConnection() assumes that the data source is set up
