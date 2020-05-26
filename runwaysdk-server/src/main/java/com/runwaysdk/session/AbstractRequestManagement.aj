@@ -80,8 +80,16 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 {
   static
   {
-    // Initialize the connection pool of the graph database, if one is present
-    GraphDBService.getInstance().initializeConnectionPool();
+    try
+    {
+      // Initialize the connection pool of the graph database, if one is present
+      GraphDBService.getInstance().initializeConnectionPool();
+    }
+    catch (Throwable t)
+    {
+      t.printStackTrace();
+      throw t;
+    }
   }
 
   declare                                       precedence : AbstractTransactionManagement+;
