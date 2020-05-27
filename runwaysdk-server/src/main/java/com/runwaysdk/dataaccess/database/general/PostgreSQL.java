@@ -294,16 +294,6 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void initialSetup(String rootUser, String rootPass, String rootDb)
   {
-    // Close any sort of connection to the database
-//    this.close();
-
-//    // Set up the root connection
-//    BaseDataSource pgRootDataSource = new PGSimpleDataSource();
-//    pgRootDataSource.setUrl(this.getDatabaseUrl(rootDb));
-//    pgRootDataSource.setUser(rootUser);
-//    pgRootDataSource.setPassword(rootPass);
-//    this.rootDataSource = (DataSource) pgRootDataSource;
-
     // this.dropNamespace(rootUser, rootPass);
     this.dropDb();
     this.dropUser();
@@ -318,7 +308,6 @@ public class PostgreSQL extends AbstractDatabase
     this.createExtension(rootUser, rootPass);
 
     this.initializeConnection();
-//    this.getDataSource();
   }
 
   /**
@@ -328,6 +317,9 @@ public class PostgreSQL extends AbstractDatabase
   public void dropDb()
   {
     String dbName = DatabaseProperties.getDatabaseName();
+    
+    logger.info("Dropping PostgreSQL database [" + dbName + "].");
+    
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("DROP DATABASE IF EXISTS " + dbName);
     executeAsRoot(statements, true);
@@ -340,6 +332,9 @@ public class PostgreSQL extends AbstractDatabase
   public void createDb(String rootDb)
   {
     String dbName = DatabaseProperties.getDatabaseName();
+    
+    logger.info("Creating PostgreSQL database [" + dbName + "].");
+    
     LinkedList<String> statements = new LinkedList<String>();
 //    statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
     statements.add("CREATE DATABASE " + dbName + " ENCODING = 'UTF8'");
@@ -362,12 +357,16 @@ public class PostgreSQL extends AbstractDatabase
 
     Connection conn = null;
     Statement statement = null;
+    
+    String namespace = this.getNamespace();
+    
+    logger.info("Dropping PostgreSQL database namespace [" + namespace + "].");
 
     try
     {
       conn = tempRootDatasource.getConnection();
       statement = conn.createStatement();
-      statement.execute(" DROP SCHEMA " + this.getNamespace() + " CASCADE");
+      statement.execute(" DROP SCHEMA " + namespace + " CASCADE");
     }
     catch (SQLException e)
     {
@@ -408,11 +407,13 @@ public class PostgreSQL extends AbstractDatabase
 
     Connection conn = null;
     Statement statement = null;
-
+    
     try
     {
       String userName = DatabaseProperties.getUser();
       String namespace = this.getNamespace();
+      
+      logger.info("Creating PostgreSQL database namespace [" + namespace + "] with owner [" + userName + "].");
 
       conn = tempRootDatasource.getConnection();
       statement = conn.createStatement();
@@ -469,6 +470,8 @@ public class PostgreSQL extends AbstractDatabase
 
     Connection conn = null;
     Statement statement = null;
+    
+    logger.info("Creating PostgreSQL database extension [" + "uuid-ossp" + "].");
 
     try
     {
@@ -506,6 +509,8 @@ public class PostgreSQL extends AbstractDatabase
   public void dropUser()
   {
     String userName = DatabaseProperties.getUser();
+    
+    logger.info("Dropping PostgreSQL database user [" + userName + "]");
 
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("DROP USER IF EXISTS " + userName);
@@ -519,6 +524,8 @@ public class PostgreSQL extends AbstractDatabase
   public void createUser()
   {
     String userName = DatabaseProperties.getUser();
+    
+    logger.info("Creating PostgreSQL database user [" + userName + "]");
 
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("CREATE USER " + userName + " ENCRYPTED PASSWORD '" + DatabaseProperties.getPassword() + "'");

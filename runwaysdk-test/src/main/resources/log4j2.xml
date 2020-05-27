@@ -11,8 +11,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<Configuration status="error" strict="true" name="XMLConfigTest"
-               packages="org.apache.logging.log4j.test">
+<Configuration strict="true" name="RunwayTest">
   <Properties>
     <Property name="logdir">${project.basedir}/../logs</Property>
     <Property name="filename">${project.basedir}/../logs/log.log</Property>

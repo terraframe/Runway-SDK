@@ -230,10 +230,10 @@
       </build>
     </profile>
     <profile>
-      <id>patch</id>
+      <id>build-database</id>
       <activation>
         <property>
-          <name>patch</name>
+          <name>build-database</name>
         </property>
       </activation>
       <build>
@@ -244,15 +244,20 @@
             <version>1.2.1</version>
             <executions>
               <execution>
-                <id>patch</id>
+                <id>build-database</id>
                 <phase>process-resources</phase>
                 <goals>
                   <goal>java</goal>
                 </goals>
                 <configuration>
                   <executable>java</executable>
-                  <mainClass>com.runwaysdk.patcher.RunwayPatcher</mainClass>
+                  <mainClass>com.runwaysdk.build.DatabaseBuilder</mainClass>
                   <arguments>
+                    <argument>--patch=${patch}</argument>
+                    <argument>--rootUser=${root.user}</argument>
+                    <argument>--rootPass=${root.pass}</argument>
+                    <argument>--templateDb=${root.db}</argument>
+                    <argument>--clean=${root.clean}</argument>
                   </arguments>
                 </configuration>
               </execution>

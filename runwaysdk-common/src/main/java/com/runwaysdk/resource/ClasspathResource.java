@@ -179,7 +179,7 @@ public class ClasspathResource implements ApplicationResource
   }
   
   /**
-   * Returns true if the resource path includes an extension.
+   * Returns true if the resource is a package (directory).
    */
   public Boolean isPackage()
   {

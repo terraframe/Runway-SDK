@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.patcher;
+package com.runwaysdk.build;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,8 +59,6 @@ import com.runwaysdk.dataaccess.InstallerCP;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
-import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.database.DatabaseException;
 import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
@@ -70,13 +68,18 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.session.Request;
 
-public class RunwayPatcher
+/**
+ * This is a tool which can be used to build the database.
+ * 
+ * @author rrowlands
+ */
+public class DatabaseBuilder
 {
-  private static Logger            logger                                     = LoggerFactory.getLogger(RunwayPatcher.class);
+  private static Logger            logger                                     = LoggerFactory.getLogger(DatabaseBuilder.class);
 
   public static final List<String> supportedExtensions                        = toList("sql,xml,java");
 
-  public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = Database.VERSION_TIMESTAMP_PROPERTY;
+  public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = com.runwaysdk.dataaccess.database.Database.VERSION_TIMESTAMP_PROPERTY;
 
   private static final String      DATE_PATTEN                                = "\\d{4,}";
 
@@ -92,7 +95,7 @@ public class RunwayPatcher
   {
     public int compare(ClasspathResource arg0, ClasspathResource arg1)
     {
-      return RunwayPatcher.compare(arg0, arg1);
+      return DatabaseBuilder.compare(arg0, arg1);
     }
   }
 
@@ -110,15 +113,17 @@ public class RunwayPatcher
   /**
    * Mapping between a resource and its timestamp
    */
-  protected Map<Date, ClasspathResource> map;
+//  protected Map<Date, ClasspathResource> map;
 
   private List<String>                   extensions;
 
   private String                         path;
 
   private Boolean                        ignoreErrors;
+  
+  private Boolean                        isPatch;
 
-  public RunwayPatcher(List<String> extensions, String path, Boolean ignoreErrors)
+  public DatabaseBuilder(List<String> extensions, String path, Boolean ignoreErrors, Boolean isPatch)
   {
     if (path == null)
     {
@@ -140,266 +145,38 @@ public class RunwayPatcher
 
     this.ignoreErrors = ignoreErrors;
     this.timestamps = new TreeSet<Date>();
+    this.isPatch = isPatch;
 
     initialize();
   }
 
   private void initialize()
   {
-    logger.info("Initializing Runway patcher.");
+    logger.info("Initializing Runway database builder.");
 
-    this.map = new HashMap<Date, ClasspathResource>();
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
     for (ClasspathResource resource : getTimestampedResources(this.path))
     {
       ordered.add(resource);
-
-      map.put(getDate(resource), resource);
+    }
+    
+    if (isPatch)
+    {
+      for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
+      {
+        ordered.add(resource);
+      }
+    }
+    else
+    {
+      for (ClasspathResource resource : getTimestampedResources(this.path + "/install"))
+      {
+        ordered.add(resource);
+      }
     }
   }
   
-  /**
-   * Returns true if a database user exists with the provided name.
-   */
-  private static Boolean rawDatabaseExistCheck(String dbName, String rootUser, String rootPass, String rootDb)
-  {
-    // First check to make sure the user exists
-    String sqlStmt = "SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('" + dbName + "');";
-
-    boolean returnResult = false;
-    
-    try (Connection conx = Database.getConnectionRoot(rootUser, rootPass, rootDb))
-    {
-      ResultSet resultSet = null;
-
-      Statement statement = conx.createStatement();
-
-      boolean isResultSet = statement.execute(sqlStmt);
-
-      while (true)
-      {
-        if (isResultSet)
-        {
-          resultSet = statement.getResultSet();
-          break;
-        }
-        else if (statement.getUpdateCount() == -1)
-        {
-          throw new SQLException("No results were returned by the query.");
-        }
-
-        isResultSet = statement.getMoreResults();
-      }
-
-      if (resultSet.next())
-      {
-        returnResult = true;
-      }
-
-    }
-    catch (SQLException ex)
-    {
-      Database.throwDatabaseException(ex);
-    }
-    
-    Database.close();
-
-    return returnResult;
-  }
-  
-  /**
-   * Returns true if a database user exists with the provided name.
-   */
-  private static Boolean rawDatabaseUserExistCheck(String userName, String rootUser, String rootPass, String rootDb)
-  {
-    // First check to make sure the user exists
-    String sqlStmt = "SELECT 1 FROM pg_roles WHERE rolname='" + userName + "'";
-
-    boolean returnResult = false;
-    
-    try (Connection conx = Database.getConnectionRoot(rootUser, rootPass, rootDb))
-    {
-      ResultSet resultSet = null;
-
-      Statement statement = conx.createStatement();
-
-      boolean isResultSet = statement.execute(sqlStmt);
-
-      while (true)
-      {
-        if (isResultSet)
-        {
-          resultSet = statement.getResultSet();
-          break;
-        }
-        else if (statement.getUpdateCount() == -1)
-        {
-          throw new SQLException("No results were returned by the query.");
-        }
-
-        isResultSet = statement.getMoreResults();
-      }
-
-      if (resultSet.next())
-      {
-        returnResult = true;
-      }
-
-    }
-    catch (SQLException ex)
-    {
-      Database.throwDatabaseException(ex);
-    }
-    
-    Database.close();
-
-    return returnResult;
-  }
-
-  /**
-   * Returns true if the specified table exists in the database.
-   * 
-   * @param tableName
-   * @return
-   */
-  private static Boolean rawTableExistCheck(String tableName)
-  {
-    String sqlStmt = "SELECT relname FROM pg_class WHERE relname = '" + tableName + "'";
-
-    boolean returnResult = false;
-    
-    try (Connection conx = Database.getConnectionRaw())
-    {
-      ResultSet resultSet = null;
-
-      Statement statement = conx.createStatement();
-
-      boolean isResultSet = statement.execute(sqlStmt);
-
-      while (true)
-      {
-        if (isResultSet)
-        {
-          resultSet = statement.getResultSet();
-          break;
-        }
-        else if (statement.getUpdateCount() == -1)
-        {
-          throw new SQLException("No results were returned by the query.");
-        }
-
-        isResultSet = statement.getMoreResults();
-      }
-
-      if (resultSet.next())
-      {
-        returnResult = true;
-      }
-
-    }
-    catch (SQLException ex)
-    {
-      Database.throwDatabaseException(ex);
-    }
-    
-    Database.close();
-
-    return returnResult;
-  }
-
-  /**
-   * Bootstrapping must not be done inside a request or transaction.
-   */
-  public static void bootstrap(String rootUser, String rootPass, String template, Boolean clean)
-  {
-    if (template == null)
-    {
-      template = "postgres";
-    }
-    
-    boolean userExist = false;
-    boolean dbExist = false;
-    if (rootUser != null && rootPass != null)
-    {
-      try
-      {
-        dbExist = rawDatabaseExistCheck(DatabaseProperties.getDatabaseName(), rootUser, rootPass, template);
-      }
-      catch (Throwable ex)
-      {
-        dbExist = false;
-      }
-      
-      if (dbExist)
-      {
-        try
-        {
-          userExist = rawDatabaseUserExistCheck(DatabaseProperties.getUser(), rootUser, rootPass, template);
-        }
-        catch (Throwable ex)
-        {
-          userExist = false;
-        }
-      }
-    }
-    
-    boolean tableExist = false;
-    if (userExist && dbExist)
-    {
-      try
-      {
-        tableExist = rawTableExistCheck("md_class");
-      }
-      catch (Throwable ex)
-      {
-        tableExist = false;
-      }
-    }
-
-    if (clean || !dbExist || !userExist || !tableExist)
-    {
-      if (clean)
-      {
-        logger.info("Destroying ALL data in the [" + DatabaseProperties.getDatabaseName() + "] database and reinstalling Runway.");
-      }
-      else
-      {
-        logger.info("Bootstrapping Runway into an empty database.");
-      }
-
-      if (rootUser != null && rootPass != null)
-      {
-        Database.initialSetup(rootUser, rootPass, template);
-      }
-
-      InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
-
-      try
-      {
-        InputStream[] xmlFilesIS = InstallerCP.buildMetadataInputStreamList();
-
-        XMLImporter importer = new XMLImporter(schema, xmlFilesIS);
-        importer.toDatabase();
-      }
-      catch (IOException e)
-      {
-        throw new CoreException(e);
-      }
-      finally
-      {
-        try
-        {
-          schema.close();
-        }
-        catch (IOException e)
-        {
-          throw new CoreException(e);
-        }
-      }
-    }
-  }
-
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
     refreshTimestamps();
@@ -409,7 +186,7 @@ public class RunwayPatcher
     {
       logger.info("Importing [" + resource.getName() + "].");
 
-      Database.addPropertyValue(Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+      com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
       // We always want to use the context class loader because it ensures our
       // resource paths are absolute.
@@ -418,7 +195,7 @@ public class RunwayPatcher
       Savepoint sp = null;
       if (ignoreErrors && isTransaction)
       {
-        sp = Database.setSavepoint();
+        sp = com.runwaysdk.dataaccess.database.Database.setSavepoint();
       }
 
       try
@@ -431,7 +208,7 @@ public class RunwayPatcher
           {
             String sql = IOUtils.toString(stream, "UTF-8");
 
-            Database.executeStatement(sql);
+            com.runwaysdk.dataaccess.database.Database.executeStatement(sql);
           }
         }
         else if (resource.getNameExtension().equals("xml"))
@@ -440,7 +217,7 @@ public class RunwayPatcher
         }
         else if (resource.getNameExtension().equals("java"))
         {
-          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + RunwayPatcher.METADATA_CLASSPATH_LOC + "." + RunwayPatcher.getName(resource));
+          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + DatabaseBuilder.METADATA_CLASSPATH_LOC + "." + DatabaseBuilder.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
           main.invoke(null, (Object) new String[] {});
         }
@@ -455,7 +232,7 @@ public class RunwayPatcher
         {
           if (isTransaction)
           {
-            Database.rollbackSavepoint(sp);
+            com.runwaysdk.dataaccess.database.Database.rollbackSavepoint(sp);
           }
         }
         else
@@ -474,7 +251,7 @@ public class RunwayPatcher
       {
         if (ignoreErrors && isTransaction)
         {
-          Database.releaseSavepoint(sp);
+          com.runwaysdk.dataaccess.database.Database.releaseSavepoint(sp);
         }
 
         try
@@ -496,7 +273,7 @@ public class RunwayPatcher
     timestamps = new TreeSet<Date>();
 
     // Get a list of all the imported versions
-    List<String> values = Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+    List<String> values = com.runwaysdk.dataaccess.database.Database.getPropertyValue(RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
 
     for (String value : values)
     {
@@ -513,22 +290,6 @@ public class RunwayPatcher
       this.performDoIt(resource, date, isTransaction);
     }
   }
-
-  /**
-   * Migrates databases using the legacy patcher system to our new versioned
-   * patcher.
-   */
-  // public void migrateToNewPatcher()
-  // {
-  // RunwayMetadataVersion version = Database.getMetadataVersion();
-  //
-  // String sql = null;
-  //
-  // if (version.toString().equals("1.27.0"))
-  // {
-  //
-  // }
-  // }
 
   public void doAll()
   {
@@ -559,7 +320,8 @@ public class RunwayPatcher
   {
     CommandLineParser parser = new DefaultParser();
     Options options = new Options();
-    options.addOption(Option.builder("mode").hasArg().argName("mode").longOpt("mode").desc("The mode to run the RunwayPatcher in. Can be either bootstrap or standard. If omitted standard is assumed. During standard mode, bootstrapping will be attempted if Runway does not exist.").optionalArg(true).build());
+    options.addOption(Option.builder("install").hasArg().argName("install").longOpt("install").desc("Indicates that we are doing a new install.").optionalArg(true).build());
+    options.addOption(Option.builder("patch").hasArg().argName("patch").longOpt("patch").desc("Indicates that we are doing a patch.").optionalArg(true).build());
     options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("The username of the root database user. Only required when bootstrapping.").optionalArg(true).build());
     options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("The password of the root database user. Only required when bootstrapping.").optionalArg(true).build());
     options.addOption(Option.builder("templateDb").hasArg().argName("templateDb").longOpt("templateDb").desc("The template database to use when creating the application database. Only required when bootstrapping.").optionalArg(true).build());
@@ -571,8 +333,32 @@ public class RunwayPatcher
     try
     {
       CommandLine line = parser.parse(options, args);
+      
+      Boolean install;
+      Boolean patch;
 
-      String mode = line.getOptionValue("mode");
+      install = line.hasOption("install");
+      if (install && line.getOptionValue("install") != null && line.getOptionValue("install") != "")
+      {
+        install = Boolean.valueOf(line.getOptionValue("install"));
+        
+        if (!install)
+        {
+          patch = true;
+        }
+      }
+      
+      patch = line.hasOption("patch");
+      if (patch && line.getOptionValue("patch") != null && line.getOptionValue("patch") != "")
+      {
+        patch = Boolean.valueOf(line.getOptionValue("patch"));
+        
+        if (!patch)
+        {
+          install = true;
+        }
+      }
+      
       String user = line.getOptionValue("rootUser");
       String pass = line.getOptionValue("rootPass");
       String template = line.getOptionValue("templateDb");
@@ -586,35 +372,37 @@ public class RunwayPatcher
       {
         exts = toList(extensions);
       }
+      
+      if (patch && clean)
+      {
+        logger.warn("'clean' param does nothing when 'patch' is present.");
+      }
 
       try
       {
+        if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
+        {
+          if (user != null && pass != null)
+          {
+            patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
+          }
+          else
+          {
+            throw new CoreException("Unable to auto-detect a Runway installation without root database credentials. If you are trying to patch, you can supply a --patch param, otherwise please provide root database credentials.");
+          }
+        }
+        
         if (path == null || path.length() == 0)
         {
-          path = RunwayPatcher.METADATA_CLASSPATH_LOC;
+          path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
         }
 
-        if (mode != null && mode.equals(RunwayPatcher.MODE_BOOTSTRAP))
+        if (!patch)
         {
-          RunwayPatcher.bootstrap(user, pass, template, clean);
+          DatabaseBootstrapper.bootstrap(user, pass, template, clean);
         }
-        else
-        {
-          RunwayPatcher.bootstrap(user, pass, template, clean);
 
-          // I think this code is somehow running inside a transaction even
-          // though we're trying to avoid it.
-          // I'm commenting this code out (because it doesn't work anyway and)
-          // because it breaks my "ignoreErrors"
-          // logic which I need for DDMS BackupDevImporter.
-          // if (exts.contains("sql"))
-          // {
-          // RunwayPatcher.run(toList("sql"), path, ignoreErrors);
-          // exts.remove(exts.indexOf("sql"));
-          // }
-
-          RunwayPatcher.run(exts, path, ignoreErrors);
-        }
+        DatabaseBuilder.run(exts, path, ignoreErrors, patch);
       }
       finally
       {
@@ -641,23 +429,12 @@ public class RunwayPatcher
   }
 
   @Request
-  public static void run(List<String> extensions, String path, Boolean ignoreErrors)
+  public static void run(List<String> extensions, String path, Boolean ignoreErrors, Boolean isPatch)
   {
-    // if (extensions.contains("sql"))
-    // {
-    // RunwayPatcher patcher = new RunwayPatcher(extensions, path,
-    // ignoreErrors);
-    // patcher.doAll();
-    // }
-    // else
-    // {
-
     ServerProperties.setAllowModificationOfMdAttribute(true);
 
-    RunwayPatcher patcher = new RunwayPatcher(extensions, path, ignoreErrors);
-    patcher.doAllInTransaction();
-
-    // }
+    DatabaseBuilder builder = new DatabaseBuilder(extensions, path, ignoreErrors, isPatch);
+    builder.doAllInTransaction();
   }
 
   public static String getName(ClasspathResource resource)
@@ -728,12 +505,15 @@ public class RunwayPatcher
 
     for (ClasspathResource resource : resources)
     {
-      String name = resource.getName();
-      Matcher nameMatcher = namePattern.matcher(name);
-
-      if (nameMatcher.find())
+      if (!resource.isPackage())
       {
-        list.add(resource);
+        String name = resource.getName();
+        Matcher nameMatcher = namePattern.matcher(name);
+  
+        if (nameMatcher.find())
+        {
+          list.add(resource);
+        }
       }
     }
 
