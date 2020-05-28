@@ -1961,7 +1961,7 @@ public class NoSourceAdapterTest
       Assert.assertEquals(testDTO.getValue("aCharacter"), "hello");
       Assert.assertEquals(testDTO.getValue("aText"), "purple monkey dishwasher");
       Assert.assertEquals(testDTO.getValue("aClob"), "a very large purple monkey dishwasher");
-      Assert.assertEquals(testDTO.getValue("aFloat"), "12.3400");
+      Assert.assertEquals("12.34", testDTO.getValue("aFloat"));
       Assert.assertEquals(testDTO.getValue("aBoolean"), MdAttributeBooleanInfo.TRUE);
       Assert.assertEquals(testDTO.getValue("anInteger"), "976");
     }
