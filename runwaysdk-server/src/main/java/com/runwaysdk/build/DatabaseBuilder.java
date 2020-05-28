@@ -270,21 +270,36 @@ public class DatabaseBuilder
 
     for (ClasspathResource resource : getTimestampedResources(this.path))
     {
-      ordered.add(resource);
+      Boolean didAdd = ordered.add(resource);
+      
+      if (!didAdd)
+      {
+        throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+      }
     }
     
     if (isPatch)
     {
       for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
       {
-        ordered.add(resource);
+        Boolean didAdd = ordered.add(resource);
+        
+        if (!didAdd)
+        {
+          throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+        }
       }
     }
     else
     {
       for (ClasspathResource resource : getTimestampedResources(this.path + "/install"))
       {
-        ordered.add(resource);
+        Boolean didAdd = ordered.add(resource);
+        
+        if (!didAdd)
+        {
+          throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+        }
       }
     }
   }
@@ -298,7 +313,10 @@ public class DatabaseBuilder
     {
       logger.info("Importing [" + resource.getName() + "].");
 
-      com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+      if (!alwaysRun(resource))
+      {
+        com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+      }
 
       // We always want to use the context class loader because it ensures our
       // resource paths are absolute.
@@ -329,7 +347,7 @@ public class DatabaseBuilder
         }
         else if (resource.getNameExtension().equals("java"))
         {
-          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher.domain." + DatabaseBuilder.getName(resource));
+          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.build.domain." + DatabaseBuilder.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
           main.invoke(null, (Object) new String[] {});
         }
