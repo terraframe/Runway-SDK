@@ -25,6 +25,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.LocalProperties;
@@ -39,18 +43,26 @@ import com.runwaysdk.util.ServerInitializerFacade;
  */
 public class InstallerCP
 {
+  private static final Logger logger = LoggerFactory.getLogger(InstallerCP.class);
+  
   public static void main(String args[]) throws IOException
   {
-    if (args.length != 4)
+    if (args.length != 4 && args.length != 5)
     {
       String errMsg = "Four arguments are required for Installation:\n" + "  1) Root Database User\n" + "  2) Root Database Password\n" + "  3) Root Database Name\n" + "  4) metadata XSD resource path\n";
       throw new CoreException(errMsg);
     }
+    
+    String[] metadataFiles = null;
+    if (args.length == 5)
+    {
+      metadataFiles = StringUtils.split(args[4], ",");
+    }
 
-    install(args[0], args[1], args[2], args[3]);
+    install(args[0], args[1], args[2], args[3], metadataFiles);
   }
 
-  public static void install(String rootUser, String rootPass, String rootDb, String xsd) throws IOException
+  public static void install(String rootUser, String rootPass, String rootDb, String xsd, String[] metadataFiles) throws IOException
   {
     Database.initialSetup(rootUser, rootPass, rootDb);
     
@@ -60,7 +72,15 @@ public class InstallerCP
       throw new RunwayConfigurationException("Unable to find the xsd '" + xsd + "' on the classpath, the specified resource does not exist.");
     }
 
-    InputStream[] xmlFilesIS = buildMetadataInputStreamList();
+    InputStream[] xmlFilesIS;
+    if (metadataFiles != null)
+    {
+      xmlFilesIS = buildMetadataInputStreamList(metadataFiles);
+    }
+    else
+    {
+      xmlFilesIS = buildMetadataInputStreamList();
+    }
 
     XMLImporter x = new XMLImporter(xsdIS, xmlFilesIS);
     x.toDatabase();
@@ -70,7 +90,16 @@ public class InstallerCP
   
   public static InputStream[] buildMetadataInputStreamList() throws IOException
   {
-    List<ClasspathResource> xmlFileDependencies = orderMetadataFiles(ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath()));
+    return buildMetadataInputStreamList(new String[] {"metadata.xml", "gismetadata.xml"});
+  }
+  
+  public static InputStream[] buildMetadataInputStreamList(String[] metadataFiles) throws IOException
+  {
+//    List<ClasspathResource> xmlFileDependencies = orderMetadataFiles(ClasspathResource.getResourcesInPackage(ConfigGroup.METADATA.getPath()));
+    
+    logger.info("Importing runway metadata.xml files [" + StringUtils.join(metadataFiles, ",") + "] into database.");
+    List<ClasspathResource> xmlFileDependencies = getMetadataFiles(metadataFiles);
+    
     ClasspathResource[] xmlFiles = (ClasspathResource[]) xmlFileDependencies.toArray(new ClasspathResource[xmlFileDependencies.size()]);
     
     InputStream[] xmlFilesIS = new InputStream[xmlFiles.length];
@@ -102,31 +131,43 @@ public class InstallerCP
     return xmlFilesIS;
   }
   
-  public static List<ClasspathResource> orderMetadataFiles(List<ClasspathResource> resources)
+  public static List<ClasspathResource> getMetadataFiles(String[] sMetadataFiles)
   {
-    // Yes I know this is a gigantic hack but I'm in a time crunch. We can fix this later.
-    ClasspathResource metadataXml = null;
-    ClasspathResource gisMetadataXml = null;
+    List<ClasspathResource> lcpr = new ArrayList<ClasspathResource>();
     
-    List<ClasspathResource> ordered = new ArrayList<ClasspathResource>();
-    
-    for (int i = 0; i < resources.size(); ++i)
+    for (String cpLoc : sMetadataFiles)
     {
-      ClasspathResource res = resources.get(i);
-      
-      if (res.getName().equals("metadata.xml"))
-      {
-        metadataXml = res;
-      }
-      else if (res.getName().equals("gismetadata.xml"))
-      {
-        gisMetadataXml = res;
-      }
+      lcpr.add(new ClasspathResource(ConfigGroup.METADATA.getPath() + cpLoc));
     }
     
-    if (metadataXml != null) { ordered.add(metadataXml); }
-    if (gisMetadataXml != null) { ordered.add(gisMetadataXml); }
-    
-    return ordered;
+    return lcpr;
   }
+  
+//  public static List<ClasspathResource> orderMetadataFiles(List<ClasspathResource> resources)
+//  {
+//    // Yes I know this is a gigantic hack but I'm in a time crunch. We can fix this later.
+//    ClasspathResource metadataXml = null;
+//    ClasspathResource gisMetadataXml = null;
+//    
+//    List<ClasspathResource> ordered = new ArrayList<ClasspathResource>();
+//    
+//    for (int i = 0; i < resources.size(); ++i)
+//    {
+//      ClasspathResource res = resources.get(i);
+//      
+//      if (res.getName().equals("metadata.xml"))
+//      {
+//        metadataXml = res;
+//      }
+//      else if (res.getName().equals("gismetadata.xml"))
+//      {
+//        gisMetadataXml = res;
+//      }
+//    }
+//    
+//    if (metadataXml != null) { ordered.add(metadataXml); }
+//    if (gisMetadataXml != null) { ordered.add(gisMetadataXml); }
+//    
+//    return ordered;
+//  }
 }

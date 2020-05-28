@@ -221,6 +221,7 @@
                     <argument>${root.pass}</argument>
                     <argument>${root.db}</argument>
                     <argument>com/runwaysdk/resources/xsd/schema.xsd</argument>
+                    <argument>${installer.metadataFiles}</argument>
                   </arguments>
                 </configuration>
               </execution>

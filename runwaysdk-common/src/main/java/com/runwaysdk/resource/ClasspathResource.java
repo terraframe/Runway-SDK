@@ -98,7 +98,8 @@ public class ClasspathResource implements ApplicationResource
       return this.classLoader.getResource(this.path);
     }
     else {
-      return ClassLoader.getSystemResource(this.path);
+//      return ClassLoader.getSystemResource(this.path);
+      return Thread.currentThread().getContextClassLoader().getResource(this.path);
     }
   }
   
