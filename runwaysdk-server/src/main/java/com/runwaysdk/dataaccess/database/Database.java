@@ -47,13 +47,15 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
 /**
- * Database manages access to the database. It contains a singleton instance of
+ * Manages access to the database. It contains a singleton instance of
  * <code>AbstractDatabase</code>. The concrete class is chosen based on the
  * value of "databaseVendor" in config/server/server.properties. If the
  * databaseVendor is unrecognized, Database defaults to mysql, and prints an
  * error.
  * 
- * @author Eric
+ * @author Justin Smethie (jsmethie)
+ * @author Richard Rowlands (rrowlands)
+ * @author Eric Grunzke
  * @version $Revision 1.0 $
  * @since 1.4
  */

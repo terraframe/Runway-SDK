@@ -753,8 +753,6 @@ public class XMLExporter
     Element sequence = getElementByName(schema, classType);
     String base = null;
 
-System.out.println("Class Type: "+classType +"  "+schema.getBaseURI());
-    
     while (!sequence.getTagName().equalsIgnoreCase("xs:sequence"))
     {
       if (sequence.getTagName().equalsIgnoreCase("xs:extension"))
@@ -772,7 +770,7 @@ System.out.println("Class Type: "+classType +"  "+schema.getBaseURI());
         break;
       }
     }
-
+    
     List<String> order = new LinkedList<String>();
     if (base != null)
     {

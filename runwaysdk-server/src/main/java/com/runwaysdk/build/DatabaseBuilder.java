@@ -20,20 +20,13 @@ package com.runwaysdk.build;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Savepoint;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -50,17 +43,16 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.InstallerCP;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 import com.runwaysdk.dataaccess.io.TimeFormat;
-import com.runwaysdk.dataaccess.io.XMLImporter;
+import com.runwaysdk.dataaccess.io.dataDefinition.ImportPluginIF;
+import com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler;
 import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -69,9 +61,25 @@ import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.session.Request;
 
 /**
- * This is a tool which can be used to build the database.
+ * This is a command-line Java tool which can be used to build the database. When running this tool, the goal
+ * of the tool is to bring your system to a state where it is fully built and patched with all available
+ * metadata (from the classpath). This tool is capable of building both Postgres and OrientDB databases.
  * 
- * @author rrowlands
+ * There are two distinct modes in which the tool runs: install and patch. If neither are specified, the
+ * tool will auto-detect which to run as. If clean is specified, the tool will first destroy any existing
+ * database.
+ * 
+ * This tool reads metadata files from the "domain" directory on the classpath, although that location may be
+ * changed via the `path` CLI param. Inside this directory you may place files in the `install` or `patch`
+ * inner directories, which may contain metadata files which are only run depending on if the tool is doing
+ * an install or patch.
+ * 
+ * Metadata file timestamps may be appended with -ALWAYS to specify that the file will still run, regardless of if it
+ * has already been imported or not. 
+ * 
+ * For a complete list of options you may run this tool with `--help`, or you may view the `main` method in this source. 
+ * 
+ * @author Richard Rowlands (rrowlands)
  */
 public class DatabaseBuilder
 {
@@ -81,23 +89,11 @@ public class DatabaseBuilder
 
   public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = com.runwaysdk.dataaccess.database.Database.VERSION_TIMESTAMP_PROPERTY;
 
-  private static final String      DATE_PATTEN                                = "\\d{4,}";
+  private static final String      DATE_PATTEN                                = "\\d{4,}(?:-ALWAYS)?";
 
   private static final String      NAME_PATTERN                               = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions, "|") + ")$";
 
   public static final String       METADATA_CLASSPATH_LOC                     = "domain";
-
-  public static final String       MODE_STANDARD                              = "standard";
-
-  public static final String       MODE_BOOTSTRAP                             = "bootstrap";
-
-  class VersionComparator implements Comparator<ClasspathResource>
-  {
-    public int compare(ClasspathResource arg0, ClasspathResource arg1)
-    {
-      return DatabaseBuilder.compare(arg0, arg1);
-    }
-  }
 
   /**
    * List of timestamps which have already been imported
@@ -110,11 +106,6 @@ public class DatabaseBuilder
    */
   protected Set<ClasspathResource>       ordered;
 
-  /**
-   * Mapping between a resource and its timestamp
-   */
-//  protected Map<Date, ClasspathResource> map;
-
   private List<String>                   extensions;
 
   private String                         path;
@@ -122,7 +113,128 @@ public class DatabaseBuilder
   private Boolean                        ignoreErrors;
   
   private Boolean                        isPatch;
+  
+  public static Options buildCliOptions()
+  {
+    Options options = new Options();
+    
+    options.addOption(Option.builder("install").hasArg().argName("install").longOpt("install").desc("Indicates that we are doing a new install. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
+    options.addOption(Option.builder("patch").hasArg().argName("patch").longOpt("patch").desc("Indicates that we are doing a patch. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
+    options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("The username of the root database user. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("The password of the root database user. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("templateDb").hasArg().argName("templateDb").longOpt("templateDb").desc("The template database to use when creating the application database. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("extensions").hasArg().argName("extensions").longOpt("extensions").desc("A comma separated list of extensions denoting which schema files to run. If unspecified we will use all supported.").optionalArg(true).build());
+    options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
+    options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
+    options.addOption(Option.builder("ignoreErrors").hasArg().argName("ignoreErrors").longOpt("ignoreErrors").desc("Ignore errors if one occurs while importing sql. Not recommended for everyday usage.").optionalArg(true).build());
+    options.addOption(Option.builder("plugins").hasArg().argName("plugins").longOpt("plugins").desc("A string array of ImportPluginIF implementors.").optionalArg(true).build());
+    
+    return options;
+  }
+  
+  /**
+   * Builds your database such that it includes all the relevant metadata.
+   * 
+   * @param args
+   */
+  public static void main(String[] args)
+  {
+    CommandLineParser parser = new DefaultParser();
+    
+    Options options = buildCliOptions();
+    
+    try
+    {
+      CommandLine line = parser.parse(options, args);
+      
+      Boolean install;
+      Boolean patch;
 
+      install = line.hasOption("install");
+      if (install && line.getOptionValue("install") != null && line.getOptionValue("install") != "")
+      {
+        install = Boolean.valueOf(line.getOptionValue("install"));
+        
+        if (!install)
+        {
+          patch = true;
+        }
+      }
+      
+      patch = line.hasOption("patch");
+      if (patch && line.getOptionValue("patch") != null && line.getOptionValue("patch") != "")
+      {
+        patch = Boolean.valueOf(line.getOptionValue("patch"));
+        
+        if (!patch)
+        {
+          install = true;
+        }
+      }
+      
+      String user = line.getOptionValue("rootUser");
+      String pass = line.getOptionValue("rootPass");
+      String template = line.getOptionValue("templateDb");
+      String extensions = line.getOptionValue("extensions");
+      String sPlugins = line.getOptionValue("plugins");
+      String path = line.getOptionValue("path");
+      Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
+      Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
+
+      List<String> exts = supportedExtensions;
+      if (extensions != null && extensions.length() > 0)
+      {
+        exts = toList(extensions);
+      }
+      
+      List<String> plugins = new ArrayList<String>();
+      if (sPlugins != null)
+      {
+        plugins = toList(sPlugins);
+      }
+      
+      if (patch && clean)
+      {
+        logger.warn("'clean' param does nothing when 'patch' is present.");
+      }
+
+      try
+      {
+        if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
+        {
+          if (user != null && pass != null)
+          {
+            patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
+          }
+          else
+          {
+            throw new CoreException("Unable to auto-detect a Runway installation without root database credentials. If you are trying to patch, you can supply a --patch param, otherwise please provide root database credentials.");
+          }
+        }
+        
+        if (path == null || path.length() == 0)
+        {
+          path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
+        }
+
+        if (!patch)
+        {
+          DatabaseBootstrapper.bootstrap(user, pass, template, clean);
+        }
+
+        DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
+      }
+      finally
+      {
+        CacheShutdown.shutdown();
+      }
+    }
+    catch (ParseException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  
   public DatabaseBuilder(List<String> extensions, String path, Boolean ignoreErrors, Boolean isPatch)
   {
     if (path == null)
@@ -182,7 +294,7 @@ public class DatabaseBuilder
     refreshTimestamps();
 
     // Only perform the doIt if this file has not already been imported
-    if (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()))
+    if ( (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension())) || alwaysRun(resource) )
     {
       logger.info("Importing [" + resource.getName() + "].");
 
@@ -217,7 +329,7 @@ public class DatabaseBuilder
         }
         else if (resource.getNameExtension().equals("java"))
         {
-          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher." + DatabaseBuilder.METADATA_CLASSPATH_LOC + "." + DatabaseBuilder.getName(resource));
+          Class<?> clazz = LoaderDecorator.load("com.runwaysdk.patcher.domain." + DatabaseBuilder.getName(resource));
           Method main = clazz.getMethod("main", String[].class);
           main.invoke(null, (Object) new String[] {});
         }
@@ -310,111 +422,6 @@ public class DatabaseBuilder
     this.performDoIt(list, true);
   }
 
-  /**
-   * Brings your database to a fully patched state (as far as Runway is
-   * concerned).
-   * 
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    CommandLineParser parser = new DefaultParser();
-    Options options = new Options();
-    options.addOption(Option.builder("install").hasArg().argName("install").longOpt("install").desc("Indicates that we are doing a new install.").optionalArg(true).build());
-    options.addOption(Option.builder("patch").hasArg().argName("patch").longOpt("patch").desc("Indicates that we are doing a patch.").optionalArg(true).build());
-    options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("The username of the root database user. Only required when bootstrapping.").optionalArg(true).build());
-    options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("The password of the root database user. Only required when bootstrapping.").optionalArg(true).build());
-    options.addOption(Option.builder("templateDb").hasArg().argName("templateDb").longOpt("templateDb").desc("The template database to use when creating the application database. Only required when bootstrapping.").optionalArg(true).build());
-    options.addOption(Option.builder("extensions").hasArg().argName("extensions").longOpt("extensions").desc("A comma separated list of extensions denoting which schema files to run. If unspecified we will use all supported.").optionalArg(true).build());
-    options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
-    options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
-    options.addOption(Option.builder("ignoreErrors").hasArg().argName("ignoreErrors").longOpt("ignoreErrors").desc("Ignore errors if one occurs while importing sql. Not recommended for everyday usage.").optionalArg(true).build());
-
-    try
-    {
-      CommandLine line = parser.parse(options, args);
-      
-      Boolean install;
-      Boolean patch;
-
-      install = line.hasOption("install");
-      if (install && line.getOptionValue("install") != null && line.getOptionValue("install") != "")
-      {
-        install = Boolean.valueOf(line.getOptionValue("install"));
-        
-        if (!install)
-        {
-          patch = true;
-        }
-      }
-      
-      patch = line.hasOption("patch");
-      if (patch && line.getOptionValue("patch") != null && line.getOptionValue("patch") != "")
-      {
-        patch = Boolean.valueOf(line.getOptionValue("patch"));
-        
-        if (!patch)
-        {
-          install = true;
-        }
-      }
-      
-      String user = line.getOptionValue("rootUser");
-      String pass = line.getOptionValue("rootPass");
-      String template = line.getOptionValue("templateDb");
-      String extensions = line.getOptionValue("extensions");
-      String path = line.getOptionValue("path");
-      Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
-      Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
-
-      List<String> exts = supportedExtensions;
-      if (extensions != null && extensions.length() > 0)
-      {
-        exts = toList(extensions);
-      }
-      
-      if (patch && clean)
-      {
-        logger.warn("'clean' param does nothing when 'patch' is present.");
-      }
-
-      try
-      {
-        if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
-        {
-          if (user != null && pass != null)
-          {
-            patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
-          }
-          else
-          {
-            throw new CoreException("Unable to auto-detect a Runway installation without root database credentials. If you are trying to patch, you can supply a --patch param, otherwise please provide root database credentials.");
-          }
-        }
-        
-        if (path == null || path.length() == 0)
-        {
-          path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
-        }
-
-        if (!patch)
-        {
-          DatabaseBootstrapper.bootstrap(user, pass, template, clean);
-        }
-
-        DatabaseBuilder.run(exts, path, ignoreErrors, patch);
-      }
-      finally
-      {
-        CacheShutdown.shutdown();
-      }
-    }
-    catch (ParseException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
-
   private static ArrayList<String> toList(String string)
   {
     String[] split = string.split(",");
@@ -429,12 +436,34 @@ public class DatabaseBuilder
   }
 
   @Request
-  public static void run(List<String> extensions, String path, Boolean ignoreErrors, Boolean isPatch)
+  public static void run(List<String> extensions, List<String> plugins, String path, Boolean ignoreErrors, Boolean isPatch)
   {
     ServerProperties.setAllowModificationOfMdAttribute(true);
+    
+    registerPlugins(plugins);
 
     DatabaseBuilder builder = new DatabaseBuilder(extensions, path, ignoreErrors, isPatch);
     builder.doAllInTransaction();
+  }
+  
+  private static void registerPlugins(List<String> plugins)
+  {
+    try
+    {
+      for (String sPlugin : plugins)
+      {
+        Class<?> clazz = DatabaseBuilder.class.getClassLoader().loadClass(sPlugin);
+        
+        ImportPluginIF plugin = (ImportPluginIF) clazz.newInstance();
+        
+        SAXSourceParser.registerPlugin(plugin);
+      }
+    }
+    catch (ClassNotFoundException | InstantiationException | IllegalAccessException e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
   }
 
   public static String getName(ClasspathResource resource)
@@ -463,6 +492,24 @@ public class DatabaseBuilder
 
     return null;
   }
+  
+  public static Boolean alwaysRun(ClasspathResource resource)
+  {
+    Pattern namePattern = Pattern.compile(NAME_PATTERN);
+    Matcher nameMatcher = namePattern.matcher(resource.getName());
+
+    if (nameMatcher.find())
+    {
+      String timeGroup = nameMatcher.group(2);
+      
+      if (timeGroup.endsWith("-ALWAYS"))
+      {
+        return true;
+      }
+    }
+    
+    return false;
+  }
 
   public static Long getTimestamp(ClasspathResource resource)
   {
@@ -471,7 +518,14 @@ public class DatabaseBuilder
 
     if (nameMatcher.find())
     {
-      Long timeStamp = Long.parseLong(nameMatcher.group(2));
+      String timeGroup = nameMatcher.group(2);
+      
+      if (timeGroup.endsWith("-ALWAYS"))
+      {
+        timeGroup = timeGroup.replace("-ALWAYS", "");
+      }
+      
+      Long timeStamp = Long.parseLong(timeGroup);
       return timeStamp;
     }
 
@@ -518,5 +572,13 @@ public class DatabaseBuilder
     }
 
     return list;
+  }
+  
+  class VersionComparator implements Comparator<ClasspathResource>
+  {
+    public int compare(ClasspathResource arg0, ClasspathResource arg1)
+    {
+      return DatabaseBuilder.compare(arg0, arg1);
+    }
   }
 }
