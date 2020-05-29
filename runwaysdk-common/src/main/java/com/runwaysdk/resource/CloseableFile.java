@@ -25,7 +25,7 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * A file that may be used within the Java AutoCloseable paradigm. This file includes within it
- * a "isTemp" flag, which defaults to false. If it is set to true, then when close is called
+ * a "deleteOnClose" flag, which defaults to true. If it is set to true, then when close is called
  * the file will be deleted.
  * 
  * @author rrowlands
@@ -35,71 +35,85 @@ public class CloseableFile extends File implements AutoCloseable
 
   private static final long serialVersionUID = -5033938374526120632L;
   
-  private boolean isTemp = false;
+  private boolean deleteOnClose = true;
   
   public CloseableFile(File file)
   {
     super(file.toURI());
+    this.setIsDeleteOnClose(this.deleteOnClose);
   }
   
-  public CloseableFile(File file, boolean isTemp)
+  public CloseableFile(File file, boolean deleteOnClose)
   {
     super(file.toURI());
-    this.isTemp = isTemp;
+    this.setIsDeleteOnClose(deleteOnClose);
   }
   
   public CloseableFile(String pathname)
   {
     super(pathname);
+    this.setIsDeleteOnClose(this.deleteOnClose);
   }
   
-  public CloseableFile(String pathname, boolean isTemp)
+  public CloseableFile(String pathname, boolean deleteOnClose)
   {
     super(pathname);
-    this.isTemp = isTemp;
+    this.setIsDeleteOnClose(deleteOnClose);
   }
   
-  public CloseableFile(URI uri, boolean isTemp)
+  public CloseableFile(URI uri, boolean deleteOnClose)
   {
     super(uri);
-    this.isTemp = isTemp;
+    this.setIsDeleteOnClose(deleteOnClose);
   }
   
   public CloseableFile(File parent, String child)
   {
     super(parent, child);
+    this.setIsDeleteOnClose(this.deleteOnClose);
   }
   
-  public CloseableFile(File parent, String child, boolean isTemp)
+  public CloseableFile(File parent, String child, boolean deleteOnClose)
   {
     super(parent, child);
-    this.isTemp = isTemp;
+    this.setIsDeleteOnClose(deleteOnClose);
   }
   
   public CloseableFile(String parent, String child)
   {
     super(parent, child);
+    this.setIsDeleteOnClose(this.deleteOnClose);
   }
   
-  public CloseableFile(String parent, String child, boolean isTemp)
+  public CloseableFile(String parent, String child, boolean deleteOnClose)
   {
     super(parent, child);
-    this.isTemp = isTemp;
+    this.setIsDeleteOnClose(deleteOnClose);
   }
   
-  public void setIsTemporary(boolean isTemp)
+  /**
+   * Denotes whether or not this CloseableFile should delete itself when close is called.
+   * This method is protected because setting "deleteOnClose" to true is an irreversable
+   * operation, because it registers the delete with the JVM (which cannot be undone).
+   */
+  protected void setIsDeleteOnClose(boolean deleteOnClose)
   {
-    this.isTemp = isTemp;
+    this.deleteOnClose = deleteOnClose;
+    
+    if (this.deleteOnClose)
+    {
+      this.deleteOnExit();
+    }
   }
   
-  public boolean isTemporary()
+  public boolean isDeleteOnClose()
   {
-    return this.isTemp;
+    return this.deleteOnClose;
   }
   
   public void close()
   {
-    if (this.isTemporary())
+    if (this.isDeleteOnClose())
     {
       FileUtils.deleteQuietly(this);
     }
