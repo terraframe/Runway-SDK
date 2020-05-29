@@ -23,6 +23,13 @@ import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * A file that may be used within the Java AutoCloseable paradigm. This file includes within it
+ * a "isTemp" flag, which defaults to false. If it is set to true, then when close is called
+ * the file will be deleted.
+ * 
+ * @author rrowlands
+ */
 public class CloseableFile extends File implements AutoCloseable
 {
 
@@ -35,9 +42,21 @@ public class CloseableFile extends File implements AutoCloseable
     super(file.toURI());
   }
   
+  public CloseableFile(File file, boolean isTemp)
+  {
+    super(file.toURI());
+    this.isTemp = isTemp;
+  }
+  
   public CloseableFile(String pathname)
   {
     super(pathname);
+  }
+  
+  public CloseableFile(String pathname, boolean isTemp)
+  {
+    super(pathname);
+    this.isTemp = isTemp;
   }
   
   public CloseableFile(URI uri, boolean isTemp)
@@ -51,9 +70,26 @@ public class CloseableFile extends File implements AutoCloseable
     super(parent, child);
   }
   
+  public CloseableFile(File parent, String child, boolean isTemp)
+  {
+    super(parent, child);
+    this.isTemp = isTemp;
+  }
+  
   public CloseableFile(String parent, String child)
   {
     super(parent, child);
+  }
+  
+  public CloseableFile(String parent, String child, boolean isTemp)
+  {
+    super(parent, child);
+    this.isTemp = isTemp;
+  }
+  
+  public void setIsTemporary(boolean isTemp)
+  {
+    this.isTemp = isTemp;
   }
   
   public boolean isTemporary()
