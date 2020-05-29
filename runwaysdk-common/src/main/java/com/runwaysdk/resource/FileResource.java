@@ -75,7 +75,10 @@ public class FileResource implements ApplicationResource
   @Override
   public void close()
   {
-    
+    if (this.file instanceof CloseableFile)
+    {
+      ( (CloseableFile) this.file ).close();
+    }
   }
 
   @Override
@@ -87,7 +90,14 @@ public class FileResource implements ApplicationResource
   @Override
   public CloseableFile openNewFile()
   {
-    return new CloseableFile(this.file, false);
+    if (this.file instanceof CloseableFile)
+    {
+      return (CloseableFile) this.file;
+    }
+    else
+    {
+      return new CloseableFile(this.file, false);
+    }
   }
   
   @Override
