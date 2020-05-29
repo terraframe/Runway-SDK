@@ -87,7 +87,7 @@ public class FileResource implements ApplicationResource
   @Override
   public CloseableFile openNewFile()
   {
-    return new CloseableFile(this.file);
+    return new CloseableFile(this.file, false);
   }
   
   @Override

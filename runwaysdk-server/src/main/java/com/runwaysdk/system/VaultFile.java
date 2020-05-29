@@ -97,8 +97,6 @@ public class VaultFile extends VaultFileBase implements ApplicationResource
       
       FileUtils.copyFile(scrambledVF, tempFile);
       
-      tempFile.deleteOnExit();
-      
       return tempFile;
     }
     catch (IOException e)

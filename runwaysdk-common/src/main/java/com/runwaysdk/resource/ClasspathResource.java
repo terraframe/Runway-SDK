@@ -199,7 +199,7 @@ public class ClasspathResource implements ApplicationResource
       try {
         String jarFileName = URLDecoder.decode(url.getFile(), "UTF-8");
         jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
-        return new CloseableFile(jarFileName);
+        return new CloseableFile(jarFileName, false);
       }
       catch (UnsupportedEncodingException e)
       {
@@ -208,7 +208,7 @@ public class ClasspathResource implements ApplicationResource
     }
     else
     {
-      return new CloseableFile(url.getFile());
+      return new CloseableFile(url.getFile(), false);
     }
   }
   
