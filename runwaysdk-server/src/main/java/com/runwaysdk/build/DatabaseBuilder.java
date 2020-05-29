@@ -25,6 +25,7 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -261,20 +262,37 @@ public class DatabaseBuilder
 
     initialize();
   }
+  
+  private void throwDuplicateTimestamp(ClasspathResource resource)
+  {
+    Long ts = getTimestamp(resource);
+    
+    Iterator<ClasspathResource> it = ordered.iterator();
+    
+    while (it.hasNext())
+    {
+      ClasspathResource cpr = it.next();
+      
+      if (getTimestamp(cpr).equals(ts))
+      {
+        throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getAbsolutePath() + "] has the same timestamp as another resource already on the classpath at [" + cpr.getAbsolutePath() + "].");
+      }
+    }
+    
+    throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getAbsolutePath() + "] has the same timestamp as another resource already on the classpath.");
+  }
 
   private void initialize()
   {
-    logger.info("Initializing Runway database builder.");
+    logger.debug("Initializing Runway database builder.");
 
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
     for (ClasspathResource resource : getTimestampedResources(this.path))
     {
-      Boolean didAdd = ordered.add(resource);
-      
-      if (!didAdd)
+      if (resource.getPackage().equals(this.path) && !ordered.add(resource))
       {
-        throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+        throwDuplicateTimestamp(resource);
       }
     }
     
@@ -282,11 +300,9 @@ public class DatabaseBuilder
     {
       for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
       {
-        Boolean didAdd = ordered.add(resource);
-        
-        if (!didAdd)
+        if (resource.getPackage().equals(this.path + "/patch") && !ordered.add(resource))
         {
-          throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+          throwDuplicateTimestamp(resource);
         }
       }
     }
@@ -294,11 +310,9 @@ public class DatabaseBuilder
     {
       for (ClasspathResource resource : getTimestampedResources(this.path + "/install"))
       {
-        Boolean didAdd = ordered.add(resource);
-        
-        if (!didAdd)
+        if (resource.getPackage().equals(this.path + "/install") && !ordered.add(resource))
         {
-          throw new CoreException("Duplicate timestamp detected when processing resource [" + resource.getName() + "].");
+          throwDuplicateTimestamp(resource);
         }
       }
     }
@@ -311,7 +325,7 @@ public class DatabaseBuilder
     // Only perform the doIt if this file has not already been imported
     if ( (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension())) || alwaysRun(resource) )
     {
-      logger.info("Importing [" + resource.getName() + "].");
+      logger.info("Importing [" + resource.getAbsolutePath() + "].");
 
       if (!alwaysRun(resource))
       {
@@ -395,6 +409,21 @@ public class DatabaseBuilder
       }
 
       timestamps.add(timestamp);
+    }
+    else
+    {
+      if (timestamps.contains(timestamp))
+      {
+        logger.debug("Skipping resource [" + resource.getAbsolutePath() + "] because it has already been imported.");
+      }
+      else if (!this.extensions.contains(resource.getNameExtension()))
+      {
+        logger.debug("Skipping resource [" + resource.getAbsolutePath() + "] because it has an invalid extension.");
+      }
+      else
+      {
+        logger.debug("Skipping resource [" + resource.getAbsolutePath() + "].");
+      }
     }
   }
 
