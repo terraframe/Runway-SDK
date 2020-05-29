@@ -27,7 +27,9 @@ import org.apache.commons.io.FileUtils;
  * A file that may be used within the Java AutoCloseable paradigm. This file includes within it
  * a "deleteOnClose" flag, which defaults to true. If it is set to true, then when close is called
  * the file will be deleted. If deleteOnClose is set to true, this file will be registered with
- * the JVM's "deleteOnExit" feature, which will automatically delete this file when the JVM exits.
+ * the JVM's "deleteOnExit" feature, which will automatically delete this file when the JVM exits,
+ * although this is only a safeguard against forgetting to call "close" (which you should be doing
+ * anyway).
  * 
  * @author rrowlands
  */
