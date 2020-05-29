@@ -331,17 +331,18 @@ public class SessionTest
 
   /**
    * Test the automatic clean up of expired sessions
+   * @throws InterruptedException 
    */
   @Request
   @Test
-  public void testCleanUp()
+  public void testCleanUp() throws InterruptedException
   {
     // Create a new session
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
     // Convert the session time(sec) to miliseconds and
     // add enough time to ensure that the a session will expire
-    long sessionTime = ( Session.getSessionTime() + 10 ) * 1000;
+    long sessionTime = ( Session.getSessionTime() + 15 ) * 1000;
     long waitTime = System.currentTimeMillis() + sessionTime;
 
     // Get the public session
@@ -353,7 +354,9 @@ public class SessionTest
 
     // Wait until the session is expired
     while (System.currentTimeMillis() < waitTime)
-      ;
+    {
+      Thread.sleep(100);
+    }
 
     // Ensure that the public session has not been cleaned up
     Assert.assertTrue(SessionFacade.containsSession(publicSession.getOid()));

@@ -4,15 +4,10 @@ Runwaysdk Test
 
 How to run Runway's Tests (through Eclipse):
 -------
-1. In Eclipse execute a clean and build of all projects.
-2. Run [test] mvn exec;java -Drebuild-database.launch (in runwaysdk-test/launches/maven)
-3. Junit Run UeberTestSuite.launch
-
-
-* The rebuild database script reads the properties files from the target directory. If you change a profile you MUST do a build before you launch the rebuild database script or it will use the stale values.
-
-
-
-How to run Runway's Tests (using the Maven CLI):
--------
-1. Run [test] mvn clean test.launch
+1. Install your runway source with maven if you need to
+2. Run [test] database clean install (in runwaysdk-test/launches/maven)
+3. Set your local.classpath in common.properties
+  a. Set local.classpath to ${maven.compile.classpath}
+  b. Run runwaysdk-test as process-resources maven goal
+  c. Open common.properties in target. Copy the compiled local.classpath value into common.properties in src/main/resources
+4. Build all the runway projects with Eclipse

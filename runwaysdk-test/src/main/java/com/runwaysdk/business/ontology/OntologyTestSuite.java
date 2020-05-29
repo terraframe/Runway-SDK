@@ -32,7 +32,13 @@ import com.runwaysdk.system.metadata.ontology.OntologyStrategyTest;
  * @since 2.0.17
  **/
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ MdTermTest.class, OntologyStrategyTest.class, MdTermRelationshipTest.class, DatabaseAllPathsStrategyTest.class, DefaultStrategyTest.class })
+@Suite.SuiteClasses({
+  MdTermTest.class,
+  OntologyStrategyTest.class,
+  MdTermRelationshipTest.class,
+  DatabaseAllPathsStrategyTest.class
+//  DefaultStrategyTest.class
+})
 public class OntologyTestSuite
 {
 }
