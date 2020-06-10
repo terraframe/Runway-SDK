@@ -234,7 +234,7 @@ public class GeoEntity extends GeoEntityBase
       /*
        * Add the term to the ontology strategy
        */
-      this.addTerm(LocatedIn.CLASS);
+//      this.addTerm(LocatedIn.CLASS);
     }
 
     // If geo multipolygon is null then add an entry into the problems page if

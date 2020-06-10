@@ -78,8 +78,8 @@ public class Universal extends UniversalBase
       /*
        * Add the term to the ontology strategy
        */
-      this.addTerm(AllowedIn.CLASS);
-
+//      this.addTerm(AllowedIn.CLASS);
+      
       // /*
       // * By default set this term as a child of the root node
       // */
