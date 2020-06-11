@@ -239,14 +239,14 @@ public class GeoEntity extends GeoEntityBase
 
     // If geo multipolygon is null then add an entry into the problems page if
     // one doesn't already exist
-    if (this.getGeoMultiPolygon() == null && !GeoEntityProblem.hasEntry(this, GeoEntityProblemType.MISSING_GEOM))
-    {
-      GeoEntityProblem.createProblems(this, GeoEntityProblemType.MISSING_GEOM);
-    }
-    else if (this.getGeoMultiPolygon() != null && GeoEntityProblem.hasEntry(this, GeoEntityProblemType.MISSING_GEOM))
-    {
-      GeoEntityProblem.deleteProblems(this, GeoEntityProblemType.MISSING_GEOM);
-    }
+//    if (this.getGeoMultiPolygon() == null && !GeoEntityProblem.hasEntry(this, GeoEntityProblemType.MISSING_GEOM))
+//    {
+//      GeoEntityProblem.createProblems(this, GeoEntityProblemType.MISSING_GEOM);
+//    }
+//    else if (this.getGeoMultiPolygon() != null && GeoEntityProblem.hasEntry(this, GeoEntityProblemType.MISSING_GEOM))
+//    {
+//      GeoEntityProblem.deleteProblems(this, GeoEntityProblemType.MISSING_GEOM);
+//    }
 
   }
 
