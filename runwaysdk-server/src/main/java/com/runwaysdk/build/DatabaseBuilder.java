@@ -73,8 +73,16 @@ import com.runwaysdk.session.Request;
  * This tool reads metadata files from the "domain" directory on the classpath, although that location may be
  * changed via the `path` CLI param. Inside this directory you may place files in the `install` or `patch`
  * inner directories, which may contain metadata files which are only run depending on if the tool is doing
- * an install or patch.
+ * an install or patch. Metadata placed at the top level 'domain' directory will be run on both patch and install,
+ * assuming it has not already been imported.
  * 
+ * The system records an array of timestamps into the database to keep track of which metadata files have already
+ * been imported. Timestamps are imported in the order dictated by the timestamp, however during patching if a
+ * timestamp falls out of order with the timestamp of the last imported file (i.e. 3-10-2020 was already imported,
+ * but 2-08-2020 now exists on classpath) the older timestamp will still be imported first, which is useful for
+ * development where many developers may be submitting timestamps where the actual time ordering is not exact.
+ * Timestamps must be unique, however. If the system detects two different metadata files with the same timestamp
+ * on the classpath a CoreException will be thrown and the 2 different files will be identified as conflicting.
  * Metadata file timestamps may be appended with -ALWAYS to specify that the file will still run, regardless of if it
  * has already been imported or not. 
  * 
