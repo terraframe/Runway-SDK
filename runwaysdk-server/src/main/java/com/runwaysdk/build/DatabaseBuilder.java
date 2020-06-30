@@ -67,8 +67,8 @@ import com.runwaysdk.session.Request;
  * metadata (from the classpath). This tool is capable of building both Postgres and OrientDB databases.
  * 
  * There are two distinct modes in which the tool runs: install and patch. If neither are specified, the
- * tool will auto-detect which to run as. If clean is specified, the tool will first destroy any existing
- * database.
+ * tool will auto-detect which to run as, with patch being preferred for already established databases.
+ * If clean is specified, the tool will first destroy any existing database.
  * 
  * This tool reads metadata files from the "domain" directory on the classpath, although that location may be
  * changed via the `path` CLI param. Inside this directory you may place files in the `install` or `patch`
@@ -86,7 +86,8 @@ import com.runwaysdk.session.Request;
  * Metadata file timestamps may be appended with -ALWAYS to specify that the file will still run, regardless of if it
  * has already been imported or not. 
  * 
- * For a complete list of options you may run this tool with `--help`, or you may view the `main` method in this source. 
+ * For a complete list of options you may run this tool with `--help`, or you may view the `buildCliOptions` method
+ * in this source. 
  * 
  * @author Richard Rowlands (rrowlands)
  */

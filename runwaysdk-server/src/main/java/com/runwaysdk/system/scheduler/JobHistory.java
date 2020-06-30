@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Locale;
@@ -207,6 +209,8 @@ public class JobHistory extends JobHistoryBase
         json.put("type", t.getClass().getName());
       }
       
+      json.put("stacktrace", getStacktrace(t));
+      
       // This here is needed for exceptions that aren't RunwayException or SmartException.
       String message = RunwayException.localizeThrowable(t, Session.getCurrentLocale());
       json.put("message", message);
@@ -225,6 +229,26 @@ public class JobHistory extends JobHistoryBase
       {
         throw new RuntimeException(e);
       }
+    }
+  }
+  
+  private static String getStacktrace(Throwable t)
+  {
+    try
+    {
+      StringWriter writer = new StringWriter();
+      PrintWriter printWriter = new PrintWriter( writer );
+      t.printStackTrace( printWriter );
+      printWriter.flush();
+  
+      String stackTrace = writer.toString();
+      
+      return stackTrace;
+    }
+    catch (Throwable t2)
+    {
+      logger.error("Critical failure when writing stacktrace of error for job history.", t2);
+      return "Critical failure when writing stacktrace of error for job history.";
     }
   }
 }

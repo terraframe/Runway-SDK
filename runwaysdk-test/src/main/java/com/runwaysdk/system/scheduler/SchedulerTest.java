@@ -260,7 +260,7 @@ public class SchedulerTest
     {
       super.triggerMisfired(trigger);
       
-      System.out.println("Trigger misfired");
+//      System.out.println("Trigger misfired");
     }
 
     @Override
@@ -268,7 +268,7 @@ public class SchedulerTest
     {
       super.triggerComplete(trigger, context, triggerInstructionCode);
       
-      System.out.println("triggerComplete");
+//      System.out.println("triggerComplete");
     }
 
     @Override
@@ -276,7 +276,7 @@ public class SchedulerTest
     {
       super.jobToBeExecuted(context);
       
-      System.out.println("jobToBeExecuted");
+//      System.out.println("jobToBeExecuted");
     }
     
     @Override
@@ -284,13 +284,13 @@ public class SchedulerTest
     {
       super.jobWasExecuted(context, jobException);
       
-      System.out.println("jobWasExecuted");
+//      System.out.println("jobWasExecuted");
     }
     
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context)
     {
-      System.out.println("vetoJobExecution");
+//      System.out.println("vetoJobExecution");
       
       return super.vetoJobExecution(trigger, context);
     }
@@ -300,7 +300,7 @@ public class SchedulerTest
     {
       super.triggerFired(trigger, context);
       
-      System.out.println("Trigger fired");
+//      System.out.println("Trigger fired");
     }
   }
 
@@ -816,18 +816,12 @@ public class SchedulerTest
     {
       // Start both jobs
       JobHistory hist11 = job1.start();
-      System.out.println("hist11 is " + getRecord(job1, hist11).getOid());
       JobHistory hist12 = job1.start();
-      System.out.println("hist12 is " + getRecord(job1, hist12).getOid());
       JobHistory hist13 = job1.start();
-      System.out.println("hist13 is " + getRecord(job1, hist13).getOid());
       
       JobHistory hist21 = job2.start();
-      System.out.println("hist21 is " + getRecord(job2, hist21).getOid());
       JobHistory hist22 = job2.start();
-      System.out.println("hist22 is " + getRecord(job2, hist22).getOid());
       JobHistory hist23 = job2.start();
-      System.out.println("hist23 is " + getRecord(job2, hist23).getOid());
       
       // Wait for one of them to be running
       waitUntilRunning(hist11);
@@ -1013,7 +1007,6 @@ public class SchedulerTest
         {
           synchronized(pool)
           {
-            System.out.println("Thread 1 is starting job");
             JobHistory history = job1.start();
             
             pool.add(history);
@@ -1044,7 +1037,6 @@ public class SchedulerTest
         {
           synchronized(pool)
           {
-            System.out.println("Thread 2 is starting job");
             JobHistory history = job1.start();
             
             pool.add(history);
@@ -1184,7 +1176,6 @@ public class SchedulerTest
         ex.setLocation("/test/123");
         
         String json = updated.getErrorJson();
-        System.out.println(json);
         
         JSONObject jo = new JSONObject(json);
         Assert.assertEquals(ex.getType(), jo.get("type"));
@@ -1194,6 +1185,7 @@ public class SchedulerTest
         String msg = ex.localize(Session.getCurrentLocale());
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+        Assert.assertTrue(jo.getString("stacktrace").contains(BackupReadException.CLASS) && jo.getString("stacktrace").contains(QuartzRunwayJob.class.getName()));
       }
       else
       {
@@ -1264,6 +1256,7 @@ public class SchedulerTest
         String msg = ex.getMessage();
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+        Assert.assertTrue(jo.getString("stacktrace").contains(ArithmeticException.class.getName()) && jo.getString("stacktrace").contains(QuartzRunwayJob.class.getName()));
       }
       else
       {
@@ -1339,6 +1332,7 @@ public class SchedulerTest
         String msg = rwEx.getLocalizedMessage();
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
+        Assert.assertTrue(jo.getString("stacktrace").contains(TestRunwayErrorJob.class.getName()) && jo.getString("stacktrace").contains(QuartzRunwayJob.class.getName()));
       }
       else
       {
