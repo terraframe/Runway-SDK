@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -122,7 +122,6 @@ public class OrientDBImpl implements GraphDB
   public OrientDBImpl()
   {
     this.orientDB = this.getRootOrientDB();
-
     // this.pool = null;
   }
 
@@ -242,6 +241,14 @@ public class OrientDBImpl implements GraphDB
     //
     // this.orientDB.close();
     logger.info("Closing the GraphDB connection pool");
+  }
+
+  @Override
+  public void close()
+  {
+    this.orientDB.close();
+
+    this.orientDB = null;
   }
 
   @Override
@@ -579,10 +586,11 @@ public class OrientDBImpl implements GraphDB
   }
 
   /**
-   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
+   *      boolean)
    */
   @Override
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -596,6 +604,10 @@ public class OrientDBImpl implements GraphDB
           oClass.dropProperty(attributeName);
         }
 
+        if (cot)
+        {
+          oClass.dropProperty(attributeName + OrientDBConstant.COT_SUFFIX);
+        }
       }
     };
 
@@ -603,7 +615,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -614,14 +626,25 @@ public class OrientDBImpl implements GraphDB
 
         if (oClass != null)
         {
-          Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+          List<String> attrs = new LinkedList<String>();
+          attrs.add(attributeName);
 
-          while (i.hasNext())
+          if (cot)
           {
-            i.next().delete();
+            attrs.add(attributeName + OrientDBConstant.COT_SUFFIX);
           }
 
-          oClass.dropProperty(attributeName);
+          for (String attr : attrs)
+          {
+            Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attr).iterator();
+
+            while (i.hasNext())
+            {
+              i.next().delete();
+            }
+
+            oClass.dropProperty(attr);
+          }
         }
       }
     };
@@ -1390,7 +1413,7 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
-    
+
     attribute.getValuesOverTime().validate();
   }
 

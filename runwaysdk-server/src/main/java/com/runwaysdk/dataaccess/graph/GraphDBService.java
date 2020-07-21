@@ -90,6 +90,11 @@ public class GraphDBService
     this.graphDB.closeConnectionPool();
   }
 
+  public void close()
+  {
+	  this.graphDB.close();
+  }
+  
   public GraphRequest getGraphDBRequest()
   {
     return this.graphDB.getGraphDBRequest();
@@ -235,21 +240,21 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String, boolean)
    */
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
-    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
+    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
   }
 
   /**
    * @param cot
    *          TODO
-   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String)
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String, boolean)
    */
   public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
-    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName);
+    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
   }
 
   /**
@@ -347,4 +352,5 @@ public class GraphDBService
   {
     return this.graphDB.processException(locale, runEx);
   }
+
 }
