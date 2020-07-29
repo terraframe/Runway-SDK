@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -26,7 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.UUID;
 
 import org.locationtech.spatial4j.shape.Shape;
@@ -601,12 +600,27 @@ public class OrientDBImpl implements GraphDB
 
         if (oClass != null)
         {
-          oClass.dropProperty(attributeName);
-        }
+          List<String> attrs = new LinkedList<String>();
+          attrs.add(attributeName);
 
-        if (cot)
-        {
-          oClass.dropProperty(attributeName + OrientDBConstant.COT_SUFFIX);
+          if (cot)
+          {
+            attrs.add(attributeName + OrientDBConstant.COT_SUFFIX);
+          }
+
+          for (String attr : attrs)
+          {
+            if (oClass.getProperty(attr) != null)
+            {
+              // Delete any existing values
+              try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+              {
+                // Do nothing
+              }
+
+              oClass.dropProperty(attr);
+            }
+          }
         }
       }
     };
@@ -636,6 +650,12 @@ public class OrientDBImpl implements GraphDB
 
           for (String attr : attrs)
           {
+            // Delete any existing values
+            try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+            {
+              // Do nothing
+            }
+
             Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attr).iterator();
 
             while (i.hasNext())
@@ -644,6 +664,7 @@ public class OrientDBImpl implements GraphDB
             }
 
             oClass.dropProperty(attr);
+
           }
         }
       }
