@@ -67,7 +67,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   }
   
   @SuppressWarnings("unchecked")
-  public void setValue(Object value, Date startDate)
+  public synchronized void setValue(Object value, Date startDate)
   {
     this.validate(value);
 
