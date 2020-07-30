@@ -66,30 +66,57 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
     return (MdAttributeEnumerationDAOIF) super.getMdAttributeConcrete();
   }
   
+  @SuppressWarnings("unchecked")
   public void setValue(Object value, Date startDate)
   {
     this.validate(value);
 
-    Set<String> setValue = null;
+    Set<String> setValue = new TreeSet<String>();
+    if (value != null)
+    {
+      setValue.add((String) value);
+    }
+    
+    boolean modified = this.isModified();
+    
     if (value instanceof String)
     {
       Set<String> set = this.getObjectValue();
+      
+      if (!(set.size() == 1 && set.contains(value)))
+      {
+        modified = true;
+      }
+      
       set.clear();
       set.add((String) value);
-      setValue = set;
+    }
+    else if (value == null)
+    {
+      if (this.getObjectValue().size() > 0)
+      {
+        this.setValueInternal(new TreeSet<String>());
+        modified = true;
+      }
     }
     
     if (startDate == null)
     {
       if (this.valuesOverTime.size() > 0)
       {
-        this.valuesOverTime.last().setValue(setValue);
+        ValueOverTime last = this.valuesOverTime.last();
+
+        modified = !isSetEqual((Set<String>) last.getValue(), setValue);
+        
+        last.setValue(setValue);
       }
       else
       {
         Date date = new Date();
 
         this.valuesOverTime.add(new ValueOverTime(date, date, setValue));
+        
+        modified = true;
       }
     }
     else
@@ -98,15 +125,38 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
 
       if (vot != null)
       {
+        modified = !isSetEqual((Set<String>) vot.getValue(), setValue);
+        
         vot.setValue(setValue);
       }
       else
       {
         this.valuesOverTime.add(new ValueOverTime(startDate, null, setValue));
+        modified = true;
       }
     }
 
-    this.setValue(value);
+    this.setModified(modified);
+  }
+  
+  private boolean isSetEqual(Set<String> set1, Set<String> set2)
+  {
+    if (set1 == null && set2 == null)
+    {
+      return true;
+    }
+    
+    if ((set1 == null && set2 != null) || (set2 == null && set1 != null))
+    {
+      return false;
+    }
+    
+    if (set1.size() != set2.size())
+    {
+      return false;
+    }
+    
+    return set1.equals(set2);
   }
   
   @Override

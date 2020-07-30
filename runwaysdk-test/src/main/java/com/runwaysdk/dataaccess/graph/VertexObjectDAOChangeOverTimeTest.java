@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.graph;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -178,6 +179,7 @@ public class VertexObjectDAOChangeOverTimeTest
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(2012, Calendar.JANUARY, 1);
+    calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 
     return calendar.getTime();
   }
@@ -187,6 +189,7 @@ public class VertexObjectDAOChangeOverTimeTest
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(2014, Calendar.DECEMBER, 31);
+    calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 
     return calendar.getTime();
   }
@@ -196,6 +199,7 @@ public class VertexObjectDAOChangeOverTimeTest
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(2012, Calendar.MAY, 13);
+    calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 
     return calendar.getTime();
   }
@@ -831,20 +835,163 @@ public class VertexObjectDAOChangeOverTimeTest
       Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
       String value = businessDAO.getOid();
+      
+      Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
 
       vertexDAO.setValue(attributeName, value, startDate(), endDate());
+      
+      Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+      
+      VertexObjectDAO test = null;
 
       try
       {
         vertexDAO.apply();
 
-        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+        test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
         Assert.assertNotNull(test);
+        
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
 
         Set<String> set = (Set<String>) test.getObjectValue(attributeName, date());
 
         Assert.assertTrue(set.contains(value));
+        
+        // If we set the value to what it already is, the modified flag should still be false
+        test.setValue(attributeName, value, startDate(), endDate());
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
+        Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+        
+        // Test setting null
+        test.setValue(attributeName, null, startDate(), endDate());
+        
+        Assert.assertTrue(test.getAttributeIF(attributeName).isModified());
+        
+        test.apply();
+        
+        test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+        
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
+        
+        Set<String> set2 = (Set<String>) test.getObjectValue(attributeName, date());
+
+        Assert.assertEquals(0, set2.size());
+        
+        Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+        
+        // Test a null date
+        test.setValue(attributeName, null, null, null);
+        
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
+        
+        test.apply();
+        
+        test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+        
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
+
+        Assert.assertNotNull(test);
+        
+        Set<String> set3 = (Set<String>) test.getObjectValue(attributeName, endDate());
+
+        Assert.assertEquals(0, set3.size());
+        
+        Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+      }
+      finally
+      {
+        if (test != null)
+        {
+          test.delete();
+        }
+        else
+        {
+          vertexDAO.delete();
+        }
+      }
+
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      businessDAO.delete();
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Request
+  @Test
+  public void testEnumerationAttributeMultipleDates()
+  {
+    BusinessDAO businessDAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
+    businessDAO.setValue(EnumerationMasterInfo.NAME, "test");
+    businessDAO.apply();
+    
+    BusinessDAO business2DAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
+    business2DAO.setValue(EnumerationMasterInfo.NAME, "test2");
+    business2DAO.apply();
+
+    try
+    {
+      String attributeName = mdEnumerationAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+      
+      Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
+
+      vertexDAO.setValue(attributeName, businessDAO.getOid(), startDate(), date());
+      
+      Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+      
+      vertexDAO.setValue(attributeName, business2DAO.getOid(), date(), endDate());
+      
+      Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+
+      try
+      {
+        vertexDAO.apply();
+
+        // Assert test1
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+
+        Set<String> set = (Set<String>) test.getObjectValue(attributeName, startDate());
+
+        Assert.assertEquals(1, set.size());
+        Assert.assertEquals(businessDAO.getOid(), set.iterator().next());
+        
+        Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
+        
+        Assert.assertEquals(2, test.getValuesOverTime(attributeName).size());
+        
+        // Assert test2 at date()
+        VertexObjectDAOIF test2 = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test2);
+
+        Set<String> set2 = (Set<String>) test2.getObjectValue(attributeName, date());
+
+        Assert.assertEquals(1, set2.size());
+        Assert.assertEquals(business2DAO.getOid(), set2.iterator().next());
+        
+        Assert.assertFalse(test2.getAttributeIF(attributeName).isModified());
+        
+        // Assert test2 at endDate()
+        VertexObjectDAOIF test3 = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test3);
+
+        Set<String> set3 = (Set<String>) test3.getObjectValue(attributeName, endDate());
+
+        Assert.assertEquals(1, set3.size());
+        Assert.assertEquals(business2DAO.getOid(), set3.iterator().next());
+        
+        Assert.assertFalse(test3.getAttributeIF(attributeName).isModified());
       }
       finally
       {
@@ -856,6 +1003,7 @@ public class VertexObjectDAOChangeOverTimeTest
     finally
     {
       businessDAO.delete();
+      business2DAO.delete();
     }
   }
 

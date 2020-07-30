@@ -21,29 +21,35 @@ package com.runwaysdk.business.graph;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
-import com.runwaysdk.dataaccess.graph.GraphDBService;
-import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
+import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
+import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
@@ -80,6 +86,8 @@ public class VertexObjectTest
   private static MdAttributeDateTimeDAO        mdDateTimeAttribute;
 
   private static MdAttributeTimeDAO            mdTimeAttribute;
+  
+  private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
 
   private static MdAttributePointDAO           mdPointAttribute;
 
@@ -92,6 +100,14 @@ public class VertexObjectTest
   private static MdAttributeMultiPolygonDAO    mdMultiPolygonAttribute;
 
   private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
+  
+  private static MdBusinessDAO mdBizEnum;
+  
+  private static MdEnumerationDAO mdEnum;
+  
+  private static BusinessDAO colorado;
+  
+  private static BusinessDAO washington;
 
   @Request
   @BeforeClass
@@ -130,6 +146,31 @@ public class VertexObjectTest
 
     mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
     mdTimeAttribute.apply();
+    
+    mdBizEnum = TestFixtureFactory.createEnumClass1();
+    mdBizEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdBizEnum.apply();
+    
+    mdEnum = TestFixtureFactory.createMdEnumeation1(mdBizEnum);
+    mdEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdEnum.apply();
+    
+    TestFixtureFactory.addCharacterAttribute(mdBizEnum).apply();
+    
+    colorado = BusinessDAO.newInstance(mdBizEnum.definesType());
+    colorado.setValue(EnumerationMasterInfo.NAME, "CO");
+    colorado.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Colorado");
+    colorado.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
+    colorado.apply();
+    
+    washington = BusinessDAO.newInstance(mdBizEnum.definesType());
+    washington.setValue(EnumerationMasterInfo.NAME, "WA");
+    washington.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Washington");
+    washington.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "WA");
+    washington.apply();
+    
+    mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnum);
+    mdEnumerationAttribute.apply();
 
     mdPointAttribute = TestFixtureFactory.addPointAttribute(mdVertexDAO);
     mdPointAttribute.apply();
@@ -155,8 +196,65 @@ public class VertexObjectTest
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdVertexDAO);
-
+    
+    TestFixtureFactory.delete(mdEnum);
+    
+    TestFixtureFactory.delete(mdBizEnum);
+    
     LocalProperties.setSkipCodeGenAndCompile(false);
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Request
+  @Test
+  public void testEnumAttribute()
+  {
+    String attributeName = mdEnumerationAttribute.definesAttribute();
+
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
+
+    String value = colorado.getOid();
+    
+    vertex.setValue(attributeName, value);
+
+    Set<String> getValue = ((Set<String>)vertex.getObjectValue(attributeName));
+    
+    Assert.assertEquals(1, getValue.size());
+    Assert.assertEquals(value, getValue.iterator().next());
+
+    try
+    {
+      // Test create
+      vertex.apply();
+
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      Assert.assertNotNull(test);
+
+      getValue = ((Set<String>)test.getObjectValue(attributeName));
+      
+      Assert.assertEquals(1, getValue.size());
+      Assert.assertEquals(value, getValue.iterator().next());
+
+      // Test update
+      value = washington.getOid();
+
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+
+      getValue = ((Set<String>)test.getObjectValue(attributeName));
+      
+      Assert.assertEquals(1, getValue.size());
+      Assert.assertEquals(value, getValue.iterator().next());
+    }
+    finally
+    {
+      vertex.delete();
+    }
+
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
   @Request
