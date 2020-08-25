@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-localization</artifactId>
-    <version>3.2.10-SNAPSHOT</version>
+    <version>3.2.10</version>
   </parent>
   
   <artifactId>runwaysdk-localization-server</artifactId>
