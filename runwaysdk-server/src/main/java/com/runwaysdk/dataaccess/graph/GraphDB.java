@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -215,7 +215,8 @@ public interface GraphDB
    * @param ddlGraphDBRequest
    * @param className
    * @param attributeName
-   * @param cot TODO
+   * @param cot
+   *          TODO
    * @return {@link GraphDDLCommandAction} so that it can be closed or committed
    *         in the command object.
    */
@@ -366,6 +367,8 @@ public interface GraphDB
 
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters);
 
+  public void command(GraphRequest request, String statement, Map<String, Object> parameters);
+
   /**
    * Transforms the given {@link RuntimeException} from the graph database and
    * transforms it into a {@link RunwayException}.
@@ -377,4 +380,5 @@ public interface GraphDB
   public RuntimeException processException(Locale locale, RuntimeException runEx);
 
   public void close();
+
 }

@@ -384,6 +384,11 @@ public class GraphDBBalk implements GraphDB
   {
     return new LinkedList<Object>();
   }
+  
+  @Override
+  public void command(GraphRequest request, String statement, Map<String, Object> parameters)
+  {
+  }
 
   /**
    * @see GraphDB#processException(Locale, RuntimeException)

@@ -345,6 +345,11 @@ public class GraphDBService
     return this.graphDB.query(request, statement, parameters);
   }
 
+  public void command(GraphRequest request, String statement, Map<String, Object> parameters)
+  {
+    this.graphDB.command(request, statement, parameters);
+  }
+  
   /**
    * @see GraphDB#processException(Locale, RuntimeException)
    */
