@@ -654,8 +654,8 @@ public abstract class Attribute implements AttributeIF, Serializable
         MdEntityDAOIF mdEntityIF = (MdEntityDAOIF) mdAttribute.definedByClass();
         String error = "Attribute [" + mdAttribute.definesAttribute() + "]" + " must be unique.  An instance of [" + mdEntityIF.definesType() + "] already exists with the value of [" + valueToValidate + "].";
 
-        List<AttributeIF> attributeList = new LinkedList<AttributeIF>();
-        attributeList.add(this);
+        List<MdAttributeDAOIF> attributeList = new LinkedList<MdAttributeDAOIF>();
+        attributeList.add(mdAttribute);
 
         List<String> valueList = new LinkedList<String>();
         valueList.add(valueToValidate);

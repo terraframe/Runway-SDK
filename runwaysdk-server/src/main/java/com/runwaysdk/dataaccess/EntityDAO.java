@@ -1510,7 +1510,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
         continue;
       }
 
-      List<AttributeIF> attributeIFList = new LinkedList<AttributeIF>();
+      List<MdAttributeDAOIF> attributeIFList = new LinkedList<MdAttributeDAOIF>();
       List<String> valuesList = new LinkedList<String>();
 
       List<MdAttributeConcreteDAOIF> uniqueMdAttributeIFList = mdIndexIF.getIndexedAttributes();
@@ -1522,7 +1522,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
         MdAttributeConcreteDAOIF mdAttribute = uniqueMdAttributeIFList.get(i);
 
         AttributeIF attributeIF = this.getAttributeIF(mdAttribute.definesAttribute());
-        attributeIFList.add(attributeIF);
+        attributeIFList.add(attributeIF.getMdAttribute());
         valuesList.add(attributeIF.getValue());
 
         entityQuery.WHERE(entityQuery.get(mdAttribute.definesAttribute()).EQ(attributeIF.getValue()));

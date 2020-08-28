@@ -64,6 +64,7 @@ import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
@@ -1689,13 +1690,13 @@ public class OrientDBImpl implements GraphDB
 
       String devMsg = "The graph class [" + mdGraphClass.definesType() + "] already has an instance with attribute [" + mdAttribute.definesAttribute() + "] with value [" + value + "]";
 
-      List<String> localizedAttrLabels = new LinkedList<String>();
-      localizedAttrLabels.add(mdAttribute.getDisplayLabel(locale));
+      List<MdAttributeDAOIF> mdAttributes = new LinkedList<MdAttributeDAOIF>();
+      mdAttributes.add(mdAttribute);
 
       List<String> valueList = new LinkedList<String>();
       valueList.add(value);
 
-      throw new DuplicateDataException(devMsg, localizedAttrLabels, mdGraphClass, valueList);
+      throw new DuplicateDataException(devMsg, runEx, mdGraphClass, mdAttributes, valueList);
     }
     else
     {

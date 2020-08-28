@@ -33,6 +33,7 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DuplicateDataException;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeHash;
@@ -80,10 +81,10 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
         UserDAO.findUser(this.getUsername());
 
         String msg = "A user already exists with the username [" + this.getUsername() + "]";
-        List<AttributeIF> attributes = new LinkedList<AttributeIF>();
+        List<MdAttributeDAOIF> attributes = new LinkedList<MdAttributeDAOIF>();
         List<String> values = new LinkedList<String>();
 
-        attributes.add(this.getAttributeIF(UserInfo.USERNAME));
+        attributes.add(this.getAttributeIF(UserInfo.USERNAME).getMdAttribute());
         values.add(this.getUsername());
 
         throw new DuplicateDataException(msg, this.getMdClassDAO(), attributes, values) ;

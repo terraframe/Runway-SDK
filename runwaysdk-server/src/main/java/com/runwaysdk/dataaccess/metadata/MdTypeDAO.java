@@ -37,6 +37,7 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.DuplicateDataException;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -331,9 +332,9 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     if (!this.isAppliedToDB() && EntityDAOFactory.isValidType(this.definesType()))
     {
       MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(MdTypeInfo.CLASS);
-      List<AttributeIF> attributeIFList = new LinkedList<AttributeIF>();
-      attributeIFList.add(this.getAttributeIF(MdTypeInfo.PACKAGE));
-      attributeIFList.add(this.getAttributeIF(MdTypeInfo.NAME));
+      List<MdAttributeDAOIF> attributeIFList = new LinkedList<MdAttributeDAOIF>();
+      attributeIFList.add(this.getAttributeIF(MdTypeInfo.PACKAGE).getMdAttribute());
+      attributeIFList.add(this.getAttributeIF(MdTypeInfo.NAME).getMdAttribute());
 
       List<String> values = new LinkedList<String>();
       values.add(this.getAttributeIF(MdTypeInfo.PACKAGE).getValue());

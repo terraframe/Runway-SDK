@@ -46,6 +46,7 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.HasNoDatabaseColumn;
 import com.runwaysdk.dataaccess.MdAttributeBlobDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
@@ -536,8 +537,8 @@ public class EntityDAOFactory
           AttributeIF keyAttribute = entityDAO.getAttributeIF(ElementInfo.KEY);
           String msg = "Duplicate value on [" + mdEntityDAOIF.definesType() + "] for attribute [" + ElementInfo.KEY + "] with value [" + keyAttribute.getValue() + "]";
 
-          List<AttributeIF> attributeIFList = new LinkedList<AttributeIF>();
-          attributeIFList.add(keyAttribute);
+          List<MdAttributeDAOIF> attributeIFList = new LinkedList<MdAttributeDAOIF>();
+          attributeIFList.add(keyAttribute.getMdAttribute());
 
           List<String> valueList = new LinkedList<String>();
           valueList.add(keyValue);
