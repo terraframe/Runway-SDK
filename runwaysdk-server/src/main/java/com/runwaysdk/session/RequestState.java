@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -33,25 +33,42 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 
 public class RequestState
 {
-  private boolean                     debug = false;
+  private boolean             debug = false;
 
   // Connection used for DML statements
-  private volatile Connection         conn;
-  
-  protected GraphRequest            graphDBRequest;
+  private volatile Connection conn;
 
-  private volatile Thread             mainThread;
+  protected GraphRequest      graphDBRequest;
 
-  protected SessionIF                 session;
+  private volatile Thread     mainThread;
+
+  protected SessionIF         session;
 
   protected RequestState()
   {
-    this.conn               = Database.getConnectionRaw();
+    try
+    {
+      this.conn = Database.getConnectionRaw();
 
-    this.graphDBRequest     = GraphDBService.getInstance().getGraphDBRequest();
+      this.graphDBRequest = GraphDBService.getInstance().getGraphDBRequest();
 
-    this.session            = null;
-    this.mainThread         = Thread.currentThread();
+      this.session = null;
+      this.mainThread = Thread.currentThread();
+    }
+    catch (RuntimeException e)
+    {
+      if (this.conn != null)
+      {
+        this.conn.close();
+      }
+      
+      if (this.graphDBRequest != null)
+      {
+        this.graphDBRequest.close();
+      }
+      
+      throw e;
+    }
   }
 
   /**
@@ -78,11 +95,12 @@ public class RequestState
   {
     return this.graphDBRequest;
   }
-  
-  public synchronized Boolean isSessionNull() {
+
+  public synchronized Boolean isSessionNull()
+  {
     return this.session == null;
   }
-  
+
   protected synchronized SessionIF getSession()
   {
     return this.session;
@@ -99,7 +117,7 @@ public class RequestState
    * @param joinPoint
    */
   protected synchronized void commitConnection(JoinPoint joinPoint)
-  { 
+  {
     if (conn != null)
     {
       try
@@ -135,7 +153,7 @@ public class RequestState
   {
     // Close the graph db connection, but do not commit it
     this.graphDBRequest.close();
-    
+
     if (conn != null)
     {
       try
@@ -172,7 +190,7 @@ public class RequestState
   protected synchronized void rollbackConnection(JoinPoint joinPoint)
   {
     this.graphDBRequest.rollback();
-    
+
     if (conn != null)
     {
       try
@@ -203,7 +221,7 @@ public class RequestState
   {
     this.graphDBRequest.rollback();
     this.graphDBRequest.close();
-    
+
     if (conn != null)
     {
       try
@@ -228,12 +246,15 @@ public class RequestState
   }
 
   /**
-   * Returns the database connection to the connection pool. This should only be used when the request 
-   * is not in a transaction. If it is in a transaction, then the transaction will be in an inconsistent 
-   * state. This method should be used if the request is waiting for something to finish, and while it is 
-   * waiting the connection resource might be needed. The original reason for this method is that a request
-   * would make an RMI call to a service running on the same instance and sharing the same pool. The calling
-   * request should release its connection to the pool and then grab another one once the call returns. 
+   * Returns the database connection to the connection pool. This should only be
+   * used when the request is not in a transaction. If it is in a transaction,
+   * then the transaction will be in an inconsistent state. This method should
+   * be used if the request is waiting for something to finish, and while it is
+   * waiting the connection resource might be needed. The original reason for
+   * this method is that a request would make an RMI call to a service running
+   * on the same instance and sharing the same pool. The calling request should
+   * release its connection to the pool and then grab another one once the call
+   * returns.
    */
   public void returnDatabaseConnectionToPool()
   {
@@ -249,15 +270,18 @@ public class RequestState
       throw new DatabaseException(ex);
     }
   }
-  
+
   /**
-   * Returns the existing database connection to the pool (if it has not been returned already) and fetches
-   * a new one from the pool to be used in this request. This should only be used when the request 
-   * is not in a transaction. If it is in a transaction, then the transaction will be in an inconsistent 
-   * state. This method should be used if the request is waiting for something to finish, and while it is 
-   * waiting the connection resource might be needed. The original reason for this method is that a request
-   * would make an RMI call to a service running on the same instance and sharing the same pool. The calling
-   * request should release its connection to the pool and then grab another one once the call returns. 
+   * Returns the existing database connection to the pool (if it has not been
+   * returned already) and fetches a new one from the pool to be used in this
+   * request. This should only be used when the request is not in a transaction.
+   * If it is in a transaction, then the transaction will be in an inconsistent
+   * state. This method should be used if the request is waiting for something
+   * to finish, and while it is waiting the connection resource might be needed.
+   * The original reason for this method is that a request would make an RMI
+   * call to a service running on the same instance and sharing the same pool.
+   * The calling request should release its connection to the pool and then grab
+   * another one once the call returns.
    * 
    */
   public void getNewDatabaseConnectionFromPool()
@@ -268,7 +292,7 @@ public class RequestState
       {
         conn.close();
       }
-      
+
       conn = Database.getConnection();
     }
     catch (SQLException ex)
@@ -276,7 +300,7 @@ public class RequestState
       throw new DatabaseException(ex);
     }
   }
-  
+
   /**
    * Returns the request state of this request.
    * 
