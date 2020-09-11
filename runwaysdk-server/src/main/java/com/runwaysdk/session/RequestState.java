@@ -59,14 +59,21 @@ public class RequestState
     {
       if (this.conn != null)
       {
-        this.conn.close();
+        try
+        {
+          this.conn.close();
+        }
+        catch (SQLException ex)
+        {
+
+        }
       }
-      
+
       if (this.graphDBRequest != null)
       {
         this.graphDBRequest.close();
       }
-      
+
       throw e;
     }
   }
