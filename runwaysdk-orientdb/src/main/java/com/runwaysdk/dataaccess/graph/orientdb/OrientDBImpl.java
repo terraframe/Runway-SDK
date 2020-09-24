@@ -613,13 +613,13 @@ public class OrientDBImpl implements GraphDB
           {
             if (oClass.getProperty(attr) != null)
             {
+              oClass.dropProperty(attr);
+
               // Delete any existing values
               try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
               {
                 // Do nothing
               }
-
-              oClass.dropProperty(attr);
             }
           }
         }
@@ -651,12 +651,6 @@ public class OrientDBImpl implements GraphDB
 
           for (String attr : attrs)
           {
-            // Delete any existing values
-            try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
-            {
-              // Do nothing
-            }
-
             Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attr).iterator();
 
             while (i.hasNext())
@@ -666,6 +660,11 @@ public class OrientDBImpl implements GraphDB
 
             oClass.dropProperty(attr);
 
+            // Delete any existing values
+            try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+            {
+              // Do nothing
+            }
           }
         }
       }
