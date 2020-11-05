@@ -7,6 +7,21 @@ sidebar: mydoc_sidebar
 folder: mydoc
 ---
 
+## Eclipse Plugins
+
+1. Install AspectJ Development Tools.
+    * Runway SDK utilizes source code weaving via AspectJ. In order to properly build our projects, we must install an Eclipse plugin called AspectJ Development Tools.
+    * When you import one of our projects, Eclipe should automatically install this for you. If Eclipse does not automatically guide you through this process, open the Eclipse Marketplace and search for "AspectJ Development Tools" and click "install". You will be guided through the rest of the installation.
+2. Install Maven Integration for AspectJ
+    * Eclipse does not out of the box know how to weave AspectJ projects if they are derived from a maven pom. This plugin facilitates building AspectJ projects when using Maven.
+    * In Eclipse go to ‘help -> Install New Software’
+    * Enter this URL in the input field ‘http://dist.springsource.org/release/AJDT/configurator/’
+    * When it finds "AJDT M2E configurator, check the box and click next to be guided through the rest of the installation.
+3. Install M2E connector, buildhelper
+    * Our projects typically contain source code which has been generated via Runway SDK. This source code is separated in a different src directory than is standard and expected via Maven. To facilitate this, we must install a Maven plugin called "buildhelper".
+    * In Eclipse go to ‘window -> Preferences -> Maven -> Discovery -> Open Catalog’.
+    * Search for buildhelper (by Sonatype) and install.
+
 ## Configure code formatting in Eclipse preferences.
 In preferences, search for "formatting"
 
