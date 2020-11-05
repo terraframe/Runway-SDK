@@ -7,6 +7,10 @@ sidebar: mydoc_sidebar
 folder: mydoc
 ---
 
+## Downloading the Right Eclipse
+
+We typically recommend downloading the latest version of Eclipse, directly from the Eclipse foundation. You will however need to make sure that you get the "Eclipse IDE for Enterprise Java Developers" packaged version of Eclipse, because this will include out of the box many useful tools such as WTP.
+
 ## Eclipse Plugins
 
 1. Install AspectJ Development Tools.
