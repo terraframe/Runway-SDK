@@ -33,7 +33,8 @@ In preferences, search for "format"
     * Java -> Code Style -> Formatter
     * Import and select active profile: Terracube
 2. Manually set the Javascript code formatting settings
-    * Javascript -> Code Style -> Formatter. Edit the active profile.
+    * (Newer Eclipse) Web -> Client-side JavaScript -> Formatter
+    * (Older Eclipse) Javascript -> Code Style -> Formatter.
     * Tab policy: Spaces only
     * Indentation size: 2
 3. Manually configure the Eclipse default text editor
