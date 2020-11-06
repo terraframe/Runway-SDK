@@ -27,7 +27,6 @@ We typically recommend downloading the latest version of Eclipse, directly from 
     * Search for buildhelper (by Sonatype) and install.
 
 ## Configure code formatting in Eclipse preferences.
-In preferences, search for "format"
 
 1. Import the 'TerraCube' formatting settings from 'git/runwaysdk-root/doc/TerraFrameJavaFormat.xml'
     * Java -> Code Style -> Formatter
