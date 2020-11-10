@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.quartz.CronScheduleBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -33,11 +32,10 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerConfigException;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.TriggerBuilder;
 import org.quartz.TriggerListener;
+import org.quartz.UnableToInterruptJobException;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
@@ -48,7 +46,6 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
-import com.runwaysdk.util.IDGenerator;
 
 public class SchedulerManager implements JobListener, TriggerListener
 {
@@ -195,6 +192,25 @@ public class SchedulerManager implements JobListener, TriggerListener
     }
   }
 
+  public static List<JobHistoryRecord> interruptAllRunningJobs()
+  {
+    List<JobHistoryRecord> stoppedJobs = new ArrayList<JobHistoryRecord>();
+    List<JobHistoryRecord> jobs = SchedulerManager.getRunningJobs();
+    
+    for (JobHistoryRecord job : jobs)
+    {
+      String oid = job.getChildOid();
+      
+      if (QuartzRunwayJob.runningThreads.containsKey(oid))
+      {
+        QuartzRunwayJob.runningThreads.get(oid).interrupt();
+        stoppedJobs.add(job);
+      }
+    }
+    
+    return stoppedJobs;
+  }
+  
   public static List<JobHistoryRecord> getResumeJobs()
   {
     List<JobHistoryRecord> records = new ArrayList<JobHistoryRecord>();

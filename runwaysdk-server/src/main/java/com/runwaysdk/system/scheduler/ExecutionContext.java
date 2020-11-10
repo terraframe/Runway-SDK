@@ -58,6 +58,8 @@ public class ExecutionContext
   
   private String executableJobToString;
 
+  private String historyOid;
+  
   public ExecutableJob getJob()
   {
     return job;
@@ -76,6 +78,7 @@ public class ExecutionContext
   public void setHistory(JobHistory history)
   {
     this.history = history;
+    this.historyOid = history.getOid();
   }
 
   public JobHistoryRecord getJobHistoryRecord()
@@ -131,5 +134,10 @@ public class ExecutionContext
   public void setExecutableJobToString(String executableJobToString)
   {
     this.executableJobToString = executableJobToString;
+  }
+
+  public Object getHistoryOid()
+  {
+    return this.historyOid;
   }
 }

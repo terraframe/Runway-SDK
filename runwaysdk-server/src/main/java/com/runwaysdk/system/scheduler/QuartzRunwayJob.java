@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import org.quartz.CronScheduleBuilder;
@@ -31,6 +32,7 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerBuilder;
+import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,6 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.RequestType;
-import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.system.SingleActor;
 import com.runwaysdk.system.metadata.MdDimension;
@@ -69,6 +70,8 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   private JobDetail detail;
   
   private ExecutableJob execJob;
+  
+  protected static HashMap<String, Thread> runningThreads = new HashMap<String, Thread>();
   
   /**
    * This constructor is invoked directly by Quartz. Do not invoke it because the job will not be configured properly!
@@ -135,6 +138,8 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     jobDataMap.put(HISTORY_RECORD_ID, record.getOid());
     triggerDataMap.put(HISTORY_RECORD_ID, record.getOid());
     
+    runningThreads.put(history.getOid(), Thread.currentThread());
+    
     return ec;
   }
   
@@ -178,6 +183,8 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     }
     finally
     {
+      runningThreads.remove(executionContext.getHistoryOid());
+      
       execJob.writeHistory(executionContext.getHistory(), executionContext, error);
       
       execJob.executeDownstreamJobs(executionContext.getJob(), error);
