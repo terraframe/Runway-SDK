@@ -109,7 +109,7 @@
 
     <runway.url>http://www.terraframe.com</runway.url>
 
-    <mvn.server.url>http://nexus.terraframe.com/</mvn.server.url>
+    <mvn.server.url>https://nexus.terraframe.com/</mvn.server.url>
   </properties>
 
   <url>${runway.url}</url>
