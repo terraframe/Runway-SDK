@@ -392,7 +392,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction createIndex(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String indexType, String... attributeNames)
+  public GraphDDLCommandAction ddlCommand(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String statement, Map<String, Object> parameters)
   {
     return new GraphDDLCommandAction()
     {

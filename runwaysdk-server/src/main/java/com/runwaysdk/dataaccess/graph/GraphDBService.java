@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -92,9 +92,9 @@ public class GraphDBService
 
   public void close()
   {
-	  this.graphDB.close();
+    this.graphDB.close();
   }
-  
+
   public GraphRequest getGraphDBRequest()
   {
     return this.graphDB.getGraphDBRequest();
@@ -240,7 +240,8 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String, boolean)
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
+   *      boolean)
    */
   public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
@@ -250,7 +251,8 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String, boolean)
+   * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
+   *      boolean)
    */
   public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
   {
@@ -349,13 +351,18 @@ public class GraphDBService
   {
     this.graphDB.command(request, statement, parameters);
   }
-  
+
   /**
    * @see GraphDB#processException(Locale, RuntimeException)
    */
   public RuntimeException processException(Locale locale, RuntimeException runEx)
   {
     return this.graphDB.processException(locale, runEx);
+  }
+
+  public GraphDDLCommandAction ddlCommand(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String statement, Map<String, Object> parameters)
+  {
+    return this.graphDB.ddlCommand(graphRequest, ddlGraphDBRequest, statement, parameters);
   }
 
 }

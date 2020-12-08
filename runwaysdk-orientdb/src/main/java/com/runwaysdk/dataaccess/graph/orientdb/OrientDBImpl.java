@@ -703,12 +703,8 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
-  /**
-   * @see GraphDB#modifiyAttributeIndex(GraphRequest, GraphRequest, String,
-   *      String, boolean)
-   */
   @Override
-  public GraphDDLCommandAction createIndex(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String indexType, String... attributeNames)
+  public GraphDDLCommandAction ddlCommand(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String statement, Map<String, Object> parameters)
   {
     GraphDDLCommandAction action = new GraphDDLCommandAction()
     {
@@ -720,21 +716,9 @@ public class OrientDBImpl implements GraphDB
         // make sure the DDL graph request is current on the active thread.
         db.activateOnCurrentThread();
 
-        try
+        try (OResultSet result = db.command(statement, parameters))
         {
-          OClass oClass = db.getClass(className);
-
-          if (oClass != null)
-          {
-            OClass.INDEX_TYPE oClassIndexType = OClass.INDEX_TYPE.valueOf(indexType);
-
-            if (oClassIndexType != null)
-            {
-              String indexName = OrientDBImpl.generateIndexName();
-
-              oClass.createIndex(indexName, oClassIndexType, attributeNames);
-            }
-          }
+          // Close the ddl result set
         }
         finally
         {

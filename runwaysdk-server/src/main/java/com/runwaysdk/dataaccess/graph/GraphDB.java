@@ -381,6 +381,6 @@ public interface GraphDB
 
   public void close();
 
-  public GraphDDLCommandAction createIndex(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String indexType, String... attributeNames);
+  public GraphDDLCommandAction ddlCommand(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String statement, Map<String, Object> parameters);
 
 }
