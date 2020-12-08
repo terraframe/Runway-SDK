@@ -20,12 +20,15 @@ package com.runwaysdk.mvc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.request.ServletRequestIF;
@@ -36,6 +39,8 @@ public class ViewResponse implements AttributeResponseIF
   private Map<String, Object> attributes;
 
   private String              path;
+  
+  private List<Cookie>        cookies = new ArrayList<Cookie>();
 
   public ViewResponse(String directory, String view)
   {
@@ -49,7 +54,7 @@ public class ViewResponse implements AttributeResponseIF
     this.path = path;
     this.attributes = new HashMap<String, Object>();
   }
-
+  
   public Map<String, Object> getAttributes()
   {
     return attributes;
@@ -64,18 +69,40 @@ public class ViewResponse implements AttributeResponseIF
   {
     return this.attributes.get(name);
   }
+  
+  public void addCookie(Cookie cookie)
+  {
+    this.cookies.add(cookie);
+  }
 
   @Override
   public void handle(RequestManager manager) throws ServletException, IOException
   {
     ServletRequestIF req = manager.getReq();
     ServletResponseIF resp = manager.getResp();
+    
+    String contextPath = manager.getReq().getContextPath();
+
+    if (contextPath.equals("") || contextPath.length() == 0)
+    {
+      contextPath = "/";
+    }
 
     Set<Entry<String, Object>> entries = this.attributes.entrySet();
 
     for (Entry<String, Object> entry : entries)
     {
       req.setAttribute(entry.getKey(), entry.getValue());
+    }
+    
+    for (Cookie cookie : this.cookies)
+    {
+      if (cookie.getPath() == null || cookie.getPath().length() == 0)
+      {
+        cookie.setPath(contextPath);
+      }
+      
+      resp.addCookie(cookie);
     }
 
     req.getRequestDispatcher(this.path).forward(req, resp);

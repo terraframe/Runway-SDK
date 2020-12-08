@@ -19,8 +19,11 @@
 package com.runwaysdk.mvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.request.ServletRequestIF;
@@ -31,6 +34,8 @@ public class RedirectResponse implements ResponseIF
   private String url;
   
   private boolean addContext;
+  
+  private List<Cookie>        cookies = new ArrayList<Cookie>();
   
   public RedirectResponse(String url)
   {
@@ -44,11 +49,23 @@ public class RedirectResponse implements ResponseIF
     this.addContext = addContextPath;
   }
   
+  public void addCookie(Cookie cookie)
+  {
+    this.cookies.add(cookie);
+  }
+  
   @Override
   public void handle(RequestManager manager) throws ServletException, IOException
   {
     ServletRequestIF req = manager.getReq();
     ServletResponseIF resp = manager.getResp();
+    
+    String contextPath = manager.getReq().getContextPath();
+
+    if (contextPath.equals("") || contextPath.length() == 0)
+    {
+      contextPath = "/";
+    }
     
     String finalUrl = this.url;
     
@@ -62,6 +79,16 @@ public class RedirectResponse implements ResponseIF
       {
         finalUrl = req.getContextPath() + "/" + this.url;
       }
+    }
+    
+    for (Cookie cookie : this.cookies)
+    {
+      if (cookie.getPath() == null || cookie.getPath().length() == 0)
+      {
+        cookie.setPath(contextPath);
+      }
+      
+      resp.addCookie(cookie);
     }
     
     resp.sendRedirect(finalUrl);
