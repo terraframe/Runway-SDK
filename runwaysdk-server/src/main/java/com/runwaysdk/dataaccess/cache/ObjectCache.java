@@ -2072,6 +2072,22 @@ public class ObjectCache
   }
 
   /**
+   * Returns the <code>MdEntityDAOIF</code> instance that defines the given
+   * table name.
+   * 
+   * @param tableName
+   * 
+   * @return <code>MdEntityDAOIF</code> that defines the table with the given
+   *         name.
+   */
+  public static boolean hasClassByTableName(String tableName)
+  {
+    MdClassStrategy mdClassStrategy = (MdClassStrategy) strategyMap.get(MdClassInfo.CLASS);
+    
+    return mdClassStrategy.hasClassByTableName(tableName);
+  }
+  
+  /**
    * Returns a MdClassIF instance with a root oid that matches the given value.
    * 
    * <br/>

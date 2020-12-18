@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -140,9 +140,9 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     String value = attribute.getValue();
 
     if (value.length() == 0)
-    {      
+    {
       value = this.generateRootId();
-      
+
       attribute.setValue(value);
     }
 
@@ -421,7 +421,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
       tableName = tableName.substring(0, Database.MAX_DB_IDENTIFIER_SIZE);
     }
 
-    if (!Database.tableExists(tableName))
+    if (!Database.tableExists(tableName) && !ObjectCache.hasClassByTableName(tableName))
     {
       return tableName;
     }
@@ -436,7 +436,7 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
     for (int i = 0; i < 1000; i++)
     {
       tempTableName += i;
-      if (!Database.tableExists(tempTableName))
+      if (!Database.tableExists(tempTableName) && !ObjectCache.hasClassByTableName(tempTableName))
       {
         return tempTableName;
       }
