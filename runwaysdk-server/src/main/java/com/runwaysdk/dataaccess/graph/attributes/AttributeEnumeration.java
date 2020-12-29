@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -65,9 +65,16 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   {
     return (MdAttributeEnumerationDAOIF) super.getMdAttributeConcrete();
   }
-  
-  @SuppressWarnings("unchecked")
+
+  @Override
   public synchronized void setValue(Object value, Date startDate)
+  {
+    this.setValue(value, startDate, true);
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public synchronized void setValue(Object value, Date startDate, boolean updateOnCollision)
   {
     this.validate(value);
 
@@ -76,18 +83,18 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
     {
       setValue.add((String) value);
     }
-    
+
     boolean modified = this.isModified();
-    
+
     if (value instanceof String)
     {
       Set<String> set = this.getObjectValue();
-      
-      if (!(set.size() == 1 && set.contains(value)))
+
+      if (! ( set.size() == 1 && set.contains(value) ))
       {
         modified = true;
       }
-      
+
       set.clear();
       set.add((String) value);
     }
@@ -99,7 +106,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
         modified = true;
       }
     }
-    
+
     if (startDate == null)
     {
       if (this.valuesOverTime.size() > 0)
@@ -107,15 +114,15 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
         ValueOverTime last = this.valuesOverTime.last();
 
         modified = !isSetEqual((Set<String>) last.getValue(), setValue);
-        
+
         last.setValue(setValue);
       }
       else
       {
         Date date = new Date();
 
-        this.valuesOverTime.add(new ValueOverTime(date, date, setValue));
-        
+        this.valuesOverTime.add(new ValueOverTime(date, date, setValue), updateOnCollision);
+
         modified = true;
       }
     }
@@ -126,44 +133,44 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
       if (vot != null)
       {
         modified = !isSetEqual((Set<String>) vot.getValue(), setValue);
-        
+
         vot.setValue(setValue);
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, null, setValue));
+        this.valuesOverTime.add(new ValueOverTime(startDate, null, setValue), updateOnCollision);
         modified = true;
       }
     }
 
     this.setModified(modified);
   }
-  
+
   private boolean isSetEqual(Set<String> set1, Set<String> set2)
   {
     if (set1 == null && set2 == null)
     {
       return true;
     }
-    
-    if ((set1 == null && set2 != null) || (set2 == null && set1 != null))
+
+    if ( ( set1 == null && set2 != null ) || ( set2 == null && set1 != null ))
     {
       return false;
     }
-    
+
     if (set1.size() != set2.size())
     {
       return false;
     }
-    
+
     return set1.equals(set2);
   }
-  
+
   @Override
   public synchronized void setValue(Object value)
   {
     this.validate(value);
-    
+
     if (value instanceof String)
     {
       if (this.getObjectValue().size() == 1 && this.getObjectValue().contains(value))
@@ -188,7 +195,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
         this.setValueInternal(value);
       }
     }
-    
+
     this.setModified(true);
   }
 

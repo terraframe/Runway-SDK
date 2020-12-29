@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
@@ -104,9 +104,10 @@ public abstract class GraphObject implements Mutable
   {
     return graphObjectDAO.isNew();
   }
-  
+
   /**
-   * Indicates if apply has been called on this object. IsNew will be set to true when the transaction ends.
+   * Indicates if apply has been called on this object. IsNew will be set to
+   * true when the transaction ends.
    */
   public boolean isAppliedToDb()
   {
@@ -311,10 +312,21 @@ public abstract class GraphObject implements Mutable
    * @param value
    *          String representation of the value
    */
-  public void setValue(String name, Object _object, Date startDate, Date endDate)
+  public void setValue(String name, Object _object, Date startDate)
   {
-    graphObjectDAO.setValue(name, _object, startDate, endDate);
+    graphObjectDAO.setValue(name, _object, startDate);
   }
+
+  public void setValue(String name, Object _object, Date startDate, boolean updateOnCollision)
+  {
+    graphObjectDAO.setValue(name, _object, startDate, updateOnCollision);
+  }
+  
+  public void clearEntries(String name, Date startDate, Date endDate)
+  {
+    graphObjectDAO.clearEntries(name, startDate, endDate);    
+  }
+
 
   public void setEmbeddedValue(String name, String embeddedAttributeName, Object _object)
   {
@@ -322,10 +334,10 @@ public abstract class GraphObject implements Mutable
     attribute.setValue(embeddedAttributeName, _object);
   }
 
-  public void setEmbeddedValue(String name, String embeddedAttributeName, Object _object, Date startDate, Date endDate)
+  public void setEmbeddedValue(String name, String embeddedAttributeName, Object _object, Date startDate)
   {
     AttributeEmbedded attribute = (AttributeLocalEmbedded) this.graphObjectDAO.getAttribute(name);
-    attribute.setValue(embeddedAttributeName, _object, startDate, endDate);
+    attribute.setValue(embeddedAttributeName, _object, startDate);
   }
 
   @SuppressWarnings("unchecked")

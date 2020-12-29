@@ -3,23 +3,28 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +83,7 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
-  protected ValueOverTimeCollection        valuesOverTime;
+  protected ValueOverTimeCollection  valuesOverTime;
 
   /**
    * Creates an attribute with the given name and initializes the value to
@@ -264,7 +269,7 @@ public abstract class Attribute implements AttributeIF
     {
       return this.valuesOverTime.getValueOnDate(date);
     }
-    
+
     return this.getObjectValue();
   }
 
@@ -300,9 +305,13 @@ public abstract class Attribute implements AttributeIF
 
   public void setValue(Object value, Date startDate)
   {
+    this.setValue(value, startDate, true);
+  }
+
+  public void setValue(Object value, Date startDate, boolean updateOnCollision)
+  {
     this.validate(value);
 
-    
     if (startDate == null)
     {
       if (this.valuesOverTime.size() > 0)
@@ -313,7 +322,7 @@ public abstract class Attribute implements AttributeIF
       {
         Date date = new Date();
 
-        this.valuesOverTime.add(new ValueOverTime(date, date, value));
+        this.valuesOverTime.add(new ValueOverTime(date, date, value), updateOnCollision);
       }
     }
     else
@@ -326,11 +335,65 @@ public abstract class Attribute implements AttributeIF
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, null, value));
+        this.valuesOverTime.add(new ValueOverTime(startDate, null, value), updateOnCollision);
       }
     }
 
     this.setValue(this.valuesOverTime.last().getValue());
+  }
+
+  public void clearEntries(Date startDate, Date endDate)
+  {
+    if (startDate != null && endDate != null)
+    {
+      Iterator<ValueOverTime> it = this.valuesOverTime.iterator();
+      LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+      LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+
+      List<ValueOverTime> segments = new LinkedList<ValueOverTime>();
+
+      while (it.hasNext())
+      {
+        ValueOverTime vot = it.next();
+
+        LocalDate vStartDate = vot.getLocalStartDate();
+        LocalDate vEndDate = vot.getLocalEndDate();
+
+        // Remove the entry completely if its a subset of the startDate and
+        // endDate range
+        if (isAfterOrEqual(vStartDate, localStartDate) && isBeforeOrEqual(vEndDate, localEndDate))
+        {
+          it.remove();
+        }
+        // If the entry is extends after the end date then move the start
+        // date of the entry to the end of the clear range
+        else if (isAfterOrEqual(vStartDate, localStartDate) && vEndDate.isAfter(localEndDate))
+        {
+          vot.setStartDate(endDate);
+        }
+        // If the entry is extends before the start date then move the end
+        // date of the entry to the start of the clear range
+        else if (vStartDate.isBefore(localStartDate) && isBeforeOrEqual(vEndDate, localEndDate))
+        {
+          vot.setEndDate(startDate);
+        }
+        else if (vStartDate.isBefore(localStartDate) && vEndDate.isAfter(localEndDate))
+        {
+          it.remove();
+
+          segments.add(new ValueOverTime(vot.getStartDate(), startDate, vot.getValue()));
+          segments.add(new ValueOverTime(endDate, vot.getEndDate(), vot.getValue()));
+        }
+      }
+
+      this.valuesOverTime.reorder();
+
+      for (ValueOverTime vot : segments)
+      {
+        this.valuesOverTime.add(vot);
+      }
+    }
+
   }
 
   /**
@@ -352,11 +415,11 @@ public abstract class Attribute implements AttributeIF
   {
     return valuesOverTime;
   }
-  
+
   public void setValuesOverTime(ValueOverTimeCollection collection)
   {
     collection.validate();
-    
+
     this.valuesOverTime = collection;
   }
 
@@ -565,6 +628,16 @@ public abstract class Attribute implements AttributeIF
     // Balk: In general this method does not need to do anything.
     // However, it behavior is overwritten in some of its children
     // classes.
+  }
+
+  private boolean isAfterOrEqual(LocalDate date1, LocalDate date2)
+  {
+    return date1.isAfter(date2) || date2.isEqual(date1);
+  }
+
+  private boolean isBeforeOrEqual(LocalDate date1, LocalDate date2)
+  {
+    return date1.isBefore(date2) || date2.isEqual(date1);
   }
 
 }

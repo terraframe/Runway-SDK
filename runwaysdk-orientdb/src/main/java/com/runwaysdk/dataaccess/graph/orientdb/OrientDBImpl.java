@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -1468,10 +1468,17 @@ public class OrientDBImpl implements GraphDB
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
 
-          Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
-          Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+          if (vElement != null)
+          {
+            Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
+            Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
 
-          attribute.setValueInternal(geometry, startDate, endDate);
+            attribute.setValueInternal(geometry, startDate, endDate);
+          }
+          else
+          {
+            attribute.setValueInternal(null, startDate, endDate);
+          }        
         }
       }
     }
@@ -1651,15 +1658,16 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
+      OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
+      document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+      document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+
       if (vot.getValue() != null)
       {
-        OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
-        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
-        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, OShapeFactory.INSTANCE.toDoc((Geometry) vot.getValue()));
-
-        documents.add(document);
       }
+
+      documents.add(document);
     }
 
     element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);

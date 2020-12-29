@@ -46,5 +46,5 @@ public interface GraphObjectDAOIF extends ComponentDAOIF
 
   public ValueOverTimeCollection getValuesOverTime(String name);
 
-  public void setValue(String name, Object value, Date startDate, Date endDate);
+  public void setValue(String name, Object value, Date startDate);
 }

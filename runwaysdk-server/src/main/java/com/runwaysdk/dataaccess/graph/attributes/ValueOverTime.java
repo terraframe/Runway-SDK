@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -32,7 +32,6 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
 
 public class ValueOverTime implements Comparable<ValueOverTime>
 {
@@ -74,38 +73,43 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     }
   }
 
-//  private static class LastDayOfQuarter implements TemporalAdjuster
-//  {
-//
-//    @Override
-//    public Temporal adjustInto(Temporal temporal)
-//    {
-//      int currentQuarter = YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
-//
-//      if (currentQuarter == 1)
-//      {
-//        return LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-//      }
-//      else if (currentQuarter == 2)
-//      {
-//        return LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-//      }
-//      else if (currentQuarter == 3)
-//      {
-//        return LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-//      }
-//      else
-//      {
-//        return LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
-//      }
-//    }
-//  }
+  // private static class LastDayOfQuarter implements TemporalAdjuster
+  // {
+  //
+  // @Override
+  // public Temporal adjustInto(Temporal temporal)
+  // {
+  // int currentQuarter =
+  // YearMonth.from(temporal).get(IsoFields.QUARTER_OF_YEAR);
+  //
+  // if (currentQuarter == 1)
+  // {
+  // return
+  // LocalDate.from(temporal).withMonth(Month.MARCH.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+  // }
+  // else if (currentQuarter == 2)
+  // {
+  // return
+  // LocalDate.from(temporal).withMonth(Month.JUNE.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+  // }
+  // else if (currentQuarter == 3)
+  // {
+  // return
+  // LocalDate.from(temporal).withMonth(Month.SEPTEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+  // }
+  // else
+  // {
+  // return
+  // LocalDate.from(temporal).withMonth(Month.DECEMBER.getValue()).with(TemporalAdjusters.lastDayOfMonth());
+  // }
+  // }
+  // }
 
-  private LocalDate   startDate;
+  private LocalDate startDate;
 
-  private LocalDate   endDate;
+  private LocalDate endDate;
 
-  private Object value;
+  private Object    value;
 
   /**
    * @param startDate
@@ -115,9 +119,9 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   public ValueOverTime(Date startDate, Date endDate, Object value)
   {
     super();
-    
+
     this.value = value;
-    
+
     this.setStartDate(startDate);
     this.setEndDate(endDate);
   }
@@ -129,7 +133,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   {
     return Date.from(startDate.atStartOfDay().atZone(ZoneId.of("Z")).toInstant());
   }
-  
+
   public LocalDate getLocalStartDate()
   {
     return this.startDate;
@@ -153,10 +157,10 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     {
       return null;
     }
-    
+
     return Date.from(endDate.atStartOfDay().atZone(ZoneId.of("Z")).toInstant());
   }
-  
+
   public LocalDate getLocalEndDate()
   {
     return this.endDate;
@@ -198,7 +202,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   public boolean between(Date date)
   {
     LocalDate localDate = date.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-    
+
     return ( this.startDate.equals(localDate) || this.startDate.isBefore(localDate) ) && ( this.endDate.equals(localDate) || this.endDate.isAfter(localDate) );
   }
 
@@ -211,12 +215,12 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   public String toString()
   {
     String endDate = "error";
-    
+
     try
     {
       DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
       endDate = dateFormat.format(INFINITY_END_DATE);
-      
+
       if (this.endDate != null)
       {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
@@ -227,7 +231,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     {
       t.printStackTrace();
     }
-   
+
     String startDate = "error";
     try
     {
@@ -238,17 +242,20 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     {
       t.printStackTrace();
     }
-    
-    String value = "error";
+
+    String value = "NULL";
     try
     {
-      value = String.valueOf(this.value);
+      if (value != null)
+      {
+        value = String.valueOf(this.value).substring(0, 10);
+      }
     }
     catch (Throwable t)
     {
       t.printStackTrace();
     }
-   
+
     return "value [" + value + "] from " + startDate + " to " + endDate;
   }
 }

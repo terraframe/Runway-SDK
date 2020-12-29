@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -68,7 +68,7 @@ public class ValueOverTimeTest
       valuesOverTime.add(new ValueOverTime(testValues.get(i).getStartDate(), null, testValues.get(i).getValue()));
     }
     Assert.assertEquals(1, valuesOverTime.size());
-    Assert.assertEquals(6, valuesOverTime.get(0).getValue());
+    Assert.assertEquals(6, valuesOverTime.asList().get(0).getValue());
   }
 
   private void genericTest(ValueOverTimeCollection valuesOverTime, List<ValueOverTime> testValues)
@@ -123,17 +123,19 @@ public class ValueOverTimeTest
     // this.printTestValues(valuesOverTime, dateFormat);
     valuesOverTime.validate();
 
+    List<ValueOverTime> list = valuesOverTime.asList();
+
     for (int i = 0; i < testValues.size(); ++i)
     {
-      Assert.assertEquals(testValues.get(i).getStartDate(), valuesOverTime.get(i).getStartDate());
+      Assert.assertEquals(testValues.get(i).getStartDate(), list.get(i).getStartDate());
 
       if (testValues.size() == i + 1)
       {
-        Assert.assertEquals(ValueOverTime.INFINITY_END_DATE, valuesOverTime.get(i).getEndDate());
+        Assert.assertEquals(ValueOverTime.INFINITY_END_DATE, list.get(i).getEndDate());
       }
       else
       {
-        Assert.assertEquals(testValues.get(i).getEndDate(), valuesOverTime.get(i).getEndDate());
+        Assert.assertEquals(testValues.get(i).getEndDate(), list.get(i).getEndDate());
       }
     }
   }
