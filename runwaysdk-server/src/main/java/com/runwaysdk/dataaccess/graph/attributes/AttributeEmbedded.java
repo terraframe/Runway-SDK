@@ -120,7 +120,7 @@ public class AttributeEmbedded extends Attribute
       VertexObjectDAO object = VertexObjectDAO.newInstance((MdVertexDAOIF) this.getMdAttributeConcrete().getEmbeddedMdClassDAOIF());
       object.setValue(attributeName, value);
 
-      this.setValue(object, startDate);
+      this.setValue(object, startDate, endDate);
     }
   }
 

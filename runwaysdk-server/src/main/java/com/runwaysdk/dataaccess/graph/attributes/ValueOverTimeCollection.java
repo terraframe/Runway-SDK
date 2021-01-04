@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -23,21 +23,35 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 
 public class ValueOverTimeCollection implements Collection<ValueOverTime>
 {
-  private LinkedList<ValueOverTime> valuesOverTime;
+  private final class ValueOverTimeComparator implements Comparator<ValueOverTime>
+  {
+    @Override
+    public int compare(ValueOverTime o1, ValueOverTime o2)
+    {
+      Date d1 = o1.getStartDate();
+      Date d2 = o2.getStartDate();
+
+      return d1.compareTo(d2);
+    }
+  }
+
+  private SortedSet<ValueOverTime> valuesOverTime;
 
   public ValueOverTimeCollection()
   {
-    this.valuesOverTime = new LinkedList<ValueOverTime>();
+    this.valuesOverTime = new TreeSet<ValueOverTime>(new ValueOverTimeComparator());
   }
 
   @Override
@@ -62,11 +76,6 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   public Iterator<ValueOverTime> iterator()
   {
     return valuesOverTime.iterator();
-  }
-
-  public void sort()
-  {
-    Collections.sort(valuesOverTime, (o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
   }
 
   @Override
@@ -107,59 +116,110 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   @Override
   public boolean add(ValueOverTime vot)
   {
-    Integer afterIndex = null;
+    return add(vot, true);
+  }
 
-    for (int i = 0; i < this.valuesOverTime.size(); ++i)
+  public boolean add(ValueOverTime vot, boolean updateOnCollision)
+  {
+    this.calculateStartDates(vot.getStartDate(), vot.getEndDate());
+
+    boolean success = this.valuesOverTime.add(vot);
+
+    // Check if the value needs to be overwritten
+    if (updateOnCollision && !success && this.valuesOverTime.remove(vot))
     {
-      ValueOverTime testVot = this.valuesOverTime.get(i);
-
-      if (vot.getStartDate().after(testVot.getStartDate()))
-      {
-        afterIndex = i;
-      }
-      else if (vot.getStartDate().equals(testVot.getStartDate()) && ( testVot.getEndDate().equals(vot.getEndDate()) || ( vot.getEndDate() == null && testVot.getEndDate().equals(ValueOverTime.INFINITY_END_DATE) ) ))
-      {
-        if (vot.getValue().equals(testVot.getValue()))
-        {
-          return false;
-        }
-        else
-        {
-          testVot.setValue(vot.getValue());
-          return true;
-        }
-      }
+      success = this.valuesOverTime.add(vot);
     }
 
-    if (afterIndex == null)
+    // if (success)
+    // {
+    // this.calculateEndDates();
+    // }
+
+    return success;
+  }
+
+  private void calculateStartDates(Date startDate, Date endDate)
+  {
+    if (startDate != null && endDate != null)
     {
-      if (this.valuesOverTime.size() == 0)
+      Iterator<ValueOverTime> it = this.valuesOverTime.iterator();
+      LocalDate iStartDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+      LocalDate iEndDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+
+      List<ValueOverTime> segments = new LinkedList<ValueOverTime>();
+
+      while (it.hasNext())
       {
-        vot.setEndDate(ValueOverTime.INFINITY_END_DATE);
-      }
-      else
-      {
-        vot.setEndDate(this.calculateDateMinusOneDay(this.valuesOverTime.get(0).getStartDate()));
+        ValueOverTime vot = it.next();
+
+        LocalDate vStartDate = vot.getLocalStartDate();
+        LocalDate vEndDate = vot.getLocalEndDate();
+
+        // Remove the entry completely if its a subset of the startDate and
+        // endDate range
+        if (isAfterOrEqual(vStartDate, iStartDate) && isBeforeOrEqual(vEndDate, iEndDate))
+        {
+          it.remove();
+        }
+        // If the entry is extends after the end date then move the start
+        // date of the entry to the end of the clear range
+        else if (isAfterOrEqual(vStartDate, iStartDate) && vEndDate.isAfter(iEndDate) && isAfterOrEqual(iEndDate, vStartDate))
+        {
+          vot.setStartDate(this.calculateDatePlusOneDay(endDate));
+        }
+        // If the entry is extends before the start date then move the end
+        // date of the entry to the start of the clear range
+        else if (vStartDate.isBefore(iStartDate) && isBeforeOrEqual(vEndDate, iEndDate) && isBeforeOrEqual(iStartDate, vEndDate))
+        {
+          vot.setEndDate(this.calculateDateMinusOneDay(startDate));
+        }
+        else if (vStartDate.isBefore(iStartDate) && vEndDate.isAfter(iEndDate))
+        {
+          it.remove();
+
+          segments.add(new ValueOverTime(vot.getStartDate(), this.calculateDateMinusOneDay(startDate), vot.getValue()));
+          segments.add(new ValueOverTime(this.calculateDatePlusOneDay(endDate), vot.getEndDate(), vot.getValue()));
+        }
       }
 
-      this.valuesOverTime.addFirst(vot);
-      return true;
+      for (ValueOverTime vot : segments)
+      {
+        this.valuesOverTime.add(vot);
+      }
+
+      this.reorder();
     }
-    else
+
+  }
+
+  private boolean isAfterOrEqual(LocalDate date1, LocalDate date2)
+  {
+    return date1.isAfter(date2) || date2.isEqual(date1);
+  }
+
+  private boolean isBeforeOrEqual(LocalDate date1, LocalDate date2)
+  {
+    return date1.isBefore(date2) || date2.isEqual(date1);
+  }
+
+  private void calculateEndDates()
+  {
+    if (this.valuesOverTime.size() > 0)
     {
-      if (afterIndex + 1 >= this.valuesOverTime.size())
+      ValueOverTime prev = null;
+
+      for (ValueOverTime current : this.valuesOverTime)
       {
-        this.valuesOverTime.get(afterIndex).setEndDate(this.calculateDateMinusOneDay(vot.getStartDate()));
-        vot.setEndDate(ValueOverTime.INFINITY_END_DATE);
-      }
-      else
-      {
-        vot.setEndDate(this.calculateDateMinusOneDay(this.valuesOverTime.get(afterIndex + 1).getStartDate()));
-        this.valuesOverTime.get(afterIndex).setEndDate(this.calculateDateMinusOneDay(vot.getStartDate()));
+        if (prev != null)
+        {
+          prev.setEndDate(this.calculateDateMinusOneDay(current.getStartDate()));
+        }
+
+        prev = current;
       }
 
-      this.valuesOverTime.add(afterIndex + 1, vot);
-      return true;
+      this.valuesOverTime.last().setEndDate(ValueOverTime.INFINITY_END_DATE);
     }
   }
 
@@ -171,34 +231,48 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
     return Date.from(instant);
   }
 
+  protected Date calculateDatePlusOneDay(Date source)
+  {
+    LocalDate localEnd = source.toInstant().atZone(ZoneId.of("Z")).toLocalDate().plusDays(1);
+    Instant instant = localEnd.atStartOfDay().atZone(ZoneId.of("Z")).toInstant();
+
+    return Date.from(instant);
+  }
+
   public ValueOverTime last()
   {
-    return this.get(this.valuesOverTime.size() - 1);
+    return this.valuesOverTime.last();
   }
 
   public ValueOverTime first()
   {
-    return this.get(0);
-  }
-
-  public ValueOverTime get(int index)
-  {
-    return this.valuesOverTime.get(index);
+    return this.valuesOverTime.first();
   }
 
   public void validate()
   {
     // Make sure there are no gaps
-    for (int i = 0; i < this.size() - 1; ++i)
-    {
-      LocalDate left = this.get(i).getEndDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-      LocalDate right = this.get(i + 1).getStartDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+    // ValueOverTime prev = null;
+    //
+    // for (ValueOverTime current : this.valuesOverTime)
+    // {
+    // if (prev != null)
+    // {
+    // LocalDate left =
+    // prev.getEndDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+    // LocalDate right =
+    // current.getStartDate().toInstant().atZone(ZoneId.of("Z")).toLocalDate();
+    //
+    // if (!left.plusDays(1).equals(right))
+    // {
+    // throw new RuntimeException("Gap detected in " + this.toString() + ".");
+    // }
+    // }
+    //
+    // prev = current;
+    // }
 
-      if (!left.plusDays(1).equals(right))
-      {
-        throw new RuntimeException("Gap detected in " + this.toString() + ".");
-      }
-    }
+    // Allow gaps
   }
 
   @Override
@@ -253,9 +327,19 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
     return this.valuesOverTime.toArray(a);
   }
 
+  public void reorder()
+  {
+    SortedSet<ValueOverTime> valuesOverTime = new TreeSet<ValueOverTime>(new ValueOverTimeComparator());
+    valuesOverTime.addAll(this.valuesOverTime);
+
+    this.valuesOverTime = valuesOverTime;
+    //
+    // this.calculateEndDates();
+  }
+
   public List<ValueOverTime> asList()
   {
-    return this.valuesOverTime;
+    return new LinkedList<ValueOverTime>(this.valuesOverTime);
   }
 
   public String toString()

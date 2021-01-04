@@ -298,7 +298,7 @@ public abstract class Attribute implements AttributeIF
     }
   }
 
-  public void setValue(Object value, Date startDate)
+  public void setValue(Object value, Date startDate, Date endDate)
   {
     this.validate(value);
 
@@ -326,7 +326,7 @@ public abstract class Attribute implements AttributeIF
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, null, value));
+        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
       }
     }
 

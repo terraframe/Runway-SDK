@@ -487,7 +487,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     Attribute attribute = this.getAttribute(name);
 
-    attribute.setValue(value, startDate);
+    attribute.setValue(value, startDate, endDate);
   }
 
   /**
