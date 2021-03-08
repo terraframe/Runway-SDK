@@ -50,12 +50,32 @@ public interface ApplicationResource extends AutoCloseable
    */
   public File getUnderlyingFile();
   
+  /**
+   * Returns the name of the resource, which is the base name plus the extension (if onee exists). This method will not return
+   * any sort of pathing information.
+   */
   public String getName();
   
+  /**
+   * Returns the name of the resource, without any filename extensions. This method will not return any sort of pathing information.
+   */
   public String getBaseName();
   
+  /**
+   * Gets the extension of the resource.
+
+      This method returns the textual part of the fileName after the last dot. There must be no directory separator after the dot.
+      
+       foo.txt      --> "txt"
+       a/b/c.jpg    --> "jpg"
+       a/b.txt/c    --> ""
+       a/b/c        --> ""
+   */
   public String getNameExtension();
   
+  /**
+   * Returns true if and only if the resource exists on some remote server. Returns false if the resource exists locally.
+   */
   public boolean isRemote();
   
   /**
@@ -64,5 +84,9 @@ public interface ApplicationResource extends AutoCloseable
    */
   public void close();
   
+  /**
+   * Attempts to delete the resource, if possible. Not all resources can be deleted, for example input streams. Classpath resources
+   * can be deleted only if they do not exist inside of a jar.
+   */
   public void delete();
 }
