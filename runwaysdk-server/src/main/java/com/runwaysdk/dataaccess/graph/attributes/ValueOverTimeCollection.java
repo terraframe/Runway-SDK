@@ -83,6 +83,27 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   {
     return (ValueOverTime[]) valuesOverTime.toArray();
   }
+  
+  public ValueOverTime get(int i)
+  {
+    if (i < 0 || i >= size())
+    {
+      throw new IndexOutOfBoundsException();
+    }
+    
+    int j = 0;
+    for (ValueOverTime vot : this.valuesOverTime)
+    {
+      if (j == i)
+      {
+        return vot;
+      }
+      
+      j++;
+    }
+    
+    return null;
+  }
 
   public ValueOverTime getValueOverTime(Date startDate)
   {
@@ -190,7 +211,6 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
 
       this.reorder();
     }
-
   }
 
   private boolean isAfterOrEqual(LocalDate date1, LocalDate date2)
