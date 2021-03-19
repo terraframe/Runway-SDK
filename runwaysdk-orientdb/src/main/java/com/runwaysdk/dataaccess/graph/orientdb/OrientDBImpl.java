@@ -1517,6 +1517,18 @@ public class OrientDBImpl implements GraphDB
         Geometry value = (Geometry) attribute.getObjectValue();
         String columnName = mdAttribute.getColumnName();
 
+        
+        // The OrientDB spatial library has a bug where if the geometry is empty it will detect the type incorrectly.
+        // You can see this here:
+        // https://github.com/orientechnologies/orientdb-spatial/blob/514fe655155f7f1b3db53b79e784b8919f841156/src/main/java/com/orientechnologies/spatial/shape/OComplexShapeBuilder.java#L113
+        // Where if the collection is an empty array it just always returns true
+        // We're hacking around this here by just setting null if it's empty.
+        if (value != null && value.isEmpty())
+        {
+          value = null;
+        }
+        
+        
         if (value != null)
         {
           ODocument document = OShapeFactory.INSTANCE.toDoc(value);
