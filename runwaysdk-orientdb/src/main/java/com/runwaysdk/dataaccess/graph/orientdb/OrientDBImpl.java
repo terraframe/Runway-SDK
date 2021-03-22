@@ -1111,10 +1111,15 @@ public class OrientDBImpl implements GraphDB
     for (Entry<String, Object> entry : entries)
     {
       Object value = entry.getValue();
-
+      
       if (value instanceof Geometry)
       {
-        entry.setValue(OShapeFactory.INSTANCE.toDoc((Geometry) value));
+        ODocument docVal = geometryToDocument((Geometry) value);
+  
+        if (docVal != null)
+        {
+          entry.setValue(docVal);
+        }
       }
     }
 
@@ -1184,7 +1189,7 @@ public class OrientDBImpl implements GraphDB
 
       if (value instanceof Geometry)
       {
-        entry.setValue(OShapeFactory.INSTANCE.toDoc((Geometry) value));
+        entry.setValue(geometryToDocument((Geometry) value));
       }
     }
 
@@ -1502,7 +1507,29 @@ public class OrientDBImpl implements GraphDB
 
     attribute.getValuesOverTime().validate();
   }
-
+  
+  private ODocument geometryToDocument(Geometry geom)
+  {
+    // The OrientDB spatial library has a bug where if the geometry is empty it will detect the type incorrectly.
+    // You can see this here:
+    // https://github.com/orientechnologies/orientdb-spatial/blob/514fe655155f7f1b3db53b79e784b8919f841156/src/main/java/com/orientechnologies/spatial/shape/OComplexShapeBuilder.java#L113
+    // Where if the collection is an empty array it just always returns true
+    // We're hacking around this here by just setting null if it's empty.
+    if (geom != null && geom.isEmpty())
+    {
+      geom = null;
+    }
+    
+    if (geom == null)
+    {
+      return null;
+    }
+    
+    ODocument document = OShapeFactory.INSTANCE.toDoc(geom);
+    
+    return document;
+  }
+  
   protected void populateElement(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
   {
     Attribute[] attributes = graphObjectDAO.getAttributeArray();
@@ -1517,28 +1544,7 @@ public class OrientDBImpl implements GraphDB
         Geometry value = (Geometry) attribute.getObjectValue();
         String columnName = mdAttribute.getColumnName();
 
-        
-        // The OrientDB spatial library has a bug where if the geometry is empty it will detect the type incorrectly.
-        // You can see this here:
-        // https://github.com/orientechnologies/orientdb-spatial/blob/514fe655155f7f1b3db53b79e784b8919f841156/src/main/java/com/orientechnologies/spatial/shape/OComplexShapeBuilder.java#L113
-        // Where if the collection is an empty array it just always returns true
-        // We're hacking around this here by just setting null if it's empty.
-        if (value != null && value.isEmpty())
-        {
-          value = null;
-        }
-        
-        
-        if (value != null)
-        {
-          ODocument document = OShapeFactory.INSTANCE.toDoc(value);
-
-          element.setProperty(columnName, document);
-        }
-        else
-        {
-          element.setProperty(columnName, null);
-        }
+        element.setProperty(columnName, geometryToDocument(value));
 
         if (mdClass.isEnableChangeOverTime())
         {
@@ -1674,9 +1680,11 @@ public class OrientDBImpl implements GraphDB
       document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
       document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
 
-      if (vot.getValue() != null)
+      ODocument docVal = geometryToDocument((Geometry) vot.getValue());
+      
+      if (docVal != null)
       {
-        document.setProperty(OrientDBConstant.VALUE, OShapeFactory.INSTANCE.toDoc((Geometry) vot.getValue()));
+        document.setProperty(OrientDBConstant.VALUE, docVal);
       }
 
       documents.add(document);
