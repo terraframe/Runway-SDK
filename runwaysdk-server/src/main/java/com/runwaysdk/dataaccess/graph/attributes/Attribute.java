@@ -268,9 +268,9 @@ public abstract class Attribute implements AttributeIF
     return this.getObjectValue();
   }
 
-  public ValueOverTime getValueOverTime(Date startDate)
+  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
   {
-    return this.valuesOverTime.getValueOverTime(startDate);
+    return this.valuesOverTime.getValueOverTime(startDate, endDate);
   }
 
   /**
@@ -318,7 +318,7 @@ public abstract class Attribute implements AttributeIF
     }
     else
     {
-      ValueOverTime vot = this.getValueOverTime(startDate);
+      ValueOverTime vot = this.getValueOverTime(startDate, endDate);
 
       if (vot != null)
       {

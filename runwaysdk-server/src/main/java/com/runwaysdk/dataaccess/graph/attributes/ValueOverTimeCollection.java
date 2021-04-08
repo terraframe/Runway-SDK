@@ -105,11 +105,11 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
     return null;
   }
 
-  public ValueOverTime getValueOverTime(Date startDate)
+  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
   {
     for (ValueOverTime vt : this.valuesOverTime)
     {
-      if (vt.getStartDate().equals(startDate))
+      if (vt.getStartDate().equals(startDate) && vt.getEndDate().equals(endDate))
       {
         return vt;
       }
