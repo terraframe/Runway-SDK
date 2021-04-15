@@ -121,7 +121,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
     }
     else
     {
-      ValueOverTime vot = this.getValueOverTime(startDate);
+      ValueOverTime vot = this.getValueOverTime(startDate, endDate );
 
       if (vot != null)
       {
