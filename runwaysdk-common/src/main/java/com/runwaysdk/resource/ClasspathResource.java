@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -40,7 +41,7 @@ import org.apache.commons.io.FilenameUtils;
  * 
  * @author Richard Rowlands
  */
-public class ClasspathResource implements ApplicationResource
+public class ClasspathResource implements ApplicationTreeResource
 {
   private String path = null;
   
@@ -353,5 +354,24 @@ public class ClasspathResource implements ApplicationResource
   public File getUnderlyingFile()
   {
     return this.openNewFile();
+  }
+
+  @Override
+  public boolean hasDataStream()
+  {
+    return this.exists() && !this.isPackage();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Iterator<ApplicationTreeResource> getChildren()
+  {
+    return (Iterator<ApplicationTreeResource>)(Object) getResourcesInPackage(this.path).iterator();
+  }
+
+  @Override
+  public ApplicationTreeResource getParent()
+  {
+    return new ClasspathResource(this.getPackage());
   }
 }

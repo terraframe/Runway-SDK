@@ -22,11 +22,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-public class FileResource implements ApplicationResource
+public class FileResource implements ApplicationTreeResource
 {
   File file;
   
@@ -104,5 +106,30 @@ public class FileResource implements ApplicationResource
   public File getUnderlyingFile()
   {
     return this.file;
+  }
+
+  @Override
+  public boolean hasDataStream()
+  {
+    return this.file.isDirectory();
+  }
+
+  @Override
+  public Iterator<ApplicationTreeResource> getChildren()
+  {
+    ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
+    
+    for (File file : this.file.listFiles())
+    {
+      children.add(new FileResource(file));
+    }
+    
+    return children.iterator();
+  }
+
+  @Override
+  public ApplicationTreeResource getParent()
+  {
+    return new FileResource(this.file.getParentFile());
   }
 }
