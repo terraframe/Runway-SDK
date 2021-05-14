@@ -89,8 +89,17 @@ public class DatabaseBootstrapper
     {
       logger.info("Bootstrapping Runway into an empty database.");
     }
+    
+    if (rootUser == null)
+    {
+      rootUser = DatabaseProperties.getRootUser();
+    }
+    if (rootPass == null)
+    {
+      rootPass = DatabaseProperties.getRootPassword();
+    }
 
-    if (rootUser != null && rootPass != null)
+    if (rootUser != null && rootUser.length() > 0 && rootPass != null && rootPass.length() > 0)
     {
       com.runwaysdk.dataaccess.database.Database.initialSetup(rootUser, rootPass, template);
     }
