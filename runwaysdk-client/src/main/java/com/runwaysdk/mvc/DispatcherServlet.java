@@ -162,7 +162,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
         }
         else
         {
-          String msg = "The uri [" + servletPath + "] can only be accessed by a post method";
+          String msg = "The uri [" + servletPath + "] can only be accessed by a get method";
           throw new IllegalURIMethodException(msg, manager.getLocale(), servletPath);
         }
       }
