@@ -26,13 +26,13 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 
-public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
+public class OrientDBCreateLinkPropertyAction extends OrientDBDDLAction
 {
   protected String className;
 
   protected String attributeName;
 
-  private String   embeddedClassName;
+  private String   linkClassName;
 
   private boolean  required;
 
@@ -41,18 +41,18 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
   /**
    * @param className
    * @param attributeName
-   * @param embeddedClassName
+   * @param linkClassName
    * @param required
    * @param cot
    *          TODO
    */
-  public OrientDBCreateEmbeddedPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassName, boolean required, boolean cot)
+  public OrientDBCreateLinkPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String linkClassName, boolean required, boolean cot)
   {
     super(graphRequest, ddlGraphDBRequest);
 
     this.className = className;
     this.attributeName = attributeName;
-    this.embeddedClassName = embeddedClassName;
+    this.linkClassName = linkClassName;
     this.required = required;
     this.cot = cot;
   }
@@ -65,14 +65,14 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
     if (oClass != null)
     {
       OSchema schema = db.getMetadata().getSchema();
-      OClass linkClass = schema.getClass(this.embeddedClassName);
+      OClass linkClass = schema.getClass(this.linkClassName);
 
       if (linkClass == null)
       {
-        throw new ProgrammingErrorException("Unable to find embedded class type");
+        throw new ProgrammingErrorException("Unable to find link class type");
       }
 
-      OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDED, linkClass);
+      OProperty oProperty = oClass.createProperty(this.attributeName, OType.LINK, linkClass);
 
       configure(oProperty);
 
@@ -80,7 +80,7 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
 
       if (this.cot)
       {
-        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.EMBEDDED));
+        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.LINK));
       }
     }
   }

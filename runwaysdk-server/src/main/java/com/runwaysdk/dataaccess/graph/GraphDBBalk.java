@@ -317,6 +317,18 @@ public class GraphDBBalk implements GraphDB
       }
     };
   }
+  
+  @Override
+  public GraphDDLCommandAction createLinkAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+
 
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
