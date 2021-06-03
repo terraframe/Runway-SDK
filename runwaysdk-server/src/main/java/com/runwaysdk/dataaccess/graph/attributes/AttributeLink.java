@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import java.util.Date;
-
 import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
@@ -70,7 +68,11 @@ public class AttributeLink extends Attribute
    */
   public VertexObjectDAOIF dereference()
   {
-    String referenceId = this.getValue();
+    return dereference(this.getValue());
+  }
+
+  public VertexObjectDAOIF dereference(String referenceId)
+  {
     MdAttributeLinkDAOIF mdAttribute = getMdAttributeConcrete();
     MdVertexDAOIF mdVertex = (MdVertexDAOIF) mdAttribute.getLinkMdClassDAOIF();
 

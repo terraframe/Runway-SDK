@@ -132,12 +132,12 @@ public class VertexObjectDAOTest
 
   private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
 
+  private static MdAttributeLinkDAO                   mdLinkAttribute;
+
   // Embedded class
   private static MdVertexDAO                          mdEmbeddedVertexDAO;
 
   private static MdAttributeCharacterDAO              mdEmbeddedCharacterAttribute;
-
-  private static MdAttributeLinkDAO                   mdLinkAttribute;
 
   @Request
   @BeforeClass
