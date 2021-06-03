@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.util.Date;
+
 import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
@@ -96,7 +98,7 @@ public class AttributeLink extends Attribute
       // First verify that the object is of the correct type.
       if (! ( valueToValidate instanceof String ))
       {
-        String devMessage = "Value is not a " + String.class.getName();
+        String devMessage = "Value is not a " + VertexObjectDAO.class.getName();
         throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
       }
     }

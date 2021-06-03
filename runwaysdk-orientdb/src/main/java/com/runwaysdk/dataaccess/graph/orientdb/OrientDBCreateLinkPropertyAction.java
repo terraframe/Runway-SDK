@@ -65,14 +65,14 @@ public class OrientDBCreateLinkPropertyAction extends OrientDBDDLAction
     if (oClass != null)
     {
       OSchema schema = db.getMetadata().getSchema();
-      OClass linkClass = schema.getClass(this.linkClassName);
+      OClass iLinkedClass = schema.getClass(this.linkClassName);
 
-      if (linkClass == null)
+      if (iLinkedClass == null)
       {
         throw new ProgrammingErrorException("Unable to find link class type");
       }
 
-      OProperty oProperty = oClass.createProperty(this.attributeName, OType.LINK, linkClass);
+      OProperty oProperty = oClass.createProperty(this.attributeName, OType.LINK, iLinkedClass);
 
       configure(oProperty);
 
@@ -80,7 +80,7 @@ public class OrientDBCreateLinkPropertyAction extends OrientDBDDLAction
 
       if (this.cot)
       {
-        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.LINK));
+        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, iLinkedClass, OType.LINK));
       }
     }
   }
