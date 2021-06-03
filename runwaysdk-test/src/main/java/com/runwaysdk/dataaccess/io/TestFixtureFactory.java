@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -56,6 +56,7 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
@@ -147,6 +148,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -954,6 +956,22 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeLinkDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO)
+  {
+    return addLinkAttribute(mdVertexDAO, mdClassificationDAO, "testLink");
+  }
+
+  public static MdAttributeLinkDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO, String attributeName)
+  {
+    MdAttributeLinkDAO mdAttribute = MdAttributeLinkDAO.newInstance();
+    mdAttribute.setValue(MdAttributeLinkInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeLinkInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Link Test");
+    mdAttribute.setValue(MdAttributeLinkInfo.LINK_MD_CLASS, mdClassificationDAO.getOid());
+    mdAttribute.setValue(MdAttributeLinkInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
 
     return mdAttribute;
   }
