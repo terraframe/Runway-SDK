@@ -64,8 +64,8 @@ import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
@@ -98,6 +98,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLink;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeLink.ID;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -1397,7 +1398,11 @@ public class OrientDBImpl implements GraphDB
         else if (mdAttribute instanceof MdAttributeLinkDAO)
         {
           OVertex ref = (OVertex) value;
-          attribute.setValueInternal(ref.getProperty("oid"));
+          String oid = (String) ref.getProperty("oid");
+
+          attribute.setValueInternal(oid);
+
+          ( (AttributeLink) attribute ).setId(new ID(oid, ref.getIdentity()));
         }
         else if (mdAttribute instanceof MdAttributeEnumerationDAO)
         {
@@ -1517,9 +1522,11 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OVertex ref = (OVertex) element.getProperty(OrientDBConstant.VALUE);
-          Object votValue = ref.getProperty("oid");
+          String oid = (String) ref.getProperty("oid");
 
-          attribute.setValueInternal(votValue, startDate, endDate);
+          ID id = new ID(oid, ref.getIdentity());
+
+          attribute.setValueInternal(id, startDate, endDate);
         }
       }
     }
@@ -1649,12 +1656,12 @@ public class OrientDBImpl implements GraphDB
       }
       else if (mdAttribute instanceof MdAttributeLinkDAOIF)
       {
-        VertexObjectDAOIF vertexObject = ( (AttributeLink) attribute ).dereference();
+        ID id = ( (AttributeLink) attribute ).getRID();
         String columnName = mdAttribute.getColumnName();
 
-        if (vertexObject != null)
+        if (id != null)
         {
-          element.setProperty(columnName, vertexObject.getRID());
+          element.setProperty(columnName, id.getRid());
         }
         else
         {
@@ -1710,16 +1717,25 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      String value = (String) vot.getValue();
+      Object value = vot.getValue();
 
       if (value != null)
       {
-        VertexObjectDAOIF v = attribute.dereference(value);
 
         OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
-        document.setProperty(OrientDBConstant.VALUE, v.getRID());
+
+        if (value instanceof ID)
+        {
+          document.setProperty(OrientDBConstant.VALUE, ( (ID) value ).getRid());
+        }
+        else
+        {
+          VertexObjectDAOIF v = attribute.dereference((String) value);
+
+          document.setProperty(OrientDBConstant.VALUE, v.getRID());
+        }
 
         documents.add(document);
       }

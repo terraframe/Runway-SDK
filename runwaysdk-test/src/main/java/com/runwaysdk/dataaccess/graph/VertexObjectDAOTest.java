@@ -1302,7 +1302,7 @@ public class VertexObjectDAOTest
 
       Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-      vertexDAO.setValue(attributeName, classifierDAO.getOid());
+      vertexDAO.setValue(attributeName, classifierDAO);
 
       Assert.assertEquals(classifierDAO.getOid(), vertexDAO.getObjectValue(attributeName));
 
