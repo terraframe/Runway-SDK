@@ -6769,15 +6769,15 @@ public class SAXParseTest
   public void testCreateLink()
   {
     // Create test MdVertex
+    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
+    mdVertex2.apply();
+
     MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
     mdVertex1.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
     mdVertex1.setValue(MdVertexInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
     mdVertex1.setValue(MdVertexInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
     mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdVertex1.apply();
-
-    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
-    mdVertex2.apply();
 
     MdAttributeLinkDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
     mdAttribute.apply();
@@ -6796,9 +6796,16 @@ public class SAXParseTest
 
     MdVertexDAOIF mdVertex1IF = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
 
-    MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
+    try
+    {
+      MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
 
-    Assert.assertNotNull(attribute);
+      Assert.assertNotNull(attribute);
+    }
+    finally
+    {
+      TestFixtureFactory.delete(mdVertex1IF);
+    }
   }
 
   /**

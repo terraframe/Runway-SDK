@@ -951,6 +951,7 @@
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
       <xs:element name="embedded" type="embedded" />
+      <xs:element name="link" type="link" />      
       <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
@@ -1141,6 +1142,10 @@
 
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="reference">
+    <xs:attributeGroup ref="attributeReference" />
+  </xs:complexType>
+  
+  <xs:complexType name="link">
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
 

@@ -145,6 +145,7 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
@@ -2174,6 +2175,17 @@ public class ExportVisitor extends MarkupVisitor
       {
         parameters.remove(XMLTags.DEFAULT_KEY_ATTRIBUTE);
       }
+    }
+
+    // Map the parameter value to its correct attribute tag for parameters
+    // common to foriegnObject type
+    if (mdAttributeIF instanceof MdAttributeLinkDAOIF)
+    {
+      MdClassDAOIF refClass = ( (MdAttributeLinkDAOIF) mdAttributeIF ).getLinkMdClassDAOIF();
+
+      String classType = refClass.getValue(MdTypeInfo.PACKAGE) + "." + refClass.getValue(MdTypeInfo.NAME);
+
+      parameters.put(XMLTags.TYPE_ATTRIBUTE, classType);
     }
 
     // Map the parameter value to its correct attribute tag for parameters
