@@ -704,7 +704,7 @@ public class MdGraphClassTest
   @Test
   public void testCreateMdClassification()
   {
-    MdClassificationDAO mdVertexDAO = createClassificationClass(CLASSIFICATION_CLASS);
+    MdClassificationDAO mdVertexDAO = createClassificationClass(CLASSIFICATION_NAME);
 
     String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
