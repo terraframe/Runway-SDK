@@ -695,7 +695,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         // Ensure that the class being reference is defined in the database
         if (!MdTypeDAO.isDefined(referenceType))
         {
-          String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+          String[] search_tags = { XMLTags.MD_VERTEX_TAG, XMLTags.MD_CLASSIFICATION_TAG };
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, referenceType, mdClass.definesType());
         }
 

@@ -1005,6 +1005,8 @@ public interface XMLTags
 
   public static final String   MD_VERTEX_TAG                    = "mdVertex";
 
+  public static final String   MD_CLASSIFICATION_TAG            = "mdClassification";
+
   public static final String   MD_EDGE_TAG                      = "mdEdge";
 
   public static final String   DATABASE_CLASS_NAME              = "dbClassName";

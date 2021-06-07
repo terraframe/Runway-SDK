@@ -106,6 +106,7 @@ import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AndFieldConditionDAOIF;
@@ -129,6 +130,7 @@ import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -232,6 +234,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.OIterator;
@@ -6722,6 +6725,61 @@ public class SAXParseTest
 
     // Ensure the attributes are linked to the correct MdVertex object
     Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdVertex1IF.getOid());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  @Request
+  @Test
+  public void testCreateMdClassification()
+  {
+    // Create test MdClassification
+    MdClassificationDAO mdClassification1 = TestFixtureFactory.createMdClassification("TestClassification1");
+    mdClassification1.setValue(MdClassificationInfo.ABSTRACT, MdAttributeBooleanInfo.TRUE);
+    mdClassification1.setValue(MdClassificationInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+    mdClassification1.setValue(MdClassificationInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
+    mdClassification1.setValue(MdClassificationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdClassification1.apply();
+
+    TestFixtureFactory.addBooleanAttribute(mdClassification1).apply();
+
+    MdClassificationDAO mdClassification2 = TestFixtureFactory.createMdClassification("TestClassification2");
+    mdClassification2.setValue(MdClassificationInfo.SUPER_MD_VERTEX, mdClassification1.getOid());
+    mdClassification2.setValue(MdClassificationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdClassification2.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdClassification1, mdClassification2 });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdClassification2);
+    TestFixtureFactory.delete(mdClassification1);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdClassificationDAOIF mdClassification1IF = MdClassificationDAO.getMdClassificationDAO(mdClassification1.definesType());
+    MdClassificationDAOIF mdClassification2IF = MdClassificationDAO.getMdClassificationDAO(mdClassification2.definesType());
+
+    MdAttributeDAOIF attribute = mdClassification1IF.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+
+    Assert.assertEquals(mdClassification1IF.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "mdClassification Set Test");
+    Assert.assertEquals(mdClassification1IF.getStructValue(MdClassificationInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE), "Set mdClassification Attributes Test");
+    Assert.assertEquals(mdClassification1IF.getValue(MdClassificationInfo.ABSTRACT), MdAttributeBooleanInfo.TRUE);
+    Assert.assertEquals(MdAttributeBooleanInfo.FALSE, mdClassification1IF.getValue(MdClassificationInfo.PUBLISH));
+
+    // Change to false when cascading delete is implemented
+    Assert.assertEquals(mdClassification1IF.getValue(MetadataInfo.REMOVE), MdAttributeBooleanInfo.TRUE);
+
+    // Ensure inheritance is linking to the correct super class
+    Assert.assertEquals(mdClassification2IF.getValue(MdClassificationInfo.SUPER_MD_VERTEX), mdClassification1IF.getOid());
+
+    // Ensure the attributes are linked to the correct MdClassification object
+    Assert.assertEquals(attribute.getValue(MdAttributeConcreteInfo.DEFINING_MD_CLASS), mdClassification1IF.getOid());
   }
 
   /**

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -138,7 +138,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+        String[] search_tags = { XMLTags.MD_VERTEX_TAG, XMLTags.MD_CLASSIFICATION_TAG };
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, parent, mdEdgeDAO.definesType());
       }
 
@@ -155,7 +155,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
       {
         // The type is not defined in the database, check if it is defined
         // in the further down in the xml document.
-        String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+        String[] search_tags = { XMLTags.MD_VERTEX_TAG, XMLTags.MD_CLASSIFICATION_TAG };
         SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, child, mdEdgeDAO.definesType());
       }
 
@@ -176,7 +176,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_VERTEX_TAG))
+    if (localName.equals(XMLTags.MD_EDGE_TAG))
     {
       MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) context.getObject(MdTypeInfo.CLASS);
 
