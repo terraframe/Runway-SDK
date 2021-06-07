@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -49,7 +49,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -57,6 +56,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
@@ -71,23 +71,27 @@ import com.runwaysdk.session.Request;
 
 public class MdGraphClassTest
 {
-  public static String TEST_PACKAGE        = TestFixConst.TEST_PACKAGE;
+  public static String TEST_PACKAGE         = TestFixConst.TEST_PACKAGE;
 
-  public static String VERTEX_CLASS_NAME_1 = "TestVertexClass1";
+  public static String VERTEX_CLASS_NAME_1  = "TestVertexClass1";
 
-  public static String VERTEX_CLASS_NAME_2 = "TestVertexClass2";
+  public static String VERTEX_CLASS_NAME_2  = "TestVertexClass2";
 
-  public static String VERTEX_CLASS_1      = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_1;
+  public static String CLASSIFICATION_NAME  = "TestClassification";
 
-  public static String VERTEX_CLASS_2      = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_2;
+  public static String VERTEX_CLASS_1       = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_1;
 
-  public static String EDGE_CLASS_NAME     = "TestEdgeClass";
+  public static String VERTEX_CLASS_2       = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_2;
 
-  public static String EDGE_CLASS          = TEST_PACKAGE + "." + EDGE_CLASS_NAME;
+  public static String CLASSIFICATION_CLASS = TEST_PACKAGE + "." + CLASSIFICATION_NAME;
 
-  public static String CHAR_ATTR_NAME      = "charAttr";
+  public static String EDGE_CLASS_NAME      = "TestEdgeClass";
 
-  public static String MAX_CHAR_ATTR_SIZE  = "12";
+  public static String EDGE_CLASS           = TEST_PACKAGE + "." + EDGE_CLASS_NAME;
+
+  public static String CHAR_ATTR_NAME       = "charAttr";
+
+  public static String MAX_CHAR_ATTR_SIZE   = "12";
 
   @Request
   @BeforeClass
@@ -696,6 +700,23 @@ public class MdGraphClassTest
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
+  @Request
+  @Test
+  public void testCreateMdClassification()
+  {
+    MdClassificationDAO mdVertexDAO = createClassificationClass(CLASSIFICATION_CLASS);
+
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+    examineMdGraphClassCreationAndDefaultAttributes(mdVertexDAO, dbClassName, graphRequest);
+
+    mdVertexDAO.delete();
+
+    boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
+    Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
+  }
+
   protected MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
@@ -704,6 +725,16 @@ public class MdGraphClassTest
     mdVertexDAO.apply();
 
     return mdVertexDAO;
+  }
+
+  protected MdClassificationDAO createClassificationClass(String vertexName)
+  {
+    MdClassificationDAO mdClassificationDAO = TestFixtureFactory.createMdClassification(vertexName);
+    mdClassificationDAO.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+
+    mdClassificationDAO.apply();
+
+    return mdClassificationDAO;
   }
 
   protected MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)

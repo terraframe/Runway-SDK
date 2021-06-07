@@ -1,0 +1,18 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness 
+        label="MdClassification" 
+        name="com.runwaysdk.system.metadata.MdClassification" 
+        extends="com.runwaysdk.system.metadata.MdVertex"
+        isAbstract="false"
+        generateController="false" >
+        <attributes>
+        </attributes>
+      </mdBusiness>    
+    </create>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>
