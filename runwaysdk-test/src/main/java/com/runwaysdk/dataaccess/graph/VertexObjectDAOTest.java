@@ -132,7 +132,7 @@ public class VertexObjectDAOTest
 
   private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
 
-  private static MdAttributeGraphReferenceDAO                   mdLinkAttribute;
+  private static MdAttributeGraphReferenceDAO         mdGraphReferenceAttribute;
 
   // Embedded class
   private static MdVertexDAO                          mdEmbeddedVertexDAO;
@@ -232,8 +232,8 @@ public class VertexObjectDAOTest
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
 
-    mdLinkAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
-    mdLinkAttribute.apply();
+    mdGraphReferenceAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
+    mdGraphReferenceAttribute.apply();
 
     // Define the embedded class
     mdEmbeddedVertexDAO = TestFixtureFactory.createMdVertex("TestEmbeddedClass");
@@ -1297,7 +1297,7 @@ public class VertexObjectDAOTest
     {
       classifierDAO.apply();
 
-      String attributeName = mdLinkAttribute.definesAttribute();
+      String attributeName = mdGraphReferenceAttribute.definesAttribute();
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
       Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
