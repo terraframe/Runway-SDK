@@ -261,7 +261,7 @@ public interface XMLTags
   /**
    * The xml tag for an MdAttributeStruct
    */
-  public static final String   LINK_TAG                         = "link";
+  public static final String   GRAPH_REFERENCE_TAG              = "graphReference";
 
   /**
    * The xml tag for an MdAttributeReference

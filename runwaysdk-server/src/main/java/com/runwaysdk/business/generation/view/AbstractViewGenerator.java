@@ -67,7 +67,7 @@ public abstract class AbstractViewGenerator
 
   protected static final String COMMAND_TAG          = NAMESPACE + DELIMETER + "command";
 
-  protected static final String COMMAND_LINK_TAG     = NAMESPACE + DELIMETER + "commandLink";
+  protected static final String COMMAND_GRAPH_REFERENCE_TAG     = NAMESPACE + DELIMETER + "commandLink";
 
   protected static final String SELECT_TAG           = NAMESPACE + DELIMETER + "select";
 
@@ -493,7 +493,7 @@ public abstract class AbstractViewGenerator
     commandLinkMap.put("action", action);
     commandLinkMap.put("name", name);
 
-    getWriter().openEscapedTag(COMMAND_LINK_TAG, commandLinkMap);
+    getWriter().openEscapedTag(COMMAND_GRAPH_REFERENCE_TAG, commandLinkMap);
     getWriter().writeValue(display);
     getWriter().closeTag();
   }
@@ -504,7 +504,7 @@ public abstract class AbstractViewGenerator
     commandLinkMap.put("action", action);
     commandLinkMap.put("name", name);
 
-    getWriter().openEscapedTag(COMMAND_LINK_TAG, commandLinkMap);
+    getWriter().openEscapedTag(COMMAND_GRAPH_REFERENCE_TAG, commandLinkMap);
     getWriter().writeValue(display);
   }
 
