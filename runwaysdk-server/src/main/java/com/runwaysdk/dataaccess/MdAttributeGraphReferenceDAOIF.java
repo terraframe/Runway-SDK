@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 
-public interface MdAttributeLinkDAOIF extends MdAttributeConcreteDAOIF
+public interface MdAttributeGraphReferenceDAOIF extends MdAttributeConcreteDAOIF
 {
   /**
    * Name of the table used to store instances of this class.
@@ -32,11 +32,11 @@ public interface MdAttributeLinkDAOIF extends MdAttributeConcreteDAOIF
    *
    * @return the <code>MdClassDAOIF</code> that defines the class used to store the values of the struct attribute.
    */
-  public MdClassDAOIF getLinkMdClassDAOIF();
+  public MdClassDAOIF getReferenceMdVertexDAOIF();
 
   
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdAttributeLinkDAO getBusinessDAO();
+  public MdAttributeGraphReferenceDAO getBusinessDAO();
 }

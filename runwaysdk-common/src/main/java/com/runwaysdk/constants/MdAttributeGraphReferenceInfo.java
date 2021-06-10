@@ -18,18 +18,18 @@
  */
 package com.runwaysdk.constants;
 
-public interface MdAttributeLinkInfo extends MdAttributeConcreteInfo
+public interface MdAttributeGraphReferenceInfo extends MdAttributeConcreteInfo
 {
   /**
    * Class.
    */
-  public static final String CLASS   = Constants.METADATA_PACKAGE+".MdAttributeLink";
+  public static final String CLASS   = Constants.METADATA_PACKAGE+".MdAttributeGraphReference";
   
   /**
    * Name of the attribute that references the name of the {@link MdClassDAOIF}
    * used to define the attributes that make up this struct attribute.
    */
-  public static final String LINK_MD_CLASS   = "linkMdClass";
+  public static final String REFERENCE_MD_VERTEX   = "referenceMdVertex";
   
   /**
    * OID.

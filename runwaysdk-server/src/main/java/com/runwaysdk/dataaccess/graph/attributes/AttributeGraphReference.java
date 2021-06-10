@@ -22,13 +22,13 @@ import java.util.Date;
 
 import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.session.Session;
 
-public class AttributeLink extends Attribute
+public class AttributeGraphReference extends Attribute
 {
   public static class ID
   {
@@ -65,7 +65,7 @@ public class AttributeLink extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
    */
-  protected AttributeLink(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
+  protected AttributeGraphReference(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass)
   {
     super(mdAttributeDAOIF, definingGraphClass);
   }
@@ -73,7 +73,7 @@ public class AttributeLink extends Attribute
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String, String)
    */
-  protected AttributeLink(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
+  protected AttributeGraphReference(MdAttributeConcreteDAOIF mdAttributeDAOIF, String definingGraphClass, String value)
   {
     super(mdAttributeDAOIF, definingGraphClass, value);
   }
@@ -83,11 +83,11 @@ public class AttributeLink extends Attribute
    * this is defined by a concrete attribute, this object is returned. If it is
    * a virtual attribute, then the concrete attribute it references is returned.
    * 
-   * @return {@link MdAttributeLinkDAOIF} that defines the this attribute
+   * @return {@link MdAttributeGraphReferenceDAOIF} that defines the this attribute
    */
-  public MdAttributeLinkDAOIF getMdAttributeConcrete()
+  public MdAttributeGraphReferenceDAOIF getMdAttributeConcrete()
   {
-    return (MdAttributeLinkDAOIF) super.getMdAttributeConcrete();
+    return (MdAttributeGraphReferenceDAOIF) super.getMdAttributeConcrete();
   }
 
   /**
@@ -116,8 +116,8 @@ public class AttributeLink extends Attribute
 
   public VertexObjectDAOIF dereference(String referenceId)
   {
-    MdAttributeLinkDAOIF mdAttribute = getMdAttributeConcrete();
-    MdVertexDAOIF mdVertex = (MdVertexDAOIF) mdAttribute.getLinkMdClassDAOIF();
+    MdAttributeGraphReferenceDAOIF mdAttribute = getMdAttributeConcrete();
+    MdVertexDAOIF mdVertex = (MdVertexDAOIF) mdAttribute.getReferenceMdVertexDAOIF();
 
     if (referenceId.trim().equals(""))
     {
@@ -138,7 +138,7 @@ public class AttributeLink extends Attribute
   {
     if (valueToValidate != null)
     {
-      MdAttributeLinkDAOIF mdAttributeIF = this.getMdAttributeConcrete();
+      MdAttributeGraphReferenceDAOIF mdAttributeIF = this.getMdAttributeConcrete();
 
       // First verify that the object is of the correct type.
       if (! ( valueToValidate instanceof String ))

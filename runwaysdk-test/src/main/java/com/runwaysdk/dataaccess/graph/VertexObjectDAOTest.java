@@ -50,7 +50,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -132,7 +132,7 @@ public class VertexObjectDAOTest
 
   private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
 
-  private static MdAttributeLinkDAO                   mdLinkAttribute;
+  private static MdAttributeGraphReferenceDAO                   mdLinkAttribute;
 
   // Embedded class
   private static MdVertexDAO                          mdEmbeddedVertexDAO;

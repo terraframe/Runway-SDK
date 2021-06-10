@@ -3,12 +3,12 @@
     <create>
       <mdBusiness 
         label="Md Attribute Link" 
-        name="com.runwaysdk.system.metadata.MdAttributeLink" 
+        name="com.runwaysdk.system.metadata.MdAttributeGraphReference" 
         extends="com.runwaysdk.system.metadata.MdAttributeConcrete"
         isAbstract="false"
         generateController="false" >
         <attributes>
-          <reference name="linkMdClass" type="com.runwaysdk.system.metadata.MdVertex" label="Linked MdClass" description="The class linked by this attribute, must be a MdVertex" required="true" />
+          <reference name="referenceMdVertex" type="com.runwaysdk.system.metadata.MdVertex" label="Linked MdClass" description="The class linked by this attribute, must be a MdVertex" required="true" />
         </attributes>
       </mdBusiness>
     

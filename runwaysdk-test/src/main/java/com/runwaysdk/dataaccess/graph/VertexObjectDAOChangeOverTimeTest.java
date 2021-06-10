@@ -48,7 +48,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
@@ -97,7 +97,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
-  private static MdAttributeLinkDAO                   mdLinkAttribute;
+  private static MdAttributeGraphReferenceDAO                   mdLinkAttribute;
 
   @Request
   @BeforeClass

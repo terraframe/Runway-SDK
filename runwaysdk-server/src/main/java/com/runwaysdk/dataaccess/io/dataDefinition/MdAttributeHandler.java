@@ -43,7 +43,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeLinkInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
@@ -71,7 +71,7 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -100,7 +100,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -661,14 +661,14 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  protected static class AttributeLinkHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
+  protected static class AttributeGraphReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
   {
-    public AttributeLinkHandler(ImportManager manager, String type)
+    public AttributeGraphReferenceHandler(ImportManager manager, String type)
     {
       super(manager, type);
     }
 
-    protected void populate(MdClassDAO mdClass, MdAttributeLinkDAO mdAttribute, Attributes attributes)
+    protected void populate(MdClassDAO mdClass, MdAttributeGraphReferenceDAO mdAttribute, Attributes attributes)
     {
       super.populate(mdClass, mdAttribute, attributes);
 
@@ -685,7 +685,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     @Override
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
-      this.populate(mdClass, (MdAttributeLinkDAO) mdAttribute, attributes);
+      this.populate(mdClass, (MdAttributeGraphReferenceDAO) mdAttribute, attributes);
     }
 
     protected void importLinkType(MdClassDAO mdClass, MdAttributeDAO mdAttribute, String referenceType)
@@ -701,7 +701,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
         // Get the databaseID of the enumeration reference
         MdVertexDAOIF refMdBusinessIF = MdVertexDAO.getMdVertexDAO(referenceType);
-        mdAttribute.setValue(MdAttributeLinkInfo.LINK_MD_CLASS, refMdBusinessIF.getOid());
+        mdAttribute.setValue(MdAttributeGraphReferenceInfo.LINK_MD_CLASS, refMdBusinessIF.getOid());
       }
     }
   }
@@ -1253,7 +1253,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));
     this.addHandler(XMLTags.EMBEDDED_TAG, new AttributeEmbeddedHandler(manager, MdAttributeEmbeddedInfo.CLASS));
-    this.addHandler(XMLTags.LINK_TAG, new AttributeLinkHandler(manager, MdAttributeLinkInfo.CLASS));
+    this.addHandler(XMLTags.LINK_TAG, new AttributeGraphReferenceHandler(manager, MdAttributeGraphReferenceInfo.CLASS));
     this.addHandler(XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG, new AttributeLocalEmbeddedHandler(manager, MdAttributeLocalCharacterEmbeddedInfo.CLASS));
   }
 }

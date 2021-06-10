@@ -319,7 +319,7 @@ public class GraphDBBalk implements GraphDB
   }
   
   @Override
-  public GraphDDLCommandAction createLinkAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
   {
     return new GraphDDLCommandAction()
     {

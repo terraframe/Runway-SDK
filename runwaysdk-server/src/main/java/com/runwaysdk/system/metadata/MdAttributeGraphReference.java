@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-public class MdAttributeLink extends MdAttributeLinkBase
+public class MdAttributeGraphReference extends MdAttributeGraphReferenceBase
 {
   private static final long serialVersionUID = -403096302;
   
-  public MdAttributeLink()
+  public MdAttributeGraphReference()
   {
     super();
   }

@@ -318,7 +318,7 @@ public interface GraphDB
    * @param changeOverTime
    * @return
    */
-  public GraphDDLCommandAction createLinkAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime);
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime);
 
   /**
    * Adds a geometry attribute of the given name and type.
