@@ -97,7 +97,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
-  private static MdAttributeGraphReferenceDAO                   mdGraphReferenceAttribute;
+  private static MdAttributeGraphReferenceDAO         mdGraphReferenceAttribute;
 
   @Request
   @BeforeClass
@@ -1056,7 +1056,7 @@ public class VertexObjectDAOChangeOverTimeTest
   //
   // vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
   // }
-  
+
   @Request
   @Test
   public void testLinkAttribute()
@@ -1076,7 +1076,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
       vertexDAO.setValue(attributeName, classifierDAO.getOid(), startDate(), endDate());
 
-//      Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+      // Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
 
       try
       {

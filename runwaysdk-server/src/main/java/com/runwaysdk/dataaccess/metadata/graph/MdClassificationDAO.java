@@ -3,37 +3,42 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata.graph;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.business.generation.GeneratorIF;
 import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
 import com.runwaysdk.business.graph.generation.JavaArtifactMdGraphClassCommand;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
+import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.database.EntityDAOFactory;
+import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 
-public class MdClassificationDAO extends MdVertexDAO implements MdClassificationDAOIF
+public class MdClassificationDAO extends MetadataDAO implements MdClassificationDAOIF
 {
 
   /**
@@ -50,7 +55,8 @@ public class MdClassificationDAO extends MdVertexDAO implements MdClassification
   }
 
   /**
-   * Constructs a {@link MdClassificationDAO} from the given hashtable of Attributes.
+   * Constructs a {@link MdClassificationDAO} from the given hashtable of
+   * Attributes.
    * 
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -75,9 +81,9 @@ public class MdClassificationDAO extends MdVertexDAO implements MdClassification
   }
 
   /**
-   * Returns a new {@link MdClassificationDAO}. Some attributes will contain default
-   * values, as defined in the attribute metadata. Otherwise, the attributes
-   * will be blank.
+   * Returns a new {@link MdClassificationDAO}. Some attributes will contain
+   * default values, as defined in the attribute metadata. Otherwise, the
+   * attributes will be blank.
    * 
    * @return instance of {@link MdClassificationDAO}.
    */
@@ -87,161 +93,68 @@ public class MdClassificationDAO extends MdVertexDAO implements MdClassification
   }
 
   /**
-   * Returns the {@link MdVertexDAOIF} that is the root of the hierarchy that
-   * this type belongs to. returns a reference to itself if it is the root.
+   * Returns the name of the package of the type that this object defines.
    * 
-   * @return {@link MdVertexDAOIF} that is the root of the hierarchy that this
-   *         type belongs to. returns a reference to itself if it is the root.
+   * @return name of the package of the type that this object defines.
    */
-  @Override
-  public MdClassificationDAOIF getRootMdClassDAO()
+  public String getPackage()
   {
-    return (MdClassificationDAOIF) super.getRootMdClassDAO();
+    return this.getAttributeIF(MdClassificationInfo.PACKAGE).getValue();
   }
 
   /**
-   * @see MdVGeoertexDAOIF#getSubClasses()
-   */
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<? extends MdClassificationDAOIF> getSubClasses()
-  {
-    return (List<? extends MdClassificationDAOIF>) super.getSubClasses();
-  }
-
-  /**
-   * @see MdVGeoertexDAOIF#getAllConcreteSubClasses()
-   */
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<? extends MdClassificationDAOIF> getAllConcreteSubClasses()
-  {
-    return (List<? extends MdClassificationDAOIF>) super.getAllConcreteSubClasses();
-  }
-
-  /**
-   * @see MdVGeoertexDAOIF#getAllSubClasses().
-   */
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<? extends MdClassificationDAOIF> getAllSubClasses()
-  {
-    return (List<? extends MdClassificationDAOIF>) super.getAllSubClasses();
-  }
-
-  /**
-   * @see MdVGeoertexDAOIF#getSuperClass()
-   */
-  @Override
-  public MdClassificationDAOIF getSuperClass()
-  {
-    return (MdClassificationDAOIF)super.getSuperClass();
-  }
-
-  /**
-   * @see MdVGeoertexDAOIF#getSuperClasses()
-   */
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<? extends MdClassificationDAOIF> getSuperClasses()
-  {
-    return (List<? extends MdClassificationDAOIF>) super.getSuperClasses();
-  }
-
-  /**
+   * Returns the name of the type that this MdType definess.
    * 
-   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String)
+   * @return the name of the type that this MdType definess.
    */
-  public static MdClassificationDAOIF get(String oid)
+  public String getTypeName()
   {
-    return (MdClassificationDAOIF) BusinessDAO.get(oid);
+    return this.getAttributeIF(MdTypeInfo.NAME).getValue();
   }
 
   /**
-   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
+   * Returns the display label of this metadata object
+   * 
+   * @param locale
+   * 
+   * @return the display label of this metadata object
    */
-  public MdClassificationDAO getBusinessDAO()
+  public String getDisplayLabel(Locale locale)
   {
-    return (MdClassificationDAO) super.getBusinessDAO();
+    return ( (AttributeLocalIF) this.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getValue(locale);
   }
 
   /**
-   * Returns an {@link MdClassificationDAOIF} instance of the metadata for the given
-   * type.
+   * Returns a map where the key is the locale and the value is the localized
+   * String value.
    * 
-   * <br/>
-   * <b>Precondition:</b> vertexType != null <br/>
-   * <b>Precondition:</b> !vertexType.trim().equals("") <br/>
-   * <b>Precondition:</b> vertexType is a valid class defined in the database
-   * <br/>
-   * <b>Postcondition:</b> Returns a {@link MdClassificationDAOIF} instance of the
-   * metadata for the given class
-   * ({@link MdClassificationDAOIF}().definesType().equals(vertexType)
-   * 
-   * @param vertexType
-   * @return {@link MdClassificationDAOIF} instance of the metadata for the given type.
+   * @return map where the key is the locale and the value is the localized
+   *         String value.
    */
-  public static MdClassificationDAOIF getMdClassificationDAO(String vertexType)
+  public Map<String, String> getDisplayLabels()
   {
-    return (MdClassificationDAOIF)ObjectCache.getMdVertexDAO(vertexType);
+    return ( (AttributeLocalIF) this.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getLocalValues();
   }
 
   /**
-   * Returns a list of all generators used to generate source for this
-   * {@link MdVertexDAOIF}.
+   * Returns the signature of the metadata.
    * 
-   * @return list of all generators used to generate source for this
-   *         {@link MdVertexDAOIF}.
+   * @return signature of the metadata.
    */
-  @Override
-  public List<GeneratorIF> getGenerators()
+  public String getSignature()
   {
-    // TODO
-    return super.getGenerators();
+    return "Classification:" + this.definesType();
   }
 
   /**
-   * Returns a command object that either creates or updates Java artifacts for
-   * this type.
+   * Returns the type that this object defines. The type consits of the package
+   * plus the type name.
    * 
-   * @param conn
-   *          database connection object.
-   * 
-   * @return command object that either creates or updates Java artifacts for
-   *         this type.
+   * @return the type that this object defines.
    */
-  @Override
-  public Command getCreateUpdateJavaArtifactCommand(Connection conn)
+  public String definesType()
   {
-    // TODO
-    return super.getCreateUpdateJavaArtifactCommand(conn);
+    return EntityDAOFactory.buildType(this.getPackage(), this.getTypeName());
   }
 
-  /**
-   * Returns a command object that deletes Java artifacts for this type.
-   * 
-   * @param conn
-   *          database connection object.
-   * 
-   * @return command object that deletes Java artifacts for this type.
-   */
-  public Command getDeleteJavaArtifactCommand(Connection conn)
-  {
-    // TODO
-    return super.getDeleteJavaArtifactCommand(conn);
-  }
-
-  /**
-   * Returns a command object that cleans Java artifacts for this type.
-   * 
-   * @param conn
-   *          database connection object.
-   * 
-   * @return command object that cleans Java artifacts for this type.
-   */
-  @Override
-  public Command getCleanJavaArtifactCommand(Connection conn)
-  {
-    return new JavaArtifactMdGraphClassCommand(this, JavaArtifactMdTypeCommand.Operation.CLEAN);
-  }
 }

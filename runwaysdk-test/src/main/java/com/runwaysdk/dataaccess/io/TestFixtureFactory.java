@@ -1786,13 +1786,12 @@ public class TestFixtureFactory
 
   public static MdClassificationDAO createMdClassification(String name)
   {
-    MdClassificationDAO mdVertex = MdClassificationDAO.newInstance();
-    mdVertex.setValue(MdVertexInfo.NAME, name);
-    mdVertex.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
-    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdClassification Set Test");
-    mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdClassification Attributes Test");
+    MdClassificationDAO mdClassification = MdClassificationDAO.newInstance();
+    mdClassification.setValue(MdVertexInfo.NAME, name);
+    mdClassification.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdClassification.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdClassification Set Test");
 
-    return mdVertex;
+    return mdClassification;
   }
 
   public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child)

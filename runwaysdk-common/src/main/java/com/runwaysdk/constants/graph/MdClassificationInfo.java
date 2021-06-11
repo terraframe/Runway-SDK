@@ -19,17 +19,35 @@
 package com.runwaysdk.constants.graph;
 
 import com.runwaysdk.constants.Constants;
+import com.runwaysdk.constants.MetadataInfo;
 
-public interface MdClassificationInfo extends MdVertexInfo
+public interface MdClassificationInfo extends MetadataInfo
 {
   /**
    * Class {@link MdClassificationInfo}.
    */
-  public static final String CLASS    = Constants.METADATA_PACKAGE + ".MdClassification";
+  public static final String CLASS         = Constants.METADATA_PACKAGE + ".MdClassification";
+
+  /**
+   * Name of the attribute that stores the name of the relationship that is
+   * defined.
+   */
+  public static final String NAME          = "typeName";
+
+  /**
+   * Name of the attribute that stores the name of the package of the
+   * relationship that is defined.
+   */
+  public static final String PACKAGE       = "packageName";
+
+  /**
+   * Name of the attribute that stores the label of this metadata object.
+   */
+  public static final String DISPLAY_LABEL = "displayLabel";
 
   /**
    * OID.
    */
-  public static final String ID_VALUE = "af02ce48-050f-3449-b7d2-8add4f00003a";
+  public static final String ID_VALUE      = "af02ce48-050f-3449-b7d2-8add4f00003a";
 
 }

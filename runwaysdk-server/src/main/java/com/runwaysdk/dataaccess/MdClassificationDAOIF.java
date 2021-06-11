@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.dataaccess;
 
-public interface MdClassificationDAOIF extends MdVertexDAOIF
+public interface MdClassificationDAOIF extends MetadataDAOIF
 {
   /**
    * Name of the table used to store instances of this class.

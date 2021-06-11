@@ -34,6 +34,7 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
@@ -704,17 +705,8 @@ public class MdGraphClassTest
   @Test
   public void testCreateMdClassification()
   {
-    MdClassificationDAO mdVertexDAO = createClassificationClass(CLASSIFICATION_NAME);
-
-    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
-    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
-
-    examineMdGraphClassCreationAndDefaultAttributes(mdVertexDAO, dbClassName, graphRequest);
-
-    mdVertexDAO.delete();
-
-    boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
-    Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
+    MdClassificationDAO mdClassificationDAO = createClassificationClass(CLASSIFICATION_NAME);
+    mdClassificationDAO.delete();
   }
 
   protected MdVertexDAO createVertexClass(String vertexName)
@@ -730,8 +722,6 @@ public class MdGraphClassTest
   protected MdClassificationDAO createClassificationClass(String vertexName)
   {
     MdClassificationDAO mdClassificationDAO = TestFixtureFactory.createMdClassification(vertexName);
-    mdClassificationDAO.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-
     mdClassificationDAO.apply();
 
     return mdClassificationDAO;

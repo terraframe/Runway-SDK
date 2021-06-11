@@ -4,15 +4,20 @@
       <mdBusiness 
         label="MdClassification" 
         name="com.runwaysdk.system.metadata.MdClassification" 
-        extends="com.runwaysdk.system.metadata.MdVertex"
-        isAbstract="false"
+        extends="com.runwaysdk.system.metadata.Metadata"
+        isAbstract="true"
         generateController="false" >
         <attributes>
+          <char name="typeName" label="Type name" required="true" size="255" />
+          <char name="packageName" label="Package" required="true" size="255" />
+          <localChar name="displayLabel" required="true" size="50" />          
         </attributes>
       </mdBusiness>    
     </create>
   </doIt>
   <undoIt>
-    <delete></delete>
+    <delete>
+      <object type="com.runwaysdk.system.metadata.MdBusiness" key="com.runwaysdk.system.metadata.MdClassification" />
+    </delete>
   </undoIt>
 </version>
