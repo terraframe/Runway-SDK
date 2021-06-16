@@ -81,7 +81,6 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
-import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TermAttributeDAOIF;
@@ -118,7 +117,6 @@ import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -695,12 +693,12 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
         // Ensure that the class being reference is defined in the database
         if (!MdTypeDAO.isDefined(referenceType))
         {
-          String[] search_tags = { XMLTags.MD_VERTEX_TAG };
+          String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_VERTEX_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_TERM_TAG };
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, referenceType, mdClass.definesType());
         }
 
         // Get the databaseID of the enumeration reference
-        MdVertexDAOIF refMdBusinessIF = MdVertexDAO.getMdVertexDAO(referenceType);
+        MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(referenceType);
         mdAttribute.setValue(MdAttributeLinkInfo.LINK_MD_CLASS, refMdBusinessIF.getOid());
       }
     }
