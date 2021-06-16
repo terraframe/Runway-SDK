@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import java.util.Date;
-
 import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
@@ -30,37 +28,11 @@ import com.runwaysdk.session.Session;
 
 public class AttributeLink extends Attribute
 {
-  public static class ID
-  {
-    private String oid;
-
-    private Object rid;
-
-    public ID(String oid, Object rid)
-    {
-      super();
-      this.oid = oid;
-      this.rid = rid;
-    }
-
-    public String getOid()
-    {
-      return oid;
-    }
-
-    public Object getRid()
-    {
-      return rid;
-    }
-
-  }
 
   /**
    * 
    */
   private static final long serialVersionUID = 7368938382761174978L;
-
-  private ID                id;
 
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
@@ -94,24 +66,9 @@ public class AttributeLink extends Attribute
    * 
    * @return
    */
-  public ID getRID()
+  public VertexObjectDAOIF dereference()
   {
-    if (this.id == null)
-    {
-      VertexObjectDAOIF vertex = dereference(this.getValue());
-
-      if (vertex != null)
-      {
-        this.id = new ID(vertex.getOid(), vertex.getRID());
-      }
-    }
-
-    return this.id;
-  }
-
-  public void setId(ID id)
-  {
-    this.id = id;
+    return dereference(this.getValue());
   }
 
   public VertexObjectDAOIF dereference(String referenceId)
@@ -149,71 +106,6 @@ public class AttributeLink extends Attribute
     }
 
     super.validate(valueToValidate);
-  }
-
-  @Override
-  public void setValue(Object value)
-  {
-    if (value instanceof VertexObjectDAOIF)
-    {
-      VertexObjectDAOIF vertex = (VertexObjectDAOIF) value;
-
-      super.setValue(vertex.getOid());
-
-      this.id = new ID(vertex.getOid(), vertex.getRID());
-    }
-    else if (value instanceof ID)
-    {
-      ID id = (ID) value;
-
-      super.setValue(id.oid);
-
-      this.id = id;
-    }
-    else
-    {
-      super.setValue(value);
-
-      this.id = null;
-    }
-  }
-
-  @Override
-  public void setValue(Object value, Date startDate, Date endDate)
-  {
-    if (value instanceof VertexObjectDAOIF)
-    {
-      VertexObjectDAOIF vertex = (VertexObjectDAOIF) value;
-
-      ID sId = new ID(vertex.getOid(), vertex.getRID());
-
-      super.setValue(sId, startDate, endDate);
-    }
-    else if (value instanceof ID)
-    {
-      ID id = (ID) value;
-
-      super.setValue(id, startDate, endDate);
-    }
-    else
-    {
-      super.setValue(value, startDate, endDate);
-    }
-  }
-
-  @Override
-  public Object getObjectValue(Date date)
-  {
-    Object objectValue = super.getObjectValue(date);
-
-    if (objectValue instanceof ID)
-    {
-      ID id = (ID) objectValue;
-
-      return id.oid;
-    }
-
-    return objectValue;
   }
 
 }
