@@ -27,17 +27,17 @@ git config --global user.email builder@terraframe.com
 
 cd $WORKSPACE/runway-sdk
 
-#git checkout dev
-#git pull
+git checkout dev
+git pull
 
 mvn license:format
 git add -A
 git diff-index --quiet HEAD || git commit -m 'License headers'
 git push
 
-#git checkout master
-#git merge dev
-#git push
+git checkout master
+git merge dev
+git push
 
 
 mvn release:prepare -B -Dtag=$VERSION \
@@ -47,12 +47,12 @@ mvn release:prepare -B -Dtag=$VERSION \
 mvn release:perform -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
 
 
-#cd ..
-#rm -rf rwdev
-#mkdir rwdev
-#cd rwdev
-#git clone -b master git@github.com:terraframe/Runway-SDK.git
-#cd Runway-SDK
-#git checkout dev
-#git merge master
-#git push
+cd ..
+rm -rf rwdev
+mkdir rwdev
+cd rwdev
+git clone -b master git@github.com:terraframe/Runway-SDK.git
+cd Runway-SDK
+git checkout dev
+git merge master
+git push
