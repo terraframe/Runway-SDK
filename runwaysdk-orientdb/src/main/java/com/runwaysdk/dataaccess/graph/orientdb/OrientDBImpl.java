@@ -1505,24 +1505,6 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
-    else if (mdAttribute instanceof MdAttributeLinkDAOIF)
-    {
-      List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
-      attribute.clearValuesOverTime();
-
-      if (elements != null)
-      {
-        for (OElement element : elements)
-        {
-          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
-          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
-          OVertex ref = (OVertex) element.getProperty(OrientDBConstant.VALUE);
-          Object votValue = ref.getProperty("oid");
-
-          attribute.setValueInternal(votValue, startDate, endDate);
-        }
-      }
-    }
     else
     {
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
@@ -1663,7 +1645,7 @@ public class OrientDBImpl implements GraphDB
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateLinkChangeOverTime(db, element, (AttributeLink) attribute, columnName);
+          this.populateChangeOverTime(db, element, attribute, columnName);
         }
       }
       else
@@ -1702,7 +1684,7 @@ public class OrientDBImpl implements GraphDB
     element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
-  protected void populateLinkChangeOverTime(ODatabaseSession db, OElement element, AttributeLink attribute, String columnName)
+  protected void populateLinkChangeOverTime(ODatabaseSession db, OElement element, Attribute attribute, String columnName)
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
@@ -1710,16 +1692,14 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      String value = (String) vot.getValue();
+      VertexObjectDAOIF value = (VertexObjectDAOIF) vot.getValue();
 
       if (value != null)
       {
-        VertexObjectDAOIF v = attribute.dereference(value);
-
         OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
-        document.setProperty(OrientDBConstant.VALUE, v.getRID());
+        document.setProperty(OrientDBConstant.VALUE, value.getRID());
 
         documents.add(document);
       }
