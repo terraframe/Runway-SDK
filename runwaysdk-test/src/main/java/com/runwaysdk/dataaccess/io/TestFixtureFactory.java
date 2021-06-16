@@ -206,7 +206,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -1780,17 +1779,6 @@ public class TestFixtureFactory
     mdVertex.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdVertex Set Test");
     mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdVertex Attributes Test");
-
-    return mdVertex;
-  }
-
-  public static MdClassificationDAO createMdClassification(String name)
-  {
-    MdClassificationDAO mdVertex = MdClassificationDAO.newInstance();
-    mdVertex.setValue(MdVertexInfo.NAME, name);
-    mdVertex.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
-    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdClassification Set Test");
-    mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdClassification Attributes Test");
 
     return mdVertex;
   }
