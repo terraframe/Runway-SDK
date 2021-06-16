@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-public class MdAttributeGraphReferenceDTO extends MdAttributeGraphReferenceDTOBase
+public class MdAttributeLinkDTO extends MdAttributeLinkDTOBase
 {
   private static final long serialVersionUID = -1775187054;
   
-  public MdAttributeGraphReferenceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  public MdAttributeLinkDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(clientRequest);
   }
@@ -15,7 +15,7 @@ public class MdAttributeGraphReferenceDTO extends MdAttributeGraphReferenceDTOBa
   * @param businessDTO The BusinessDTO to duplicate
   * @param clientRequest The clientRequest this DTO should use to communicate with the server.
   */
-  protected MdAttributeGraphReferenceDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+  protected MdAttributeLinkDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(businessDTO, clientRequest);
   }

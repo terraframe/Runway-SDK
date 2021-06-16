@@ -27,7 +27,7 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
  * @author nathan
  *
  */
-public class MdAttributeGraphReference_E extends MdAttributeConcrete_E
+public class MdAttributeLink_E extends MdAttributeConcrete_E
 {
   /**
    * 
@@ -37,7 +37,7 @@ public class MdAttributeGraphReference_E extends MdAttributeConcrete_E
   /**
    * @param mdAttribute
    */
-  public MdAttributeGraphReference_E(MdAttributeConcreteDAO mdAttribute)
+  public MdAttributeLink_E(MdAttributeConcreteDAO mdAttribute)
   {
     super(mdAttribute);
     

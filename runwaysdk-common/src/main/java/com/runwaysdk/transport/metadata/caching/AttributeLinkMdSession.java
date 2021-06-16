@@ -18,20 +18,20 @@
  */
 package com.runwaysdk.transport.metadata.caching;
 
-public class AttributeGraphReferenceMdSession extends AttributeMdSession
+public class AttributeLinkMdSession extends AttributeMdSession
 {
   /**
    * The MdStruct that defines the struct.
    */
-  private String referenceMdVertexType;
+  private String linkMdClassType;
 
-  public AttributeGraphReferenceMdSession(String referenceMdVertexType)
+  public AttributeLinkMdSession(String linkMdClassType)
   {
-    this.referenceMdVertexType = referenceMdVertexType;
+    this.linkMdClassType = linkMdClassType;
   }
 
-  public String getReferenceMdVertexType()
+  public String getLinkMdClassType()
   {
-    return referenceMdVertexType;
+    return linkMdClassType;
   }
 }

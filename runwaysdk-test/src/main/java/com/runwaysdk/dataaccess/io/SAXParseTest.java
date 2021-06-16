@@ -184,7 +184,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -6837,7 +6837,7 @@ public class SAXParseTest
     mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdVertex1.apply();
 
-    MdAttributeGraphReferenceDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
+    MdAttributeLinkDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
     mdAttribute.apply();
 
     // Export the test entities

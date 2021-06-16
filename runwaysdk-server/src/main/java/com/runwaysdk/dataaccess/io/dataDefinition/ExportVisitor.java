@@ -60,7 +60,7 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
+import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -145,7 +145,7 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
@@ -2188,9 +2188,9 @@ public class ExportVisitor extends MarkupVisitor
 
     // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnObject type
-    if (mdAttributeIF instanceof MdAttributeGraphReferenceDAOIF)
+    if (mdAttributeIF instanceof MdAttributeLinkDAOIF)
     {
-      MdClassDAOIF refClass = ( (MdAttributeGraphReferenceDAOIF) mdAttributeIF ).getReferenceMdVertexDAOIF();
+      MdClassDAOIF refClass = ( (MdAttributeLinkDAOIF) mdAttributeIF ).getLinkMdClassDAOIF();
 
       String classType = refClass.getValue(MdTypeInfo.PACKAGE) + "." + refClass.getValue(MdTypeInfo.NAME);
 
@@ -2630,7 +2630,7 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
     attributeTags.put(MdAttributeEmbeddedInfo.CLASS, XMLTags.EMBEDDED_TAG);
-    attributeTags.put(MdAttributeGraphReferenceInfo.CLASS, XMLTags.LINK_TAG);
+    attributeTags.put(MdAttributeLinkInfo.CLASS, XMLTags.LINK_TAG);
     attributeTags.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG);
 
     // Field types

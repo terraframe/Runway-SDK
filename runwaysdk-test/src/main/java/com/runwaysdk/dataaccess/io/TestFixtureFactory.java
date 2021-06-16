@@ -56,7 +56,7 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
+import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
@@ -148,7 +148,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -961,18 +961,18 @@ public class TestFixtureFactory
     return mdAttribute;
   }
 
-  public static MdAttributeGraphReferenceDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO)
+  public static MdAttributeLinkDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO)
   {
     return addLinkAttribute(mdVertexDAO, mdClassificationDAO, "testLink");
   }
 
-  public static MdAttributeGraphReferenceDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO, String attributeName)
+  public static MdAttributeLinkDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO, String attributeName)
   {
-    MdAttributeGraphReferenceDAO mdAttribute = MdAttributeGraphReferenceDAO.newInstance();
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.NAME, attributeName);
-    mdAttribute.setStructValue(MdAttributeGraphReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Link Test");
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.LINK_MD_CLASS, mdClassificationDAO.getOid());
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
+    MdAttributeLinkDAO mdAttribute = MdAttributeLinkDAO.newInstance();
+    mdAttribute.setValue(MdAttributeLinkInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeLinkInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Link Test");
+    mdAttribute.setValue(MdAttributeLinkInfo.LINK_MD_CLASS, mdClassificationDAO.getOid());
+    mdAttribute.setValue(MdAttributeLinkInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
 
     return mdAttribute;
   }

@@ -193,9 +193,9 @@ public class GraphDBService
     return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
   }
   
-  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  public GraphDDLCommandAction createLinkAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
   {
-    return this.graphDB.createGraphReferenceAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassType, required, changeOverTime);
+    return this.graphDB.createLinkAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassType, required, changeOverTime);
   }
 
 

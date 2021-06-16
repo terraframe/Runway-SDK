@@ -22,21 +22,21 @@ import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.ComponentDTO;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
+import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
-import com.runwaysdk.dataaccess.metadata.graph.MdAttributeGraphReference_G;
-import com.runwaysdk.transport.metadata.caching.AttributeGraphReferenceMdSession;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeLink_G;
+import com.runwaysdk.transport.metadata.caching.AttributeLinkMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
-public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO implements MdAttributeGraphReferenceDAOIF
+public class MdAttributeLinkDAO extends MdAttributeConcreteDAO implements MdAttributeLinkDAOIF
 {
 
   /**
@@ -47,13 +47,13 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   /**
    * The default constructor, does not set any attributes
    */
-  public MdAttributeGraphReferenceDAO()
+  public MdAttributeLinkDAO()
   {
     super();
   }
   
   /**
-   * Constructs a {@link MdAttributeGraphReferenceDAO} from the given hashtable of {@link Attribute}s.
+   * Constructs a {@link MdAttributeLinkDAO} from the given hashtable of {@link Attribute}s.
    *
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -63,34 +63,34 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    * @param attributeMap
    * @param classType
    */
-  public MdAttributeGraphReferenceDAO(Map<String, Attribute> attributeMap, String classType)
+  public MdAttributeLinkDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
   }
   
   /**
-   * Creates an empty {@link MdAttributeGraphReferenceDAO}. For subclasses creates a subtype based on the
+   * Creates an empty {@link MdAttributeLinkDAO}. For subclasses creates a subtype based on the
    * classType, and fills the attributes with the attribute map
    * 
    * @param attributeMap
    *          The attribute mappings of the class
    * @return The new class created
    */
-  public MdAttributeGraphReferenceDAO create(Map<String, Attribute> attributeMap, String classType)
+  public MdAttributeLinkDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new MdAttributeGraphReferenceDAO(attributeMap, classType);
+    return new MdAttributeLinkDAO(attributeMap, classType);
   }
 
   /**
-   * Returns a new {@link MdAttributeGraphReferenceDAO}. Some attributes will contain default
+   * Returns a new {@link MdAttributeLinkDAO}. Some attributes will contain default
    * values, as defined in the attribute metadata. Otherwise, the attributes
    * will be blank.
    *
-   * @return {@link MdAttributeGraphReferenceDAO}.
+   * @return {@link MdAttributeLinkDAO}.
    */
-  public static MdAttributeGraphReferenceDAO newInstance()
+  public static MdAttributeLinkDAO newInstance()
   {
-    return (MdAttributeGraphReferenceDAO) BusinessDAO.newInstance(MdAttributeGraphReferenceInfo.CLASS);
+    return (MdAttributeLinkDAO) BusinessDAO.newInstance(MdAttributeLinkInfo.CLASS);
   }
   
   /**
@@ -100,7 +100,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   public String getSignature()
   {
-    return super.getSignature() + " LinkType:" + this.getReferenceMdVertexDAOIF().definesType();
+    return super.getSignature() + " LinkType:" + this.getLinkMdClassDAOIF().definesType();
   }
   
   /**
@@ -117,15 +117,15 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    *         the values of the struct attribute.
    */
   @Override
-  public MdClassDAOIF getReferenceMdVertexDAOIF()
+  public MdClassDAOIF getLinkMdClassDAOIF()
   {
-    if (this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS).getValue().trim().equals(""))
+    if (this.getAttributeIF(MdAttributeLinkInfo.LINK_MD_CLASS).getValue().trim().equals(""))
     {
       return null;
     }
     else
     {
-      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeLinkInfo.LINK_MD_CLASS);
 
       return (MdClassDAOIF) attributeReference.dereference();
     }
@@ -135,15 +135,15 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdAttributeGraphReferenceDAO getBusinessDAO()
+  public MdAttributeLinkDAO getBusinessDAO()
   {
-    return (MdAttributeGraphReferenceDAO) super.getBusinessDAO();
+    return (MdAttributeLinkDAO) super.getBusinessDAO();
   }  
   
   @Override
   public AttributeMdSession getAttributeMdSession()
   {
-    AttributeGraphReferenceMdSession attrSes = new AttributeGraphReferenceMdSession(this.getReferenceMdVertexDAOIF().definesType());
+    AttributeLinkMdSession attrSes = new AttributeLinkMdSession(this.getLinkMdClassDAOIF().definesType());
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
@@ -164,7 +164,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   public String javaType(boolean isDTO)
   {
-    String structId = this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS).getValue();
+    String structId = this.getAttributeIF(MdAttributeLinkInfo.LINK_MD_CLASS).getValue();
 
     MdClassDAOIF mdClassIF = MdClassDAO.get(structId);
 // Heads up: Smethie Fix
@@ -213,7 +213,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     if (this.definedByClass() instanceof MdGraphClassDAOIF)
     {
-      this.getObjectState().setMdAttributeStrategy(new MdAttributeGraphReference_G(this));
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeLink_G(this));
     }
     else
     {
