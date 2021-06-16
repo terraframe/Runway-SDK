@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -60,7 +60,6 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -2609,7 +2608,6 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
     attributeTags.put(MdAttributeEmbeddedInfo.CLASS, XMLTags.EMBEDDED_TAG);
-    attributeTags.put(MdAttributeLinkInfo.CLASS, XMLTags.LINK_TAG);
     attributeTags.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG);
 
     // Field types

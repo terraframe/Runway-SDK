@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -182,7 +182,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -6740,46 +6739,6 @@ public class SAXParseTest
     mdVertex1.apply();
 
     MdAttributeLocalCharacterEmbeddedDAO mdAttribute = TestFixtureFactory.addLocalCharacterEmbeddedAttribute(mdVertex1);
-    mdAttribute.apply();
-
-    // Export the test entities
-    ExportMetadata metadata = new ExportMetadata(true);
-    metadata.addCreate(new ComponentIF[] { mdVertex1 });
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    // Delete the test entites
-    TestFixtureFactory.delete(mdVertex1);
-
-    // Import the test entites
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    MdVertexDAOIF mdVertex1IF = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
-
-    MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
-
-    Assert.assertNotNull(attribute);
-  }
-
-  /**
-   * Test setting of attributes of and on the class datatype
-   */
-  @Request
-  @Test
-  public void testCreateLink()
-  {
-    // Create test MdVertex
-    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
-    mdVertex1.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.setValue(MdVertexInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdVertex1.setValue(MdVertexInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.apply();
-
-    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
-    mdVertex2.apply();
-
-    MdAttributeLinkDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
     mdAttribute.apply();
 
     // Export the test entities

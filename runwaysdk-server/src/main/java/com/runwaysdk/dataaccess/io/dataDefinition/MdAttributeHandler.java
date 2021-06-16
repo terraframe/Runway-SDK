@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -43,7 +43,6 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeLinkInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
@@ -71,7 +70,6 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLinkDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -87,7 +85,6 @@ import com.runwaysdk.dataaccess.TermAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidAttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -99,7 +96,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLinkDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -659,51 +655,6 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     }
   }
 
-  protected static class AttributeLinkHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
-  {
-    public AttributeLinkHandler(ImportManager manager, String type)
-    {
-      super(manager, type);
-    }
-
-    protected void populate(MdClassDAO mdClass, MdAttributeLinkDAO mdAttribute, Attributes attributes)
-    {
-      super.populate(mdClass, mdAttribute, attributes);
-
-      this.importLinkType(mdClass, mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
-     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
-     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
-     */
-    @Override
-    protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
-    {
-      this.populate(mdClass, (MdAttributeLinkDAO) mdAttribute, attributes);
-    }
-
-    protected void importLinkType(MdClassDAO mdClass, MdAttributeDAO mdAttribute, String referenceType)
-    {
-      if (referenceType != null)
-      {
-        // Ensure that the class being reference is defined in the database
-        if (!MdTypeDAO.isDefined(referenceType))
-        {
-          String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_VERTEX_TAG, XMLTags.MD_STRUCT_TAG, XMLTags.MD_TERM_TAG };
-          SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, referenceType, mdClass.definesType());
-        }
-
-        // Get the databaseID of the enumeration reference
-        MdBusinessDAOIF refMdBusinessIF = MdBusinessDAO.getMdBusinessDAO(referenceType);
-        mdAttribute.setValue(MdAttributeLinkInfo.LINK_MD_CLASS, refMdBusinessIF.getOid());
-      }
-    }
-  }
-
   protected static class AttributeTermHandler extends AttributeReferenceHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public AttributeTermHandler(ImportManager manager, String type)
@@ -1251,7 +1202,6 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));
     this.addHandler(XMLTags.EMBEDDED_TAG, new AttributeEmbeddedHandler(manager, MdAttributeEmbeddedInfo.CLASS));
-    this.addHandler(XMLTags.LINK_TAG, new AttributeLinkHandler(manager, MdAttributeLinkInfo.CLASS));
     this.addHandler(XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG, new AttributeLocalEmbeddedHandler(manager, MdAttributeLocalCharacterEmbeddedInfo.CLASS));
   }
 }
