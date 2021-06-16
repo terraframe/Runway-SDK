@@ -30,10 +30,10 @@ cd $WORKSPACE/runway-sdk
 #git checkout dev
 #git pull
 
-mvn license:format
-git add -A
-git diff-index --quiet HEAD || git commit -m 'License headers'
-git push
+#mvn license:format
+#git add -A
+#git diff-index --quiet HEAD || git commit -m 'License headers'
+#git push
 
 #git checkout master
 #git merge dev
