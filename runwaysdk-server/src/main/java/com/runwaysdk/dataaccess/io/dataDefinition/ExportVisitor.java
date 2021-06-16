@@ -159,7 +159,6 @@ import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -1343,15 +1342,7 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = getMdVertexParameters(mdVertex);
 
     // Write the CLASS_TAG with its parameters
-
-    if (mdVertex instanceof MdClassificationDAOIF)
-    {
-      writer.openEscapedTag(XMLTags.MD_CLASSIFICATION_TAG, attributes);
-    }
-    else
-    {
-      writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
-    }
+    writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
   }
 
   public void visitMdVertex(MdVertexDAOIF mdVertex)
