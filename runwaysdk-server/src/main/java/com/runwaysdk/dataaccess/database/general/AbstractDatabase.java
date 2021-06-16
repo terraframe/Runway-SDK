@@ -1695,10 +1695,10 @@ public abstract class AbstractDatabase
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
    */
-  public String buildSQLDeleteStatement(String table, String oid, long seq)
+  public String buildSQLDeleteStatement(String table, String oid, String seqColumnName, long seq)
   {
     String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-    statement += " AND " + ElementDAOIF.SEQUENCE_COLUMN + " = " + seq;
+    statement += " AND " + seqColumnName + " = " + seq;
     return statement;
   }
 
