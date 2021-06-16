@@ -259,12 +259,12 @@ public class VertexObjectDAOTest
   @Transaction
   public static void classTearDown_Transaction()
   {
+    TestFixtureFactory.delete(mdClassificationDAO);
     TestFixtureFactory.delete(mdVertexDAO);
     TestFixtureFactory.delete(mdEnumerationDAO);
     TestFixtureFactory.delete(mdEnumMasterDAO);
     TestFixtureFactory.delete(mdBusinessDAO);
     TestFixtureFactory.delete(mdEmbeddedVertexDAO);
-    TestFixtureFactory.delete(mdClassificationDAO);
   }
 
   @Request
@@ -1285,49 +1285,6 @@ public class VertexObjectDAOTest
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
     vertexDAO.setValue(mdMultiLineStringAttribute.definesAttribute(), "Test Value");
-  }
-
-  @Request
-  @Test
-  public void testLinkAttribute()
-  {
-    VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdClassificationDAO.definesType());
-
-    try
-    {
-      classifierDAO.apply();
-
-      String attributeName = mdLinkAttribute.definesAttribute();
-      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-
-      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
-
-      vertexDAO.setValue(attributeName, classifierDAO.getOid());
-
-      Assert.assertEquals(classifierDAO.getOid(), vertexDAO.getObjectValue(attributeName));
-
-      try
-      {
-        // Test create
-        vertexDAO.apply();
-
-        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-
-        Assert.assertNotNull(test);
-
-        Assert.assertEquals(classifierDAO.getOid(), test.getObjectValue(attributeName));
-      }
-      finally
-      {
-        vertexDAO.delete();
-      }
-
-      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
-    }
-    finally
-    {
-      classifierDAO.delete();
-    }
   }
 
 }

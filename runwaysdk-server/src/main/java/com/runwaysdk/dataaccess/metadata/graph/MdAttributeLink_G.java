@@ -22,7 +22,6 @@ import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
-import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
@@ -80,8 +79,8 @@ public class MdAttributeLink_G extends MdAttributeConcrete_G
   @Override
   protected void createDbAttribute()
   {
-    MdVertexDAOIF linkMdClassDAOIF = (MdVertexDAOIF) this.getMdAttribute().getLinkMdClassDAOIF();
-    String linkClassName = linkMdClassDAOIF.getDBClassName();
+    String embeddedClassType = this.getLinkClassType();
+
     String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
     String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
     boolean required = ( (AttributeBooleanIF) this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.REQUIRED) ).getBooleanValue();
@@ -89,7 +88,7 @@ public class MdAttributeLink_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createLinkAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassName, required, this.isChangeOverTime());
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createLinkAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required, this.isChangeOverTime());
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);

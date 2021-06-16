@@ -34,5 +34,5 @@ public interface MdAttributeLinkInfo extends MdAttributeConcreteInfo
   /**
    * OID.
    */
-//  public static final String ID_VALUE  = "b0ac09d5-4507-34b5-9794-0d03a400003a";
+  public static final String ID_VALUE  = "b0ac09d5-4507-34b5-9794-0d03a400003a";
 }
