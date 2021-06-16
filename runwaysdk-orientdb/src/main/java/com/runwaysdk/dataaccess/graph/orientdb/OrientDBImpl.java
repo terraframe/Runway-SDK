@@ -517,12 +517,6 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction createLinkAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
-  {
-    return new OrientDBCreateLinkPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
-  }
-  
-  @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
     return new OrientDBCreateGeometryPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required, cot);
@@ -1810,7 +1804,7 @@ public class OrientDBImpl implements GraphDB
     return oClass;
   }
 
-  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass, OType type)
+  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass)
   {
     OClass oClass = db.getClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
 
@@ -1819,9 +1813,10 @@ public class OrientDBImpl implements GraphDB
       oClass = db.createVertexClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
-      oClass.createProperty(OrientDBConstant.VALUE, type, vClass);
+      oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDED, vClass);
     }
 
     return oClass;
   }
+
 }
