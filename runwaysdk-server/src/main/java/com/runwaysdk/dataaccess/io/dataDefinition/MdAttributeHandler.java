@@ -701,7 +701,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
 
         // Get the databaseID of the enumeration reference
         MdVertexDAOIF refMdBusinessIF = MdVertexDAO.getMdVertexDAO(referenceType);
-        mdAttribute.setValue(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX, refMdBusinessIF.getOid());
+        mdAttribute.setValue(MdAttributeGraphReferenceInfo.LINK_MD_CLASS, refMdBusinessIF.getOid());
       }
     }
   }
@@ -1253,7 +1253,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));
     this.addHandler(XMLTags.EMBEDDED_TAG, new AttributeEmbeddedHandler(manager, MdAttributeEmbeddedInfo.CLASS));
-    this.addHandler(XMLTags.GRAPH_REFERENCE_TAG, new AttributeGraphReferenceHandler(manager, MdAttributeGraphReferenceInfo.CLASS));
+    this.addHandler(XMLTags.LINK_TAG, new AttributeGraphReferenceHandler(manager, MdAttributeGraphReferenceInfo.CLASS));
     this.addHandler(XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG, new AttributeLocalEmbeddedHandler(manager, MdAttributeLocalCharacterEmbeddedInfo.CLASS));
   }
 }

@@ -2630,7 +2630,7 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
     attributeTags.put(MdAttributeEmbeddedInfo.CLASS, XMLTags.EMBEDDED_TAG);
-    attributeTags.put(MdAttributeGraphReferenceInfo.CLASS, XMLTags.GRAPH_REFERENCE_TAG);
+    attributeTags.put(MdAttributeGraphReferenceInfo.CLASS, XMLTags.LINK_TAG);
     attributeTags.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG);
 
     // Field types

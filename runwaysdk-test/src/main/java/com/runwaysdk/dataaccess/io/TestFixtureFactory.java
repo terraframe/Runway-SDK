@@ -971,7 +971,7 @@ public class TestFixtureFactory
     MdAttributeGraphReferenceDAO mdAttribute = MdAttributeGraphReferenceDAO.newInstance();
     mdAttribute.setValue(MdAttributeGraphReferenceInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeGraphReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Link Test");
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX, mdClassificationDAO.getOid());
+    mdAttribute.setValue(MdAttributeGraphReferenceInfo.LINK_MD_CLASS, mdClassificationDAO.getOid());
     mdAttribute.setValue(MdAttributeGraphReferenceInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
 
     return mdAttribute;

@@ -953,7 +953,7 @@
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
       <xs:element name="embedded" type="embedded" />
-      <xs:element name="graphReference" type="graphReference" />      
+      <xs:element name="link" type="link" />      
       <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
@@ -1147,7 +1147,7 @@
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
   
-  <xs:complexType name="graphReference">
+  <xs:complexType name="link">
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
 

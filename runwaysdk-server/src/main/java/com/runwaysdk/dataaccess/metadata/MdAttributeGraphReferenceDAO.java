@@ -119,13 +119,13 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   @Override
   public MdClassDAOIF getReferenceMdVertexDAOIF()
   {
-    if (this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue().trim().equals(""))
+    if (this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS).getValue().trim().equals(""))
     {
       return null;
     }
     else
     {
-      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS);
 
       return (MdClassDAOIF) attributeReference.dereference();
     }
@@ -164,7 +164,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   public String javaType(boolean isDTO)
   {
-    String structId = this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue();
+    String structId = this.getAttributeIF(MdAttributeGraphReferenceInfo.LINK_MD_CLASS).getValue();
 
     MdClassDAOIF mdClassIF = MdClassDAO.get(structId);
 // Heads up: Smethie Fix
