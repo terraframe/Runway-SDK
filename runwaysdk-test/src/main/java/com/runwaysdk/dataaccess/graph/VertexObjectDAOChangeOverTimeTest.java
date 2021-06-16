@@ -97,7 +97,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
-  private static MdAttributeGraphReferenceDAO                   mdGraphReferenceAttribute;
+  private static MdAttributeGraphReferenceDAO                   mdLinkAttribute;
 
   @Request
   @BeforeClass
@@ -167,8 +167,8 @@ public class VertexObjectDAOChangeOverTimeTest
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
 
-    mdGraphReferenceAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
-    mdGraphReferenceAttribute.apply();
+    mdLinkAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
+    mdLinkAttribute.apply();
   }
 
   @Request
@@ -1067,7 +1067,7 @@ public class VertexObjectDAOChangeOverTimeTest
     {
       classifierDAO.apply();
 
-      String attributeName = mdGraphReferenceAttribute.definesAttribute();
+      String attributeName = mdLinkAttribute.definesAttribute();
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
       Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
