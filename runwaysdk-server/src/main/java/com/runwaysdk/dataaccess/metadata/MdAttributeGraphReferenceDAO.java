@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -23,15 +23,19 @@ import java.util.Map;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.ComponentDTO;
 import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
+import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeCharacter_G;
 import com.runwaysdk.dataaccess.metadata.graph.MdAttributeGraphReference_G;
 import com.runwaysdk.transport.metadata.caching.AttributeGraphReferenceMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
@@ -51,9 +55,10 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     super();
   }
-  
+
   /**
-   * Constructs a {@link MdAttributeGraphReferenceDAO} from the given hashtable of {@link Attribute}s.
+   * Constructs a {@link MdAttributeGraphReferenceDAO} from the given hashtable
+   * of {@link Attribute}s.
    *
    * <br/>
    * <b>Precondition:</b> attributeMap != null <br/>
@@ -67,10 +72,11 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     super(attributeMap, classType);
   }
-  
+
   /**
-   * Creates an empty {@link MdAttributeGraphReferenceDAO}. For subclasses creates a subtype based on the
-   * classType, and fills the attributes with the attribute map
+   * Creates an empty {@link MdAttributeGraphReferenceDAO}. For subclasses
+   * creates a subtype based on the classType, and fills the attributes with the
+   * attribute map
    * 
    * @param attributeMap
    *          The attribute mappings of the class
@@ -82,9 +88,9 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   }
 
   /**
-   * Returns a new {@link MdAttributeGraphReferenceDAO}. Some attributes will contain default
-   * values, as defined in the attribute metadata. Otherwise, the attributes
-   * will be blank.
+   * Returns a new {@link MdAttributeGraphReferenceDAO}. Some attributes will
+   * contain default values, as defined in the attribute metadata. Otherwise,
+   * the attributes will be blank.
    *
    * @return {@link MdAttributeGraphReferenceDAO}.
    */
@@ -92,7 +98,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     return (MdAttributeGraphReferenceDAO) BusinessDAO.newInstance(MdAttributeGraphReferenceInfo.CLASS);
   }
-  
+
   /**
    * Returns the signature of the metadata.
    *
@@ -102,13 +108,16 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   {
     return super.getSignature() + " LinkType:" + this.getReferenceMdVertexDAOIF().definesType();
   }
-  
+
   /**
-   * This method balks ... does nothing... as it is not applicable for embedded types.
+   * This method balks ... does nothing... as it is not applicable for embedded
+   * types.
    */
   @Override
-  public void setRandomValue(EntityDAO object) {}
-  
+  public void setRandomValue(EntityDAO object)
+  {
+  }
+
   /**
    * Returns the <code>MdClassDAOIF</code> that defines the class used to store
    * the values of the struct attribute.
@@ -130,7 +139,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
       return (MdClassDAOIF) attributeReference.dereference();
     }
   }
-  
+
   /**
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
@@ -138,8 +147,8 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   public MdAttributeGraphReferenceDAO getBusinessDAO()
   {
     return (MdAttributeGraphReferenceDAO) super.getBusinessDAO();
-  }  
-  
+  }
+
   @Override
   public AttributeMdSession getAttributeMdSession()
   {
@@ -167,12 +176,12 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
     String structId = this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue();
 
     MdClassDAOIF mdClassIF = MdClassDAO.get(structId);
-// Heads up: Smethie Fix
+    // Heads up: Smethie Fix
     if (isDTO)
     {
       if (mdClassIF.isGenerateSource())
       {
-//        return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+        // return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
         return ComponentDTO.class.getName();
       }
       else
@@ -184,7 +193,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
     {
       if (mdClassIF.isGenerateSource())
       {
-//        return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+        // return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
         return mdClassIF.definesType();
       }
       else
@@ -198,26 +207,31 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    * Does nothing. TThe priority for supporting this has not been defined.
    */
   @Override
-  public void accept(MdAttributeDAOVisitor visitor) { }
+  public void accept(MdAttributeDAOVisitor visitor)
+  {
+  }
 
   @Override
   public String attributeMdDTOType()
   {
- // Heads up: Smethie fix
+    // Heads up: Smethie fix
     return null;
   }
 
-  
   @Override
   protected void initializeStrategyObject()
   {
-    if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    if (this.definedByClass() instanceof MdEntityDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeGraphReference_E(this));
+    }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeGraphReference_G(this));
     }
     else
     {
-      throw new ProgrammingErrorException("Link attributes are currently only supported a ["+MdGraphClassInfo.CLASS+"]");
+      throw new ProgrammingErrorException("Graph reference attributes are currently only supported a [" + MdGraphClassInfo.CLASS + " and " + MdEntityInfo.CLASS + "]");
     }
   }
 

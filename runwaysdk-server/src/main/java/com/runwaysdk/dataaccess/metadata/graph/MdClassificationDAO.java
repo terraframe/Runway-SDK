@@ -18,25 +18,27 @@
  */
 package com.runwaysdk.dataaccess.metadata.graph;
 
-import java.sql.Connection;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.generation.GeneratorIF;
-import com.runwaysdk.business.generation.JavaArtifactMdTypeCommand;
-import com.runwaysdk.business.graph.generation.JavaArtifactMdGraphClassCommand;
+import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.constants.MdBusinessInfo;
+import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
+import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdClassificationDAOIF;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
+import com.runwaysdk.dataaccess.transaction.Transaction;
 
 public class MdClassificationDAO extends MetadataDAO implements MdClassificationDAOIF
 {
@@ -136,6 +138,34 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     return ( (AttributeLocalIF) this.getAttributeIF(MdTypeInfo.DISPLAY_LABEL) ).getLocalValues();
   }
 
+  public MdVertexDAOIF getReferenceMdVertexDAO()
+  {
+    if (this.getAttributeIF(MdClassificationInfo.MD_VERTEX).getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdClassificationInfo.MD_VERTEX);
+
+      return (MdVertexDAOIF) attributeReference.dereference();
+    }
+  }
+
+  public MdEdgeDAOIF getReferenceMdEdgeDAO()
+  {
+    if (this.getAttributeIF(MdClassificationInfo.MD_EDGE).getValue().trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdClassificationInfo.MD_EDGE);
+
+      return (MdEdgeDAOIF) attributeReference.dereference();
+    }
+  }
+
   /**
    * Returns the signature of the metadata.
    * 
@@ -156,5 +186,70 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
   {
     return EntityDAOFactory.buildType(this.getPackage(), this.getTypeName());
   }
+
+  /*
+   * @see com.runwaysdk.dataaccess.metadata.MdBusinessDAO#save(boolean)
+   */
+  @Override
+  public String save(boolean flag)
+  {
+    boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
+
+    if (firstApply && this.getReferenceMdVertexDAO() == null)
+    {
+      String classificationLabel = this.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+
+      String vertexName = this.getAttribute(MdBusinessInfo.NAME).getValue() + "Vertex";
+      String edgeName = this.getAttribute(MdBusinessInfo.NAME).getValue() + "Edge";
+
+      // Add display label to metadata.
+      MdVertexDAO mdVertex = MdVertexDAO.newInstance();
+      mdVertex.setValue(MdVertexInfo.NAME, vertexName);
+      mdVertex.setValue(MdVertexInfo.PACKAGE, this.getPackage());
+      mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
+      mdVertex.apply();
+
+      MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+      mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
+      mdEdge.setValue(MdEdgeInfo.PACKAGE, this.getPackage());
+      mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
+      mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, this.getOid());
+      mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, this.getOid());
+      mdEdge.apply();
+
+      this.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
+      this.setValue(MdClassificationInfo.MD_EDGE, mdEdge.getOid());
+    }
+
+    String retval = super.save(flag);
+
+    return retval;
+  }
+
+//  @Transaction
+//  public static MdClassificationDAO createSubType(String packageName, String typeName, String classificationLabel)
+//  {
+//    String vertexName = typeName + "Vertex";
+//    String edgeName = typeName + "Edge";
+//
+//    // Add display label to metadata.
+//    MdVertexDAO mdVertex = MdVertexDAO.newInstance();
+//    mdVertex.setValue(MdVertexInfo.NAME, vertexName);
+//    mdVertex.setValue(MdVertexInfo.PACKAGE, packageName);
+//    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
+//    mdVertex.apply();
+//
+//    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+//    mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
+//    mdEdge.setValue(MdEdgeInfo.PACKAGE, packageName);
+//    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
+//    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, mdVertex.getOid());
+//    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, mdVertex.getOid());
+//    mdEdge.apply();
+//
+//    
+////    this.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
+////    this.setValue(MdClassificationInfo.MD_EDGE, mdEdge.getOid());
+//  }
 
 }

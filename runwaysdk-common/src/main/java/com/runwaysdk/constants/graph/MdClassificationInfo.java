@@ -46,6 +46,16 @@ public interface MdClassificationInfo extends MetadataInfo
   public static final String DISPLAY_LABEL = "displayLabel";
 
   /**
+   * MdVertex used by the classification
+   */
+  public static final String MD_VERTEX     = "mdVertex";
+
+  /**
+   * MdEdge used by the classification
+   */
+  public static final String MD_EDGE       = "mdEdge";
+
+  /**
    * OID.
    */
   public static final String ID_VALUE      = "af02ce48-050f-3449-b7d2-8add4f00003a";
