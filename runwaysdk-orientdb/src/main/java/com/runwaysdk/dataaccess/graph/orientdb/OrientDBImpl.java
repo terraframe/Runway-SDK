@@ -74,7 +74,6 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -105,7 +104,6 @@ import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
@@ -946,7 +944,7 @@ public class OrientDBImpl implements GraphDB
     {
       return OType.STRING.name();
     }
-    else if (mdAttribute instanceof MdAttributeGraphReferenceDAOIF)
+    else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
     {
       return OType.LINK.name();
     }
@@ -1511,7 +1509,7 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
-    else if (mdAttribute instanceof MdAttributeGraphReferenceDAOIF)
+    else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
     {
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
       attribute.clearValuesOverTime();
@@ -1655,7 +1653,7 @@ public class OrientDBImpl implements GraphDB
           this.populateEnumChangeOverTime(db, element, attribute, columnName);
         }
       }
-      else if (mdAttribute instanceof MdAttributeGraphReferenceDAOIF)
+      else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
       {
         ID id = ( (AttributeGraphRef) attribute ).getRID();
         String columnName = mdAttribute.getColumnName();

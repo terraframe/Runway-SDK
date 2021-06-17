@@ -44,6 +44,7 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
@@ -709,6 +710,31 @@ public class MdGraphClassTest
     mdClassificationDAO.delete();
   }
 
+  @Request
+  @Test
+  public void testCreateMdAttributeClassification()
+  {
+    MdClassificationDAO mdClassificationDAO = createClassificationClass(CLASSIFICATION_NAME);
+
+    try
+    {
+      MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+      MdAttributeClassificationDAO mdAttribute = TestFixtureFactory.addClassificationAttribute(mdVertexDAO, mdClassificationDAO);
+      mdAttribute.apply();
+
+      String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+      String dbAttrName = mdAttribute.definesAttribute();
+      GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+      boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+      Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+    }
+    finally
+    {
+      mdClassificationDAO.delete();
+    }
+  }
+
   protected MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
@@ -721,10 +747,7 @@ public class MdGraphClassTest
 
   protected MdClassificationDAO createClassificationClass(String vertexName)
   {
-    MdClassificationDAO mdClassificationDAO = TestFixtureFactory.createMdClassification(vertexName);
-    mdClassificationDAO.apply();
-
-    return mdClassificationDAO;
+    return MdClassificationDAO.create(TestFixConst.TEST_PACKAGE, vertexName, "Test Classification");
   }
 
   protected MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)

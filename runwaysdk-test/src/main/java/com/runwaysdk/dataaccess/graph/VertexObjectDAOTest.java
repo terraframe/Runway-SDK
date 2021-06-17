@@ -232,7 +232,7 @@ public class VertexObjectDAOTest
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
 
-    mdGraphReferenceAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
+    mdGraphReferenceAttribute = TestFixtureFactory.addGraphReferenceAttribute(mdVertexDAO, mdClassificationDAO);
     mdGraphReferenceAttribute.apply();
 
     // Define the embedded class

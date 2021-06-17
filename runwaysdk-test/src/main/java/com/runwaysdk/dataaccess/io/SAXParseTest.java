@@ -6782,7 +6782,7 @@ public class SAXParseTest
     mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdVertex1.apply();
 
-    MdAttributeGraphReferenceDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
+    MdAttributeGraphReferenceDAO mdAttribute = TestFixtureFactory.addGraphReferenceAttribute(mdVertex1, mdVertex2);
     mdAttribute.apply();
 
     // Export the test entities

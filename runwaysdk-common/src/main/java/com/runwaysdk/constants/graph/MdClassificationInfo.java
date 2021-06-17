@@ -32,13 +32,13 @@ public interface MdClassificationInfo extends MetadataInfo
    * Name of the attribute that stores the name of the relationship that is
    * defined.
    */
-  public static final String NAME          = "typeName";
+  public static final String TYPE_NAME     = "typeName";
 
   /**
    * Name of the attribute that stores the name of the package of the
    * relationship that is defined.
    */
-  public static final String PACKAGE       = "packageName";
+  public static final String PACKAGE  = "packageName";
 
   /**
    * Name of the attribute that stores the label of this metadata object.
@@ -54,6 +54,11 @@ public interface MdClassificationInfo extends MetadataInfo
    * MdEdge used by the classification
    */
   public static final String MD_EDGE       = "mdEdge";
+
+  /**
+   * Root node of the classification tree
+   */
+  public static final String ROOT          = "root";
 
   /**
    * OID.

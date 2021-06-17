@@ -1,0 +1,20 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness 
+        label="Md Attribute Classification" 
+        name="com.runwaysdk.system.metadata.MdAttributeClassification" 
+        extends="com.runwaysdk.system.metadata.MdAttributeConcrete"
+        isAbstract="false"
+        generateController="false" >
+        <attributes>
+          <reference name="referenceMdClassification" type="com.runwaysdk.system.metadata.MdClassification" label="Reference MdClassification" description="The class linked by this attribute, must be a MdClassification" required="true" />
+        </attributes>
+      </mdBusiness>
+    
+    </create>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>

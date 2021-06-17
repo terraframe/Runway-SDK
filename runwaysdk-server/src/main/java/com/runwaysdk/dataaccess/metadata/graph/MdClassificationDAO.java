@@ -39,6 +39,7 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.system.AbstractClassification;
 
 public class MdClassificationDAO extends MetadataDAO implements MdClassificationDAOIF
 {
@@ -226,30 +227,38 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     return retval;
   }
 
-//  @Transaction
-//  public static MdClassificationDAO createSubType(String packageName, String typeName, String classificationLabel)
-//  {
-//    String vertexName = typeName + "Vertex";
-//    String edgeName = typeName + "Edge";
-//
-//    // Add display label to metadata.
-//    MdVertexDAO mdVertex = MdVertexDAO.newInstance();
-//    mdVertex.setValue(MdVertexInfo.NAME, vertexName);
-//    mdVertex.setValue(MdVertexInfo.PACKAGE, packageName);
-//    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
-//    mdVertex.apply();
-//
-//    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
-//    mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
-//    mdEdge.setValue(MdEdgeInfo.PACKAGE, packageName);
-//    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
-//    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, mdVertex.getOid());
-//    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, mdVertex.getOid());
-//    mdEdge.apply();
-//
-//    
-////    this.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
-////    this.setValue(MdClassificationInfo.MD_EDGE, mdEdge.getOid());
-//  }
+  @Transaction
+  public static MdClassificationDAO create(String packageName, String typeName, String classificationLabel)
+  {
+    String vertexName = typeName + "Vertex";
+    String edgeName = typeName + "Edge";
+
+    MdVertexDAOIF superVertex = MdVertexDAO.getMdVertexDAO(AbstractClassification.CLASS);
+
+    MdVertexDAO mdVertex = MdVertexDAO.newInstance();
+    mdVertex.setValue(MdVertexInfo.NAME, vertexName);
+    mdVertex.setValue(MdVertexInfo.PACKAGE, packageName);
+    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
+    mdVertex.setValue(MdVertexInfo.SUPER_MD_VERTEX, superVertex.getOid());
+    mdVertex.apply();
+
+    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
+    mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
+    mdEdge.setValue(MdEdgeInfo.PACKAGE, packageName);
+    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
+    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, mdVertex.getOid());
+    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, mdVertex.getOid());
+    mdEdge.apply();
+
+    MdClassificationDAO mdClassification = MdClassificationDAO.newInstance();
+    mdClassification.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
+    mdClassification.setValue(MdClassificationInfo.MD_EDGE, mdEdge.getOid());
+    mdClassification.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
+    mdClassification.setValue(MdClassificationInfo.TYPE_NAME, typeName);
+    mdClassification.setValue(MdClassificationInfo.PACKAGE, packageName);
+    mdClassification.apply();
+
+    return mdClassification;
+  }
 
 }
