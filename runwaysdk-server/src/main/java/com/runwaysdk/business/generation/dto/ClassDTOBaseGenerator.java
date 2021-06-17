@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation.dto;
 
@@ -388,11 +388,16 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       getter = "getValue(" + attributeConstant + ")";
     }
 
-    getWriter().writeLine("public " + m.javaType(false) + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
-    getWriter().openBracket();
-    getWriter().writeLine("return " + getter + ';');
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    String javaType = m.javaType(false);
+
+    if (javaType != null)
+    {
+      getWriter().writeLine("public " + javaType + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("return " + getter + ';');
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**
@@ -410,18 +415,23 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
 
     String attributeName = m.definesAttribute();
 
-    getWriter().writeLine("public void set" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + m.javaType(false) + " value)");
-    getWriter().openBracket();
-    getWriter().writeLine("if(value == null)");
-    getWriter().openBracket();
-    getWriter().writeLine(m.setterWrapper("\"\"") + ";");
-    getWriter().closeBracket();
-    getWriter().writeLine("else");
-    getWriter().openBracket();
-    getWriter().writeLine(m.generatedClientSetter() + ";");
-    getWriter().closeBracket();
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    String javaType = m.javaType(false);
+
+    if (javaType != null)
+    {
+      getWriter().writeLine("public void set" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + javaType + " value)");
+      getWriter().openBracket();
+      getWriter().writeLine("if(value == null)");
+      getWriter().openBracket();
+      getWriter().writeLine(m.setterWrapper("\"\"") + ";");
+      getWriter().closeBracket();
+      getWriter().writeLine("else");
+      getWriter().openBracket();
+      getWriter().writeLine(m.generatedClientSetter() + ";");
+      getWriter().closeBracket();
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**
@@ -772,13 +782,16 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     String attrMdName = ATTRIBUTE_MD_PREFIX + CommonGenerationUtil.upperFirstCharacter(attributeName) + ATTRIBUTE_MD_SUFFIX;
     String attributeMdDTOType = m.attributeMdDTOType();
 
-    String attributeConstant = attributeName.toUpperCase();
+    if (attributeMdDTOType != null)
+    {
+      String attributeConstant = attributeName.toUpperCase();
 
-    getWriter().writeLine("public final " + attributeMdDTOType + " " + attrMdName + "()");
-    getWriter().openBracket();
-    getWriter().writeLine("return (" + attributeMdDTOType + ") getAttributeDTO(" + attributeConstant + ").getAttributeMdDTO();");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+      getWriter().writeLine("public final " + attributeMdDTOType + " " + attrMdName + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("return (" + attributeMdDTOType + ") getAttributeDTO(" + attributeConstant + ").getAttributeMdDTO();");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**

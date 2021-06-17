@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
-import com.runwaysdk.business.ComponentDTO;
 import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
@@ -31,12 +30,13 @@ import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
-import com.runwaysdk.dataaccess.MdTransientDAOIF;
+import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
-import com.runwaysdk.dataaccess.metadata.graph.MdAttributeCharacter_G;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdAttributeGraphReference_G;
+import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.transport.metadata.caching.AttributeGraphReferenceMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -109,10 +109,6 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
     return super.getSignature() + " LinkType:" + this.getReferenceMdVertexDAOIF().definesType();
   }
 
-  /**
-   * This method balks ... does nothing... as it is not applicable for embedded
-   * types.
-   */
   @Override
   public void setRandomValue(EntityDAO object)
   {
@@ -126,7 +122,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    *         the values of the struct attribute.
    */
   @Override
-  public MdClassDAOIF getReferenceMdVertexDAOIF()
+  public MdVertexDAOIF getReferenceMdVertexDAOIF()
   {
     if (this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue().trim().equals(""))
     {
@@ -136,7 +132,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
     {
       AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX);
 
-      return (MdClassDAOIF) attributeReference.dereference();
+      return (MdVertexDAOIF) attributeReference.dereference();
     }
   }
 
@@ -160,10 +156,35 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   /**
    * Does nothing. TThe priority for supporting this has not been defined.
    */
-  @Override
+  /**
+   * Returns the java class object for the attribute type.
+   * 
+   * @return the java class object for the attribute type.
+   */
+  public Class<?> javaClass()
+  {
+    return String.class;
+  }
+
+  /**
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
+   *
+   * @return string representing the query attribute class for attributes of
+   *         this type.
+   */
   public String queryAttributeClass()
   {
-    return null;
+    return com.runwaysdk.query.SelectableUUID.class.getName();
+  }
+
+  /**
+   * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
+   */
+  @Override
+  public String getInterfaceClassName()
+  {
+    return MdAttributeGraphReferenceDAOIF.class.getName();
   }
 
   /*
@@ -173,33 +194,23 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
    */
   public String javaType(boolean isDTO)
   {
-    String structId = this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue();
-
-    MdClassDAOIF mdClassIF = MdClassDAO.get(structId);
-    // Heads up: Smethie Fix
     if (isDTO)
     {
-      if (mdClassIF.isGenerateSource())
-      {
-        // return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-        return ComponentDTO.class.getName();
-      }
-      else
-      {
-        return ComponentDTO.class.getName();
-      }
+      return null;
+    }
+    String mdVertexIF = this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue();
+
+    MdClassDAOIF mdClassIF = MdClassDAO.get(mdVertexIF);
+
+    // Heads up: Smethie Fix
+    if (mdClassIF.isGenerateSource())
+    {
+      // return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+      return mdClassIF.definesType();
     }
     else
     {
-      if (mdClassIF.isGenerateSource())
-      {
-        // return mdClassIF.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-        return mdClassIF.definesType();
-      }
-      else
-      {
-        return ComponentIF.class.getName();
-      }
+      return ComponentIF.class.getName();
     }
   }
 
@@ -214,7 +225,6 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
   @Override
   public String attributeMdDTOType()
   {
-    // Heads up: Smethie fix
     return null;
   }
 
@@ -233,6 +243,35 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeConcreteDAO impleme
     {
       throw new ProgrammingErrorException("Graph reference attributes are currently only supported a [" + MdGraphClassInfo.CLASS + " and " + MdEntityInfo.CLASS + "]");
     }
+  }
+
+  @Override
+  protected String generatedServerSetter(String attributeName)
+  {
+    return this.setterWrapper(attributeName, "value.getOid()");
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting
+   * (java.lang.String)
+   */
+  protected String generateTypesafeFormatting(String formatMe)
+  {
+    MdVertexDAOIF referenceMdBusiness = this.getReferenceMdVertexDAOIF();
+
+    StringBuilder method = new StringBuilder();
+
+    if (referenceMdBusiness.isGenerateSource())
+    {
+      method.append("(" + referenceMdBusiness.definesType() + ")");
+    }
+
+    method.append(VertexObjectDAO.class.getName() + ".get(" + MdVertexDAO.class.getName() + ".getMdVertexDAO(\"" + referenceMdBusiness.definesType() + "\"), " + formatMe + ")");
+
+    return method.toString();
   }
 
 }
