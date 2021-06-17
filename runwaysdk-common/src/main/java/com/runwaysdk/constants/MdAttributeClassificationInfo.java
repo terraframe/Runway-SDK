@@ -16,20 +16,23 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.dataaccess;
+package com.runwaysdk.constants;
 
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
-
-public interface MdAttributeGraphReferenceDAOIF extends MdAttributeGraphRefDAOIF
+public interface MdAttributeClassificationInfo extends MdAttributeConcreteInfo
 {
   /**
-   * Name of the table used to store instances of this class.
+   * Class.
    */
-  public static final String TABLE   = "md_attribute_graph_reference";
-
+  public static final String CLASS   = Constants.METADATA_PACKAGE+".MdAttributeClassification";
   
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
+  /**
+   * Name of the attribute that references the name of the {@link MdClassDAOIF}
+   * used to define the attributes that make up this struct attribute.
    */
-  public MdAttributeGraphReferenceDAO getBusinessDAO();
+  public static final String REFERENCE_MD_CLASSIFICATION   = "referenceMdClassification";
+  
+  /**
+   * OID.
+   */
+//  public static final String ID_VALUE  = "b0ac09d5-4507-34b5-9794-0d03a400003a";
 }

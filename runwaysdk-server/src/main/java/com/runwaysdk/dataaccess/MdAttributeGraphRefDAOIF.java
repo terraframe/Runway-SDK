@@ -16,22 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.transport.metadata.caching;
+package com.runwaysdk.dataaccess;
 
-public class AttributeGraphReferenceMdSession extends AttributeMdSession
+public interface MdAttributeGraphRefDAOIF extends MdAttributeConcreteDAOIF
 {
   /**
-   * The MdStruct that defines the struct.
+   * Returns the <code>MdClassDAOIF</code> that defines the class that defines
+   * the attributes on the embedded objects.
+   *
+   * @return the <code>MdClassDAOIF</code> that defines the class used to store
+   *         the values of the struct attribute.
    */
-  private String referenceMdVertexType;
-
-  public AttributeGraphReferenceMdSession(String referenceMdVertexType)
-  {
-    this.referenceMdVertexType = referenceMdVertexType;
-  }
-
-  public String getReferenceMdVertexType()
-  {
-    return referenceMdVertexType;
-  }
+  public MdClassDAOIF getReferenceMdVertexDAOIF();
 }

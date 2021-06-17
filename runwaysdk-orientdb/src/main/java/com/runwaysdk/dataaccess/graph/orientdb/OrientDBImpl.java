@@ -72,6 +72,7 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
@@ -97,8 +98,8 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphReference;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphReference.ID;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef.ID;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -1395,14 +1396,14 @@ public class OrientDBImpl implements GraphDB
 
           attribute.setValueInternal(geometry);
         }
-        else if (mdAttribute instanceof MdAttributeGraphReferenceDAO)
+        else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
         {
           OVertex ref = (OVertex) value;
           String oid = (String) ref.getProperty("oid");
 
           attribute.setValueInternal(oid);
 
-          ( (AttributeGraphReference) attribute ).setId(new ID(oid, ref.getIdentity()));
+          ( (AttributeGraphRef) attribute ).setId(new ID(oid, ref.getIdentity()));
         }
         else if (mdAttribute instanceof MdAttributeEnumerationDAO)
         {
@@ -1656,7 +1657,7 @@ public class OrientDBImpl implements GraphDB
       }
       else if (mdAttribute instanceof MdAttributeGraphReferenceDAOIF)
       {
-        ID id = ( (AttributeGraphReference) attribute ).getRID();
+        ID id = ( (AttributeGraphRef) attribute ).getRID();
         String columnName = mdAttribute.getColumnName();
 
         if (id != null)
@@ -1670,7 +1671,7 @@ public class OrientDBImpl implements GraphDB
 
         if (mdClass.isEnableChangeOverTime())
         {
-          this.populateLinkChangeOverTime(db, element, (AttributeGraphReference) attribute, columnName);
+          this.populateLinkChangeOverTime(db, element, (AttributeGraphRef) attribute, columnName);
         }
       }
       else
@@ -1709,7 +1710,7 @@ public class OrientDBImpl implements GraphDB
     element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
   }
 
-  protected void populateLinkChangeOverTime(ODatabaseSession db, OElement element, AttributeGraphReference attribute, String columnName)
+  protected void populateLinkChangeOverTime(ODatabaseSession db, OElement element, AttributeGraphRef attribute, String columnName)
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();

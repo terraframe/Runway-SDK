@@ -20,14 +20,15 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 
-public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO implements MdAttributeGraphReferenceDAOIF
+public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO implements MdAttributeClassificationDAOIF
 {
 
   /**
@@ -38,13 +39,13 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
   /**
    * The default constructor, does not set any attributes
    */
-  public MdAttributeGraphReferenceDAO()
+  public MdAttributeClassificationDAO()
   {
     super();
   }
 
   /**
-   * Constructs a {@link MdAttributeGraphReferenceDAO} from the given hashtable
+   * Constructs a {@link MdAttributeClassificationDAO} from the given hashtable
    * of {@link Attribute}s.
    *
    * <br/>
@@ -55,13 +56,13 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
    * @param attributeMap
    * @param classType
    */
-  public MdAttributeGraphReferenceDAO(Map<String, Attribute> attributeMap, String classType)
+  public MdAttributeClassificationDAO(Map<String, Attribute> attributeMap, String classType)
   {
     super(attributeMap, classType);
   }
 
   /**
-   * Creates an empty {@link MdAttributeGraphReferenceDAO}. For subclasses
+   * Creates an empty {@link MdAttributeClassificationDAO}. For subclasses
    * creates a subtype based on the classType, and fills the attributes with the
    * attribute map
    * 
@@ -69,21 +70,21 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
    *          The attribute mappings of the class
    * @return The new class created
    */
-  public MdAttributeGraphReferenceDAO create(Map<String, Attribute> attributeMap, String classType)
+  public MdAttributeClassificationDAO create(Map<String, Attribute> attributeMap, String classType)
   {
-    return new MdAttributeGraphReferenceDAO(attributeMap, classType);
+    return new MdAttributeClassificationDAO(attributeMap, classType);
   }
 
   /**
-   * Returns a new {@link MdAttributeGraphReferenceDAO}. Some attributes will
+   * Returns a new {@link MdAttributeClassificationDAO}. Some attributes will
    * contain default values, as defined in the attribute metadata. Otherwise,
    * the attributes will be blank.
    *
-   * @return {@link MdAttributeGraphReferenceDAO}.
+   * @return {@link MdAttributeClassificationDAO}.
    */
-  public static MdAttributeGraphReferenceDAO newInstance()
+  public static MdAttributeClassificationDAO newInstance()
   {
-    return (MdAttributeGraphReferenceDAO) BusinessDAO.newInstance(MdAttributeGraphReferenceInfo.CLASS);
+    return (MdAttributeClassificationDAO) BusinessDAO.newInstance(MdAttributeClassificationInfo.CLASS);
   }
 
   /**
@@ -92,7 +93,7 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
   @Override
   public String getInterfaceClassName()
   {
-    return MdAttributeGraphReferenceDAOIF.class.getName();
+    return MdAttributeClassificationDAOIF.class.getName();
   }
 
   /**
@@ -105,15 +106,16 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
   @Override
   public MdVertexDAOIF getReferenceMdVertexDAOIF()
   {
-    if (this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX).getValue().trim().equals(""))
+    if (this.getAttributeIF(MdAttributeClassificationInfo.REFERENCE_MD_CLASSIFICATION).getValue().trim().equals(""))
     {
       return null;
     }
     else
     {
-      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX);
+      AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeClassificationInfo.REFERENCE_MD_CLASSIFICATION);
+      MdClassificationDAO mdClassification = (MdClassificationDAO) attributeReference.dereference();
 
-      return (MdVertexDAOIF) attributeReference.dereference();
+      return mdClassification.getReferenceMdVertexDAO();
     }
   }
 
@@ -121,8 +123,8 @@ public class MdAttributeGraphReferenceDAO extends MdAttributeGraphRefDAO impleme
    * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdAttributeGraphReferenceDAO getBusinessDAO()
+  public MdAttributeClassificationDAO getBusinessDAO()
   {
-    return (MdAttributeGraphReferenceDAO) super.getBusinessDAO();
+    return (MdAttributeClassificationDAO) super.getBusinessDAO();
   }
 }

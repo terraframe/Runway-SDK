@@ -18,18 +18,18 @@
  */
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 
-public interface MdAttributeGraphReferenceDAOIF extends MdAttributeGraphRefDAOIF
+public interface MdAttributeClassificationDAOIF extends MdAttributeGraphRefDAOIF
 {
   /**
    * Name of the table used to store instances of this class.
    */
-  public static final String TABLE   = "md_attribute_graph_reference";
+  public static final String TABLE   = "md_attribute_classification";
 
   
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
-  public MdAttributeGraphReferenceDAO getBusinessDAO();
+  public MdAttributeClassificationDAO getBusinessDAO();
 }

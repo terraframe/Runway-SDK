@@ -58,6 +58,7 @@ import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
@@ -179,6 +180,7 @@ import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
@@ -371,6 +373,7 @@ public class BusinessDAOFactory
     map.put(MdAttributeSymmetricInfo.CLASS, new MdAttributeSymmetricDAO());
     map.put(MdAttributeEmbeddedInfo.CLASS, new MdAttributeEmbeddedDAO());
     map.put(MdAttributeGraphReferenceInfo.CLASS, new MdAttributeGraphReferenceDAO());
+    map.put(MdAttributeClassificationInfo.CLASS, new MdAttributeClassificationDAO());
     map.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, new MdAttributeLocalCharacterEmbeddedDAO());
 
     // web form

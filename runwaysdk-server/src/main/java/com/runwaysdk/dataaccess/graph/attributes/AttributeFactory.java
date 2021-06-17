@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -33,10 +33,9 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterEmbeddedDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeLocalEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTextDAOIF;
@@ -47,9 +46,6 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 
 public class AttributeFactory
 {
@@ -142,9 +138,9 @@ public class AttributeFactory
     {
       attribute = new AttributeEnumeration(mdAttributeDAOIF, definingType);
     }
-    else if (mdAttributeDAOIF instanceof MdAttributeGraphReferenceDAOIF)
+    else if (mdAttributeDAOIF instanceof MdAttributeGraphRefDAOIF)
     {
-      attribute = new AttributeGraphReference(mdAttributeDAOIF, definingType);
+      attribute = new AttributeGraphRef(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeEmbeddedDAOIF)
     {

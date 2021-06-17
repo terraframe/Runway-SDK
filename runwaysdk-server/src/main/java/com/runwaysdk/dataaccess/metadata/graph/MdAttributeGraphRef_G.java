@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata.graph;
 
@@ -27,9 +27,9 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphRefDAO;
 
-public class MdAttributeGraphReference_G extends MdAttributeConcrete_G
+public class MdAttributeGraphRef_G extends MdAttributeConcrete_G
 {
 
   /**
@@ -41,9 +41,9 @@ public class MdAttributeGraphReference_G extends MdAttributeConcrete_G
    * Precondition:
    * 
    * @param {@link
-   *          MdAttributeGraphReference_G}
+   *          MdAttributeGraphRef_G}
    */
-  public MdAttributeGraphReference_G(MdAttributeGraphReferenceDAO mdAttribute)
+  public MdAttributeGraphRef_G(MdAttributeGraphRefDAO mdAttribute)
   {
     super(mdAttribute, null);
   }
@@ -63,9 +63,9 @@ public class MdAttributeGraphReference_G extends MdAttributeConcrete_G
    * 
    * @return the MdAttribute
    */
-  protected MdAttributeGraphReferenceDAO getMdAttribute()
+  protected MdAttributeGraphRefDAO getMdAttribute()
   {
-    return (MdAttributeGraphReferenceDAO) super.getMdAttribute();
+    return (MdAttributeGraphRefDAO) super.getMdAttribute();
   }
 
   protected String getLinkClassType()
