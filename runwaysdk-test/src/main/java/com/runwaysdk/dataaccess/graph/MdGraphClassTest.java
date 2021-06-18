@@ -719,15 +719,23 @@ public class MdGraphClassTest
     try
     {
       MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
       MdAttributeClassificationDAO mdAttribute = TestFixtureFactory.addClassificationAttribute(mdVertexDAO, mdClassificationDAO);
       mdAttribute.apply();
 
-      String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
-      String dbAttrName = mdAttribute.definesAttribute();
-      GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+      try
+      {
+        String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+        String dbAttrName = mdAttribute.definesAttribute();
+        GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
 
-      boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
-      Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+        boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+        Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+      }
+      finally
+      {
+        mdAttribute.delete();
+      }
     }
     finally
     {

@@ -227,6 +227,25 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     return retval;
   }
 
+  @Override
+  public void delete()
+  {
+    MdEdgeDAOIF referenceMdEdgeDAO = this.getReferenceMdEdgeDAO();
+    MdVertexDAOIF referenceMdVertexDAO = this.getReferenceMdVertexDAO();
+
+    super.delete();
+
+    if (referenceMdEdgeDAO != null)
+    {
+      referenceMdEdgeDAO.getBusinessDAO().delete();
+    }
+
+    if (referenceMdVertexDAO != null)
+    {
+      referenceMdVertexDAO.getBusinessDAO().delete();
+    }
+  }
+
   @Transaction
   public static MdClassificationDAO create(String packageName, String typeName, String classificationLabel)
   {
