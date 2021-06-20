@@ -21,10 +21,8 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
-import com.runwaysdk.constants.MdTermInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
@@ -35,8 +33,10 @@ import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeGraphRef;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.system.AbstractClassification;
@@ -244,6 +244,19 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     {
       referenceMdVertexDAO.getBusinessDAO().delete();
     }
+  }
+
+  @Override
+  public VertexObjectDAOIF getRoot()
+  {
+    if (!this.getAttributeIF(MdClassificationInfo.ROOT).getValue().trim().equals(""))
+    {
+      AttributeGraphRef attributeReference = (AttributeGraphRef) this.getAttributeIF(MdClassificationInfo.ROOT);
+
+      return attributeReference.dereference(attributeReference.getValue());
+    }
+
+    return null;
   }
 
   @Transaction

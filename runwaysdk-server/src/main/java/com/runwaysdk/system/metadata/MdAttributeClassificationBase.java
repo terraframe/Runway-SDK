@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1858754208)
+@com.runwaysdk.business.ClassSignature(hash = -820646828)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -12,7 +12,8 @@ public abstract class MdAttributeClassificationBase extends com.runwaysdk.system
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeClassification";
   public static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
-  private static final long serialVersionUID = 1858754208;
+  public static java.lang.String ROOT = "root";
+  private static final long serialVersionUID = -820646828;
   
   public MdAttributeClassificationBase()
   {
@@ -68,6 +69,34 @@ public abstract class MdAttributeClassificationBase extends com.runwaysdk.system
     else
     {
       setValue(REFERENCEMDCLASSIFICATION, oid);
+    }
+  }
+  
+  public com.runwaysdk.system.AbstractClassification getRoot()
+  {
+    return (com.runwaysdk.system.AbstractClassification)com.runwaysdk.dataaccess.graph.VertexObjectDAO.get(com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO.getMdVertexDAO("com.runwaysdk.system.AbstractClassification"), getValue(ROOT));
+  }
+  
+  public void validateRoot()
+  {
+    this.validateAttribute(ROOT);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF getRootMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributeClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF)mdClassIF.definesAttribute(ROOT);
+  }
+  
+  public void setRoot(com.runwaysdk.system.AbstractClassification value)
+  {
+    if(value == null)
+    {
+      setValue(ROOT, "");
+    }
+    else
+    {
+      setValue(ROOT, value.getOid());
     }
   }
   

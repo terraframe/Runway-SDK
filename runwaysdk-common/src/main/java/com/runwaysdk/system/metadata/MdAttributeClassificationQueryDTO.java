@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -2042880585)
+@com.runwaysdk.business.ClassSignature(hash = -1694956373)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -10,7 +10,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdAttributeClassificationQueryDTO extends com.runwaysdk.system.metadata.MdAttributeConcreteQueryDTO
 {
-private static final long serialVersionUID = -2042880585;
+private static final long serialVersionUID = -1694956373;
 
   protected MdAttributeClassificationQueryDTO(String type)
   {

@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess;
 
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+
 public interface MdClassificationDAOIF extends MetadataDAOIF
 {
   /**
@@ -28,4 +30,6 @@ public interface MdClassificationDAOIF extends MetadataDAOIF
   public MdEdgeDAOIF getReferenceMdEdgeDAO();
 
   public MdVertexDAOIF getReferenceMdVertexDAO();
+
+  public VertexObjectDAOIF getRoot();
 }

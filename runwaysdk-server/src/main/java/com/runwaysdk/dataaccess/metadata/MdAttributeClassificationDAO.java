@@ -23,10 +23,16 @@ import java.util.Map;
 import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
+import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeGraphRef;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
+import com.runwaysdk.system.AbstractClassification;
 
 public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO implements MdAttributeClassificationDAOIF
 {
@@ -104,7 +110,7 @@ public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO impleme
    *         the values of the struct attribute.
    */
   @Override
-  public MdVertexDAOIF getReferenceMdVertexDAOIF()
+  public MdClassificationDAOIF getMdClassificationDAOIF()
   {
     if (this.getAttributeIF(MdAttributeClassificationInfo.REFERENCE_MD_CLASSIFICATION).getValue().trim().equals(""))
     {
@@ -115,8 +121,28 @@ public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO impleme
       AttributeReference attributeReference = (AttributeReference) this.getAttributeIF(MdAttributeClassificationInfo.REFERENCE_MD_CLASSIFICATION);
       MdClassificationDAO mdClassification = (MdClassificationDAO) attributeReference.dereference();
 
+      return mdClassification;
+    }
+  }
+
+  /**
+   * Returns the <code>MdClassDAOIF</code> that defines the class used to store
+   * the values of the struct attribute.
+   *
+   * @return the <code>MdStructDAOIF</code> that defines the class used to store
+   *         the values of the struct attribute.
+   */
+  @Override
+  public MdVertexDAOIF getReferenceMdVertexDAOIF()
+  {
+    MdClassificationDAOIF mdClassification = this.getMdClassificationDAOIF();
+
+    if (mdClassification != null)
+    {
       return mdClassification.getReferenceMdVertexDAO();
     }
+
+    return null;
   }
 
   /**
@@ -126,5 +152,36 @@ public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO impleme
   public MdAttributeClassificationDAO getBusinessDAO()
   {
     return (MdAttributeClassificationDAO) super.getBusinessDAO();
+  }
+
+  @Override
+  protected void validate()
+  {
+    MdClassificationDAOIF mdClassification = this.getMdClassificationDAOIF();
+
+    if (mdClassification != null)
+    {
+      VertexObjectDAOIF root = mdClassification.getRoot();
+      VertexObjectDAOIF attributeRoot = this.getRoot();
+
+      if (root != null && attributeRoot != null && !VertexObjectDAO.isChild(root, attributeRoot, mdClassification.getReferenceMdEdgeDAO()))
+      {
+        throw new ProgrammingErrorException("Attribute root must be a child of the classification root");
+      }
+    }
+
+    super.validate();
+  }
+
+  public VertexObjectDAOIF getRoot()
+  {
+    if (!this.getAttributeIF(MdAttributeClassificationInfo.ROOT).getValue().trim().equals(""))
+    {
+      AttributeGraphRef attributeReference = (AttributeGraphRef) this.getAttributeIF(MdAttributeClassificationInfo.ROOT);
+
+      return attributeReference.dereference(attributeReference.getValue());
+    }
+
+    return null;
   }
 }

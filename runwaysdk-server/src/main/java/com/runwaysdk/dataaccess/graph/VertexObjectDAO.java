@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.graph.GraphQuery;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -319,6 +320,22 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
     GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
     return GraphDBService.getInstance().get(request, mdVertexDAO, oid);
+  }
+
+  public static boolean isChild(VertexObjectDAOIF root, VertexObjectDAOIF attributeRoot, MdEdgeDAOIF referenceMdEdgeDAO)
+  {
+    StringBuilder statement = new StringBuilder();
+    statement.append("SELECT count(*) FROM (");
+    statement.append(" TRAVERSE in('" + referenceMdEdgeDAO.getDBClassName() + "') FROM :child");
+    statement.append(") WHERE @rid = :parent");
+
+    GraphQuery<Long> query = new GraphQuery<Long>(statement.toString());
+    query.setParameter("child", attributeRoot.getRID());
+    query.setParameter("parent", root.getRID());
+
+    Long result = query.getSingleResult();
+
+    return ( result != null && result > 0 );
   }
 
 }

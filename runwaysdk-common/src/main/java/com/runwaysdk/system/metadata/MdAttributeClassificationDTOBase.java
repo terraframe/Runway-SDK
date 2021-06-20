@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 388490528)
+@com.runwaysdk.business.ClassSignature(hash = 396253908)
 public abstract class MdAttributeClassificationDTOBase extends com.runwaysdk.system.metadata.MdAttributeConcreteDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeClassification";
-  private static final long serialVersionUID = 388490528;
+  private static final long serialVersionUID = 396253908;
   
   protected MdAttributeClassificationDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,6 +28,7 @@ public abstract class MdAttributeClassificationDTOBase extends com.runwaysdk.sys
   }
   
   public static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
+  public static java.lang.String ROOT = "root";
   public com.runwaysdk.system.metadata.MdClassificationDTO getReferenceMdClassification()
   {
     if(getValue(REFERENCEMDCLASSIFICATION) == null || getValue(REFERENCEMDCLASSIFICATION).trim().equals(""))

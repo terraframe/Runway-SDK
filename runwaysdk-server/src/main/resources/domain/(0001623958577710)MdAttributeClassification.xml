@@ -9,6 +9,7 @@
         generateController="false" >
         <attributes>
           <reference name="referenceMdClassification" type="com.runwaysdk.system.metadata.MdClassification" label="Reference MdClassification" description="The class linked by this attribute, must be a MdClassification" required="true" />
+          <graphReference name="root" label="root" required="false" immutable="false" description="Root node for the attribute" type="com.runwaysdk.system.AbstractClassification" />                            
         </attributes>
       </mdBusiness>
     
