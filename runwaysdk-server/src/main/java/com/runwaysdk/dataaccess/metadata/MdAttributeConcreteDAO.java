@@ -604,12 +604,12 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       {
         String type = superClass.definesType();
 
-//        if (type.equals(MdAttributeConcreteInfo.CLASS))
-//        {
-//          MdClassDAOIF definingClass = mdClass;
-//          String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeConcreteInfo.CLASS + "].";
-//          throw new CannotAddAttriubteToClassException(error, this, definingClass);
-//        }
+        if (type.equals(MdAttributeConcreteInfo.CLASS))
+        {
+          MdClassDAOIF definingClass = mdClass;
+          String error = "Attribute [" + definesAttribute() + "] cannot be modified because its defining type, [" + definingClass.definesType() + "], is an [" + MdAttributeConcreteInfo.CLASS + "].";
+          throw new CannotAddAttriubteToClassException(error, this, definingClass);
+        }
       }
     }
   }
