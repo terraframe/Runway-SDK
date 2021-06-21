@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdBusinessInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
@@ -35,8 +34,10 @@ import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeGraphRef;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.system.AbstractClassification;
@@ -196,12 +197,14 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
   {
     boolean firstApply = this.isNew() && !this.isAppliedToDB() && !this.isImport();
 
+    this.setKey(this.definesType());
+
     if (firstApply && this.getReferenceMdVertexDAO() == null)
     {
-      String classificationLabel = this.getStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+      String classificationLabel = this.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
 
-      String vertexName = this.getAttribute(MdBusinessInfo.NAME).getValue() + "Vertex";
-      String edgeName = this.getAttribute(MdBusinessInfo.NAME).getValue() + "Edge";
+      String vertexName = this.getAttribute(MdClassificationInfo.TYPE_NAME).getValue() + "Vertex";
+      String edgeName = this.getAttribute(MdClassificationInfo.TYPE_NAME).getValue() + "Edge";
 
       // Add display label to metadata.
       MdVertexDAO mdVertex = MdVertexDAO.newInstance();
@@ -214,8 +217,8 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
       mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
       mdEdge.setValue(MdEdgeInfo.PACKAGE, this.getPackage());
       mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
-      mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, this.getOid());
-      mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, this.getOid());
+      mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, mdVertex.getOid());
+      mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, mdVertex.getOid());
       mdEdge.apply();
 
       this.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
@@ -291,6 +294,19 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     mdClassification.apply();
 
     return mdClassification;
+  }
+
+  public static MdClassificationDAOIF getMdClassificationDAO(String type)
+  {
+    MdClassificationDAOIF mdType = (MdClassificationDAOIF) MdClassificationDAO.get(MdClassificationInfo.CLASS, type);
+
+    if (mdType == null)
+    {
+      String error = "MdType [" + type + "] was not found.";
+      throw new DataNotFoundException(error, MdTypeDAO.getMdTypeDAO(MdClassificationInfo.CLASS));
+    }
+
+    return mdType;
   }
 
 }

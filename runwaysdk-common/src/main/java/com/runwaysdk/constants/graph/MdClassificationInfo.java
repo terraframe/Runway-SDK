@@ -38,7 +38,7 @@ public interface MdClassificationInfo extends MetadataInfo
    * Name of the attribute that stores the name of the package of the
    * relationship that is defined.
    */
-  public static final String PACKAGE  = "packageName";
+  public static final String PACKAGE       = "packageName";
 
   /**
    * Name of the attribute that stores the label of this metadata object.

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
+import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -29,6 +30,7 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeGraphRef;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
+import com.runwaysdk.dataaccess.database.ValidateRootCommand;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
@@ -157,19 +159,7 @@ public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO impleme
   @Override
   protected void validate()
   {
-    MdClassificationDAOIF mdClassification = this.getMdClassificationDAOIF();
-
-    if (mdClassification != null)
-    {
-      VertexObjectDAOIF root = mdClassification.getRoot();
-      VertexObjectDAOIF attributeRoot = this.getRoot();
-
-      if (root != null && attributeRoot != null && !VertexObjectDAO.isChild(root, attributeRoot, mdClassification.getReferenceMdEdgeDAO()))
-      {
-        System.err.print("Child not found!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        throw new ProgrammingErrorException("Attribute root must be a child of the classification root");
-      }
-    }
+    new ValidateRootCommand(this).doIt();
 
     super.validate();
   }

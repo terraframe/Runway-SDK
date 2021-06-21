@@ -16,7 +16,8 @@
         name="com.runwaysdk.system.metadata.MdClassification" 
         extends="com.runwaysdk.system.metadata.Metadata"
         isAbstract="false"
-        generateController="false" >
+        generateController="false"
+        cacheAlgorithm="everything" >
         <attributes>
           <char name="typeName" label="Type name" required="true" size="255" />
           <char name="packageName" label="Package" required="true" size="255" />

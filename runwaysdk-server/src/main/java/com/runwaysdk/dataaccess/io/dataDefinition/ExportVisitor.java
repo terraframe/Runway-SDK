@@ -123,6 +123,7 @@ import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -201,6 +202,7 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -356,6 +358,10 @@ public class ExportVisitor extends MarkupVisitor
     else if (component instanceof MdVertexDAOIF)
     {
       visitMdVertex((MdVertexDAOIF) component);
+    }
+    else if (component instanceof MdClassificationDAOIF)
+    {
+      visitMdClassification((MdClassificationDAOIF) component);
     }
     else if (component instanceof MdEdgeDAOIF)
     {
@@ -1344,14 +1350,7 @@ public class ExportVisitor extends MarkupVisitor
 
     // Write the CLASS_TAG with its parameters
 
-    if (mdVertex instanceof MdClassificationDAOIF)
-    {
-      writer.openEscapedTag(XMLTags.MD_CLASSIFICATION_TAG, attributes);
-    }
-    else
-    {
-      writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
-    }
+    writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
   }
 
   public void visitMdVertex(MdVertexDAOIF mdVertex)
@@ -1372,6 +1371,42 @@ public class ExportVisitor extends MarkupVisitor
   protected void exitMdVertex(MdVertexDAOIF mdVertex)
   {
     writer.closeTag();
+  }
+
+  private HashMap<String, String> getMdClassificationParameters(MdClassificationDAOIF mdClassification)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+
+    String name = mdClassification.definesType();
+
+    // Map the parameter value to its correct attribute tag
+    parameters.put(XMLTags.NAME_ATTRIBUTE, name);
+
+    Map<String, String> localValues = mdClassification.getDisplayLabels();
+    writeLocaleValues(parameters, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+
+    parameters.put(XMLTags.REMOVE_ATTRIBUTE, mdClassification.getValue(MdEntityInfo.REMOVE));
+
+    Map<String, String> localDescValues = mdClassification.getDescriptions();
+    writeLocaleValues(parameters, XMLTags.DESCRIPTION_ATTRIBUTE, localDescValues);
+
+    VertexObjectDAOIF root = mdClassification.getRoot();
+
+    if (root != null)
+    {
+      parameters.put(MdClassificationInfo.ROOT, root.getOid());
+    }
+
+    return parameters;
+  }
+
+  public void visitMdClassification(MdClassificationDAOIF mdClassification)
+  {
+    // Get the attribute_tag-value mapping of the entity
+    HashMap<String, String> attributes = getMdClassificationParameters(mdClassification);
+
+    // Write the CLASS_TAG with its parameters
+    writer.writeEmptyTag(XMLTags.MD_CLASSIFICATION_TAG, attributes);
   }
 
   private HashMap<String, String> getMdEdgeParameters(MdEdgeDAOIF mdEdge)

@@ -160,7 +160,7 @@ public class VertexObjectDAOTest
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_CLASS1_TYPE);
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_ENUM_CLASS1_TYPE);
 
-    createMdClassification();
+//    createMdClassification();
 
     classSetup_Transaction();
   }
@@ -168,6 +168,8 @@ public class VertexObjectDAOTest
   @Transaction
   private static void classSetup_Transaction()
   {
+    createMdClassification();
+    
     mdReferenceDAO = TestFixtureFactory.createMdVertex("TestLinkClass");
     mdReferenceDAO.apply();
 
@@ -260,7 +262,7 @@ public class VertexObjectDAOTest
 
   }
 
-  @Transaction
+//  @Transaction
   private static void createMdClassification()
   {
     // Define the link class

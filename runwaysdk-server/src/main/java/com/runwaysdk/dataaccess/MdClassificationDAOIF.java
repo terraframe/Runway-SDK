@@ -32,4 +32,6 @@ public interface MdClassificationDAOIF extends MetadataDAOIF
   public MdVertexDAOIF getReferenceMdVertexDAO();
 
   public VertexObjectDAOIF getRoot();
+
+  public String definesType();
 }

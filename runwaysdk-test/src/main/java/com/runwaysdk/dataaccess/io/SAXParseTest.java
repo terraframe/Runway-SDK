@@ -183,8 +183,8 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -6769,7 +6769,7 @@ public class SAXParseTest
    */
   @Request
   @Test
-  public void testCreateLink()
+  public void testCreateGraphReference()
   {
     // Create test MdVertex
     MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
@@ -6855,6 +6855,36 @@ public class SAXParseTest
 
     Assert.assertEquals(parent.definesType(), mdVertex1.definesType());
     Assert.assertEquals(child.definesType(), mdVertex2.definesType());
+  }
+
+  /**
+   * Test setting of attributes of and on the class datatype
+   */
+  @Request
+  @Test
+  public void testCreateMdClassification()
+  {
+    // Create test MdClassification
+    MdClassificationDAO mdClassification1 = MdClassificationDAO.create(TestFixConst.TEST_PACKAGE, "TestClassification", "Test Classification");
+    mdClassification1.apply();
+
+    // Export the test entities
+    ExportMetadata metadata = new ExportMetadata(true);
+    metadata.addCreate(new ComponentIF[] { mdClassification1 });
+
+    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
+
+    // Delete the test entites
+    TestFixtureFactory.delete(mdClassification1);
+
+    // Import the test entites
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdClassificationDAOIF test = MdClassificationDAO.getMdClassificationDAO(mdClassification1.definesType());
+    String actualLabel = test.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    String expectedLabel = mdClassification1.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
+    
+    Assert.assertEquals(expectedLabel, actualLabel);
   }
 
   /**
