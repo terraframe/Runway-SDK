@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
@@ -137,6 +138,10 @@ public class AttributeFactory
     else if (mdAttributeDAOIF instanceof MdAttributeEnumerationDAOIF)
     {
       attribute = new AttributeEnumeration(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeClassificationDAOIF)
+    {
+      attribute = new AttributeClassification(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeGraphRefDAOIF)
     {

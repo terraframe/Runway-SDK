@@ -324,14 +324,22 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
 
   public static boolean isChild(VertexObjectDAOIF root, VertexObjectDAOIF attributeRoot, MdEdgeDAOIF referenceMdEdgeDAO)
   {
+    Object childRid = attributeRoot.getRID();
+    Object parentRid = root.getRID();
+
+    return isChild(parentRid, childRid, referenceMdEdgeDAO);
+  }
+
+  public static boolean isChild(Object parentRid, Object childRid, MdEdgeDAOIF mdEdge)
+  {
     StringBuilder statement = new StringBuilder();
     statement.append("SELECT count(*) FROM (");
-    statement.append(" TRAVERSE in('" + referenceMdEdgeDAO.getDBClassName() + "') FROM :child");
+    statement.append(" TRAVERSE in('" + mdEdge.getDBClassName() + "') FROM :child");
     statement.append(") WHERE @rid = :parent");
 
     GraphQuery<Long> query = new GraphQuery<Long>(statement.toString());
-    query.setParameter("child", attributeRoot.getRID());
-    query.setParameter("parent", root.getRID());
+    query.setParameter("child", childRid);
+    query.setParameter("parent", parentRid);
 
     Long result = query.getSingleResult();
 

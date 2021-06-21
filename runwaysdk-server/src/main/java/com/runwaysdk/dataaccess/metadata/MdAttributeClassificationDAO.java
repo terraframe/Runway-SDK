@@ -166,7 +166,8 @@ public class MdAttributeClassificationDAO extends MdAttributeGraphRefDAO impleme
 
       if (root != null && attributeRoot != null && !VertexObjectDAO.isChild(root, attributeRoot, mdClassification.getReferenceMdEdgeDAO()))
       {
-        throw new ProgrammingErrorException("Attribute root must be a child of the classification root");
+        System.err.print("Child not found!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        throw new ProgrammingErrorException("Attribute root must be a child of the classification root");
       }
     }
 

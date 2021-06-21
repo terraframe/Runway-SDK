@@ -32,6 +32,7 @@ import com.runwaysdk.AttributeIntegerParseException;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
@@ -146,6 +147,8 @@ public class VertexObjectDAOTest
 
   private static MdAttributeCharacterDAO              mdEmbeddedCharacterAttribute;
 
+  private static VertexObjectDAO                      attributeRoot;
+
   @Request
   @BeforeClass
   public static void classSetup()
@@ -154,10 +157,10 @@ public class VertexObjectDAOTest
 
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_VERTEX1_TYPE);
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_EMBEDDED_VERTEX1_TYPE);
-
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_CLASS1_TYPE);
-
     TestFixtureFactory.deleteMdClass(TestFixConst.TEST_ENUM_CLASS1_TYPE);
+
+    createMdClassification();
 
     classSetup_Transaction();
   }
@@ -165,19 +168,6 @@ public class VertexObjectDAOTest
   @Transaction
   private static void classSetup_Transaction()
   {
-    // Define the link class
-    mdClassificationDAO = MdClassificationDAO.create(TestFixConst.TEST_PACKAGE, "TestClassification", "Test Classification");
-
-    // Create nodes
-    VertexObjectDAO root = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
-    root.apply();
-
-    mdClassificationDAO.setValue(MdClassificationInfo.ROOT, root.getOid());
-    mdClassificationDAO.apply();
-
-//    VertexObjectDAO attributeRoot = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
-//    attributeRoot.apply();
-
     mdReferenceDAO = TestFixtureFactory.createMdVertex("TestLinkClass");
     mdReferenceDAO.apply();
 
@@ -254,6 +244,10 @@ public class VertexObjectDAOTest
     mdGraphReferenceAttribute = TestFixtureFactory.addGraphReferenceAttribute(mdVertexDAO, mdReferenceDAO);
     mdGraphReferenceAttribute.apply();
 
+    mdClassificationAttribute = TestFixtureFactory.addClassificationAttribute(mdVertexDAO, mdClassificationDAO);
+    mdClassificationAttribute.setValue(MdAttributeClassificationInfo.ROOT, attributeRoot.getOid());
+    mdClassificationAttribute.apply();
+
     // Define the embedded class
     mdEmbeddedVertexDAO = TestFixtureFactory.createMdVertex("TestEmbeddedClass");
     mdEmbeddedVertexDAO.apply();
@@ -264,6 +258,25 @@ public class VertexObjectDAOTest
     mdAttributeEmbedded = TestFixtureFactory.addEmbeddedttribute(mdVertexDAO, mdEmbeddedVertexDAO);
     mdAttributeEmbedded.apply();
 
+  }
+
+  @Transaction
+  private static void createMdClassification()
+  {
+    // Define the link class
+    mdClassificationDAO = MdClassificationDAO.create(TestFixConst.TEST_PACKAGE, "TestClassification", "Test Classification");
+
+    // Create nodes
+    VertexObjectDAO root = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
+    root.apply();
+
+    attributeRoot = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
+    attributeRoot.apply();
+
+    attributeRoot.addParent(root, mdClassificationDAO.getReferenceMdEdgeDAO()).apply();
+
+    mdClassificationDAO.setValue(MdClassificationInfo.ROOT, root.getOid());
+    mdClassificationDAO.apply();
   }
 
   @Request
@@ -284,6 +297,7 @@ public class VertexObjectDAOTest
     TestFixtureFactory.delete(mdBusinessDAO);
     TestFixtureFactory.delete(mdEmbeddedVertexDAO);
     TestFixtureFactory.delete(mdReferenceDAO);
+    TestFixtureFactory.delete(mdClassificationDAO);
   }
 
   @Request
@@ -1308,7 +1322,7 @@ public class VertexObjectDAOTest
 
   @Request
   @Test
-  public void testLinkAttribute()
+  public void testGraphReferenceAttribute()
   {
     VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdReferenceDAO.definesType());
 
@@ -1347,6 +1361,38 @@ public class VertexObjectDAOTest
     {
       classifierDAO.delete();
     }
+  }
+
+  @Request
+  @Test
+  public void testClassificationAttribute()
+  {
+    String attributeName = mdClassificationAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+    vertexDAO.setValue(attributeName, attributeRoot);
+
+    Assert.assertEquals(attributeRoot.getOid(), vertexDAO.getObjectValue(attributeName));
+
+    try
+    {
+      // Test create
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(attributeRoot.getOid(), test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
 
 }
