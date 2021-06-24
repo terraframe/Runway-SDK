@@ -90,7 +90,6 @@ import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;

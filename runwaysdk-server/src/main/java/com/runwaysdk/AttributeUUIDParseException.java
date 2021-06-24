@@ -18,6 +18,8 @@
  */
 package com.runwaysdk;
 
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
+
 public class AttributeUUIDParseException extends AttributeParseException
 {
   /**

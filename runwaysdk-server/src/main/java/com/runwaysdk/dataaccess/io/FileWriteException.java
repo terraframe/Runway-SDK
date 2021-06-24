@@ -20,8 +20,8 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.SystemException;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 
 /**

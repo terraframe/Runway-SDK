@@ -18,21 +18,29 @@
  */
 package com.runwaysdk.localization;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.runwaysdk.RunwayLocalizationProviderIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.dataaccess.EntityDAOIF;
+import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.SupportedLocale;
-import com.runwaysdk.system.metadata.SupportedLocaleQuery;
-import com.runwaysdk.transport.conversion.ConversionFacade;
 
+/**
+ * Default implementation of the {@link com.runwaysdk.RunwayLocalizationProviderIF} interface. 
+ * 
+ * @author rrowlands
+ */
 public class RunwayServerLocalizationProvider implements RunwayLocalizationProviderIF
 {
   
@@ -65,72 +73,90 @@ public class RunwayServerLocalizationProvider implements RunwayLocalizationProvi
   }
 
   @Override
-  @Transaction
-  public void install(Locale locale)
+  @Request
+  public SupportedLocaleIF install(Locale locale)
   {
-    String displayName = locale.getDisplayName(Locale.ENGLISH); // TODO : Really? We're hard coding Locale.ENGLISH ?
-
+    SupportedLocaleIF supportedLocale = this.installInTrans(locale);
+    
+    SupportedLocaleCache.clear();
+    
+    return supportedLocale;
+  }
+  
+  @Transaction
+  private SupportedLocaleIF installInTrans(Locale locale)
+  {
     SupportedLocale sl = new SupportedLocale();
+    
     sl.setEnumName(locale.toLanguageTag().replace("-", "_"));
-    sl.setLocaleLabel(displayName);
-    sl.getDisplayLabel().setDefaultValue(displayName);
+    
+    sl.setLocaleLabel(locale.getDisplayName(CommonProperties.getDefaultLocale())); // I don't think this attribute is actually used anywhere
+    
     sl.apply();
+    
+    
+    sl.appLock();
+    for (Locale installedLocale : this.getInstalledLocales())
+    {
+      sl.getDisplayLabel().setValue(installedLocale, locale.getDisplayName(installedLocale));
+    }
+    sl.getDisplayLabel().setDefaultValue(locale.getDisplayName(CommonProperties.getDefaultLocale()));
+    sl.apply();
+    
+    
+    return sl;
   }
   
   @Override
-  @Transaction
+  @Request
   public void uninstall(Locale locale)
+  {
+    this.uninstallInTrans(locale);
+    
+    SupportedLocaleCache.clear();
+  }
+  
+  @Transaction
+  private void uninstallInTrans(Locale locale)
+  {
+    SupportedLocale supportedLocale = (SupportedLocale) this.getSupportedLocale(locale);
+    
+    supportedLocale.delete();
+  }
+  
+  @Override
+  @Request
+  public SupportedLocaleIF getSupportedLocale(Locale locale)
   {
     String enumName = locale.toLanguageTag().replace("-", "_");
     
-    SupportedLocaleQuery slq = new SupportedLocaleQuery(new QueryFactory());
-    slq.WHERE(slq.getEnumName().EQ(enumName));
+    Set<SupportedLocaleIF> supportedLocales = this.getSupportedLocales();
     
-    if (slq.getCount() != 1)
+    for (SupportedLocaleIF supportedLocale : supportedLocales)
     {
-      throw new ProgrammingErrorException("Locale [" + locale.toLanguageTag() + "] not found.");
+      if (supportedLocale.getName().equals(enumName))
+      {
+        return supportedLocale;
+      }
     }
     
-    OIterator<? extends SupportedLocale> it = slq.getIterator();
-    
-    try
-    {
-      it.next().delete();
-    }
-    finally
-    {
-      it.close();
-    }
+    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(SupportedLocale.CLASS);
+    throw new DataNotFoundException("Could not find an installed locale [" + locale.toLanguageTag() + "].", mdClassIF);
   }
   
   /**
    * Returns the list of installed locales in the system.
    */
   @Request
-  public List<Locale> getInstalledLocales()
+  public Set<Locale> getInstalledLocales()
   {
-    ArrayList<Locale> locales = new ArrayList<Locale>();
-    
-    SupportedLocaleQuery query = new SupportedLocaleQuery(new QueryFactory());
-    query.ORDER_BY_ASC(query.getLocaleLabel());
-    
-    OIterator<? extends SupportedLocale> it = query.getIterator();
-    
-    try
-    {
-      while (it.hasNext())
-      {
-        Locale locale = ConversionFacade.getLocale(it.next().getEnumName());
-        
-        locales.add(locale);
-      }
-    }
-    finally
-    {
-      it.close();
-    }
-    
-    return locales;
+    return SupportedLocaleCache.getInstalledLocales();
+  }
+  
+  @Request
+  public Set<SupportedLocaleIF> getSupportedLocales()
+  {
+    return SupportedLocaleCache.getSupportedLocales();
   }
 
 }

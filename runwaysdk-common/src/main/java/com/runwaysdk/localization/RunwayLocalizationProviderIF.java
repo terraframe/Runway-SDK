@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk;
+package com.runwaysdk.localization;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public interface RunwayLocalizationProviderIF
 {
@@ -32,9 +32,31 @@ public interface RunwayLocalizationProviderIF
   
   public Map<String, String> getAll(Locale locale);
   
-  public void install(Locale locale);
+  /**
+   * Installs a new locale into the system.
+   * 
+   * @return The newly created SupportedLocaleIF
+   */
+  public SupportedLocaleIF install(Locale locale);
   
+  /**
+   * Uninstalls a new locale into the system.
+   */
   public void uninstall(Locale locale);
   
-  public List<Locale> getInstalledLocales();
+  /**
+   * Returns all system installed locales, represented as {@link java.util.Locale}
+   */
+  public Set<Locale> getInstalledLocales();
+  
+  /**
+   * Returns all system installed locales, represented as {@link com.runwaysdk.localization.SupportedLocaleIF}
+   */
+  public Set<SupportedLocaleIF> getSupportedLocales();
+
+  /**
+   * Returns the equivalent {@link com.runwaysdk.localization.SupportedLocaleIF} for a given {@link java.util.Locale}. If the given locale
+   * is not installed, a {@link com.runwaysdk.dataaccess.cache.DataNotFoundException} is thrown.
+   */
+  public SupportedLocaleIF getSupportedLocale(Locale locale);
 }

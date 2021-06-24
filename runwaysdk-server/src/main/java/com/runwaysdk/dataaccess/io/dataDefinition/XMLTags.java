@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 
 public interface XMLTags
 {

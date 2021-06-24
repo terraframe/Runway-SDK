@@ -24,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
-
-
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdViewInfo;
 import com.runwaysdk.dataaccess.AttributeIF;

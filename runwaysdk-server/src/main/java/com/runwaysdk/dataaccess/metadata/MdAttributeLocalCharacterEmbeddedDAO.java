@@ -20,17 +20,10 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterEmbeddedDAOIF;
-import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 
 public class MdAttributeLocalCharacterEmbeddedDAO extends MdAttributeLocalEmbeddedDAO implements MdAttributeLocalCharacterEmbeddedDAOIF
 {

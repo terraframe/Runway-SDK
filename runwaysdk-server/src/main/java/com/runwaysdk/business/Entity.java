@@ -73,7 +73,6 @@ import com.runwaysdk.session.SessionIF;
 import ognl.DefaultMemberAccess;
 import ognl.ExpressionSyntaxException;
 import ognl.Ognl;
-import ognl.OgnlClassResolver;
 import ognl.OgnlContext;
 import ognl.OgnlException;
 

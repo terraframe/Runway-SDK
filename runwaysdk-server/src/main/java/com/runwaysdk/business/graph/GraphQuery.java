@@ -23,12 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.runwaysdk.dataaccess.GraphDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
-import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;

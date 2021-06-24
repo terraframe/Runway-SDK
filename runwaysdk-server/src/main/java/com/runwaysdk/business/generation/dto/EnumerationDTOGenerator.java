@@ -21,8 +21,6 @@ package com.runwaysdk.business.generation.dto;
 import java.util.Map;
 import java.util.TreeMap;
 
-
-
 import com.runwaysdk.business.EnumerationDTOIF;
 import com.runwaysdk.business.generation.AbstractClientGenerator;
 import com.runwaysdk.business.generation.AbstractGenerator;

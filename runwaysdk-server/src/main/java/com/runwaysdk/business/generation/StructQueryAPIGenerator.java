@@ -21,8 +21,6 @@ package com.runwaysdk.business.generation;
 import java.util.Map;
 import java.util.Set;
 
-
-
 import com.runwaysdk.business.StructIterator;
 import com.runwaysdk.business.StructQuery;
 import com.runwaysdk.constants.LocalProperties;

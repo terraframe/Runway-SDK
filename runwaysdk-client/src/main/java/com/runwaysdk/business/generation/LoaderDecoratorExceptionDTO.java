@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.business.generation;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class LoaderDecoratorExceptionDTO extends RunwayExceptionDTO implements LoaderDecoratorExceptionIF
 {

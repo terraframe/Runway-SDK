@@ -16,17 +16,31 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk;
+package com.runwaysdk.localization;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.constants.CommonProperties;
+
+/**
+ * Provides a clean abstraction for all localization related activities in Runway. These methods are implemented by a 
+ * {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}, which is resolved at runtime using the java service loader paradigm.
+ * The default implementation of these methods is found in the runwaysdk-localization-server package.
+ * 
+ * @seealso {@link com.runwaysdk.session.LocaleManager}
+ * 
+ * @author rrowlands
+ */
 public class LocalizationFacade
 {
 
@@ -36,7 +50,10 @@ public class LocalizationFacade
 
   private static RunwayLocalizationProviderIF localizer           = null;
 
-  private static synchronized RunwayLocalizationProviderIF getLocalizer()
+  /**
+   * Returns the underlying localization provider.
+   */
+  public static synchronized RunwayLocalizationProviderIF getLocalizationProvider()
   {
     if (didLoadLocalization)
     {
@@ -64,15 +81,13 @@ public class LocalizationFacade
   }
 
   /**
-   * Returns the list of installed locales in the system.
+   * Returns all system installed locales, represented as {@link java.util.Locale}. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return an empty list. This method will NOT include the DEFAULT_LOCALE, which is a LocalStruct concept and has no
+   * Java Locale representation. If you're using this method to loop through locales in a LocalStruct you must manually fetch that data.
    */
-  public static List<Locale> getInstalledLocales()
+  public static Set<Locale> getInstalledLocales()
   {
-    // SupportedLocaleQuery query = new SupportedLocaleQuery(new
-    // QueryFactory());
-    // query.ORDER_BY_ASC(query.getLocaleLabel());
-
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
@@ -80,19 +95,85 @@ public class LocalizationFacade
     }
     else
     {
+      return new HashSet<Locale>(Arrays.asList(new Locale[] {}));
+    }
+  }
+  
+  /**
+   * Returns all system installed locales, represented as {@link com.runwaysdk.localization.SupportedLocaleIF}. If a
+   * {@link com.runwaysdk.localization.RunwayLocalizationProviderIF} is not installed, this method will return an empty list. This method will NOT include the
+   * DEFAULT_LOCALE, which is a LocalStruct concept and has no Java Locale representation. If you're using this method to loop through locales in a LocalStruct
+   * you must manually fetch that data.
+   */
+  public static Set<SupportedLocaleIF> getSupportedLocales()
+  {
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
+
+    if (localizer != null)
+    {
+      return localizer.getSupportedLocales();
+    }
+    else
+    {
+      return new HashSet<SupportedLocaleIF>();
+    }
+  }
+  
+  /**
+   * Returns the equivalent {@link com.runwaysdk.localization.SupportedLocaleIF} for a given {@link java.util.Locale}. If the given locale
+   * is not installed, a {@link com.runwaysdk.dataaccess.cache.DataNotFoundException} is thrown. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return null.
+   */
+  public static SupportedLocaleIF getSupportedLocale(Locale locale)
+  {
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
+
+    if (localizer != null)
+    {
+      return localizer.getSupportedLocale(locale);
+    }
+    else
+    {
       return null;
     }
+  }
+  
+  /**
+   * Constructs a Java locale from the provided information.
+   * 
+   * @param language
+   * @param country
+   * @param variant
+   * @return
+   */
+  public static Locale getLocale(String language, String country, String variant)
+  {
+    String localeString = language;
+    
+    if (country != null)
+    {
+      localeString += "_" + country;
+      
+      if (variant != null)
+      {
+        localeString += "_" + variant;
+      }
+    }
+    
+    Locale locale = org.apache.commons.lang.LocaleUtils.toLocale(localeString);
+    
+    return locale;
   }
 
   /**
    * Localizes the given key to the user's current locale. If the key cannot be
-   * localized null is returned.
-   * 
-   * TODO : And if the user doesn't have a locale?
+   * localized null is returned. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return null. If the user does not have a locale
+   * the default locale is used.
    */
   public static String localize(String key)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
@@ -106,11 +187,12 @@ public class LocalizationFacade
 
   /**
    * Localizes the given key to the given locale. If the key cannot be localized
-   * null is returned.
+   * null is returned. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return null.
    */
   public static String localize(String key, Locale locale)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
@@ -124,15 +206,13 @@ public class LocalizationFacade
 
   /**
    * Returns all localized keys for the user's current locale. Returns null if
-   * the keys cannot be fetched.
-   * 
-   * TODO : And what if the user doesn't have a locale?
-   * 
-   * @return
+   * the keys cannot be fetched. If the user does not have a locale
+   * the default locale is used. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return an empty map.
    */
   public static Map<String, String> getAll()
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
@@ -140,20 +220,18 @@ public class LocalizationFacade
     }
     else
     {
-      return null;
+      return new HashMap<String, String>();
     }
   }
 
   /**
    * Returns all localized keys for the given locale. Returns null if the keys
-   * cannot be fetched.
-   * 
-   * @param locale
-   * @return
+   * cannot be fetched. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return an empty map.
    */
   public static Map<String, String> getAll(Locale locale)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
@@ -161,7 +239,7 @@ public class LocalizationFacade
     }
     else
     {
-      return null;
+      return new HashMap<String, String>();
     }
   }
 
@@ -170,6 +248,9 @@ public class LocalizationFacade
    * exception. The variable String arguments represent the parameters in the
    * template string. For example, given the template "The {0} in the {1}." and
    * arguments "cat" and "hat", the final String will be "The cat in the hat."
+   * If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return the defaultValue, templatized with
+   * the given params.
    * 
    * @param locale
    *          The desired locale of the message
@@ -183,7 +264,7 @@ public class LocalizationFacade
    */
   public static String getMessage(Locale locale, String key, String defaultValue, String... params)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer == null)
     {
@@ -237,34 +318,40 @@ public class LocalizationFacade
   }
 
   /**
-   * Installs the given locale into the system.
+   * Installs the given locale into the system. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will do nothing and return null.
    * 
    * @param locale
    */
-  public static void install(Locale locale)
+  public static SupportedLocaleIF install(Locale locale)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
-      localizer.install(locale);
+      return localizer.install(locale);
+    }
+    else
+    {
+      return null;
     }
   }
   
   /**
    * Uninstalls the given locale into the system. If the locale does not exist
-   * a ProgrammingErrorException will be thrown.
+   * a DataNotFoundException will be thrown. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will do nothing. 
    * 
    * @param locale
    */
   public static void uninstall(Locale locale)
   {
-    RunwayLocalizationProviderIF localizer = getLocalizer();
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
 
     if (localizer != null)
     {
       localizer.uninstall(locale);
     }
   }
-
+  
 }
