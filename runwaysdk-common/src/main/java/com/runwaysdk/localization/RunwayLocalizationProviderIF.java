@@ -28,6 +28,8 @@ public interface RunwayLocalizationProviderIF
   
   public String localize(String key, Locale locale);
   
+  public LocalizedValueIF localizeAll(String key);
+  
   public Map<String, String> getAll();
   
   public Map<String, String> getAll(Locale locale);

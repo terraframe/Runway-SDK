@@ -56,11 +56,23 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
       return null;
     }
   }
+  
+  @Override
+  public String localize(String key)
+  {
+    return (String) invoke("localize", new Class<?>[] {String.class}, key);
+  }
 
   @Override
   public String localize(String key, Locale locale)
   {
     return (String) invoke("localize", new Class<?>[] {String.class, Locale.class}, key, locale);
+  }
+  
+  @Override
+  public LocalizedValueIF localizeAll(String key)
+  {
+    return (LocalizedValueIF) invoke("localizeAll", new Class<?>[] {java.lang.String.class}); // TODO : This object would have to be converted to a DTO to actually work in a client context
   }
 
   @SuppressWarnings("unchecked")
@@ -68,12 +80,6 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
   public Map<String, String> getAll(Locale locale)
   {
     return (Map<String, String>) invoke("getAll", new Class<?>[] {Locale.class}, locale);
-  }
-
-  @Override
-  public String localize(String key)
-  {
-    return (String) invoke("localize", new Class<?>[] {String.class}, key);
   }
 
   @SuppressWarnings("unchecked")

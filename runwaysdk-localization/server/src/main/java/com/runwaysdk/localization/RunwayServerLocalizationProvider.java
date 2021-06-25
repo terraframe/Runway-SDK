@@ -64,6 +64,12 @@ public class RunwayServerLocalizationProvider implements RunwayLocalizationProvi
   {
     return LocalizedValueStore.localize(key);
   }
+  
+  @Override
+  public LocalizedValueIF localizeAll(String key)
+  {
+    return LocalizedValueStore.localizeAll(key);
+  }
 
   @Override
   @Request

@@ -169,7 +169,7 @@ public class LocalizationFacade
    * Localizes the given key to the user's current locale. If the key cannot be
    * localized null is returned. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
    * is not installed, this method will return null. If the user does not have a locale
-   * the default locale is used.
+   * the (default) locale, fetched from common.properties, is used.
    */
   public static String localize(String key)
   {
@@ -197,6 +197,28 @@ public class LocalizationFacade
     if (localizer != null)
     {
       return localizer.localize(key, locale);
+    }
+    else
+    {
+      return null;
+    }
+  }
+  
+  /**
+   * Returns localized values for all installed locales for the given key. If the key cannot be localized
+   * null is returned. If a {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+   * is not installed, this method will return null.
+   * 
+   * @param key
+   * @return
+   */
+  public static LocalizedValueIF localizeAll(String key)
+  {
+    RunwayLocalizationProviderIF localizer = getLocalizationProvider();
+
+    if (localizer != null)
+    {
+      return localizer.localizeAll(key);
     }
     else
     {
