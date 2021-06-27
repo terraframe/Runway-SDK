@@ -73,6 +73,7 @@ import com.runwaysdk.dataaccess.transaction.ActionEnumDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionItemDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionRecordDAO;
 import com.runwaysdk.query.ColumnInfo;
+import com.runwaysdk.system.metadata.MdAttribute;
 
 public class EntityDAOFactory
 {
@@ -852,8 +853,16 @@ public class EntityDAOFactory
     {
       if (count == superMdEntityIF.size() && ( entityDAO instanceof ElementDAO ))
       {
+        MdAttributeDAOIF mdAttr = mdEntity.getMdAttributeDAO(MdAttribute.SEQ);
+        
+        String seqColumnName = ElementDAOIF.SEQUENCE_COLUMN;
+        if (mdAttr != null && mdAttr instanceof MdAttributeConcreteDAOIF)
+        {
+          mdAttr.getColumnName();
+        }
+        
         long seq = ( (ElementDAO) entityDAO ).getSequence();
-        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), oid, seq));
+        deleteStatements.add(Database.buildSQLDeleteStatement(mdEntity.getTableName(), oid, seqColumnName, seq));
       }
       else
       {
