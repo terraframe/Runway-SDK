@@ -18,19 +18,13 @@
  */
 package com.runwaysdk.localization;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.CommonProperties;
-import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
@@ -128,6 +122,9 @@ public class RunwayServerLocalizationProvider implements RunwayLocalizationProvi
     SupportedLocale supportedLocale = (SupportedLocale) this.getSupportedLocale(locale);
     
     supportedLocale.delete();
+    
+//    SupportedLocaleDAO supportedLocaleDAO = (SupportedLocaleDAO) SupportedLocaleDAO.getEnumeration(SupportedLocaleInfo.CLASS, locale.toString());
+//    supportedLocaleDAO.delete();
   }
   
   @Override

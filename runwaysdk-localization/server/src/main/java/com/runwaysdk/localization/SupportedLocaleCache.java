@@ -1,17 +1,16 @@
 package com.runwaysdk.localization;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import com.runwaysdk.business.BusinessFacade;
-import com.runwaysdk.dataaccess.EntityDAOIF;
-import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.system.metadata.SupportedLocale;
+import com.runwaysdk.system.metadata.SupportedLocaleQuery;
 
 public class SupportedLocaleCache
 {
@@ -81,16 +80,34 @@ public class SupportedLocaleCache
     
     supportedLocales = new HashSet<SupportedLocaleIF>();
     
-    List<? extends EntityDAOIF> entityDAOs = ObjectCache.getCachedEntityDAOs(SupportedLocale.CLASS);
     
-    for (EntityDAOIF entityDAOIF : entityDAOs)
+    // TODO : Runway is NOT updating this cache correctly...
+//    List<? extends EntityDAOIF> entityDAOs = ObjectCache.getCachedEntityDAOs(SupportedLocale.CLASS);
+//    
+//    for (EntityDAOIF entityDAOIF : entityDAOs)
+//    {
+//      if (entityDAOIF.getType().equals(SupportedLocale.CLASS)) // Even though SupportedLocale is cached, it's grouped in a cache with ALL enums.
+//      {
+//        SupportedLocale locale = (SupportedLocale) BusinessFacade.get(entityDAOIF);
+//        
+//        supportedLocales.add((SupportedLocaleIF) locale);
+//      }
+//    }
+    
+    SupportedLocaleQuery slq = new SupportedLocaleQuery(new QueryFactory());
+    OIterator<? extends SupportedLocale> it = slq.getIterator();
+    try
     {
-      if (entityDAOIF.getType().equals(SupportedLocale.CLASS)) // Even though SupportedLocale is cached, it's grouped in a cache with ALL enums.
+      while (it.hasNext())
       {
-        SupportedLocale locale = (SupportedLocale) BusinessFacade.get(entityDAOIF);
+        SupportedLocale locale = it.next();
         
         supportedLocales.add((SupportedLocaleIF) locale);
       }
+    }
+    finally
+    {
+      it.close();
     }
     
     locales = supportedLocales.stream().map(sup -> sup.getLocale()).collect(Collectors.toSet());

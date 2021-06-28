@@ -150,11 +150,11 @@ public class LocalizationFacade
   {
     String localeString = language;
     
-    if (country != null)
+    if (country != null && country.length() > 0)
     {
       localeString += "_" + country;
       
-      if (variant != null)
+      if (variant != null && variant.length() > 0)
       {
         localeString += "_" + variant;
       }
