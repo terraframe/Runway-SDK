@@ -22,13 +22,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 import com.runwaysdk.localization.LocaleDimension;
+import com.runwaysdk.localization.LocalizationFacade;
 import com.runwaysdk.localization.LocalizedValueStore;
 import com.runwaysdk.system.metadata.MdAttributeLocal;
 import com.runwaysdk.system.metadata.MdEntity;
@@ -52,11 +53,11 @@ public class ConfigurationBuilder
   {
     this.addLocaleDimensions(MdAttributeLocalInfo.DEFAULT_LOCALE);
     
-    List<Locale> locales = LocalizationFacade.getInstalledLocales();
+    Set<Locale> locales = LocalizationFacade.getInstalledLocales();
     
     for (Locale locale : locales)
     {
-      this.addLocaleDimensions(locale.toLanguageTag().replace("-", "_"));
+      this.addLocaleDimensions(locale.toString());
     }
   }
   

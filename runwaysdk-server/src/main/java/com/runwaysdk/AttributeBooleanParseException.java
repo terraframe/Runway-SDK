@@ -18,6 +18,7 @@
  */
 package com.runwaysdk;
 
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class AttributeBooleanParseException extends AttributeParseException
 {
@@ -84,7 +85,7 @@ public class AttributeBooleanParseException extends AttributeParseException
    */
   public AttributeBooleanParseException(Throwable cause, String attributeDisplayLabel, String invalidValue)
   {
-    super(cause, attributeDisplayLabel, invalidValue);;
+    super(cause, attributeDisplayLabel, invalidValue);
   }
 
   /**

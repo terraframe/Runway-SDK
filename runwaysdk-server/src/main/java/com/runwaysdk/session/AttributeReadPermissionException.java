@@ -18,13 +18,13 @@
  */
 package com.runwaysdk.session;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class AttributeReadPermissionException extends PermissionException
 {

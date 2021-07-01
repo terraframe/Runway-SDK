@@ -21,8 +21,6 @@ package com.runwaysdk.business.generation;
 import java.util.Map;
 import java.util.TreeMap;
 
-
-
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.constants.ComponentInfo;

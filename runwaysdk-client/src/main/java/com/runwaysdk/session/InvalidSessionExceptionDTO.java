@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.session;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessExceptionDTO;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class InvalidSessionExceptionDTO  extends BusinessExceptionDTO
 {

@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.system.metadata.ontology;
 
-import com.runwaysdk.business.ontology.OntologyStrategyIF;
 import com.runwaysdk.business.ontology.InitializationStrategyIF;
+import com.runwaysdk.business.ontology.OntologyStrategyIF;
 
 /**
  * This is the abstract class that ontology strategies with state will extend.

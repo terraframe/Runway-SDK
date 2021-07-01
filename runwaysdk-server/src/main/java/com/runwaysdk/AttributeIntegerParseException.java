@@ -18,6 +18,7 @@
  */
 package com.runwaysdk;
 
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class AttributeIntegerParseException extends AttributeParseException
 {

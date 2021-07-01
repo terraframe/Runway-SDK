@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.business;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 
 /**

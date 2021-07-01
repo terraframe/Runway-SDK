@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
-import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;

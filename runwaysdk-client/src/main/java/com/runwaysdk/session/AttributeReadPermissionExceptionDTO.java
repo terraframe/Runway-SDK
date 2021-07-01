@@ -20,7 +20,7 @@ package com.runwaysdk.session;
 
 import java.util.Locale;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class AttributeReadPermissionExceptionDTO extends PermissionExceptionDTO
 {

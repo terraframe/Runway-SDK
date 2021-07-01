@@ -19,6 +19,7 @@
 package com.runwaysdk;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class ConfigurationExceptionDTO extends RunwayExceptionDTO
 {

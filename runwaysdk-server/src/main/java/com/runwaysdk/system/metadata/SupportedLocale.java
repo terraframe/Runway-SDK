@@ -18,13 +18,72 @@
  */
 package com.runwaysdk.system.metadata;
 
+import java.util.Locale;
 
-public class SupportedLocale extends SupportedLocaleBase
+import com.runwaysdk.localization.SupportedLocaleIF;
+import com.runwaysdk.transport.conversion.ConversionFacade;
+
+public class SupportedLocale extends SupportedLocaleBase implements SupportedLocaleIF
 {
   private static final long serialVersionUID = 1285835926;
   
   public SupportedLocale()
   {
     super();
-  }  
+  }
+  
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (obj != null && obj instanceof Locale)
+    {
+      return this.getLocale().equals(obj);
+    }
+    else
+    {
+      return super.equals(obj);
+    }
+  }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getEnumName().hashCode();
+  }
+  
+  @Override
+  public String toString()
+  {
+    return this.getEnumName();
+  }
+  
+  @Override
+  public Locale getLocale()
+  {
+    return ConversionFacade.getLocale(this.getEnumName());
+  }
+
+  @Override
+  public String getName()
+  {
+    return this.getEnumName();
+  }
+
+  @Override
+  public String getCountry()
+  {
+    return this.getLocale().getCountry();
+  }
+
+  @Override
+  public String getLanguage()
+  {
+    return this.getLocale().getLanguage();
+  }
+
+  @Override
+  public String getVariant()
+  {
+    return this.getLocale().getVariant();
+  }
 }
