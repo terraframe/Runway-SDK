@@ -18,6 +18,9 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.util.Date;
+
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassificationDAOIF;
@@ -25,7 +28,6 @@ import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef.ID;
 
 public class AttributeClassification extends AttributeGraphRef
 {
@@ -70,12 +72,35 @@ public class AttributeClassification extends AttributeGraphRef
     {
       this.validateRid( ( (VertexObjectDAOIF) value ).getRID());
     }
+    else if (value instanceof VertexObject)
+    {
+      this.validateRid( ( (VertexObject) value ).getRID());
+    }
     else if (value instanceof ID)
     {
       this.validateRid( ( (ID) value ).getRid());
     }
 
     super.setValue(value);
+  }
+
+  @Override
+  public void setValue(Object value, Date startDate, Date endDate)
+  {
+    if (value instanceof VertexObjectDAOIF)
+    {
+      this.validateRid( ( (VertexObjectDAOIF) value ).getRID());
+    }
+    else if (value instanceof VertexObject)
+    {
+      this.validateRid( ( (VertexObject) value ).getRID());
+    }
+    else if (value instanceof ID)
+    {
+      this.validateRid( ( (ID) value ).getRid());
+    }
+
+    super.setValue(value, startDate, endDate);
   }
 
   private void validateRid(Object childRid)

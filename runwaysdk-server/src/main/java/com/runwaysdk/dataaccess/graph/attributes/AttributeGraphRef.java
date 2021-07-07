@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.graph.attributes;
 import java.util.Date;
 
 import com.runwaysdk.AttributeUUIDParseException;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -141,7 +142,7 @@ public class AttributeGraphRef extends Attribute
       MdAttributeGraphRefDAOIF mdAttributeIF = this.getMdAttributeConcrete();
 
       // First verify that the object is of the correct type.
-      if (! ( valueToValidate instanceof String ))
+      if (! ( ( valueToValidate instanceof String ) || ( valueToValidate instanceof ID ) ))
       {
         String devMessage = "Value is not a " + VertexObjectDAO.class.getName();
         throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
@@ -157,6 +158,14 @@ public class AttributeGraphRef extends Attribute
     if (value instanceof VertexObjectDAOIF)
     {
       VertexObjectDAOIF vertex = (VertexObjectDAOIF) value;
+
+      super.setValue(vertex.getOid());
+
+      this.id = new ID(vertex.getOid(), vertex.getRID());
+    }
+    else if (value instanceof VertexObject)
+    {
+      VertexObject vertex = (VertexObject) value;
 
       super.setValue(vertex.getOid());
 
@@ -184,6 +193,14 @@ public class AttributeGraphRef extends Attribute
     if (value instanceof VertexObjectDAOIF)
     {
       VertexObjectDAOIF vertex = (VertexObjectDAOIF) value;
+
+      ID sId = new ID(vertex.getOid(), vertex.getRID());
+
+      super.setValue(sId, startDate, endDate);
+    }
+    else if (value instanceof VertexObject)
+    {
+      VertexObject vertex = (VertexObject) value;
 
       ID sId = new ID(vertex.getOid(), vertex.getRID());
 
