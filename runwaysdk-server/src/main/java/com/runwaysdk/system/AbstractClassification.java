@@ -38,15 +38,17 @@ public abstract class AbstractClassification extends AbstractClassificationBase
     MdClassificationDAOIF mdClassification = mdAttribute.getMdClassificationDAOIF();
     MdVertexDAOIF mdVertex = mdClassification.getReferenceMdVertexDAO();
     MdEdgeDAOIF mdEdge = mdClassification.getReferenceMdEdgeDAO();
-    MdAttributeDAOIF labelAttribute = mdVertex.definesAttribute(AbstractClassification.DISPLAYLABEL);
+    MdAttributeDAOIF labelAttribute = mdVertex.definesAttributeRecursive(AbstractClassification.DISPLAYLABEL);
 
     StringBuilder statement = new StringBuilder();
     statement.append("SELECT FROM (");
     statement.append(" TRAVERSE out('" + mdEdge.getDBClassName() + "') FROM :parent");
-    statement.append(") WHERE " + localize(labelAttribute.getColumnName()) + " = :value");
+    statement.append(")");
+    statement.append(" WHERE " + localize(labelAttribute.getColumnName()) + " = :value");
+    statement.append(" OR code = :value");
 
     GraphQuery<VertexObject> query = new GraphQuery<VertexObject>(statement.toString());
-    query.setParameter("parent", mdAttribute.getRoot());
+    query.setParameter("parent", mdAttribute.getRoot().getRID());
     query.setParameter("value", value);
 
     return query.getSingleResult();

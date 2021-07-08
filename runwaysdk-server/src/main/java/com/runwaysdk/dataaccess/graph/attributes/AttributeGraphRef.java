@@ -233,4 +233,26 @@ public class AttributeGraphRef extends Attribute
     return objectValue;
   }
 
+  @Override
+  public ValueOverTimeCollection getValuesOverTime()
+  {
+    ValueOverTimeCollection collection = new ValueOverTimeCollection();
+
+    for (ValueOverTime vot : this.valuesOverTime)
+    {
+      Object objectValue = vot.getValue();
+
+      if (objectValue instanceof ID)
+      {
+        ID id = (ID) objectValue;
+
+        objectValue = id.oid;
+      }
+
+      collection.add(new ValueOverTime(vot.getStartDate(), vot.getEndDate(), objectValue));
+    }
+
+    return collection;
+  }
+
 }

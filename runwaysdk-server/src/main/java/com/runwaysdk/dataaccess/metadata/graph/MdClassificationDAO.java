@@ -280,40 +280,7 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
   @Transaction
   public static MdClassificationDAO create(String packageName, String typeName, String classificationLabel)
   {
-    String vertexName = typeName + "Vertex";
-    String edgeName = typeName + "Edge";
-
-    MdVertexDAOIF superVertex = MdVertexDAO.getMdVertexDAO(AbstractClassification.CLASS);
-
-    MdVertexDAO mdVertex = MdVertexDAO.newInstance();
-    mdVertex.setValue(MdVertexInfo.NAME, vertexName);
-    mdVertex.setValue(MdVertexInfo.PACKAGE, packageName);
-    mdVertex.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
-    mdVertex.setValue(MdVertexInfo.SUPER_MD_VERTEX, superVertex.getOid());
-    mdVertex.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdVertex.apply();
-
-    // Create the code attribute for the vertex object
-    MdAttributeCharacterDAO code = MdAttributeCharacterDAO.newInstance();
-    code.setValue(MdAttributeCharacterInfo.NAME, "code");
-    code.setValue(MdAttributeCharacterInfo.SIZE, "255");
-    code.setValue(MdAttributeCharacterInfo.INDEX_TYPE, IndexTypes.UNIQUE_INDEX.getOid());
-    code.setStructValue(MdAttributeCharacterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Code");
-    code.setValue(MdAttributeCharacterInfo.DEFINING_MD_CLASS, mdVertex.getOid());
-    code.apply();
-
-    MdEdgeDAO mdEdge = MdEdgeDAO.newInstance();
-    mdEdge.setValue(MdEdgeInfo.NAME, edgeName);
-    mdEdge.setValue(MdEdgeInfo.PACKAGE, packageName);
-    mdEdge.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel + " Edge");
-    mdEdge.setValue(MdEdgeInfo.PARENT_MD_VERTEX, mdVertex.getOid());
-    mdEdge.setValue(MdEdgeInfo.CHILD_MD_VERTEX, mdVertex.getOid());
-    mdEdge.setValue(MdEdgeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdEdge.apply();
-
     MdClassificationDAO mdClassification = MdClassificationDAO.newInstance();
-    mdClassification.setValue(MdClassificationInfo.MD_VERTEX, mdVertex.getOid());
-    mdClassification.setValue(MdClassificationInfo.MD_EDGE, mdEdge.getOid());
     mdClassification.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
     mdClassification.setValue(MdClassificationInfo.TYPE_NAME, typeName);
     mdClassification.setValue(MdClassificationInfo.PACKAGE, packageName);
