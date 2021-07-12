@@ -30,6 +30,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.graph.GraphQuery;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
@@ -163,6 +164,9 @@ import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeLocalText;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
@@ -3696,6 +3700,104 @@ public class SAXParseTest
     Assert.assertTrue(classIds.contains(class2.getValue("testReference")));
   }
 
+  /**
+   * Test creating Instances that reference other instances
+   */
+  @Request
+  @Test
+  public void testCreateVertex()
+  {
+    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex("TestVertex1");
+    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+
+    mdVertex1.apply();
+
+    TestFixtureFactory.addCharacterAttribute(mdVertex1).apply();
+    TestFixtureFactory.addBooleanAttribute(mdVertex1).apply();
+
+    VertexObjectDAO businessDAO1 = VertexObjectDAO.newInstance(mdVertex1.definesType());
+    businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, true);
+    businessDAO1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "3");
+    businessDAO1.apply();
+
+    VertexObjectDAO businessDAO2 = VertexObjectDAO.newInstance(mdVertex1.definesType());
+    businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, false);
+    businessDAO2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Who are you?");
+    businessDAO2.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO1, businessDAO2, mdVertex1 }));
+
+    TestFixtureFactory.delete(mdVertex1);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdVertexDAOIF mdVertexTest = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
+
+    Assert.assertNotNull(mdVertexTest);
+
+    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>("SELECT FROM " + mdVertexTest.getDBClassName());
+    List<VertexObjectDAOIF> results = query.getRawResults();
+
+    Assert.assertEquals(2, results.size());
+  }
+
+  /**
+   * Test creating Instances that reference other instances
+   */
+  @Request
+  @Test
+  public void testCreateEdge()
+  {
+    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex("TestVertex1");
+    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdVertex1.apply();
+
+    MdEdgeDAO mdEdge1 = TestFixtureFactory.createMdEdge(mdVertex1, mdVertex1, "TestEdge1");
+    mdEdge1.setValue(MdEdgeInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdEdge1.apply();
+
+    TestFixtureFactory.addCharacterAttribute(mdVertex1).apply();
+    MdAttributeBooleanDAO mdAttributeBoolean = TestFixtureFactory.addBooleanAttribute(mdVertex1);
+    mdAttributeBoolean.apply();
+
+    VertexObjectDAO businessDAO1 = VertexObjectDAO.newInstance(mdVertex1.definesType());
+    businessDAO1.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, true);
+    businessDAO1.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "3");
+    businessDAO1.apply();
+
+    VertexObjectDAO businessDAO2 = VertexObjectDAO.newInstance(mdVertex1.definesType());
+    businessDAO2.setValue(TestFixConst.ATTRIBUTE_BOOLEAN, false);
+    businessDAO2.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "Who are you?");
+    businessDAO2.apply();
+
+    EdgeObjectDAO edge = businessDAO2.addParent(businessDAO1, mdEdge1);
+    edge.apply();
+
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { businessDAO1, businessDAO2, mdVertex1, edge, mdEdge1 }));
+
+    TestFixtureFactory.delete(mdEdge1);
+    TestFixtureFactory.delete(mdVertex1);
+
+    SAXImporter.runImport(new File(tempXMLFile));
+
+    MdVertexDAOIF mdVertexTest = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
+
+    Assert.assertNotNull(mdVertexTest);
+
+    StringBuilder statement = new StringBuilder();
+    statement.append("SELECT FROM " + mdVertexTest.getDBClassName());
+
+    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>(statement.toString());
+
+    List<VertexObjectDAOIF> results = query.getRawResults();
+
+    Assert.assertEquals(2, results.size());
+
+    VertexObjectDAOIF result = results.get(1);
+
+    Assert.assertNotNull(result.getParents(mdEdge1.definesType()));
+  }
+
   @Request
   @Test
   public void testCreateMdEnumeration()
@@ -6883,7 +6985,7 @@ public class SAXParseTest
     MdClassificationDAOIF test = MdClassificationDAO.getMdClassificationDAO(mdClassification1.definesType());
     String actualLabel = test.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
     String expectedLabel = mdClassification1.getStructValue(MdClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE);
-    
+
     Assert.assertEquals(expectedLabel, actualLabel);
   }
 

@@ -81,6 +81,8 @@
       <xs:element name="mdEnumeration" type="mdEnumeration" />
       <xs:element name="object" type="entity" />
       <xs:element name="relationship" type="relationshipCreate" />
+      <xs:element name="vertex" type="entity" />
+      <xs:element name="edge" type="relationshipCreate" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
       <xs:element name="mdTable" type="mdTable" />      
       <xs:element name="mdStruct" type="mdStruct" />

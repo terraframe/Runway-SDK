@@ -113,4 +113,14 @@ public class AbstractClassificationTest
     Assert.assertEquals(CODE, result.getObjectValue(AbstractClassification.CODE));
   }
 
+  @Request
+  @Test
+  public void testGetByCode()
+  {
+    VertexObject result = AbstractClassification.get(CODE, mdClassificationDAO);
+
+    Assert.assertNotNull(result);
+    Assert.assertEquals(CODE, result.getObjectValue(AbstractClassification.CODE));
+  }
+
 }

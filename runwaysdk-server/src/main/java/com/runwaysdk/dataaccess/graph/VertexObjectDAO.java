@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.runwaysdk.business.graph.GraphQuery;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;

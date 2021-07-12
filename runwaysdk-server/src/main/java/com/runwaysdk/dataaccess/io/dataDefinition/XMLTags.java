@@ -422,9 +422,19 @@ public interface XMLTags
   public static final String   OBJECT_TAG                       = "object";
 
   /**
+   * The xml tag for the VertexObject type
+   */
+  public static final String   VERTEX_TAG                       = "vertex";
+
+  /**
    * The xml tag for the Relationship type
    */
   public static final String   RELATIONSHIP_TAG                 = "relationship";
+
+  /**
+   * The xml tag for the Relationship type
+   */
+  public static final String   EDGE_TAG                         = "edge";
 
   /**
    * The xml tag for an attribute-value pairing of a Business/Relationship type

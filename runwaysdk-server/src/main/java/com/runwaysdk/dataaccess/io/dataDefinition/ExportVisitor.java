@@ -58,9 +58,9 @@ import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -145,8 +145,8 @@ import com.runwaysdk.dataaccess.MdAttributeDecDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
@@ -202,6 +202,7 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -371,9 +372,17 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitRelationship((RelationshipDAOIF) component);
     }
+    else if (component instanceof EdgeObjectDAOIF)
+    {
+      visitEdge((EdgeObjectDAOIF) component);
+    }
     else if (component instanceof Relationship)
     {
       visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getOid()));
+    }
+    else if (component instanceof VertexObjectDAOIF)
+    {
+      visitVertex((VertexObjectDAOIF) component);
     }
     else if (component instanceof BusinessDAOIF)
     {
@@ -1617,6 +1626,44 @@ public class ExportVisitor extends MarkupVisitor
 
     // Write all of the values of the instance
     visitValues(relationship.getAttributeArrayIF());
+
+    writer.closeTag();
+  }
+
+  public void visitEdge(EdgeObjectDAOIF relationship)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    // The name of the class being instaniated
+    parameters.put(XMLTags.TYPE_ATTRIBUTE, relationship.getType());
+
+    parameters.put(XMLTags.PARENT_KEY_TAG, relationship.getParent().getKey());
+    parameters.put(XMLTags.CHILD_KEY_TAG, relationship.getChild().getKey());
+
+    parameters.put(XMLTags.KEY_ATTRIBUTE, relationship.getKey());
+
+    writer.openEscapedTag(XMLTags.EDGE_TAG, parameters);
+
+    // Write all of the values of the instance
+//    visitValues(relationship.getAttributeArrayIF());
+
+    writer.closeTag();
+  }
+
+  /**
+   * Exports all of the instances of classes, standalone classes, enumeration
+   * classes, and relationship which were exported
+   */
+  public void visitVertex(VertexObjectDAOIF businessDAO)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    // The type of the instance
+    parameters.put(XMLTags.TYPE_ATTRIBUTE, businessDAO.getType());
+    parameters.put(XMLTags.KEY_ATTRIBUTE, businessDAO.getKey());
+
+    writer.openEscapedTag(XMLTags.VERTEX_TAG, parameters);
+
+    // Write all of the values of the instance
+    visitValues(businessDAO.getAttributeArrayIF());
 
     writer.closeTag();
   }
