@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.metadata;
 import java.util.Map;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.EntityDAO;
@@ -210,16 +211,16 @@ public abstract class MdAttributeGraphRefDAO extends MdAttributeConcreteDAO impl
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
-    MdVertexDAOIF referenceMdBusiness = this.getReferenceMdVertexDAOIF();
+    MdVertexDAOIF referenceMdVertex = this.getReferenceMdVertexDAOIF();
 
     StringBuilder method = new StringBuilder();
 
-    if (referenceMdBusiness.isGenerateSource())
+    if (referenceMdVertex.isGenerateSource())
     {
-      method.append("(" + referenceMdBusiness.definesType() + ")");
+      method.append("(" + referenceMdVertex.definesType() + ")");
     }
 
-    method.append(VertexObjectDAO.class.getName() + ".get(" + MdVertexDAO.class.getName() + ".getMdVertexDAO(\"" + referenceMdBusiness.definesType() + "\"), " + formatMe + ")");
+    method.append(VertexObject.class.getName() + ".get(\"" + referenceMdVertex.definesType() + "\", " + formatMe + ")");
 
     return method.toString();
   }

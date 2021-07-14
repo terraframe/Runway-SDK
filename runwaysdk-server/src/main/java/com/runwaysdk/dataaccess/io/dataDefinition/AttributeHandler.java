@@ -82,18 +82,19 @@ public class AttributeHandler extends TagHandler implements TagHandlerIF, Handle
 
       String attributeName = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
       String value = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_VALUE_ATTRIBUTE);
-      MdAttributeConcreteDAOIF mdAttribute = entity.getMdAttributeDAO(attributeName);
-
-      Object v = this.convertToTypeSafeValue(value, mdAttribute);
 
       if (structAttributeName != null)
       {
         GraphObjectDAO embeddedComponentDAO = (GraphObjectDAO) entity.getEmbeddedComponentDAO(structAttributeName);
-        embeddedComponentDAO.setValue(attributeName, v);
+        MdAttributeConcreteDAOIF mdAttribute = embeddedComponentDAO.getMdAttributeDAO(attributeName);
+
+        embeddedComponentDAO.setValue(attributeName, this.convertToTypeSafeValue(value, mdAttribute));
       }
       else
       {
-        entity.setValue(attributeName, v);
+        MdAttributeConcreteDAOIF mdAttribute = entity.getMdAttributeDAO(attributeName);
+
+        entity.setValue(attributeName, this.convertToTypeSafeValue(value, mdAttribute));
       }
     }
   }
