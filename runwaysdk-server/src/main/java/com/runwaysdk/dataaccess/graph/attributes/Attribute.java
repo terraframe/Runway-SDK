@@ -343,9 +343,9 @@ public abstract class Attribute implements AttributeIF
     this.value = value;
   }
 
-  public void setValueInternal(Object value, Date startDate, Date endDate)
+  public void setValueInternal(String votOid, Object value, Date startDate, Date endDate)
   {
-    this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+    this.valuesOverTime.add(new ValueOverTime(votOid, startDate, endDate, value));
   }
 
   public ValueOverTimeCollection getValuesOverTime()
