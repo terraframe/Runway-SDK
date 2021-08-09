@@ -72,6 +72,7 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
@@ -96,6 +97,8 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef.ID;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
@@ -1509,6 +1512,26 @@ public class OrientDBImpl implements GraphDB
         }
       }
     }
+    else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
+    {
+      List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
+      attribute.clearValuesOverTime();
+
+      if (elements != null)
+      {
+        for (OElement element : elements)
+        {
+          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
+          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
+          OVertex ref = (OVertex) element.getProperty(OrientDBConstant.VALUE);
+          String oid = (String) ref.getProperty("oid");
+
+          ID id = new ID(oid, ref.getIdentity());
+
+          attribute.setValueInternal(oid, id, startDate, endDate);
+        }
+      }
+    }    
     else
     {
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
@@ -1888,7 +1911,7 @@ public class OrientDBImpl implements GraphDB
     return oClass;
   }
 
-  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass)
+  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass, OType type)
   {
     OClass oClass = db.getClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
 
@@ -1897,7 +1920,7 @@ public class OrientDBImpl implements GraphDB
       oClass = db.createVertexClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
-      oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDED, vClass);
+      oClass.createProperty(OrientDBConstant.VALUE, type, vClass);
       oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 

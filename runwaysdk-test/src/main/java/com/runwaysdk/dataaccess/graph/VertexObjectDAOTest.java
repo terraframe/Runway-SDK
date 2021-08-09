@@ -270,6 +270,7 @@ public class VertexObjectDAOTest
 
     // Create nodes
     VertexObjectDAO root = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
+    root.setValue("code", "TEST-ROOT");
     root.apply();
 
     attributeRoot = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
