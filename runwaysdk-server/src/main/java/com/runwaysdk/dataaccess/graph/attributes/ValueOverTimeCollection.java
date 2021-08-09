@@ -133,6 +133,19 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
 
     return null;
   }
+  
+  public ValueOverTime getValueByOid(String oid)
+  {
+    for (ValueOverTime vot : this)
+    {
+      if (vot.getOid().equals(oid))
+      {
+        return vot;
+      }
+    }
+    
+    return null;
+  }
 
   @Override
   public boolean add(ValueOverTime vot)
