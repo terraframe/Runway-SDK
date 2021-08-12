@@ -79,9 +79,9 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   }
 
   @Override
-  public ValueOverTime[] toArray()
+  public Object[] toArray()
   {
-    return (ValueOverTime[]) valuesOverTime.toArray();
+    return (Object[]) valuesOverTime.toArray();
   }
   
   public ValueOverTime get(int i)
