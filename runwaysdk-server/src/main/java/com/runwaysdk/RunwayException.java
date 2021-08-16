@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
 import com.runwaysdk.business.LocalizableIF;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.session.Session;
 

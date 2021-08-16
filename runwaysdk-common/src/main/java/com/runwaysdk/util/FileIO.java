@@ -44,8 +44,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class FileIO
 {

@@ -19,7 +19,6 @@
 package com.runwaysdk.dataaccess;
 
 import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.io.XMLImporter;
 
 public class Installer

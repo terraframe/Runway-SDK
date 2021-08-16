@@ -90,7 +90,6 @@ import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.CoreException;
-import com.runwaysdk.dataaccess.ElementDAOIF;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -1695,10 +1694,10 @@ public abstract class AbstractDatabase
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
    */
-  public String buildSQLDeleteStatement(String table, String oid, long seq)
+  public String buildSQLDeleteStatement(String table, String oid, String seqColumnName, long seq)
   {
     String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-    statement += " AND " + ElementDAOIF.SEQUENCE_COLUMN + " = " + seq;
+    statement += " AND " + seqColumnName + " = " + seq;
     return statement;
   }
 

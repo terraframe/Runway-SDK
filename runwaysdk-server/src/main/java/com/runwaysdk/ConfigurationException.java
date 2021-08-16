@@ -18,7 +18,7 @@
  */
 package com.runwaysdk;
 
-
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 /**
  * Indicates an error in configuration - usually a bad value in a properties file.

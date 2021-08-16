@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -60,7 +60,6 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -145,7 +144,6 @@ import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeMultiReferenceDAOIF;
@@ -159,7 +157,6 @@ import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
-import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -1343,15 +1340,7 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = getMdVertexParameters(mdVertex);
 
     // Write the CLASS_TAG with its parameters
-
-    if (mdVertex instanceof MdClassificationDAOIF)
-    {
-      writer.openEscapedTag(XMLTags.MD_CLASSIFICATION_TAG, attributes);
-    }
-    else
-    {
-      writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
-    }
+    writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
   }
 
   public void visitMdVertex(MdVertexDAOIF mdVertex)
@@ -2188,17 +2177,6 @@ public class ExportVisitor extends MarkupVisitor
 
     // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnObject type
-    if (mdAttributeIF instanceof MdAttributeGraphReferenceDAOIF)
-    {
-      MdClassDAOIF refClass = ( (MdAttributeGraphReferenceDAOIF) mdAttributeIF ).getReferenceMdVertexDAOIF();
-
-      String classType = refClass.getValue(MdTypeInfo.PACKAGE) + "." + refClass.getValue(MdTypeInfo.NAME);
-
-      parameters.put(XMLTags.TYPE_ATTRIBUTE, classType);
-    }
-
-    // Map the parameter value to its correct attribute tag for parameters
-    // common to foriegnObject type
     if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
     {
       parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.DEFAULT_VALUE));
@@ -2630,7 +2608,6 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
     attributeTags.put(MdAttributeEmbeddedInfo.CLASS, XMLTags.EMBEDDED_TAG);
-    attributeTags.put(MdAttributeGraphReferenceInfo.CLASS, XMLTags.GRAPH_REFERENCE_TAG);
     attributeTags.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG);
 
     // Field types

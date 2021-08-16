@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.dataaccess;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class CoreExceptionDTO extends DataAccessExceptionDTO
 {

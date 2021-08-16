@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -56,7 +56,6 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
@@ -148,7 +147,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -206,7 +204,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -957,22 +954,6 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getOid());
-
-    return mdAttribute;
-  }
-
-  public static MdAttributeGraphReferenceDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO)
-  {
-    return addLinkAttribute(mdVertexDAO, mdClassificationDAO, "testLink");
-  }
-
-  public static MdAttributeGraphReferenceDAO addLinkAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO mdClassificationDAO, String attributeName)
-  {
-    MdAttributeGraphReferenceDAO mdAttribute = MdAttributeGraphReferenceDAO.newInstance();
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.NAME, attributeName);
-    mdAttribute.setStructValue(MdAttributeGraphReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Link Test");
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX, mdClassificationDAO.getOid());
-    mdAttribute.setValue(MdAttributeGraphReferenceInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
 
     return mdAttribute;
   }
@@ -1784,6 +1765,7 @@ public class TestFixtureFactory
     return mdVertex;
   }
 
+<<<<<<< HEAD
   public static MdClassificationDAO createMdClassification(String name)
   {
     MdClassificationDAO mdClassification = MdClassificationDAO.newInstance();
@@ -1794,6 +1776,8 @@ public class TestFixtureFactory
     return mdClassification;
   }
 
+=======
+>>>>>>> refs/remotes/origin/dev
   public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child)
   {
     return createMdEdge(parent, child, "TestEdge");

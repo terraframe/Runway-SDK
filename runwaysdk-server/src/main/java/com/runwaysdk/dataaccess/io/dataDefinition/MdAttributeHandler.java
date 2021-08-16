@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
@@ -43,7 +43,6 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
-import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
@@ -71,7 +70,6 @@ import com.runwaysdk.dataaccess.EnumerationItemDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
@@ -81,14 +79,12 @@ import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTermDAOIF;
-import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.TermAttributeDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidAttributeTypeException;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.XMLException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
@@ -100,7 +96,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -118,7 +113,6 @@ import com.runwaysdk.dataaccess.metadata.MdLocalStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdStructDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MdViewDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -658,51 +652,6 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
     {
       this.populate(mdClass, (MdAttributeReferenceDAO) mdAttribute, attributes);
-    }
-  }
-
-  protected static class AttributeGraphReferenceHandler extends AttributeRefHandler implements TagHandlerIF, HandlerFactoryIF
-  {
-    public AttributeGraphReferenceHandler(ImportManager manager, String type)
-    {
-      super(manager, type);
-    }
-
-    protected void populate(MdClassDAO mdClass, MdAttributeGraphReferenceDAO mdAttribute, Attributes attributes)
-    {
-      super.populate(mdClass, mdAttribute, attributes);
-
-      this.importLinkType(mdClass, mdAttribute, attributes.getValue(XMLTags.TYPE_ATTRIBUTE));
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdAttributeHandler.
-     * AttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdClassDAO,
-     * com.runwaysdk.dataaccess.metadata.MdAttributeDAO, org.xml.sax.Attributes)
-     */
-    @Override
-    protected void configure(MdClassDAO mdClass, MdAttributeDAO mdAttribute, Attributes attributes)
-    {
-      this.populate(mdClass, (MdAttributeGraphReferenceDAO) mdAttribute, attributes);
-    }
-
-    protected void importLinkType(MdClassDAO mdClass, MdAttributeDAO mdAttribute, String referenceType)
-    {
-      if (referenceType != null)
-      {
-        // Ensure that the class being reference is defined in the database
-        if (!MdTypeDAO.isDefined(referenceType))
-        {
-          String[] search_tags = { XMLTags.MD_VERTEX_TAG, XMLTags.MD_CLASSIFICATION_TAG };
-          SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, referenceType, mdClass.definesType());
-        }
-
-        // Get the databaseID of the enumeration reference
-        MdVertexDAOIF refMdBusinessIF = MdVertexDAO.getMdVertexDAO(referenceType);
-        mdAttribute.setValue(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX, refMdBusinessIF.getOid());
-      }
     }
   }
 
@@ -1253,7 +1202,6 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.SYMMETRIC_TAG, new AttributeSymmetricHandler(manager, MdAttributeSymmetricInfo.CLASS));
     this.addHandler(XMLTags.HASH_TAG, new AttributeHashHandler(manager, MdAttributeHashInfo.CLASS));
     this.addHandler(XMLTags.EMBEDDED_TAG, new AttributeEmbeddedHandler(manager, MdAttributeEmbeddedInfo.CLASS));
-    this.addHandler(XMLTags.GRAPH_REFERENCE_TAG, new AttributeGraphReferenceHandler(manager, MdAttributeGraphReferenceInfo.CLASS));
     this.addHandler(XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG, new AttributeLocalEmbeddedHandler(manager, MdAttributeLocalCharacterEmbeddedInfo.CLASS));
   }
 }

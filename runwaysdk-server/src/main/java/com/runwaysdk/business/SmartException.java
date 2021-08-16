@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.slf4j.event.Level;
-
 import com.runwaysdk.RunwayExceptionIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeStructIF;

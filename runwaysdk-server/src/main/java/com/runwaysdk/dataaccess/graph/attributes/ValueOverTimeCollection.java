@@ -79,9 +79,9 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
   }
 
   @Override
-  public ValueOverTime[] toArray()
+  public Object[] toArray()
   {
-    return (ValueOverTime[]) valuesOverTime.toArray();
+    return (Object[]) valuesOverTime.toArray();
   }
   
   public ValueOverTime get(int i)
@@ -131,6 +131,19 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       }
     }
 
+    return null;
+  }
+  
+  public ValueOverTime getValueByOid(String oid)
+  {
+    for (ValueOverTime vot : this)
+    {
+      if (vot.getOid().equals(oid))
+      {
+        return vot;
+      }
+    }
+    
     return null;
   }
 

@@ -18,18 +18,24 @@
  */
 package com.runwaysdk.business;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.LocaleUtils;
 
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.Constants;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
+import com.runwaysdk.localization.LocalizationFacade;
+import com.runwaysdk.localization.LocalizedValueIF;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 
-public class LocalStructDTO extends StructDTO
+public class LocalStructDTO extends StructDTO implements LocalizedValueIF
 {
   /**
    *
@@ -154,5 +160,47 @@ public class LocalStructDTO extends StructDTO
   public String toString()
   {
     return getValue();
+  }
+  
+  @Override
+  public void setValue(Locale locale, String value)
+  {
+    this.setValue(locale.toString(), value);
+  }
+  
+  @Override
+  public Map<String, String> getLocaleMap()
+  {
+    Map<String, String> map = new HashMap<String, String>();
+    
+    for (Locale locale : LocalizationFacade.getInstalledLocales())
+    {
+      map.put(locale.toString(), this.getValue(locale));
+    }
+    
+    map.put(MdAttributeLocalInfo.DEFAULT_LOCALE, this.getDefaultValue());
+    
+    return map;
+  }
+  
+  @Override
+  public void setLocaleMap(Map<String, String> map)
+  {
+    for (Entry<String,String> entry : map.entrySet())
+    {
+      this.setValue(LocaleUtils.toLocale(entry.getKey()), entry.getValue());
+    }
+  }
+
+  @Override
+  public String getDefaultValue()
+  {
+    return this.getValue(MdAttributeLocalInfo.DEFAULT_LOCALE);
+  }
+
+  @Override
+  public void setDefaultValue(String value)
+  {
+    this.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, value);
   }
 }

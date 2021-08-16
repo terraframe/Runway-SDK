@@ -20,14 +20,24 @@ package com.runwaysdk.localization;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
-import com.runwaysdk.RunwayLocalizationProviderIF;
-
+/**
+ * This class is provided as an example of client-side support for the {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}
+ * service. This class is currently NOT USED due to the fact that it doesn't actually support RMI, and there's no point to
+ * it since you should just use the {@link com.runwaysdk.localization.RunwayServerLocalizationProvider} if you have access
+ * to the server jar anyway. For this reason, this client-side jar does not currently provide a META-INF service file for
+ * the {@link com.runwaysdk.localization.RunwayLocalizationProviderIF} interface since that would unnecessarily complicate the service
+ * loading. 
+ * 
+ * @author rrowlands
+ */
 public class RunwayClientLocalizationProvider implements RunwayLocalizationProviderIF
 {
+  
+  public static final String SERVER_LOCALIZATION_PROVIDER = "com.runwaysdk.localization.RunwayServerLocalizationProvider";
   
   private Object invoke(String method, Class<?>[] argTypes, Object...args)
   {
@@ -35,7 +45,7 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
     
     try
     {
-      Class<?> clazz = RunwayClientLocalizationProvider.class.getClassLoader().loadClass("com.runwaysdk.localization.LocalizedValueStore");
+      Class<?> clazz = RunwayClientLocalizationProvider.class.getClassLoader().loadClass(SERVER_LOCALIZATION_PROVIDER);
       
       Method m = clazz.getMethod(method, argTypes);
       
@@ -46,11 +56,23 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
       return null;
     }
   }
+  
+  @Override
+  public String localize(String key)
+  {
+    return (String) invoke("localize", new Class<?>[] {String.class}, key);
+  }
 
   @Override
   public String localize(String key, Locale locale)
   {
     return (String) invoke("localize", new Class<?>[] {String.class, Locale.class}, key, locale);
+  }
+  
+  @Override
+  public LocalizedValueIF localizeAll(String key)
+  {
+    return (LocalizedValueIF) invoke("localizeAll", new Class<?>[] {java.lang.String.class}); // TODO : This object would have to be converted to a DTO to actually work in a client context
   }
 
   @SuppressWarnings("unchecked")
@@ -58,12 +80,6 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
   public Map<String, String> getAll(Locale locale)
   {
     return (Map<String, String>) invoke("getAll", new Class<?>[] {Locale.class}, locale);
-  }
-
-  @Override
-  public String localize(String key)
-  {
-    return (String) invoke("localize", new Class<?>[] {String.class}, key);
   }
 
   @SuppressWarnings("unchecked")
@@ -74,9 +90,9 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
   }
 
   @Override
-  public void install(Locale locale)
+  public SupportedLocaleIF install(Locale locale)
   {
-    invoke("install", new Class<?>[] {Locale.class}, locale);
+    return (SupportedLocaleIF) invoke("install", new Class<?>[] {Locale.class}, locale);
   }
   
   @Override
@@ -87,9 +103,23 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Locale> getInstalledLocales()
+  public Set<Locale> getInstalledLocales()
   {
-    return (List<Locale>) invoke("getInstalledLocales", new Class<?>[] {});
+    return (Set<Locale>) invoke("getInstalledLocales", new Class<?>[] {});
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public Set<SupportedLocaleIF> getSupportedLocales()
+  {
+    return (Set<SupportedLocaleIF>) invoke("getInstalledLocales", new Class<?>[] {}); // TODO : This object would have to be converted to a DTO to actually work in a client context
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public SupportedLocaleIF getSupportedLocale(Locale locale)
+  {
+    return (SupportedLocaleIF) invoke("getSupportedLocale", new Class<?>[] {Locale.class}, locale); // TODO : This object would have to be converted to a DTO to actually work in a client context
   }
   
 }

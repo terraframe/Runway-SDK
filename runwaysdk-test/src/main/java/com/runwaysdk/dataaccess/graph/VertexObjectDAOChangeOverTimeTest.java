@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -48,7 +48,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
@@ -63,8 +62,6 @@ import com.vividsolutions.jts.geom.Point;
 
 public class VertexObjectDAOChangeOverTimeTest
 {
-  private static MdVertexDAO                          mdClassificationDAO;
-
   private static MdVertexDAO                          mdVertexDAO;
 
   private static MdBusinessDAO                        mdEnumMasterDAO;
@@ -97,8 +94,11 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
+<<<<<<< HEAD
   private static MdAttributeGraphReferenceDAO         mdGraphReferenceAttribute;
 
+=======
+>>>>>>> refs/remotes/origin/dev
   @Request
   @BeforeClass
   public static void classSetup()
@@ -113,10 +113,6 @@ public class VertexObjectDAOChangeOverTimeTest
   @Transaction
   private static void classSetup_Transaction()
   {
-    // Define the link class
-    mdClassificationDAO = TestFixtureFactory.createMdVertex("TestLinkClass");
-    mdClassificationDAO.apply();
-
     mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
     mdEnumMasterDAO.apply();
 
@@ -166,9 +162,6 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
-
-    mdGraphReferenceAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
-    mdGraphReferenceAttribute.apply();
   }
 
   @Request
@@ -186,7 +179,6 @@ public class VertexObjectDAOChangeOverTimeTest
     TestFixtureFactory.delete(mdVertexDAO);
     TestFixtureFactory.delete(mdEnumerationDAO);
     TestFixtureFactory.delete(mdEnumMasterDAO);
-    TestFixtureFactory.delete(mdClassificationDAO);
   }
 
   public Date startDate()
@@ -1056,6 +1048,7 @@ public class VertexObjectDAOChangeOverTimeTest
   //
   // vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
   // }
+<<<<<<< HEAD
 
   @Request
   @Test
@@ -1101,5 +1094,7 @@ public class VertexObjectDAOChangeOverTimeTest
       classifierDAO.delete();
     }
   }
+=======
+>>>>>>> refs/remotes/origin/dev
 
 }

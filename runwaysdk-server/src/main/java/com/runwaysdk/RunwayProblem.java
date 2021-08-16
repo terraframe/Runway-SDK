@@ -21,6 +21,7 @@ package com.runwaysdk;
 import java.util.Locale;
 
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public abstract class RunwayProblem implements ProblemIF
 {

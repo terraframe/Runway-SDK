@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -50,7 +50,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -82,8 +81,6 @@ import com.vividsolutions.jts.geom.Polygon;
 
 public class VertexObjectDAOTest
 {
-  private static MdVertexDAO                          mdClassificationDAO;
-
   private static MdVertexDAO                          mdVertexDAO;
 
   private static MdBusinessDAO                        mdBusinessDAO;
@@ -132,8 +129,6 @@ public class VertexObjectDAOTest
 
   private static MdAttributeLocalCharacterEmbeddedDAO mdLocalCharacterAttribute;
 
-  private static MdAttributeGraphReferenceDAO         mdGraphReferenceAttribute;
-
   // Embedded class
   private static MdVertexDAO                          mdEmbeddedVertexDAO;
 
@@ -158,10 +153,6 @@ public class VertexObjectDAOTest
   @Transaction
   private static void classSetup_Transaction()
   {
-    // Define the link class
-    mdClassificationDAO = TestFixtureFactory.createMdVertex("TestLinkClass");
-    mdClassificationDAO.apply();
-
     mdVertexDAO = TestFixtureFactory.createMdVertex();
     mdVertexDAO.apply();
 
@@ -232,9 +223,6 @@ public class VertexObjectDAOTest
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
 
-    mdGraphReferenceAttribute = TestFixtureFactory.addLinkAttribute(mdVertexDAO, mdClassificationDAO);
-    mdGraphReferenceAttribute.apply();
-
     // Define the embedded class
     mdEmbeddedVertexDAO = TestFixtureFactory.createMdVertex("TestEmbeddedClass");
     mdEmbeddedVertexDAO.apply();
@@ -264,7 +252,6 @@ public class VertexObjectDAOTest
     TestFixtureFactory.delete(mdEnumMasterDAO);
     TestFixtureFactory.delete(mdBusinessDAO);
     TestFixtureFactory.delete(mdEmbeddedVertexDAO);
-    TestFixtureFactory.delete(mdClassificationDAO);
   }
 
   @Request
@@ -1285,49 +1272,6 @@ public class VertexObjectDAOTest
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
     vertexDAO.setValue(mdMultiLineStringAttribute.definesAttribute(), "Test Value");
-  }
-
-  @Request
-  @Test
-  public void testLinkAttribute()
-  {
-    VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdClassificationDAO.definesType());
-
-    try
-    {
-      classifierDAO.apply();
-
-      String attributeName = mdGraphReferenceAttribute.definesAttribute();
-      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-
-      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
-
-      vertexDAO.setValue(attributeName, classifierDAO);
-
-      Assert.assertEquals(classifierDAO.getOid(), vertexDAO.getObjectValue(attributeName));
-
-      try
-      {
-        // Test create
-        vertexDAO.apply();
-
-        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-
-        Assert.assertNotNull(test);
-
-        Assert.assertEquals(classifierDAO.getOid(), test.getObjectValue(attributeName));
-      }
-      finally
-      {
-        vertexDAO.delete();
-      }
-
-      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
-    }
-    finally
-    {
-      classifierDAO.delete();
-    }
   }
 
 }

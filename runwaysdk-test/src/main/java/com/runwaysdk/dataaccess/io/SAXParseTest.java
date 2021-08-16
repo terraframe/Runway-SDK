@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -106,7 +106,6 @@ import com.runwaysdk.constants.SymmetricMethods;
 import com.runwaysdk.constants.TermInfo;
 import com.runwaysdk.constants.TestConstants;
 import com.runwaysdk.constants.XMLConstants;
-import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AndFieldConditionDAOIF;
@@ -130,7 +129,6 @@ import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeSymmetricDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
-import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
@@ -184,7 +182,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDimensionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeMultiReferenceDAO;
@@ -234,7 +231,6 @@ import com.runwaysdk.dataaccess.metadata.MdWebPrimitiveDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.query.OIterator;
@@ -6762,53 +6758,6 @@ public class SAXParseTest
     MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
 
     Assert.assertNotNull(attribute);
-  }
-
-  /**
-   * Test setting of attributes of and on the class datatype
-   */
-  @Request
-  @Test
-  public void testCreateLink()
-  {
-    // Create test MdVertex
-    MdVertexDAO mdVertex2 = TestFixtureFactory.createMdVertex("TestVertex2");
-    mdVertex2.apply();
-
-    MdVertexDAO mdVertex1 = TestFixtureFactory.createMdVertex();
-    mdVertex1.setValue(MdVertexInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.setValue(MdVertexInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-    mdVertex1.setValue(MdVertexInfo.PUBLISH, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.setValue(MdVertexInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-    mdVertex1.apply();
-
-    MdAttributeGraphReferenceDAO mdAttribute = TestFixtureFactory.addLinkAttribute(mdVertex1, mdVertex2);
-    mdAttribute.apply();
-
-    // Export the test entities
-    ExportMetadata metadata = new ExportMetadata(true);
-    metadata.addCreate(new ComponentIF[] { mdVertex1 });
-
-    SAXExporter.export(tempXMLFile, SCHEMA, metadata);
-
-    // Delete the test entites
-    TestFixtureFactory.delete(mdVertex1);
-
-    // Import the test entites
-    SAXImporter.runImport(new File(tempXMLFile));
-
-    MdVertexDAOIF mdVertex1IF = MdVertexDAO.getMdVertexDAO(mdVertex1.definesType());
-
-    try
-    {
-      MdAttributeDAOIF attribute = mdVertex1IF.definesAttribute(mdAttribute.definesAttribute());
-
-      Assert.assertNotNull(attribute);
-    }
-    finally
-    {
-      TestFixtureFactory.delete(mdVertex1IF);
-    }
   }
 
   /**

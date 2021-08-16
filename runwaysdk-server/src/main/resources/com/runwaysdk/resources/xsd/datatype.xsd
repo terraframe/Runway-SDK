@@ -68,7 +68,6 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
-      <xs:element name="mdClassification" type="mdVertex" />      
       <xs:element name="mdEdge" type="mdEdge" />            
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
@@ -101,7 +100,6 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
-      <xs:element name="mdClassification" type="mdVertex" />
       <xs:element name="mdEdge" type="mdEdge" />      
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
@@ -953,7 +951,6 @@
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
       <xs:element name="embedded" type="embedded" />
-      <xs:element name="graphReference" type="graphReference" />      
       <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
@@ -1144,10 +1141,6 @@
 
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="reference">
-    <xs:attributeGroup ref="attributeReference" />
-  </xs:complexType>
-  
-  <xs:complexType name="graphReference">
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
 
