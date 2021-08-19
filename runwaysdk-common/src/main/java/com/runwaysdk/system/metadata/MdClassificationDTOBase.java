@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -936174614)
+@com.runwaysdk.business.ClassSignature(hash = 1042359183)
 public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdClassification";
-  private static final long serialVersionUID = -936174614;
+  private static final long serialVersionUID = 1042359183;
   
   protected MdClassificationDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,6 +28,7 @@ public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metad
   }
   
   public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public static java.lang.String GENERATESOURCE = "generateSource";
   public static java.lang.String MDEDGE = "mdEdge";
   public static java.lang.String MDVERTEX = "mdVertex";
   public static java.lang.String PACKAGENAME = "packageName";
@@ -56,6 +57,43 @@ public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metad
   public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDisplayLabelMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DISPLAYLABEL).getAttributeMdDTO();
+  }
+  
+  public Boolean getGenerateSource()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(GENERATESOURCE));
+  }
+  
+  public void setGenerateSource(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(GENERATESOURCE, "");
+    }
+    else
+    {
+      setValue(GENERATESOURCE, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isGenerateSourceWritable()
+  {
+    return isWritable(GENERATESOURCE);
+  }
+  
+  public boolean isGenerateSourceReadable()
+  {
+    return isReadable(GENERATESOURCE);
+  }
+  
+  public boolean isGenerateSourceModified()
+  {
+    return isModified(GENERATESOURCE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getGenerateSourceMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(GENERATESOURCE).getAttributeMdDTO();
   }
   
   public com.runwaysdk.system.metadata.MdEdgeDTO getMdEdge()

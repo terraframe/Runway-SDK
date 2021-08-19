@@ -74,7 +74,7 @@ public abstract class MdAttributeClassificationBase extends com.runwaysdk.system
   
   public com.runwaysdk.system.AbstractClassification getRoot()
   {
-    return (com.runwaysdk.system.AbstractClassification)com.runwaysdk.dataaccess.graph.VertexObjectDAO.get(com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO.getMdVertexDAO("com.runwaysdk.system.AbstractClassification"), getValue(ROOT));
+    return (com.runwaysdk.system.AbstractClassification)com.runwaysdk.business.graph.VertexObject.get("com.runwaysdk.system.AbstractClassification", getValue(ROOT));
   }
   
   public void validateRoot()

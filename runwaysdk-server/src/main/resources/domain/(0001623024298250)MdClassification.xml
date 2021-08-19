@@ -21,6 +21,7 @@
         <attributes>
           <char name="typeName" label="Type name" required="true" size="255" />
           <char name="packageName" label="Package" required="true" size="255" />
+          <boolean name="generateSource" label="Generate source" required="true" defaultValue="true" />
           <localChar name="displayLabel" required="true" size="50" />  
           <reference name="mdVertex" label="MdVertex" required="true" immutable="true" description="The MdVertex this Classification wraps." type="com.runwaysdk.system.metadata.MdVertex" />                  
           <reference name="mdEdge" label="MdEdge" required="true" immutable="true" description="The MdEdge this Classification wraps." type="com.runwaysdk.system.metadata.MdEdge" />                  

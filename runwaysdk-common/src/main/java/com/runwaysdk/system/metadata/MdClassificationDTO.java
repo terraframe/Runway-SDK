@@ -2,7 +2,7 @@ package com.runwaysdk.system.metadata;
 
 public class MdClassificationDTO extends MdClassificationDTOBase
 {
-  private static final long serialVersionUID = -1114737529;
+  private static final long serialVersionUID = -290229460;
   
   public MdClassificationDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
