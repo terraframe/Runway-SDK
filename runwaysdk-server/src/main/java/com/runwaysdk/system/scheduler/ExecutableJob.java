@@ -145,6 +145,9 @@ public abstract class ExecutableJob extends ExecutableJobBase
     return this.getDescription().getValue();
   }
 
+  /**
+   * Attempts to schedule the job for immediate running.
+   */
   public synchronized JobHistory start()
   {
     return executableJobStart();
@@ -173,6 +176,12 @@ public abstract class ExecutableJob extends ExecutableJobBase
   {
     // TODO : Not supported yet.
   }
+  
+  @Request
+  public synchronized void requeue(JobHistoryRecord jhr)
+  {
+    this.getQuartzJob().start(jhr);
+  }
 
   /**
    * If the job can be automatically resumed, it will be started. Otherwise, the history will be set to FAILURE. 
@@ -180,7 +189,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
   @Request
   public synchronized void resume(JobHistoryRecord jhr)
   {
-    if (canResume())
+    if (canResume(jhr))
     {
       this.getQuartzJob().start(jhr);
     }
@@ -227,7 +236,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     jh.apply();
   }
   
-  public boolean canResume()
+  public boolean canResume(JobHistoryRecord record)
   {
     return false;
   }
