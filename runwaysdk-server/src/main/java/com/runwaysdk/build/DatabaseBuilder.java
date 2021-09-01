@@ -244,10 +244,8 @@ public class DatabaseBuilder
         {
           DatabaseBootstrapper.bootstrap(user, pass, template, clean);
         }
-        else
-        {
-          DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
-        }
+        
+        DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
       }
       finally
       {
