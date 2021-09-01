@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -214,7 +215,17 @@ public class DatabaseBuilder
       {
         if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
         {
-          if (user != null && pass != null)
+          if (user == null || user.length() == 0)
+          {
+            user = DatabaseProperties.getRootUser();
+          }
+          
+          if (pass == null || pass.length() == 0)
+          {
+            pass = DatabaseProperties.getRootPassword();
+          }
+          
+          if ( (user != null && user.length() > 0) && (pass != null && pass.length() > 0) )
           {
             patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
           }
@@ -233,8 +244,10 @@ public class DatabaseBuilder
         {
           DatabaseBootstrapper.bootstrap(user, pass, template, clean);
         }
-
-        DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
+        else
+        {
+          DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
+        }
       }
       finally
       {
