@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.session;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.business.BusinessException;
 

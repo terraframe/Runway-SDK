@@ -32,8 +32,6 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.postgresql.ds.common.BaseDataSource;
 
 import com.google.inject.Inject;
 import com.runwaysdk.RunwayMetadataVersion;

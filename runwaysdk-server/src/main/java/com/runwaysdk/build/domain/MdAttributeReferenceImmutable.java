@@ -19,14 +19,10 @@
 package com.runwaysdk.build.domain;
 
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
-import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.ServerProperties;
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.session.Request;
 import com.runwaysdk.system.metadata.MdAttributeReference;
-import com.runwaysdk.system.metadata.MdBusiness;
 
 public class MdAttributeReferenceImmutable
 {

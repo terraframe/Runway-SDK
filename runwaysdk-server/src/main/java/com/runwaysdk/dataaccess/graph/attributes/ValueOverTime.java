@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class ValueOverTime implements Comparable<ValueOverTime>
 {
@@ -45,6 +46,8 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   private LocalDate endDate;
 
   private Object    value;
+  
+  private String    oid;
 
   /**
    * @param startDate
@@ -59,6 +62,20 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 
     this.setStartDate(startDate);
     this.setEndDate(endDate);
+    
+    this.oid = UUID.randomUUID().toString();
+  }
+  
+  public ValueOverTime(String oid, Date startDate, Date endDate, Object value)
+  {
+    super();
+
+    this.value = value;
+
+    this.setStartDate(startDate);
+    this.setEndDate(endDate);
+    
+    this.oid = oid;
   }
 
   /**
@@ -72,6 +89,16 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   public LocalDate getLocalStartDate()
   {
     return this.startDate;
+  }
+  
+  public String getOid()
+  {
+    return oid;
+  }
+
+  public void setOid(String oid)
+  {
+    this.oid = oid;
   }
 
   /**

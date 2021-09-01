@@ -16,55 +16,40 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.constants;
+package com.runwaysdk.localization;
 
-public enum SupportedLocale
+import java.util.Locale;
+import java.util.Map;
+
+public interface LocalizedValueIF
 {
+  public String getValue();
+  
+  public String getValue(Locale locale);
+
+  public void setValue(Locale locale, String value);
+
+  public void setValue(String value);
+  
+  /**
+   * Returns a map where the key is locale.toString() and the value is the label for that
+   * locale.
+   */
+  public Map<String, String> getLocaleMap();
+  
+  /**
+   * Sets the localized values where the key is locale.toString()  and the value is the label for that
+   * locale.
+   */
+  public void setLocaleMap(Map<String, String> map);
 
   /**
-   * English (United States) locale
+   * Gets the value of the default locale.
    */
-  EN_US("20070322JN000000000000000000001020070322JN0000000000000000000009", "English (United States)");
+  public String getDefaultValue();
   
   /**
-   * 
+   * Sets the value of the default locale.
    */
-  public static final String LOCALE_LABEL = "localeLabel";
-  
-  /**
-   * The oid of the locale
-   */
-  private String oid;
-  
-  /**
-   * The label of the local
-   */
-  private String localeLabel;
-  
-  /**
-   * Enum constructor
-   * 
-   * @param oid
-   */
-  private SupportedLocale(String oid, String localeLabel)
-  {
-    this.oid = oid;
-    this.localeLabel = localeLabel;
-  }
-  
-  /**
-   * Returns the oid 
-   */
-  public String getOid()
-  {
-    return oid;
-  }
-  
-  /**
-   * Returns the local label
-   */
-  public String getLocaleLabel()
-  {
-    return this.localeLabel;
-  }
+  public void setDefaultValue(String value);
 }

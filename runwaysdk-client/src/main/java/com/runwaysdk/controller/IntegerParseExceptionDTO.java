@@ -20,8 +20,8 @@ package com.runwaysdk.controller;
 
 import java.util.Locale;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.business.ComponentDTO;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 
 public class IntegerParseExceptionDTO extends ParseProblemDTO

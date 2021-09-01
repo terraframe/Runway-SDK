@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.business.generation;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class LoaderDecoratorException extends RunwayException implements LoaderDecoratorExceptionIF
 {

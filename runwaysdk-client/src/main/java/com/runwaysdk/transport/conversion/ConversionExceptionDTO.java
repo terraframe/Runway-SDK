@@ -18,10 +18,10 @@
  */
 package com.runwaysdk.transport.conversion;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.dataaccess.ProgrammingErrorExceptionDTO;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class ConversionExceptionDTO extends ProgrammingErrorExceptionDTO
 {

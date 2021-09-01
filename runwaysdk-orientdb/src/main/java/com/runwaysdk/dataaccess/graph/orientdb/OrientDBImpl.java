@@ -64,8 +64,8 @@ import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
@@ -1410,11 +1410,12 @@ public class OrientDBImpl implements GraphDB
               Date startDate = element.getProperty(OrientDBConstant.START_DATE);
               Date endDate = element.getProperty(OrientDBConstant.END_DATE);
               OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+              String oid = element.getProperty(OrientDBConstant.OID);
 
               VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
               this.populateDAO(vElement, votDAO);
 
-              attribute.setValueInternal(votDAO, startDate, endDate);
+              attribute.setValueInternal(oid, votDAO, startDate, endDate);
             }
           }
         }
@@ -1452,11 +1453,12 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
           VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
           this.populateDAO(vElement, votDAO);
 
-          attribute.setValueInternal(votDAO, startDate, endDate);
+          attribute.setValueInternal(oid, votDAO, startDate, endDate);
         }
       }
     }
@@ -1472,17 +1474,18 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
           if (vElement != null)
           {
             Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
             Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
 
-            attribute.setValueInternal(geometry, startDate, endDate);
+            attribute.setValueInternal(oid, geometry, startDate, endDate);
           }
           else
           {
-            attribute.setValueInternal(null, startDate, endDate);
+            attribute.setValueInternal(oid, null, startDate, endDate);
           }        
         }
       }
@@ -1499,8 +1502,9 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           Object votValue = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
-          attribute.setValueInternal(votValue, startDate, endDate);
+          attribute.setValueInternal(oid, votValue, startDate, endDate);
         }
       }
     }
@@ -1638,6 +1642,7 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
 
         documents.add(document);
       }
@@ -1660,6 +1665,7 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
 
         documents.add(document);
       }
@@ -1679,6 +1685,7 @@ public class OrientDBImpl implements GraphDB
       OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
       document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
       document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+      document.setProperty(OrientDBConstant.OID, vot.getOid());
 
       ODocument docVal = geometryToDocument((Geometry) vot.getValue());
       
@@ -1710,6 +1717,7 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, votVertex);
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
 
         documents.add(document);
       }
@@ -1784,6 +1792,7 @@ public class OrientDBImpl implements GraphDB
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.ANY);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;
@@ -1799,6 +1808,7 @@ public class OrientDBImpl implements GraphDB
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDEDSET, OType.STRING);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;
@@ -1814,6 +1824,7 @@ public class OrientDBImpl implements GraphDB
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDED, vClass);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;

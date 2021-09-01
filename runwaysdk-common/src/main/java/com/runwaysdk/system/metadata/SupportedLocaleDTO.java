@@ -18,7 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-public class SupportedLocaleDTO extends SupportedLocaleDTOBase
+import java.util.Locale;
+
+import com.runwaysdk.localization.SupportedLocaleIF;
+import com.runwaysdk.transport.conversion.ConversionFacade;
+
+public class SupportedLocaleDTO extends SupportedLocaleDTOBase implements SupportedLocaleIF
 {
   private static final long serialVersionUID = -666097122;
   
@@ -36,6 +41,60 @@ public class SupportedLocaleDTO extends SupportedLocaleDTOBase
   protected SupportedLocaleDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(businessDTO, clientRequest);
+  }
+  
+  @Override
+  public boolean equals(Object obj)
+  {
+    return this.getLocale().equals(obj);
+  }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getEnumName().hashCode();
+  }
+  
+  @Override
+  public String toString()
+  {
+    return this.getEnumName();
+  }
+  
+  @Override
+  public Locale getLocale()
+  {
+    return ConversionFacade.getLocale(this.getEnumName());
+  }
+
+  @Override
+  public String getName()
+  {
+    return this.getEnumName();
+  }
+
+  @Override
+  public String getCountry()
+  {
+    return this.getLocale().getCountry();
+  }
+
+  @Override
+  public String getLanguage()
+  {
+    return this.getLocale().getLanguage();
+  }
+
+  @Override
+  public String getVariant()
+  {
+    return this.getLocale().getVariant();
+  }
+
+  @Override
+  public void appLock()
+  {
+    this.lock();
   }
   
 }

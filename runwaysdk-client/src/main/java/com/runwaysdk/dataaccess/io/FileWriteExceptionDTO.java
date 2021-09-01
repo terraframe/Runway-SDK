@@ -20,9 +20,9 @@ package com.runwaysdk.dataaccess.io;
 
 import java.io.File;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.SystemExceptionDTO;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class FileWriteExceptionDTO extends SystemExceptionDTO
 {

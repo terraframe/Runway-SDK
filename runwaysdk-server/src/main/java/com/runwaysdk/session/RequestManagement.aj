@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.runwaysdk.AttributeNotification;
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.MessageExceptionDTO;
 import com.runwaysdk.ProblemException;
 import com.runwaysdk.ProblemExceptionDTO;
@@ -52,6 +51,7 @@ import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.LockObject;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.transport.conversion.RunwayProblemToRunwayProblemDTO;
 import com.runwaysdk.transport.conversion.business.InformationToInformationDTO;

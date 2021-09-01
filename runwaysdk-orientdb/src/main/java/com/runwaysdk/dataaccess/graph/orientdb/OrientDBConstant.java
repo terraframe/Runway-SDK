@@ -31,4 +31,6 @@ public interface OrientDBConstant
   public final String END_DATE              = "endDate";
 
   public final String VALUE                 = "value";
+  
+  public final String OID                   = "oid";
 }
