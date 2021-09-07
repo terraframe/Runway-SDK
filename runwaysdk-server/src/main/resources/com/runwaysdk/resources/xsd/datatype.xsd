@@ -255,6 +255,7 @@
       <xs:extension base="metadata">
         <xs:attribute name="name" type="xs:string" use="required" />
         <xs:attribute name="root" type="xs:string" use="optional" />
+        <xs:attribute name="generateSource" type="xs:boolean" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

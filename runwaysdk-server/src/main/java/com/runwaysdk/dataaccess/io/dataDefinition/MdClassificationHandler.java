@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
 
+import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
@@ -122,6 +123,7 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
     ImportManager.setLocalizedValue(mdClassificationDAO, MdClassificationInfo.DISPLAY_LABEL, attributes, XMLTags.DISPLAY_LABEL_ATTRIBUTE);
     ImportManager.setValue(mdClassificationDAO, MdClassificationInfo.REMOVE, attributes, XMLTags.REMOVE_ATTRIBUTE);
     ImportManager.setLocalizedValue(mdClassificationDAO, MdClassificationInfo.DESCRIPTION, attributes, XMLTags.DESCRIPTION_ATTRIBUTE);
+    ImportManager.setValue(mdClassificationDAO, MdClassificationInfo.GENERATE_SOURCE, attributes, XMLTags.GENERATE_SOURCE);
 
     // Import optional reference attributes
     String rootOid = attributes.getValue(MdClassificationInfo.ROOT);

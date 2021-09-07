@@ -311,5 +311,20 @@ public abstract class LeftJoin extends Join
    * @return
    */
   protected abstract String getOperator();
+  
+  protected ValueQuery getRootValueQuery()
+  {
+    return rootValueQuery;
+  }
+  
+  protected Selectable[] getSelectableArray2()
+  {
+    return selectableArray2;
+  }
+  
+  protected LeftJoin getNestedLeftJoin()
+  {
+    return nestedLeftJoin;
+  }
     
 }
