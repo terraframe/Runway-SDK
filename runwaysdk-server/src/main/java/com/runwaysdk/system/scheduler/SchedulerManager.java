@@ -134,8 +134,16 @@ public class SchedulerManager implements JobListener, TriggerListener
     {
       JobHistoryRecord jhr = it.next();
       ExecutableJob ej = jhr.getParent();
+      JobHistory history = jhr.getChild();
       
-      ej.resume(jhr);
+      if (history.getStatus().contains(AllJobStatus.QUEUED))
+      {
+        ej.requeue(jhr);
+      }
+      else
+      {
+        ej.resume(jhr);
+      }
     }
   }
   
