@@ -54,6 +54,7 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
     this.addHandler(XMLTags.MD_VERTEX_TAG, new MdVertexHandler(manager));
     this.addHandler(XMLTags.MD_EDGE_TAG, new MdEdgeHandler(manager));
     this.addHandler(XMLTags.MD_WEB_FORM_TAG, new MdWebFormHandler(manager));
+    this.addHandler(XMLTags.MD_CLASSIFICATION_TAG, new MdClassificationHandler(manager));
 
     // Data handlers
     this.addHandler(XMLTags.OBJECT_TAG, new ObjectHandler(manager));

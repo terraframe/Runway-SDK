@@ -18,10 +18,20 @@
  */
 package com.runwaysdk.dataaccess;
 
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+
 public interface MdClassificationDAOIF extends MetadataDAOIF
 {
   /**
    * Name of the table used to store instances of this class.
    */
   public static final String TABLE = "md_classification";
+
+  public MdEdgeDAOIF getReferenceMdEdgeDAO();
+
+  public MdVertexDAOIF getReferenceMdVertexDAO();
+
+  public VertexObjectDAOIF getRoot();
+
+  public String definesType();
 }

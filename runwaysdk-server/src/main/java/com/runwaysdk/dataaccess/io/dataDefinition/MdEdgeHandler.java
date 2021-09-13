@@ -175,7 +175,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
   @Override
   public void onEndElement(String uri, String localName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_VERTEX_TAG))
+    if (localName.equals(XMLTags.MD_EDGE_TAG))
     {
       MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) context.getObject(MdTypeInfo.CLASS);
 

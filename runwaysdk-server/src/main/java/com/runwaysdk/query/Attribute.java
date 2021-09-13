@@ -38,6 +38,7 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
@@ -66,6 +67,7 @@ import com.runwaysdk.dataaccess.attributes.value.MdAttributeDouble_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeEnumeration_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeFile_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeFloat_Q;
+import com.runwaysdk.dataaccess.attributes.value.MdAttributeGraphReference_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeHash_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeIndicator_Q;
 import com.runwaysdk.dataaccess.attributes.value.MdAttributeInteger_Q;
@@ -300,6 +302,10 @@ public abstract class Attribute implements SelectableSingle, Statement
     else if (_mdAttributeIF instanceof MdAttributeIndicatorDAOIF)
     {
       mdAttribute_Q = new MdAttributeIndicator_Q((MdAttributeIndicatorDAOIF) _mdAttributeIF);
+    }
+    else if (_mdAttributeIF instanceof MdAttributeGraphReferenceDAOIF)
+    {
+      mdAttribute_Q = new MdAttributeGraphReference_Q((MdAttributeGraphReferenceDAOIF) _mdAttributeIF);
     }
 
     if (mdAttribute_Q == null)

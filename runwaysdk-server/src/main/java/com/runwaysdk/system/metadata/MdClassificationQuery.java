@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1211713813)
+@com.runwaysdk.business.ClassSignature(hash = 2101489336)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -61,6 +61,69 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdClassification.DISPLAYLABEL, mdAttributeIF, this, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge()
+  {
+    return getMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdClassification.MDEDGE);
+
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdClassification.MDEDGE, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdClassification.MDEDGE);
+
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdClassification.MDEDGE, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex()
+  {
+    return getMdVertex(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdClassification.MDVERTEX);
+
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdClassification.MDVERTEX, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdClassification.MDVERTEX);
+
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdClassification.MDVERTEX, mdAttributeIF, this, alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getPackageName()
   {
     return getPackageName(null);
@@ -76,6 +139,23 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
   public com.runwaysdk.query.SelectableChar getPackageName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.PACKAGENAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getRoot()
+  {
+    return getRoot(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getTypeName()
@@ -95,6 +175,24 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.query.SelectableChar)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdClassification.TYPENAME, alias, displayLabel);
 
   }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDVERTEX)) 
+    {
+       return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
   protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -144,9 +242,21 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel();
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel(String alias);
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource();
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge();
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex();
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias);
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getPackageName();
     public com.runwaysdk.query.SelectableChar getPackageName(String alias);
     public com.runwaysdk.query.SelectableChar getPackageName(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getRoot();
+    public com.runwaysdk.query.SelectableUUID getRoot(String alias);
+    public com.runwaysdk.query.SelectableUUID getRoot(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getTypeName();
     public com.runwaysdk.query.SelectableChar getTypeName(String alias);
     public com.runwaysdk.query.SelectableChar getTypeName(String alias, String displayLabel);
@@ -202,6 +312,57 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.metadata.MdClassification.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge()
+  {
+    return getMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDEDGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDEDGE,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex()
+  {
+    return getMdVertex(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDVERTEX, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDVERTEX,  alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getPackageName()
   {
     return getPackageName(null);
@@ -217,6 +378,23 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
   public com.runwaysdk.query.SelectableChar getPackageName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdClassification.PACKAGENAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getRoot()
+  {
+    return getRoot(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getTypeName()
@@ -236,6 +414,24 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdClassification.TYPENAME, alias, displayLabel);
 
   }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDVERTEX)) 
+    {
+       return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
   protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -262,9 +458,21 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel();
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel(String alias);
     public com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF getDisplayLabel(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource();
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias);
+    public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge();
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex();
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias);
+    public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getPackageName();
     public com.runwaysdk.query.SelectableChar getPackageName(String alias);
     public com.runwaysdk.query.SelectableChar getPackageName(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getRoot();
+    public com.runwaysdk.query.SelectableUUID getRoot(String alias);
+    public com.runwaysdk.query.SelectableUUID getRoot(String alias, String displayLabel);
     public com.runwaysdk.query.SelectableChar getTypeName();
     public com.runwaysdk.query.SelectableChar getTypeName(String alias);
     public com.runwaysdk.query.SelectableChar getTypeName(String alias, String displayLabel);
@@ -369,6 +577,57 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.system.metadata.MdClassificationDisplayLabelQuery.MdClassificationDisplayLabelQueryStructIF)this.attributeFactory(com.runwaysdk.system.metadata.MdClassification.DISPLAYLABEL, com.runwaysdk.system.metadata.MdAttributeLocalCharacter.CLASS, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource()
+  {
+    return getGenerateSource(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableBoolean getGenerateSource(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdClassification.GENERATESOURCE, alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge()
+  {
+    return getMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDEDGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getMdEdge(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDEDGE,  alias, displayLabel);
+
+  }
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex()
+  {
+    return getMdVertex(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDVERTEX, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getMdVertex(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdClassification.MDVERTEX,  alias, displayLabel);
+
+  }
   public com.runwaysdk.query.SelectableChar getPackageName()
   {
     return getPackageName(null);
@@ -384,6 +643,23 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
   public com.runwaysdk.query.SelectableChar getPackageName(String alias, String displayLabel)
   {
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdClassification.PACKAGENAME, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getRoot()
+  {
+    return getRoot(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getRoot(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdClassification.ROOT, alias, displayLabel);
 
   }
   public com.runwaysdk.query.SelectableChar getTypeName()
@@ -403,6 +679,24 @@ public  class MdClassificationQuery extends com.runwaysdk.system.metadata.Metada
     return (com.runwaysdk.query.SelectableChar)this.get(com.runwaysdk.system.metadata.MdClassification.TYPENAME, alias, displayLabel);
 
   }
+  protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  {
+    String name = mdAttributeIF.definesAttribute();
+    
+    if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdClassification.MDVERTEX)) 
+    {
+       return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else 
+    {
+      return super.referenceFactory(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+  }
+
   protected com.runwaysdk.query.AttributeLocal localFactory( com.runwaysdk.dataaccess.MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdLocalStructDAOIF mdLocalStructIF, String structTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();

@@ -1,6 +1,6 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 309079732)
+@com.runwaysdk.business.ClassSignature(hash = -829074161)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -14,9 +14,13 @@ public abstract class MdClassificationBase extends com.runwaysdk.system.metadata
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
+  public static java.lang.String GENERATESOURCE = "generateSource";
+  public static java.lang.String MDEDGE = "mdEdge";
+  public static java.lang.String MDVERTEX = "mdVertex";
   public static java.lang.String PACKAGENAME = "packageName";
+  public static java.lang.String ROOT = "root";
   public static java.lang.String TYPENAME = "typeName";
-  private static final long serialVersionUID = 309079732;
+  private static final long serialVersionUID = -829074161;
   
   public MdClassificationBase()
   {
@@ -38,6 +42,138 @@ public abstract class MdClassificationBase extends com.runwaysdk.system.metadata
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdClassification.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
+  }
+  
+  public Boolean getGenerateSource()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(GENERATESOURCE));
+  }
+  
+  public void validateGenerateSource()
+  {
+    this.validateAttribute(GENERATESOURCE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF getGenerateSourceMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF)mdClassIF.definesAttribute(GENERATESOURCE);
+  }
+  
+  public void setGenerateSource(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(GENERATESOURCE, "");
+    }
+    else
+    {
+      setValue(GENERATESOURCE, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public com.runwaysdk.system.metadata.MdEdge getMdEdge()
+  {
+    if (getValue(MDEDGE).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdEdge.get(getValue(MDEDGE));
+    }
+  }
+  
+  public String getMdEdgeOid()
+  {
+    return getValue(MDEDGE);
+  }
+  
+  public void validateMdEdge()
+  {
+    this.validateAttribute(MDEDGE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getMdEdgeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(MDEDGE);
+  }
+  
+  public void setMdEdge(com.runwaysdk.system.metadata.MdEdge value)
+  {
+    if(value == null)
+    {
+      setValue(MDEDGE, "");
+    }
+    else
+    {
+      setValue(MDEDGE, value.getOid());
+    }
+  }
+  
+  public void setMdEdgeId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(MDEDGE, "");
+    }
+    else
+    {
+      setValue(MDEDGE, oid);
+    }
+  }
+  
+  public com.runwaysdk.system.metadata.MdVertex getMdVertex()
+  {
+    if (getValue(MDVERTEX).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdVertex.get(getValue(MDVERTEX));
+    }
+  }
+  
+  public String getMdVertexOid()
+  {
+    return getValue(MDVERTEX);
+  }
+  
+  public void validateMdVertex()
+  {
+    this.validateAttribute(MDVERTEX);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getMdVertexMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(MDVERTEX);
+  }
+  
+  public void setMdVertex(com.runwaysdk.system.metadata.MdVertex value)
+  {
+    if(value == null)
+    {
+      setValue(MDVERTEX, "");
+    }
+    else
+    {
+      setValue(MDVERTEX, value.getOid());
+    }
+  }
+  
+  public void setMdVertexId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(MDVERTEX, "");
+    }
+    else
+    {
+      setValue(MDVERTEX, oid);
+    }
   }
   
   public String getPackageName()
@@ -65,6 +201,34 @@ public abstract class MdClassificationBase extends com.runwaysdk.system.metadata
     else
     {
       setValue(PACKAGENAME, value);
+    }
+  }
+  
+  public com.runwaysdk.system.AbstractClassification getRoot()
+  {
+    return (com.runwaysdk.system.AbstractClassification)com.runwaysdk.business.graph.VertexObject.get("com.runwaysdk.system.AbstractClassification", getValue(ROOT));
+  }
+  
+  public void validateRoot()
+  {
+    this.validateAttribute(ROOT);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF getRootMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF)mdClassIF.definesAttribute(ROOT);
+  }
+  
+  public void setRoot(com.runwaysdk.system.AbstractClassification value)
+  {
+    if(value == null)
+    {
+      setValue(ROOT, "");
+    }
+    else
+    {
+      setValue(ROOT, value.getOid());
     }
   }
   

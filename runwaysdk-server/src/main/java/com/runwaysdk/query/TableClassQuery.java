@@ -71,6 +71,7 @@ import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIndicatorDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
@@ -2439,6 +2440,10 @@ public abstract class TableClassQuery extends ComponentQuery
       {
         attribute = this.referenceFactory(mdAttributeRefIF, mdTableClass.definesType(), definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
       }
+    }
+    else if (mdAttributeIF instanceof MdAttributeGraphRefDAOIF)
+    {
+      attribute = new AttributeGraphRef((MdAttributeGraphRefDAOIF) mdAttributeIF, mdTableClass.definesType(), definingTableName, definingTableAlias, this, attrTableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     if (attribute == null)

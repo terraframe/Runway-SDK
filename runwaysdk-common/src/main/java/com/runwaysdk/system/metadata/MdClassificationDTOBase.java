@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1774710732)
+@com.runwaysdk.business.ClassSignature(hash = 1042359183)
 public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdClassification";
-  private static final long serialVersionUID = -1774710732;
+  private static final long serialVersionUID = 1042359183;
   
   protected MdClassificationDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -28,7 +28,11 @@ public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metad
   }
   
   public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public static java.lang.String GENERATESOURCE = "generateSource";
+  public static java.lang.String MDEDGE = "mdEdge";
+  public static java.lang.String MDVERTEX = "mdVertex";
   public static java.lang.String PACKAGENAME = "packageName";
+  public static java.lang.String ROOT = "root";
   public static java.lang.String TYPENAME = "typeName";
   public com.runwaysdk.system.metadata.MdClassificationDisplayLabelDTO getDisplayLabel()
   {
@@ -53,6 +57,141 @@ public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metad
   public final com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO getDisplayLabelMd()
   {
     return (com.runwaysdk.transport.metadata.AttributeLocalCharacterMdDTO) getAttributeDTO(DISPLAYLABEL).getAttributeMdDTO();
+  }
+  
+  public Boolean getGenerateSource()
+  {
+    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(GENERATESOURCE));
+  }
+  
+  public void setGenerateSource(Boolean value)
+  {
+    if(value == null)
+    {
+      setValue(GENERATESOURCE, "");
+    }
+    else
+    {
+      setValue(GENERATESOURCE, java.lang.Boolean.toString(value));
+    }
+  }
+  
+  public boolean isGenerateSourceWritable()
+  {
+    return isWritable(GENERATESOURCE);
+  }
+  
+  public boolean isGenerateSourceReadable()
+  {
+    return isReadable(GENERATESOURCE);
+  }
+  
+  public boolean isGenerateSourceModified()
+  {
+    return isModified(GENERATESOURCE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeBooleanMdDTO getGenerateSourceMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeBooleanMdDTO) getAttributeDTO(GENERATESOURCE).getAttributeMdDTO();
+  }
+  
+  public com.runwaysdk.system.metadata.MdEdgeDTO getMdEdge()
+  {
+    if(getValue(MDEDGE) == null || getValue(MDEDGE).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdEdgeDTO.get(getRequest(), getValue(MDEDGE));
+    }
+  }
+  
+  public String getMdEdgeOid()
+  {
+    return getValue(MDEDGE);
+  }
+  
+  public void setMdEdge(com.runwaysdk.system.metadata.MdEdgeDTO value)
+  {
+    if(value == null)
+    {
+      setValue(MDEDGE, "");
+    }
+    else
+    {
+      setValue(MDEDGE, value.getOid());
+    }
+  }
+  
+  public boolean isMdEdgeWritable()
+  {
+    return isWritable(MDEDGE);
+  }
+  
+  public boolean isMdEdgeReadable()
+  {
+    return isReadable(MDEDGE);
+  }
+  
+  public boolean isMdEdgeModified()
+  {
+    return isModified(MDEDGE);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getMdEdgeMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(MDEDGE).getAttributeMdDTO();
+  }
+  
+  public com.runwaysdk.system.metadata.MdVertexDTO getMdVertex()
+  {
+    if(getValue(MDVERTEX) == null || getValue(MDVERTEX).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdVertexDTO.get(getRequest(), getValue(MDVERTEX));
+    }
+  }
+  
+  public String getMdVertexOid()
+  {
+    return getValue(MDVERTEX);
+  }
+  
+  public void setMdVertex(com.runwaysdk.system.metadata.MdVertexDTO value)
+  {
+    if(value == null)
+    {
+      setValue(MDVERTEX, "");
+    }
+    else
+    {
+      setValue(MDVERTEX, value.getOid());
+    }
+  }
+  
+  public boolean isMdVertexWritable()
+  {
+    return isWritable(MDVERTEX);
+  }
+  
+  public boolean isMdVertexReadable()
+  {
+    return isReadable(MDVERTEX);
+  }
+  
+  public boolean isMdVertexModified()
+  {
+    return isModified(MDVERTEX);
+  }
+  
+  public final com.runwaysdk.transport.metadata.AttributeReferenceMdDTO getMdVertexMd()
+  {
+    return (com.runwaysdk.transport.metadata.AttributeReferenceMdDTO) getAttributeDTO(MDVERTEX).getAttributeMdDTO();
   }
   
   public String getPackageName()

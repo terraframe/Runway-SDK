@@ -1,8 +1,8 @@
 package com.runwaysdk.system.metadata;
 
-public abstract class MdClassification extends MdClassificationBase
+public class MdClassification extends MdClassificationBase
 {
-  private static final long serialVersionUID = 1814138487;
+  private static final long serialVersionUID = 2133304492;
   
   public MdClassification()
   {

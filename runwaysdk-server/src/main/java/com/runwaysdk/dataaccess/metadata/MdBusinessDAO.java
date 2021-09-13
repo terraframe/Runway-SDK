@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Aug 12, 2005
@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -253,7 +254,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     return ( (AttributeEnumeration) this.getAttributeIF(MdElementInfo.CACHE_ALGORITHM) ).dereference()[0];
   }
-  
+
   /**
    * Returns an array of MdBusinessIF that defines immediate sub-entities of
    * this entity.
@@ -384,7 +385,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     super.validate();
 
-// Heads up: clean up - this is a reduntant check that is already handled in MdAttributeConcreteDAO
 //    if (this.isNew())
 //    {
 //      // make sure an MdBusiness cannot extend MdAttribute.
@@ -1010,19 +1010,22 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   }
 
   /**
-   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given class.
+   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given
+   * class.
    * 
    * <br/>
    * <b>Precondition:</b> classType != null <br/>
    * <b>Precondition:</b> !classType.trim().equals("") <br/>
-   * <b>Precondition:</b> classType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> classType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
    * the given class (MdBusinessDAOIF().definesType().equals(classType)
    * 
    * @param classType
    *          class type
-   * @return {@link MdBusinessDAOIF} instance of the metadata for the given class type.
+   * @return {@link MdBusinessDAOIF} instance of the metadata for the given
+   *         class type.
    */
   public static MdBusinessDAOIF getMdBusinessDAO(String classType)
   {
