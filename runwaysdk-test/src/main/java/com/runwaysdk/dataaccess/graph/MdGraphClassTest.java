@@ -34,6 +34,7 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
@@ -43,13 +44,13 @@ import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
@@ -57,6 +58,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
@@ -71,23 +73,27 @@ import com.runwaysdk.session.Request;
 
 public class MdGraphClassTest
 {
-  public static String TEST_PACKAGE        = TestFixConst.TEST_PACKAGE;
+  public static String TEST_PACKAGE         = TestFixConst.TEST_PACKAGE;
 
-  public static String VERTEX_CLASS_NAME_1 = "TestVertexClass1";
+  public static String VERTEX_CLASS_NAME_1  = "TestVertexClass1";
 
-  public static String VERTEX_CLASS_NAME_2 = "TestVertexClass2";
+  public static String VERTEX_CLASS_NAME_2  = "TestVertexClass2";
 
-  public static String VERTEX_CLASS_1      = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_1;
+  public static String CLASSIFICATION_NAME  = "TestClassification";
 
-  public static String VERTEX_CLASS_2      = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_2;
+  public static String VERTEX_CLASS_1       = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_1;
 
-  public static String EDGE_CLASS_NAME     = "TestEdgeClass";
+  public static String VERTEX_CLASS_2       = TEST_PACKAGE + "." + VERTEX_CLASS_NAME_2;
 
-  public static String EDGE_CLASS          = TEST_PACKAGE + "." + EDGE_CLASS_NAME;
+  public static String CLASSIFICATION_CLASS = TEST_PACKAGE + "." + CLASSIFICATION_NAME;
 
-  public static String CHAR_ATTR_NAME      = "charAttr";
+  public static String EDGE_CLASS_NAME      = "TestEdgeClass";
 
-  public static String MAX_CHAR_ATTR_SIZE  = "12";
+  public static String EDGE_CLASS           = TEST_PACKAGE + "." + EDGE_CLASS_NAME;
+
+  public static String CHAR_ATTR_NAME       = "charAttr";
+
+  public static String MAX_CHAR_ATTR_SIZE   = "12";
 
   @Request
   @BeforeClass
@@ -696,6 +702,47 @@ public class MdGraphClassTest
     Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
   }
 
+  @Request
+  @Test
+  public void testCreateMdClassification()
+  {
+    MdClassificationDAO mdClassificationDAO = createClassificationClass(CLASSIFICATION_NAME);
+    mdClassificationDAO.delete();
+  }
+
+  @Request
+  @Test
+  public void testCreateMdAttributeClassification()
+  {
+    MdClassificationDAO mdClassificationDAO = createClassificationClass(CLASSIFICATION_NAME);
+
+    try
+    {
+      MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+
+      MdAttributeClassificationDAO mdAttribute = TestFixtureFactory.addClassificationAttribute(mdVertexDAO, mdClassificationDAO);
+      mdAttribute.apply();
+
+      try
+      {
+        String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+        String dbAttrName = mdAttribute.definesAttribute();
+        GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+
+        boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+        Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+      }
+      finally
+      {
+        mdAttribute.delete();
+      }
+    }
+    finally
+    {
+      mdClassificationDAO.delete();
+    }
+  }
+
   protected MdVertexDAO createVertexClass(String vertexName)
   {
     MdVertexDAO mdVertexDAO = TestFixtureFactory.createMdVertex(vertexName);
@@ -704,6 +751,11 @@ public class MdGraphClassTest
     mdVertexDAO.apply();
 
     return mdVertexDAO;
+  }
+
+  protected MdClassificationDAO createClassificationClass(String vertexName)
+  {
+    return MdClassificationDAO.create(TestFixConst.TEST_PACKAGE, vertexName, "Test Classification");
   }
 
   protected MdEdgeDAO createEdgeClass(String edgeName, String parentMdEdgeOid, String childMdEdgeOid)

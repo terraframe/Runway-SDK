@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
@@ -38,6 +39,7 @@ import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
@@ -277,6 +279,10 @@ public class AttributeFactory
     else if (attributeType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       attribute = new AttributeIndicator(attributeName, mdAttributeKey, definingType, (String) attributeValue);
+    }
+    else if (attributeType.equals(MdAttributeGraphReferenceInfo.CLASS) || attributeType.equals(MdAttributeClassificationInfo.CLASS))
+    {
+      attribute = new AttributeGraphRef(attributeName, mdAttributeKey, definingType, (String) attributeValue);
     }
     if (attribute == null)
     {

@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -253,7 +254,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     return ( (AttributeEnumeration) this.getAttributeIF(MdElementInfo.CACHE_ALGORITHM) ).dereference()[0];
   }
-  
+
   /**
    * Returns an array of MdBusinessIF that defines immediate sub-entities of
    * this entity.
@@ -384,7 +385,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     super.validate();
 
-// Heads up: clean up - this is a reduntant check that is already handled in MdAttributeConcreteDAO
 //    if (this.isNew())
 //    {
 //      // make sure an MdBusiness cannot extend MdAttribute.
@@ -1010,19 +1010,22 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   }
 
   /**
-   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given class.
+   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given
+   * class.
    * 
    * <br/>
    * <b>Precondition:</b> classType != null <br/>
    * <b>Precondition:</b> !classType.trim().equals("") <br/>
-   * <b>Precondition:</b> classType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> classType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
    * the given class (MdBusinessDAOIF().definesType().equals(classType)
    * 
    * @param classType
    *          class type
-   * @return {@link MdBusinessDAOIF} instance of the metadata for the given class type.
+   * @return {@link MdBusinessDAOIF} instance of the metadata for the given
+   *         class type.
    */
   public static MdBusinessDAOIF getMdBusinessDAO(String classType)
   {

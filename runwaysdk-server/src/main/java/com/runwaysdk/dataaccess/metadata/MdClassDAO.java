@@ -159,9 +159,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     {
       this.getAttribute(MdClassInfo.PUBLISH).setModified(false);
     }
-    
+
     String oid = super.apply();
-    
+
     return oid;
   }
 
@@ -169,7 +169,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   public String save(boolean validateRequired)
   {
     boolean isAppliedToDB = this.isAppliedToDB();
-    
+
     boolean first = this.isNew() && !isAppliedToDB && !this.isImport();
 
     String oid = super.save(validateRequired);
@@ -201,11 +201,11 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
         i.close();
       }
     }
-    
+
     if (!this.isNew() || isAppliedToDB)
     {
       Attribute keyAttribute = this.getAttribute(MdClassInfo.KEY);
-       
+
       if (keyAttribute.isModified())
       {
         List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
@@ -213,7 +213,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
         for (MdClassDimensionDAOIF mdClassDimensionDAOIF : mdClassDimensions)
         {
           // The apply method will update the key
-          (mdClassDimensionDAOIF.getBusinessDAO()).apply();
+          ( mdClassDimensionDAOIF.getBusinessDAO() ).apply();
         }
       }
     }
@@ -235,7 +235,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       throw new CannotAddAttriubteToClassException(error, mdAttributeConcreteIF, this);
     }
     RelationshipDAO newChildRelDAO = this.addChild(mdAttributeConcreteIF, RelationshipTypes.CLASS_ATTRIBUTE_CONCRETE.getType());
-    newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());   
+    newChildRelDAO.setKey(mdAttributeConcreteIF.getKey());
     newChildRelDAO.apply();
   }
 
@@ -415,9 +415,9 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
         mdAttributeIndicator.delete(businessContext);
       }
     }
-    
+
     mdAttributeList = this.definesAttributes();
-    
+
     // 2nd drop all of the other attributes
     for (MdAttributeDAOIF mdAttributeIF : mdAttributeList)
     {
@@ -463,20 +463,21 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   {
     return ObjectCache.getMdClassDAO(classType);
   }
-  
+
   /**
-   * Returns an {@link MdTableClassIF} instance of the metadata for the
-   * given type.
+   * Returns an {@link MdTableClassIF} instance of the metadata for the given
+   * type.
    * 
    * <br/>
    * <b>Precondition:</b> entityType != null <br/>
    * <b>Precondition:</b> !entityType.trim().equals("") <br/>
-   * <b>Precondition:</b> entityType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> entityType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> Returns a MdEntityIF instance of the metadata for the
    * given class ({@link MdTableClassIF#definesType()}.equals(tableClassType)}
    * 
    * @param tableClassType
-   * @return  {@link MdTableClassIF} instance of the metadata for the given type.
+   * @return {@link MdTableClassIF} instance of the metadata for the given type.
    */
   public static MdTableClassIF getMdTableClassIF(String tableClassType)
   {
@@ -776,6 +777,33 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   }
 
   /**
+   * Returns the MdAttribute that defines the given attribute for the this
+   * entity.  This will recursively check the super types for the MdAttribute as well
+   * 
+   * <br/>
+   * <b>Precondition:</b> attributeName != null <br/>
+   * <b>Precondition:</b> !attributeName.trim().equals("")
+   * 
+   * @return MdAttribute that defines the given attribute for the this entity.
+   */
+  public MdAttributeDAOIF definesAttributeRecursive(String attributeName)
+  {
+    MdAttributeDAOIF mdAttribute = this.definesAttribute(attributeName);
+
+    if (mdAttribute == null)
+    {
+      MdClassDAOIF superClass = this.getSuperClass();
+
+      if (superClass != null)
+      {
+        return superClass.definesAttributeRecursive(attributeName);
+      }
+    }
+
+    return mdAttribute;
+  }
+
+  /**
    * Returns true if this entity defines the given attribute, false otherwise.
    * 
    * @return true if this entity defines the given attribute, false otherwise.
@@ -899,8 +927,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
 
     return mdAttributeMap;
   }
-  
-  
+
   public static MdClassDAOIF get(String oid)
   {
     return (MdClassDAOIF) BusinessDAO.get(oid);

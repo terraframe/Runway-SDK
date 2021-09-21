@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
@@ -33,6 +34,7 @@ import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
@@ -136,6 +138,14 @@ public class AttributeFactory
     else if (mdAttributeDAOIF instanceof MdAttributeEnumerationDAOIF)
     {
       attribute = new AttributeEnumeration(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeClassificationDAOIF)
+    {
+      attribute = new AttributeClassification(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeGraphRefDAOIF)
+    {
+      attribute = new AttributeGraphRef(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeEmbeddedDAOIF)
     {

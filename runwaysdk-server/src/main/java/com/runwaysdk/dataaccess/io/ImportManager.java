@@ -58,8 +58,11 @@ import com.runwaysdk.dataaccess.metadata.MdWebFieldDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 
 /**
- * Tracks the state of the import and facilitates communication between the different tag handlers. The state includes: a mapping between real ids and xml ids used in the import, a list of the fully
- * qualified types which have been imported, and a list of xml pusedo ids which are currently being search for because of type dependencies.
+ * Tracks the state of the import and facilitates communication between the
+ * different tag handlers. The state includes: a mapping between real ids and
+ * xml ids used in the import, a list of the fully qualified types which have
+ * been imported, and a list of xml pusedo ids which are currently being search
+ * for because of type dependencies.
  * 
  * @author Justin Smethie
  * @author Aritra
@@ -93,7 +96,8 @@ public class ImportManager
     CREATE,
 
     /**
-     * State which will update an object if it exists, or create a new one if it doesn't
+     * State which will update an object if it exists, or create a new one if it
+     * doesn't
      */
     CREATE_OR_UPDATE,
 
@@ -134,7 +138,8 @@ public class ImportManager
   private Stack<State>                               state;
 
   /**
-   * Map of handler class names to list of factories to use when dispatching child tags
+   * Map of handler class names to list of factories to use when dispatching
+   * child tags
    */
   private Map<String, Map<String, HandlerFactoryIF>> map;
 
@@ -148,6 +153,8 @@ public class ImportManager
    */
   protected StreamSource                             source;
 
+  private Map<String, String>                        keyMap;
+
   protected ImportManager(String schemaLocation)
   {
     this.schemaLocation = schemaLocation;
@@ -157,6 +164,7 @@ public class ImportManager
     this.callStack = new Stack<SearchCriteriaIF>();
     this.state = new Stack<State>();
     this.map = new HashMap<String, Map<String, HandlerFactoryIF>>();
+    this.keyMap = new HashMap<String, String>();
   }
 
   public ImportManager(StreamSource source, String schemaLocation)
@@ -166,8 +174,19 @@ public class ImportManager
     this.source = source;
   }
 
+  public void addKeyMapping(String key, String oid)
+  {
+    this.keyMap.put(key, oid);
+  }
+
+  public String getKeyMapping(String key)
+  {
+    return this.keyMap.get(key);
+  }
+
   /**
-   * Adds a mapping between a typeand the database oid to the mapping collection
+   * Adds a mapping between a type and the database oid to the mapping
+   * collection
    * 
    * @param puesdo
    *          The xml oid
@@ -224,7 +243,8 @@ public class ImportManager
   }
 
   /**
-   * Adds a puesdo oid to the list of oid currently on which a search is being performed.
+   * Adds a puesdo oid to the list of oid currently on which a search is being
+   * performed.
    * 
    * @param oid
    *          The oid
@@ -248,7 +268,8 @@ public class ImportManager
   }
 
   /**
-   * Validates that an pusedo xml oid is valid for searching. Will throw an exception if the oid is already in the list of ids under search.
+   * Validates that an pusedo xml oid is valid for searching. Will throw an
+   * exception if the oid is already in the list of ids under search.
    * 
    * @param criteria
    *          A pusedo xml oid
@@ -262,7 +283,8 @@ public class ImportManager
   }
 
   /**
-   * Returns the fully qualified location of the .xsd schema file used for the .xml import.
+   * Returns the fully qualified location of the .xsd schema file used for the
+   * .xml import.
    */
   public String getSchemaLocation()
   {
@@ -318,7 +340,8 @@ public class ImportManager
   }
 
   /**
-   * Pushes the state {@link State#PERMISSIONS} to the front of the state history stack
+   * Pushes the state {@link State#PERMISSIONS} to the front of the state
+   * history stack
    */
   public void enterPermissionsState()
   {
@@ -334,8 +357,10 @@ public class ImportManager
   }
 
   /**
-   * Returns a BusinessDAO. Depending on the state of the manager a different BusinessDAO is returned. If the manager is in CREATE state then a new BusinessDAO of the given type is returned. If the
-   * manager is in UPDATE state then an existing BusinessDAO of the given type and key is returned.
+   * Returns a BusinessDAO. Depending on the state of the manager a different
+   * BusinessDAO is returned. If the manager is in CREATE state then a new
+   * BusinessDAO of the given type is returned. If the manager is in UPDATE
+   * state then an existing BusinessDAO of the given type and key is returned.
    * 
    * @param type
    *          Fully qualified type of the BusinessDAO
@@ -405,8 +430,10 @@ public class ImportManager
   }
 
   /**
-   * Depending on the {@link State} of the manager it returns the MdAttribute defined by the given MdEntity. If the manager is in the CREATE state a new MdAttribute of the given type is returned. If
-   * the manager is in the UPDATE state an existing attribute of the given type and name is returned.
+   * Depending on the {@link State} of the manager it returns the MdAttribute
+   * defined by the given MdEntity. If the manager is in the CREATE state a new
+   * MdAttribute of the given type is returned. If the manager is in the UPDATE
+   * state an existing attribute of the given type and name is returned.
    * 
    * @param mdClass
    *          {@link MdClassDAO} that defines the MdAttribute
@@ -415,7 +442,9 @@ public class ImportManager
    * @param type
    *          Type of the MdAttribute
    * @throws DataNotFoundException
-   *           if an update operation is requested on an attribute that does not exist, which often occurs because the user forgot to wrap the attribute definition in a create tag.
+   *           if an update operation is requested on an attribute that does not
+   *           exist, which often occurs because the user forgot to wrap the
+   *           attribute definition in a create tag.
    * 
    * @return
    */
@@ -447,8 +476,10 @@ public class ImportManager
   }
 
   /**
-   * Depending on the {@link State} of the manager it returns the MdAttribute defined by the given MdEntity. If the manager is in the CREATE state a new MdAttribute of the given type is returned. If
-   * the manager is in the UPDATE state an existing attribute of the given type and name is returned.
+   * Depending on the {@link State} of the manager it returns the MdAttribute
+   * defined by the given MdEntity. If the manager is in the CREATE state a new
+   * MdAttribute of the given type is returned. If the manager is in the UPDATE
+   * state an existing attribute of the given type and name is returned.
    * 
    * @param mdClass
    *          {@link MdClassDAO} that defines the MdAttribute
@@ -457,7 +488,9 @@ public class ImportManager
    * @param type
    *          Type of the MdAttribute
    * @throws DataNotFoundException
-   *           if an update operation is requested on an attribute that does not exist, which often occurs because the user forgot to wrap the attribute definition in a create tag.
+   *           if an update operation is requested on an attribute that does not
+   *           exist, which often occurs because the user forgot to wrap the
+   *           attribute definition in a create tag.
    * 
    * @return
    */
@@ -540,8 +573,10 @@ public class ImportManager
   }
 
   /**
-   * Helper method used for parsing {@link Attributes}. If an attribute of the given name exists in the list of given attributes then it sets the corresponding attribute on the {@link EntityDAO} to
-   * the value specified in the xml. Otherwise no change occurs to the {@link EntityDAO}.
+   * Helper method used for parsing {@link Attributes}. If an attribute of the
+   * given name exists in the list of given attributes then it sets the
+   * corresponding attribute on the {@link EntityDAO} to the value specified in
+   * the xml. Otherwise no change occurs to the {@link EntityDAO}.
    * 
    * @param entityDAO
    *          The EntityDAO to set.
@@ -622,7 +657,9 @@ public class ImportManager
   }
 
   /**
-   * Returns true if the parsing is within a create tag that appears immediately below doIt/undoIt If the parsing is within a create tag that is nested within another update, the method returns false.
+   * Returns true if the parsing is within a create tag that appears immediately
+   * below doIt/undoIt If the parsing is within a create tag that is nested
+   * within another update, the method returns false.
    * 
    * @return
    */
@@ -632,8 +669,10 @@ public class ImportManager
   }
 
   /**
-   * Helper method used for parsing {@link Attributes}. If an attribute of the given name exists in the list of given attributes then it sets the corresponding attribute on the {@link EntityDAO} to
-   * the value specified in the xml. Otherwise no change occurs to the {@link EntityDAO}.
+   * Helper method used for parsing {@link Attributes}. If an attribute of the
+   * given name exists in the list of given attributes then it sets the
+   * corresponding attribute on the {@link EntityDAO} to the value specified in
+   * the xml. Otherwise no change occurs to the {@link EntityDAO}.
    * 
    * @param entityDAO
    *          The EntityDAO to set.

@@ -45,6 +45,7 @@ import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
 import com.runwaysdk.constants.MdAttributeDecimalInfo;
@@ -54,6 +55,7 @@ import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -134,6 +136,7 @@ import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
@@ -145,6 +148,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
@@ -204,6 +208,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebSingleTermDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -954,6 +959,38 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributeReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Reference Test");
     mdAttribute.setValue(MdAttributeReferenceInfo.REF_MD_ENTITY, referenceEntity.getOid());
     mdAttribute.setValue(MdAttributeReferenceInfo.DEFINING_MD_CLASS, mdClass.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeClassificationDAO addClassificationAttribute(MdVertexDAO mdVertexDAO, MdClassificationDAO mdClassificationDAO)
+  {
+    return addClassificationAttribute(mdVertexDAO, mdClassificationDAO, "testClassification");
+  }
+
+  public static MdAttributeClassificationDAO addClassificationAttribute(MdVertexDAO mdVertexDAO, MdClassificationDAO mdClassificationDAO, String attributeName)
+  {
+    MdAttributeClassificationDAO mdAttribute = MdAttributeClassificationDAO.newInstance();
+    mdAttribute.setValue(MdAttributeClassificationInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeClassificationInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Classification Test");
+    mdAttribute.setValue(MdAttributeClassificationInfo.REFERENCE_MD_CLASSIFICATION, mdClassificationDAO.getOid());
+    mdAttribute.setValue(MdAttributeClassificationInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeGraphReferenceDAO addGraphReferenceAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO refMdVertexDAO)
+  {
+    return addGraphReferenceAttribute(mdVertexDAO, refMdVertexDAO, "testGraphReference");
+  }
+
+  public static MdAttributeGraphReferenceDAO addGraphReferenceAttribute(MdVertexDAO mdVertexDAO, MdVertexDAO refMdVertexDAO, String attributeName)
+  {
+    MdAttributeGraphReferenceDAO mdAttribute = MdAttributeGraphReferenceDAO.newInstance();
+    mdAttribute.setValue(MdAttributeGraphReferenceInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeGraphReferenceInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Graph Reference Test");
+    mdAttribute.setValue(MdAttributeGraphReferenceInfo.REFERENCE_MD_VERTEX, refMdVertexDAO.getOid());
+    mdAttribute.setValue(MdAttributeGraphReferenceInfo.DEFINING_MD_CLASS, mdVertexDAO.getOid());
 
     return mdAttribute;
   }
@@ -1763,6 +1800,16 @@ public class TestFixtureFactory
     mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdVertex Attributes Test");
 
     return mdVertex;
+  }
+
+  public static MdClassificationDAO createMdClassification(String name)
+  {
+    MdClassificationDAO mdClassification = MdClassificationDAO.newInstance();
+    mdClassification.setValue(MdVertexInfo.NAME, name);
+    mdClassification.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdClassification.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdClassification Set Test");
+
+    return mdClassification;
   }
 
   public static MdEdgeDAO createMdEdge(MdVertexDAO parent, MdVertexDAO child)

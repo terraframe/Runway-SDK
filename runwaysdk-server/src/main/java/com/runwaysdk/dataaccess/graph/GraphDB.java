@@ -307,6 +307,20 @@ public interface GraphDB
   public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
 
   /**
+   * Adds an link attribute of the given name and type.
+   * 
+   * @param graphRequest
+   * @param graphDDLRequest
+   * @param dbClassName
+   * @param dbAttrName
+   * @param linkClassType
+   * @param required
+   * @param changeOverTime
+   * @return
+   */
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime);
+
+  /**
    * Adds a geometry attribute of the given name and type.
    * 
    * @param graphRequest

@@ -27,24 +27,26 @@ import com.runwaysdk.constants.MdFormInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
 import com.runwaysdk.constants.MdStructInfo;
 import com.runwaysdk.constants.MdTypeInfo;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
+import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdFormDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 
-
 public class MdPackage
 {
   private String packageName;
-  
+
   public MdPackage(String name)
   {
     packageName = name;
@@ -54,155 +56,175 @@ public class MdPackage
    * @return
    */
   private BusinessDAOQuery createPackageQuery(String type)
-  {   
+  {
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery businessDAOquery = queryFactory.businessDAOQuery(type);
     businessDAOquery.WHERE(businessDAOquery.aCharacter(MdTypeInfo.PACKAGE).LIKE(packageName + '*'));
-    return businessDAOquery;  
-    
+    return businessDAOquery;
+
   }
-  
+
   public List<MdTypeDAOIF> getMdTypes()
   {
     List<MdTypeDAOIF> list = new LinkedList<MdTypeDAOIF>();
-    
-    BusinessDAOQuery mdTypeQuery = createPackageQuery(MdTypeInfo.CLASS); 
+
+    BusinessDAOQuery mdTypeQuery = createPackageQuery(MdTypeInfo.CLASS);
     OIterator<BusinessDAOIF> mdBusinessIterator = mdTypeQuery.getIterator();
-    
+
     while (mdBusinessIterator.hasNext())
     {
-      list.add((MdTypeDAOIF)mdBusinessIterator.next());
+      list.add((MdTypeDAOIF) mdBusinessIterator.next());
     }
-    
+
     return list;
   }
-  
+
   public List<MdBusinessDAOIF> getMdBusinesses()
   {
     List<MdBusinessDAOIF> list = new LinkedList<MdBusinessDAOIF>();
-    
-    BusinessDAOQuery mdBusinessQuery = createPackageQuery(MdBusinessInfo.CLASS); 
+
+    BusinessDAOQuery mdBusinessQuery = createPackageQuery(MdBusinessInfo.CLASS);
     OIterator<BusinessDAOIF> mdBusinessIterator = mdBusinessQuery.getIterator();
-    
+
     while (mdBusinessIterator.hasNext())
     {
-      list.add((MdBusinessDAOIF)mdBusinessIterator.next());
+      list.add((MdBusinessDAOIF) mdBusinessIterator.next());
     }
-    
+
     return list;
   }
-  
+
   public List<MdRelationshipDAOIF> getMdRelationships()
   {
     List<MdRelationshipDAOIF> list = new LinkedList<MdRelationshipDAOIF>();
-    
-    BusinessDAOQuery mdRelationshipQuery = createPackageQuery(MdRelationshipInfo.CLASS); 
+
+    BusinessDAOQuery mdRelationshipQuery = createPackageQuery(MdRelationshipInfo.CLASS);
     OIterator<BusinessDAOIF> mdRelationshipIterator = mdRelationshipQuery.getIterator();
-    
+
     while (mdRelationshipIterator.hasNext())
     {
-      list.add((MdRelationshipDAOIF)mdRelationshipIterator.next());
+      list.add((MdRelationshipDAOIF) mdRelationshipIterator.next());
     }
-    
+
     return list;
-    
+
   }
-  
+
   public List<MdEnumerationDAOIF> getMdEnumerations()
   {
     List<MdEnumerationDAOIF> list = new LinkedList<MdEnumerationDAOIF>();
-    
-    BusinessDAOQuery mdEnumerationQuery = createPackageQuery(MdEnumerationInfo.CLASS); 
+
+    BusinessDAOQuery mdEnumerationQuery = createPackageQuery(MdEnumerationInfo.CLASS);
     OIterator<BusinessDAOIF> mdEnumerationIterator = mdEnumerationQuery.getIterator();
-    
+
     while (mdEnumerationIterator.hasNext())
     {
-      list.add((MdEnumerationDAOIF)mdEnumerationIterator.next());
+      list.add((MdEnumerationDAOIF) mdEnumerationIterator.next());
     }
     return list;
   }
-  
+
   public List<MdFormDAOIF> getMdForms()
   {
     List<MdFormDAOIF> list = new LinkedList<MdFormDAOIF>();
-    
-    BusinessDAOQuery query = createPackageQuery(MdFormInfo.CLASS); 
+
+    BusinessDAOQuery query = createPackageQuery(MdFormInfo.CLASS);
     OIterator<BusinessDAOIF> iterator = query.getIterator();
-    
+
     while (iterator.hasNext())
     {
-      list.add((MdFormDAOIF)iterator.next());
+      list.add((MdFormDAOIF) iterator.next());
     }
     return list;
   }
-  
+
+  public List<MdClassificationDAOIF> getMdClassifications()
+  {
+    List<MdClassificationDAOIF> list = new LinkedList<MdClassificationDAOIF>();
+
+    BusinessDAOQuery query = createPackageQuery(MdClassificationInfo.CLASS);
+    OIterator<BusinessDAOIF> iterator = query.getIterator();
+
+    while (iterator.hasNext())
+    {
+      list.add((MdClassificationDAOIF) iterator.next());
+    }
+    return list;
+  }
+
   public List<MdStructDAOIF> getMdStructs()
   {
     List<MdStructDAOIF> list = new LinkedList<MdStructDAOIF>();
-	  
+
     BusinessDAOQuery mdStructQuery = createPackageQuery(MdStructInfo.CLASS);
     OIterator<BusinessDAOIF> mdStructIterator = mdStructQuery.getIterator();
-	  
-	while(mdStructIterator.hasNext())
-	{
-      list.add((MdStructDAOIF)mdStructIterator.next());
-	}
-	  
-	return list;
+
+    while (mdStructIterator.hasNext())
+    {
+      list.add((MdStructDAOIF) mdStructIterator.next());
+    }
+
+    return list;
   }
-    
+
   @Transaction
   public void delete()
   {
     // First delete MdEnumerations
     for (MdEnumerationDAOIF mdEnumeration : getMdEnumerations())
     {
-      if(MdTypeDAO.isDefined(mdEnumeration.definesType()))
+      if (MdTypeDAO.isDefined(mdEnumeration.definesType()))
       {
         EntityDAO.get(mdEnumeration.getOid()).getEntityDAO().delete();
       }
     }
-    
-    // Then delete MdForm
-    for(MdFormDAOIF mdForm : getMdForms())
+
+    // Then delete the Classifications
+    for (MdClassificationDAOIF mdClassification : getMdClassifications())
     {
-      if(MdTypeDAO.isDefined(mdForm.definesType()))
+      EntityDAO.get(mdClassification.getOid()).getEntityDAO().delete();
+    }
+
+    // Then delete MdForm
+    for (MdFormDAOIF mdForm : getMdForms())
+    {
+      if (MdTypeDAO.isDefined(mdForm.definesType()))
       {
         EntityDAO.get(mdForm.getOid()).getEntityDAO().delete();
-      }      
-    }    
-    
+      }
+    }
+
     // Then delete MdRelationships
     for (MdRelationshipDAOIF mdRelationship : getMdRelationships())
     {
-      if(MdTypeDAO.isDefined(mdRelationship.definesType()))
+      if (MdTypeDAO.isDefined(mdRelationship.definesType()))
       {
         EntityDAO.get(mdRelationship.getOid()).getEntityDAO().delete();
       }
     }
-    
+
     // Finally, delete MdBusinesses
     for (MdBusinessDAOIF mdBusinesses : getMdBusinesses())
     {
-      if(MdTypeDAO.isDefined(mdBusinesses.definesType()))
+      if (MdTypeDAO.isDefined(mdBusinesses.definesType()))
       {
         EntityDAO.get(mdBusinesses.getOid()).getEntityDAO().delete();
       }
     }
-    
+
     // delete structs
     for (MdStructDAOIF mdStruct : getMdStructs())
     {
-      if(MdTypeDAO.isDefined(mdStruct.definesType()))
+      if (MdTypeDAO.isDefined(mdStruct.definesType()))
       {
         EntityDAO.get(mdStruct.getOid()).getEntityDAO().delete();
       }
     }
-    
+
     // And remove any remaining types
     for (MdTypeDAOIF mdType : getMdTypes())
     {
-      if(MdTypeDAO.isDefined(mdType.definesType()))
+      if (MdTypeDAO.isDefined(mdType.definesType()))
       {
         EntityDAO.get(mdType.getOid()).getEntityDAO().delete();
       }

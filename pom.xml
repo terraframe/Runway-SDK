@@ -23,7 +23,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>3.4.2-SNAPSHOT</version>
+  <version>3.4.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>

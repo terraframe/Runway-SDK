@@ -80,7 +80,7 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
 
       if (this.cot)
       {
-        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass));
+        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.EMBEDDED));
       }
     }
   }

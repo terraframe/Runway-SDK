@@ -58,6 +58,7 @@ import com.runwaysdk.constants.MdAttributeEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
@@ -122,6 +123,7 @@ import com.runwaysdk.constants.MdWebTimeInfo;
 import com.runwaysdk.constants.MetadataInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.VisibilityModifier;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
@@ -143,6 +145,7 @@ import com.runwaysdk.dataaccess.MdAttributeDecDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEncryptionDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalDAOIF;
@@ -157,6 +160,7 @@ import com.runwaysdk.dataaccess.MdAttributeTermDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeVirtualDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
+import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
@@ -198,6 +202,8 @@ import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
+import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.io.MarkupWriter;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
@@ -354,6 +360,10 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitMdVertex((MdVertexDAOIF) component);
     }
+    else if (component instanceof MdClassificationDAOIF)
+    {
+      visitMdClassification((MdClassificationDAOIF) component);
+    }
     else if (component instanceof MdEdgeDAOIF)
     {
       visitMdEdge((MdEdgeDAOIF) component);
@@ -362,9 +372,17 @@ public class ExportVisitor extends MarkupVisitor
     {
       visitRelationship((RelationshipDAOIF) component);
     }
+    else if (component instanceof EdgeObjectDAOIF)
+    {
+      visitEdge((EdgeObjectDAOIF) component);
+    }
     else if (component instanceof Relationship)
     {
       visitRelationship((RelationshipDAOIF) EntityDAO.get(component.getOid()));
+    }
+    else if (component instanceof VertexObjectDAOIF)
+    {
+      visitVertex((VertexObjectDAOIF) component);
     }
     else if (component instanceof BusinessDAOIF)
     {
@@ -1340,6 +1358,7 @@ public class ExportVisitor extends MarkupVisitor
     HashMap<String, String> attributes = getMdVertexParameters(mdVertex);
 
     // Write the CLASS_TAG with its parameters
+
     writer.openEscapedTag(XMLTags.MD_VERTEX_TAG, attributes);
   }
 
@@ -1361,6 +1380,42 @@ public class ExportVisitor extends MarkupVisitor
   protected void exitMdVertex(MdVertexDAOIF mdVertex)
   {
     writer.closeTag();
+  }
+
+  private HashMap<String, String> getMdClassificationParameters(MdClassificationDAOIF mdClassification)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+
+    String name = mdClassification.definesType();
+
+    // Map the parameter value to its correct attribute tag
+    parameters.put(XMLTags.NAME_ATTRIBUTE, name);
+
+    Map<String, String> localValues = mdClassification.getDisplayLabels();
+    writeLocaleValues(parameters, XMLTags.DISPLAY_LABEL_ATTRIBUTE, localValues);
+
+    parameters.put(XMLTags.REMOVE_ATTRIBUTE, mdClassification.getValue(MdEntityInfo.REMOVE));
+
+    Map<String, String> localDescValues = mdClassification.getDescriptions();
+    writeLocaleValues(parameters, XMLTags.DESCRIPTION_ATTRIBUTE, localDescValues);
+
+    VertexObjectDAOIF root = mdClassification.getRoot();
+
+    if (root != null)
+    {
+      parameters.put(MdClassificationInfo.ROOT, root.getOid());
+    }
+
+    return parameters;
+  }
+
+  public void visitMdClassification(MdClassificationDAOIF mdClassification)
+  {
+    // Get the attribute_tag-value mapping of the entity
+    HashMap<String, String> attributes = getMdClassificationParameters(mdClassification);
+
+    // Write the CLASS_TAG with its parameters
+    writer.writeEmptyTag(XMLTags.MD_CLASSIFICATION_TAG, attributes);
   }
 
   private HashMap<String, String> getMdEdgeParameters(MdEdgeDAOIF mdEdge)
@@ -1571,6 +1626,44 @@ public class ExportVisitor extends MarkupVisitor
 
     // Write all of the values of the instance
     visitValues(relationship.getAttributeArrayIF());
+
+    writer.closeTag();
+  }
+
+  public void visitEdge(EdgeObjectDAOIF relationship)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    // The name of the class being instaniated
+    parameters.put(XMLTags.TYPE_ATTRIBUTE, relationship.getType());
+
+    parameters.put(XMLTags.PARENT_KEY_TAG, relationship.getParent().getKey());
+    parameters.put(XMLTags.CHILD_KEY_TAG, relationship.getChild().getKey());
+
+    parameters.put(XMLTags.KEY_ATTRIBUTE, relationship.getKey());
+
+    writer.openEscapedTag(XMLTags.EDGE_TAG, parameters);
+
+    // Write all of the values of the instance
+//    visitValues(relationship.getAttributeArrayIF());
+
+    writer.closeTag();
+  }
+
+  /**
+   * Exports all of the instances of classes, standalone classes, enumeration
+   * classes, and relationship which were exported
+   */
+  public void visitVertex(VertexObjectDAOIF businessDAO)
+  {
+    HashMap<String, String> parameters = new HashMap<String, String>();
+    // The type of the instance
+    parameters.put(XMLTags.TYPE_ATTRIBUTE, businessDAO.getType());
+    parameters.put(XMLTags.KEY_ATTRIBUTE, businessDAO.getKey());
+
+    writer.openEscapedTag(XMLTags.VERTEX_TAG, parameters);
+
+    // Write all of the values of the instance
+    visitValues(businessDAO.getAttributeArrayIF());
 
     writer.closeTag();
   }
@@ -2177,6 +2270,17 @@ public class ExportVisitor extends MarkupVisitor
 
     // Map the parameter value to its correct attribute tag for parameters
     // common to foriegnObject type
+    if (mdAttributeIF instanceof MdAttributeGraphReferenceDAOIF)
+    {
+      MdClassDAOIF refClass = ( (MdAttributeGraphReferenceDAOIF) mdAttributeIF ).getReferenceMdVertexDAOIF();
+
+      String classType = refClass.getValue(MdTypeInfo.PACKAGE) + "." + refClass.getValue(MdTypeInfo.NAME);
+
+      parameters.put(XMLTags.TYPE_ATTRIBUTE, classType);
+    }
+
+    // Map the parameter value to its correct attribute tag for parameters
+    // common to foriegnObject type
     if (mdAttributeIF instanceof MdAttributeMultiReferenceDAOIF)
     {
       parameters.put(XMLTags.DEFAULT_KEY_ATTRIBUTE, mdAttributeIF.getValue(MdAttributeConcreteInfo.DEFAULT_VALUE));
@@ -2608,6 +2712,7 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeFileInfo.CLASS, XMLTags.FILE_TAG);
     attributeTags.put(MdAttributeVirtualInfo.CLASS, XMLTags.VIRTUAL_TAG);
     attributeTags.put(MdAttributeEmbeddedInfo.CLASS, XMLTags.EMBEDDED_TAG);
+    attributeTags.put(MdAttributeGraphReferenceInfo.CLASS, XMLTags.GRAPH_REFERENCE_TAG);
     attributeTags.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, XMLTags.LOCAL_CHARACTER_EMBEDDED_TAG);
 
     // Field types
