@@ -3,21 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -44,11 +45,12 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
@@ -80,6 +82,8 @@ public class VertexObjectDAOChangeOverTimeTest
   private static MdAttributeFloatDAO                  mdFloatAttribute;
 
   private static MdAttributeDoubleDAO                 mdDoubleAttribute;
+
+  private static MdAttributeDecimalDAO                mdDecimalAttribute;
 
   private static MdAttributeBooleanDAO                mdBooleanAttribute;
 
@@ -141,6 +145,9 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdDoubleAttribute = TestFixtureFactory.addDoubleAttribute(mdVertexDAO);
     mdDoubleAttribute.apply();
+
+    mdDecimalAttribute = TestFixtureFactory.addDecimalAttribute(mdVertexDAO);
+    mdDecimalAttribute.apply();
 
     mdBooleanAttribute = TestFixtureFactory.addBooleanAttribute(mdVertexDAO);
     mdBooleanAttribute.apply();
@@ -499,6 +506,50 @@ public class VertexObjectDAOChangeOverTimeTest
 
       // Test update
       value = new Double(10D);
+
+      vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
+      Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+
+  @Request
+  @Test
+  public void testDecimalAttribute()
+  {
+    String attributeName = mdDecimalAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+    BigDecimal value = new BigDecimal(5.5D);
+    vertexDAO.setValue(attributeName, value, startDate(), endDate());
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
+
+    try
+    {
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
+      Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+
+      // Test update
+      value = new BigDecimal(10.2D);
 
       vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
       vertexDAO.apply();

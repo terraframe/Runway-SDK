@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -28,8 +28,10 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityGenerator;
 import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdTransientDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.graph.MdAttributeConcrete_G;
 import com.runwaysdk.transport.metadata.caching.AttributeDecimalMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
 
@@ -48,14 +50,14 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     super();
   }
 
-
   public MdAttributeDecimalDAO(Map<String, Attribute> attributeMap, String type)
   {
     super(attributeMap, type);
   }
 
-
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdAttributeDecimalDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -70,6 +72,10 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeDec_E(this));
     }
+    else if (this.definedByClass() instanceof MdGraphClassDAOIF)
+    {
+      this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_G(this));
+    }
     else if (this.definedByClass() instanceof MdTransientDAOIF)
     {
       this.getObjectState().setMdAttributeStrategy(new MdAttributeConcrete_S(this));
@@ -81,7 +87,7 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   }
 
   /**
-   * Called for java class generation.  Returns the java type of this attribute
+   * Called for java class generation. Returns the java type of this attribute
    * (double), which is used in the generated classes for type safety.
    *
    * @return The java type of this attribute (double)
@@ -100,11 +106,13 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   {
     return BigDecimal.class;
   }
-  
+
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
    *
-   * @return string representing the query attribute class for attributes of this type.
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
@@ -118,8 +126,12 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     return this.setterWrapper(attributeName, conversion);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.runwaysdk.dataaccess.metadata.MdAttribute#generateTypesafeFormatting(
+   * java.lang.String)
    */
   protected String generateTypesafeFormatting(String formatMe)
   {
@@ -135,7 +147,9 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     object.setValue(this.definesAttribute(), "" + EntityGenerator.getRandom().nextDouble());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeDecimalDAO getBusinessDAO()
@@ -144,9 +158,9 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   }
 
   /**
-   * Returns a new MdAttributeDecimal.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
+   * Returns a new MdAttributeDecimal. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    *
    * @return MdAttributeDecimal
    */
@@ -155,8 +169,11 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
     return (MdAttributeDecimalDAO) BusinessDAO.newInstance(MdAttributeDecimalInfo.CLASS);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
+   * java.lang.String)
    */
   public static MdAttributeDecimalDAOIF get(String oid)
   {
@@ -168,12 +185,12 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   {
     visitor.visitDecimal(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
     AttributeDecimalMdSession attrSes = new AttributeDecimalMdSession();
     super.populateAttributeMdSession(attrSes);
@@ -188,5 +205,5 @@ public class MdAttributeDecimalDAO extends MdAttributeDecDAO implements MdAttrib
   {
     return MdAttributeDecimalDAOIF.class.getName();
   }
-  
+
 }

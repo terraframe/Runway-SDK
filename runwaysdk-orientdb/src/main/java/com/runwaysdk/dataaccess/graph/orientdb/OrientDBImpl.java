@@ -68,6 +68,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
@@ -907,6 +908,10 @@ public class OrientDBImpl implements GraphDB
     else if (mdAttribute instanceof MdAttributeFloatDAOIF)
     {
       return OType.FLOAT.name();
+    }
+    else if (mdAttribute instanceof MdAttributeDecimalDAOIF)
+    {
+      return OType.DECIMAL.name();
     }
     else if (mdAttribute instanceof MdAttributeBooleanDAOIF)
     {
