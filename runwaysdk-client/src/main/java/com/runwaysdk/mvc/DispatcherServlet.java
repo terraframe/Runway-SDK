@@ -271,6 +271,11 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     }
   }
 
+  private Map<String, ParameterValue> getParameters(RequestManager manager, Endpoint annotation)
+  {
+    return new RequestParameterParser(manager).getParameters(annotation);
+  }
+
   /**
    * @param manager
    * @param method
@@ -290,129 +295,6 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
     }
 
     return new DispatchUtil(parameterIfs, manager, parameterMap).getObjects();
-  }
-
-  /**
-   * @param annotation
-   * @param req
-   * @return
-   * @throws FileUploadException
-   */
-  private Map<String, ParameterValue> getParameters(RequestManager manager, Endpoint annotation)
-  {
-    ServletRequestIF request = manager.getReq();
-
-    if (request.isMultipartContent())
-    {
-      Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
-
-      ServletFileUpload upload = this.createServletFileUpload(manager, annotation);
-
-      try
-      {
-        List<FileItem> items = request.getFileItems(upload);
-
-        for (FileItem item : items)
-        {
-          String fieldName = item.getFieldName();
-
-          if (item.isFormField())
-          {
-            String fieldValue = item.getString();
-
-            if (!parameters.containsKey(fieldName))
-            {
-              parameters.put(fieldName, new BasicParameter());
-            }
-
-            ( (BasicParameter) parameters.get(fieldName) ).add(fieldValue);
-          }
-          else if (!item.isFormField() && item.getSize() > 0)
-          {
-            parameters.put(fieldName, new MultipartFileParameter(item));
-          }
-        }
-
-        return parameters;
-      }
-      catch (FileUploadException e)
-      {
-        // Change the exception type
-        throw new RuntimeException(e);
-      }
-    }
-    else
-    {
-      String contentType = request.getContentType();
-
-      if (contentType != null && contentType.contains("application/json"))
-      {
-        return this.getParamaterMap(request);
-      }
-      else
-      {
-        return this.getParameterMap(request.getParameterMap());
-      }
-    }
-  }
-
-  private ServletFileUpload createServletFileUpload(RequestManager manager, Endpoint annotation)
-  {
-    try
-    {
-      ServletFileUploadFactory factory = annotation.factory().newInstance();
-
-      return factory.instance(manager);
-    }
-    catch (InstantiationException | IllegalAccessException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  public Map<String, ParameterValue> getParamaterMap(ServletRequestIF request)
-  {
-    try
-    {
-      String body = IOUtils.toString(request.getReader());
-
-      JSONObject object = new JSONObject(body);
-
-      Map<String, ParameterValue> values = new HashMap<String, ParameterValue>();
-
-      Iterator<String> keys = object.keys();
-
-      while (keys.hasNext())
-      {
-        String key = keys.next();
-        String value = object.get(key).toString();
-
-        values.put(key, new BasicParameter(new String[] { value }));
-      }
-
-      return values;
-    }
-    catch (IOException e)
-    {
-      throw new RuntimeException(e);
-    }
-    catch (JSONException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private Map<String, ParameterValue> getParameterMap(Map<String, String[]> parameters)
-  {
-    Map<String, ParameterValue> map = new HashMap<String, ParameterValue>();
-
-    for (Entry<String, String[]> entry : parameters.entrySet())
-    {
-      map.put(entry.getKey(), new BasicParameter(entry.getValue()));
-    }
-
-    return map;
   }
 
   private void handleInvocationTargetException(RequestManager manager, InvocationTargetException e) throws IOException
