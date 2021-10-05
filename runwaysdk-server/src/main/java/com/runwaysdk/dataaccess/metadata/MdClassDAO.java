@@ -319,17 +319,17 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Delete all of the MdAttributeDimension definitions
     List<MdClassDimensionDAOIF> mdClassDimensions = this.getMdClassDimensions();
 
     for (MdClassDimensionDAOIF mdClassDimension : mdClassDimensions)
     {
-      mdClassDimension.getBusinessDAO().delete(businessContext);
+      mdClassDimension.getBusinessDAO().delete(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**
@@ -385,7 +385,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    *          will happen at the Business layer instead of the data access
    *          layer.
    */
-  protected void deleteAllChildClasses(boolean businessContext)
+  protected void deleteAllChildClasses(DeleteContext context)
   {
     // delete all childclasses
     for (MdClassDAOIF subMdClassIF : getSubClasses())
@@ -393,7 +393,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       if (!subMdClassIF.definesType().equals(this.definesType()))
       {
         MdClassDAO subMdClass = subMdClassIF.getBusinessDAO();
-        subMdClass.delete(businessContext);
+        subMdClass.delete(context);
       }
     }
   }
@@ -401,7 +401,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
   /**
    * Drops all attributes defined by this class.
    */
-  protected void dropAllAttributes(boolean businessContext)
+  protected void dropAllAttributes(DeleteContext context)
   {
     List<? extends MdAttributeDAOIF> mdAttributeList = this.definesAttributes();
 
@@ -412,7 +412,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
       {
         MdAttributeIndicatorDAO mdAttributeIndicator = (MdAttributeIndicatorDAO) mdAttributeIF.getBusinessDAO();
         mdAttributeIndicator.getAttribute(MetadataInfo.REMOVE).setValue(MdAttributeBooleanInfo.TRUE);
-        mdAttributeIndicator.delete(businessContext);
+        mdAttributeIndicator.delete(context);
       }
     }
 
@@ -423,7 +423,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     {
       MdAttributeDAO mdAttribute = (MdAttributeDAO) mdAttributeIF.getBusinessDAO();
       mdAttribute.getAttribute(MetadataInfo.REMOVE).setValue(MdAttributeBooleanInfo.TRUE);
-      mdAttribute.delete(businessContext);
+      mdAttribute.delete(context);
     }
   }
 
@@ -441,7 +441,7 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     while (iterator.hasNext())
     {
       BusinessDAOIF businessDAOIF = iterator.next();
-      businessDAOIF.getBusinessDAO().delete(false);
+      businessDAOIF.getBusinessDAO().delete(new DeleteContext());
     }
   }
 

@@ -247,23 +247,27 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
+   * @param removeValues TODO
+   * @param removeValues TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, boolean)
    */
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
   {
-    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
+    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, removeValues);
   }
 
   /**
    * @param cot
    *          TODO
+   * @param removeValues TODO
+   * @param removeValues TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, boolean)
    */
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
   {
-    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
+    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, removeValues);
   }
 
   /**

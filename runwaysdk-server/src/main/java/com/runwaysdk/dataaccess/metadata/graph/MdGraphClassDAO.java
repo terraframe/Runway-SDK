@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
@@ -230,23 +231,23 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Delete subclasses
-    this.deleteAllChildClasses(businessContext);
+    this.deleteAllChildClasses(context);
 
     // Delete all MdMethods defined by this type
     this.dropAllMdMethods();
 
     // Delete all attribute MdAttribue objects that this type defines
     // delete all attribute metadata for this class
-    this.dropAllAttributes(businessContext);
+    this.dropAllAttributes(context);
 
     // Delete all permission tuples that this class participates in
     this.dropTuples();
 
     // Delete this BusinessDAO
-    super.delete(businessContext);
+    super.delete(context);
 
     this.deleteClassInDB();
   }

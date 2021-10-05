@@ -260,7 +260,7 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
    *          layer.
    * 
    */
-  public void deleteButDoNotDeleteMappingInstances(boolean businessContext)
+  public void deleteButDoNotDeleteMappingInstances(DeleteContext context)
   {
     MdAttributeConcreteStrategy mdAttributeStrategy = this.getMdAttributeStrategy();
 
@@ -270,7 +270,7 @@ public class MdAttributeMultiReferenceDAO extends MdAttributeConcreteDAO impleme
       mdAttributeMultiReference_E.deleteInstances = false;
     }
 
-    this.delete(businessContext);
+    this.delete(context);
   }
 
   /**

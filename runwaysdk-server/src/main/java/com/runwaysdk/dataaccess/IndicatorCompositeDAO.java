@@ -27,6 +27,7 @@ import com.runwaysdk.business.InvalidExpressionSyntaxException;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 
 import ognl.DefaultMemberAccess;
@@ -252,12 +253,12 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Delete this from the database so that the reference checks on the
     // operands do not prevent
     // them from being deleted because they reference this object.
-    super.delete(businessContext);
+    super.delete(context);
 
     // Delete the operands
     this.getLeftOperand().getBusinessDAO().delete();

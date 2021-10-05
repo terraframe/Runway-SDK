@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -30,18 +30,17 @@ import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory;
 
-
 public abstract class MdAttributeConcreteStrategy implements Serializable
-{  
+{
   /**
    * 
    */
-  private static final long serialVersionUID = 5618692588284062510L;
+  private static final long        serialVersionUID = 5618692588284062510L;
 
   protected MdAttributeConcreteDAO mdAttribute;
-    
-  protected boolean appliedToDB;
-  
+
+  protected boolean                appliedToDB;
+
   /**
    * @param mdAttribute
    */
@@ -50,8 +49,8 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
     super();
     this.mdAttribute = mdAttribute;
     this.appliedToDB = false;
-  } 
-  
+  }
+
   public void setAppliedToDB(boolean createColumn)
   {
     this.appliedToDB = createColumn;
@@ -66,20 +65,23 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
   {
     return this.mdAttribute;
   }
-  
+
   /**
-   * Returns the {@link MdClassDAOIF} that defines this {@link MdAttributeConcreteDAOIF}.
+   * Returns the {@link MdClassDAOIF} that defines this
+   * {@link MdAttributeConcreteDAOIF}.
    * 
-   * @return the {@link MdClassDAOIF} that defines this {@link MdAttributeConcreteDAOIF}.
+   * @return the {@link MdClassDAOIF} that defines this
+   *         {@link MdAttributeConcreteDAOIF}.
    */
   public MdClassDAOIF definedByClass()
-  { 
-    return (MdClassDAOIF) this.getMdAttribute().definedByClass();    
+  {
+    return (MdClassDAOIF) this.getMdAttribute().definedByClass();
   }
 
   /**
-   * Is called when the {@link MdAttributeConcreteDAOIF} is newly created to see if an attribute with the 
-   * same name is already defined for non {@link MdEntityDOAIF} only.
+   * Is called when the {@link MdAttributeConcreteDAOIF} is newly created to see
+   * if an attribute with the same name is already defined for non
+   * {@link MdEntityDOAIF} only.
    */
   protected void nonMdEntityCheckExistingForAttributeOnCreate()
   {
@@ -92,17 +94,16 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
       {
         if (this.getMdAttribute().definesAttribute().equalsIgnoreCase(attribute.definesAttribute()))
         {
-          String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-              + definingClass.definesType() + "] because that class already has defined an attribute with that name.";
+          String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class [" + definingClass.definesType() + "] because that class already has defined an attribute with that name.";
           throw new DuplicateAttributeDefinitionException(msg, this.getMdAttribute(), definingClass);
         }
       }
     }
   }
-  
 
   /**
-   * Common operations that are performed after the {@link this#validate() method for non {@link MdEntityDAOIF}.
+   * Common operations that are performed after the {@link this#validate()
+   * method for non {@link MdEntityDAOIF}.
    */
   protected void nonMdEntityPostSaveValidationOperations()
   {
@@ -111,23 +112,23 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
       MdClassDAOIF definingClass = this.definedByClass();
       List<? extends MdAttributeDAOIF> attributeList = null;
       List<? extends MdClassDAOIF> parentsList = definingClass.getSuperClasses();
-      
+
       // loop through parents and check for an attribute of the same name
       for (MdClassDAOIF parent : parentsList)
       {
         attributeList = parent.definesAttributes();
         for (MdAttributeDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !parent.definesType().equals(definingClass.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-                + definingClass.definesType() + "] because its parent class ["+parent.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class [" + definingClass.definesType() + "] because its parent class [" + parent.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeInInheritedHierarchyException(msg, this.getMdAttribute(), definingClass, parent);
           }
         }
       }
-      
+
       List<? extends MdClassDAOIF> childrenList = definingClass.getAllSubClasses();
       // loop through children and check for an attribute of the same name
       for (MdClassDAOIF child : childrenList)
@@ -135,22 +136,22 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
         attributeList = child.definesAttributes();
         for (MdAttributeDAOIF attribute : attributeList)
         {
-          // compare for the same named attribute, BUT make sure it's not being compared with itself
+          // compare for the same named attribute, BUT make sure it's not being
+          // compared with itself
           if (this.getMdAttribute().definesAttribute().equals(attribute.definesAttribute()) && !child.definesType().equals(definingClass.definesType()))
           {
-            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class ["
-            + definingClass.definesType() + "] because a child class ["+child.definesType()+"] already defines an attribute with that name.";
+            String msg = "Cannot add an attribute named [" + this.getMdAttribute().definesAttribute() + "] to class [" + definingClass.definesType() + "] because a child class [" + child.definesType() + "] already defines an attribute with that name.";
             throw new DuplicateAttributeDefinedInSubclassException(msg, this.getMdAttribute(), definingClass, child);
           }
         }
-      }      
+      }
     }
-    
+
     if (this.getMdAttribute().isNew())
     {
-      //Do not create the CLASS_ATTRIBUTE relationship on imports,
-      //because the relationship is included in the import file
-      if(!this.getMdAttribute().isImport() && !this.appliedToDB)
+      // Do not create the CLASS_ATTRIBUTE relationship on imports,
+      // because the relationship is included in the import file
+      if (!this.getMdAttribute().isImport() && !this.appliedToDB)
       {
         // Get the defining parent type
         MdClassDAO parentMdClass = this.definedByClass().getBusinessDAO();
@@ -162,23 +163,23 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
     {
       MdAttributeConcreteDAO mdAttributeConcreteDAO = this.getMdAttribute();
       Attribute keyAttribute = mdAttributeConcreteDAO.getAttribute(ComponentInfo.KEY);
-      
+
       if (keyAttribute.isModified())
       {
         mdAttributeConcreteDAO.changeClassAttributeRelationshipKey();
       }
     }
   }
-  
+
   /**
-   * Some common validation for non {@link MdEntityDAOIF}s. 
+   * Some common validation for non {@link MdEntityDAOIF}s.
    */
   protected void nonMdEntityValidate()
   {
     if (this.getMdAttribute().hasAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE))
     {
       Attribute attributeIF = this.getMdAttribute().getAttribute(MdAttributeConcreteInfo.DEFAULT_VALUE);
-    
+
       String value = attributeIF.getValue();
 
       if (attributeIF.isModified() && !value.trim().equals(""))
@@ -186,9 +187,7 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
         // Get the class that defines the MdAttribute class
         MdClassDAOIF mdClassIF = this.getMdAttribute().getMdClassDAO();
 
-        Attribute spoofAttribute = 
-          AttributeFactory.createAttribute(this.getMdAttribute().getKey(), this.getMdAttribute().getType(), MdAttributeConcreteInfo.DEFAULT_VALUE, 
-              mdClassIF.definesType(), value);
+        Attribute spoofAttribute = AttributeFactory.createAttribute(this.getMdAttribute().getKey(), this.getMdAttribute().getType(), MdAttributeConcreteInfo.DEFAULT_VALUE, mdClassIF.definesType(), value);
 
         spoofAttribute.setContainingComponent(this.getMdAttribute());
 
@@ -196,35 +195,52 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
       }
     }
   }
-  
+
   /**
    * No special validation logic.
    */
-  protected void preSaveValidate() {}
-  
+  protected void preSaveValidate()
+  {
+  }
+
   /**
    * No special validation logic.
    */
-  protected void validate() {}
-  
+  protected void validate()
+  {
+  }
+
   /**
    * No special commit logic.
    * 
    */
-  public void setCommitState() {}
-    
+  public void setCommitState()
+  {
+  }
+
   /**
    * No special save logic
    */
-  public void save() {}
-  
+  public void save()
+  {
+  }
+
   /**
    * No special delete logic.
+   * 
+   * @param removeValues
+   *          Flag indicating if the delete should also remove the values from
+   *          the database if they are not automatically cleaned up on column
+   *          drop.
    */
-  public void delete() {}
-  
+  public void delete(boolean removeValues)
+  {
+  }
+
   /**
    * No special post delete logic.
    */
-  public void postDelete() {}
+  public void postDelete()
+  {
+  }
 }

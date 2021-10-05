@@ -78,12 +78,12 @@ public abstract class CompositeFieldConditionDAO extends FieldConditionDAO imple
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     String firstConditionId = this.getAttribute(CompositeFieldConditionInfo.FIRST_CONDITION).getValue();
     String secondConditionId = this.getAttribute(CompositeFieldConditionInfo.SECOND_CONDITION).getValue();
 
-    super.delete(businessContext);
+    super.delete(context);
 
     if (firstConditionId != null && firstConditionId.length() > 0)
     {

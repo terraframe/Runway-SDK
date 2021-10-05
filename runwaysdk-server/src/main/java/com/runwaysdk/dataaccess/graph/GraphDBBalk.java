@@ -214,10 +214,10 @@ public class GraphDBBalk implements GraphDB
 
   /**
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, boolean)
    */
   @Override
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
   {
     return new GraphDDLCommandAction()
     {
@@ -228,7 +228,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
   {
     return new GraphDDLCommandAction()
     {

@@ -48,6 +48,7 @@ import com.runwaysdk.dataaccess.EntityMasterTestSetup;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdDomainDAO;
@@ -192,7 +193,7 @@ public class CacheTest
     MdBusinessDAO parentMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(parentInfo.getType()) ).getBusinessDAO();
     MdBusinessDAO childMD = (MdBusinessDAO) ( MdBusinessDAO.getMdBusinessDAO(childInfo.getType()) ).getBusinessDAO();
 
-    parentMD.deleteInstances(false);
+    parentMD.deleteInstances(new DeleteContext());
 
     parentMD.setValue(MdElementInfo.CACHE_ALGORITHM, originalParentMdCacheId);
     parentMD.apply();

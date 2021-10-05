@@ -113,7 +113,7 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
    * Deletes this form and all MdField children.
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     List<? extends MdFieldDAOIF> fields = this.getAllMdFieldsForDelete();
 
@@ -135,10 +135,10 @@ public abstract class MdFormDAO extends MdTypeDAO implements MdFormDAOIF
       // there is a condition reference. At that point the field reference
       // becomes stale. As such before deleting a field we must retrieve a new
       // instance to ensure that the field is up to date.
-      field.getBusinessDAO().delete(businessContext, false);
+      field.getBusinessDAO().delete(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   @Override

@@ -95,11 +95,10 @@ public class MdAttributeEnumeration_E extends MdAttributeConcrete_E
    * the runway <br/>
    * <b>Postcondition: </b> Corresponding column from the defining table is
    * dropped
-   *
    * @param p_mdAttribute
    *          Attribute metadata BusinessDAO
    */
-  public void delete()
+  public void delete(boolean removeValues)
   {
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntity = this.definedByClass();
@@ -110,7 +109,7 @@ public class MdAttributeEnumeration_E extends MdAttributeConcrete_E
           .getTableName(), mdEntity.getTableName(), this.getMdAttribute().getColumnName());
     }
 
-    super.delete();
+    super.delete(removeValues);
   }
 
   /**

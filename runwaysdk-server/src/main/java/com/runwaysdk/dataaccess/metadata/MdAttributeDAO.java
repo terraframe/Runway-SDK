@@ -273,7 +273,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Delete all of the MdAttributeDimension definitions
 
@@ -281,10 +281,10 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
     {
-      mdAttributeDimension.getBusinessDAO().delete(businessContext);
+      mdAttributeDimension.getBusinessDAO().delete(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

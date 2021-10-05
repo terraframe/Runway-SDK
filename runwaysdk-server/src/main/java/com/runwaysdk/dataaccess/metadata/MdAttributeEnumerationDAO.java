@@ -330,7 +330,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
    *          layer.
    * 
    */
-  public void deleteButDoNotDeleteMappingInstances(boolean businessContext)
+  public void deleteButDoNotDeleteMappingInstances(DeleteContext context)
   {
     MdAttributeConcreteStrategy mdAttributeStrategy = this.getMdAttributeStrategy();
 
@@ -340,7 +340,7 @@ public class MdAttributeEnumerationDAO extends MdAttributeConcreteDAO implements
       mdAttributeEnumeration_E.deleteInstances = false;
     }
 
-    this.delete(businessContext);
+    this.delete(context);
   }
 
   /**

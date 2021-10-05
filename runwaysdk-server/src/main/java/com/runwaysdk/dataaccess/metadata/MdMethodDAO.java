@@ -376,7 +376,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // 1. Delete the MdParameters defined by this MdMethod
     List<RelationshipDAOIF> relationships = this.getChildren(RelationshipTypes.METADATA_PARAMETER.getType());
@@ -384,7 +384,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
     for (RelationshipDAOIF relationship : relationships)
     {
       MdParameterDAO mdParameter = ( (MdParameterDAOIF) relationship.getChild() ).getBusinessDAO();
-      mdParameter.delete(businessContext);
+      mdParameter.delete(context);
     }
 
     // 2. Delete the AssignableMethod defined by this MdMehtod
@@ -392,11 +392,11 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
 
     if (assignableMethod != null)
     {
-      assignableMethod.getBusinessDAO().delete(businessContext);
+      assignableMethod.getBusinessDAO().delete(context);
     }
 
     // 3. Delete this BusinessDAO
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

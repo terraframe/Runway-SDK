@@ -119,9 +119,9 @@ public class MdAttributeMultiReference_E extends MdAttributeConcrete_E
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E#delete()
    */
   @Override
-  public void delete()
+  public void delete(boolean removeValues)
   {
-    super.delete();
+    super.delete(removeValues);
 
     if (this.deleteInstances)
     {
