@@ -98,7 +98,7 @@ public class MdAttributeEnumeration_E extends MdAttributeConcrete_E
    * @param p_mdAttribute
    *          Attribute metadata BusinessDAO
    */
-  public void delete(boolean removeValues)
+  public void delete(DeleteContext context)
   {
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntity = this.definedByClass();
@@ -109,7 +109,7 @@ public class MdAttributeEnumeration_E extends MdAttributeConcrete_E
           .getTableName(), mdEntity.getTableName(), this.getMdAttribute().getColumnName());
     }
 
-    super.delete(removeValues);
+    super.delete(context);
   }
 
   /**

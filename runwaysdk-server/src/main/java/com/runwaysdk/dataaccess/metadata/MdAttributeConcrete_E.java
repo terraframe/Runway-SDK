@@ -657,7 +657,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * @param p_mdAttribute
    *          Attribute metadata BusinessDAO
    */
-  public void delete(boolean removeValues)
+  public void delete(DeleteContext context)
   {
     // Delete all tuples this MdAttribute is part of
     this.dropTuples();

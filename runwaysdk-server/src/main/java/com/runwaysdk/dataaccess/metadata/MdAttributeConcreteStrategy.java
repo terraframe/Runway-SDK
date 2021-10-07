@@ -227,13 +227,9 @@ public abstract class MdAttributeConcreteStrategy implements Serializable
 
   /**
    * No special delete logic.
-   * 
-   * @param removeValues
-   *          Flag indicating if the delete should also remove the values from
-   *          the database if they are not automatically cleaned up on column
-   *          drop.
+   * @param context TODO
    */
-  public void delete(boolean removeValues)
+  public void delete(DeleteContext context)
   {
   }
 

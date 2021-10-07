@@ -26,6 +26,7 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 
 public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
@@ -81,7 +82,7 @@ public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), true);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), new DeleteContext());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
     graphCommand.doIt();
@@ -92,7 +93,7 @@ public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
    *
    */
   @Override
-  protected void dropDbAttribute(boolean removeValues)
+  protected void dropDbAttribute(DeleteContext context)
   {
     String dbClassName = this.definedByClass().getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
     String dbAttrName = this.getMdAttribute().getAttributeIF(MdAttributeConcreteInfo.COLUMN_NAME).getValue();
@@ -101,10 +102,10 @@ public class MdAttributeEnumeration_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), removeValues);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), context);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createSetAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.dbColumnType, required, this.isChangeOverTime());
 
-    GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, true);
+    GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, !context.isExecuteImmediately());
     graphCommand.doIt();
   }
 

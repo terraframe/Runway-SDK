@@ -29,6 +29,7 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public class GraphDBService
@@ -247,27 +248,25 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @param removeValues TODO
-   * @param removeValues TODO
+   * @param context TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean, boolean)
+   *      boolean, DeleteContext)
    */
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
-    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, removeValues);
+    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, context);
   }
 
   /**
    * @param cot
    *          TODO
-   * @param removeValues TODO
-   * @param removeValues TODO
+   * @param context TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean, boolean)
+   *      boolean, DeleteContext)
    */
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
-    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, removeValues);
+    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, context);
   }
 
   /**
