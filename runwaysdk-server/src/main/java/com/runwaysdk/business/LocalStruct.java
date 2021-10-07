@@ -215,7 +215,8 @@ public class LocalStruct extends Struct implements LocalizedValueIF
   }
 
   /**
-   * Returns the localized string that is the best fit for the given locale.
+   * Returns the localized string for the given locale. If bestFit is true, we will coalesce with other locales
+   * and attempt to find a best fit.
    *
    * Duplicated in <code>AttributeLocal</code>
    */
@@ -293,15 +294,31 @@ public class LocalStruct extends Struct implements LocalizedValueIF
   {
     return getValue();
   }
-
+  
   @Override
   public Map<String, String> getLocaleMap()
+  {
+    return this.getLocaleMap(false);
+  }
+
+  /**
+   * @param bestFitLocales If set to true, we will coalesce the value for each locale. Otherwise, we will simply return the value as is.
+   * @return
+   */
+  public Map<String, String> getLocaleMap(boolean bestFitLocales)
   {
     Map<String, String> map = new HashMap<String, String>();
     
     for (Locale locale : LocalizationFacade.getInstalledLocales())
     {
-      map.put(locale.toString(), this.getValue(locale));
+      if (bestFitLocales)
+      {
+        map.put(locale.toString(), this.getValue(locale));
+      }
+      else
+      {
+        map.put(locale.toString(), this.getValue(locale.toString()));
+      }
     }
     
     map.put(MdAttributeLocalInfo.DEFAULT_LOCALE, this.getDefaultValue());
