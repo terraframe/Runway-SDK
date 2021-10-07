@@ -8,6 +8,8 @@ public class DeleteContext
 
   private boolean removeValues;
 
+  private boolean executeImmediately;
+
   public DeleteContext()
   {
     this(false);
@@ -18,6 +20,7 @@ public class DeleteContext
     this.businessContext = businessContext;
     this.enforceRemovable = true;
     this.removeValues = true;
+    this.executeImmediately = false;
   }
 
   public boolean isBusinessContext()
@@ -25,9 +28,11 @@ public class DeleteContext
     return businessContext;
   }
 
-  public void setBusinessContext(boolean businessContext)
+  public DeleteContext setBusinessContext(boolean businessContext)
   {
     this.businessContext = businessContext;
+
+    return this;
   }
 
   public boolean isEnforceRemovable()
@@ -35,9 +40,11 @@ public class DeleteContext
     return enforceRemovable;
   }
 
-  public void setEnforceRemovable(boolean enforceRemovable)
+  public DeleteContext setEnforceRemovable(boolean enforceRemovable)
   {
     this.enforceRemovable = enforceRemovable;
+
+    return this;
   }
 
   public boolean isRemoveValues()
@@ -45,8 +52,22 @@ public class DeleteContext
     return removeValues;
   }
 
-  public void setRemoveValues(boolean removeValues)
+  public DeleteContext setRemoveValues(boolean removeValues)
   {
     this.removeValues = removeValues;
+
+    return this;
+  }
+
+  public boolean isExecuteImmediately()
+  {
+    return executeImmediately;
+  }
+
+  public DeleteContext setExecuteImmediately(boolean executeImmediately)
+  {
+    this.executeImmediately = executeImmediately;
+
+    return this;
   }
 }

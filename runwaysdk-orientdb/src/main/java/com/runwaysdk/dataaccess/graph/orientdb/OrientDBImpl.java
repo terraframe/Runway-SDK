@@ -102,6 +102,7 @@ import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef.ID;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
@@ -600,7 +601,7 @@ public class OrientDBImpl implements GraphDB
    *      boolean, boolean)
    */
   @Override
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -625,7 +626,7 @@ public class OrientDBImpl implements GraphDB
             {
               oClass.dropProperty(attr);
 
-              if (removeValues)
+              if (context.isRemoveValues())
               {
                 // Delete any existing values
                 try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
@@ -643,7 +644,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, boolean removeValues)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -674,7 +675,7 @@ public class OrientDBImpl implements GraphDB
             oClass.dropProperty(attr);
 
             // Delete any existing values
-            if (removeValues)
+            if (context.isRemoveValues())
             {
               try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
               {

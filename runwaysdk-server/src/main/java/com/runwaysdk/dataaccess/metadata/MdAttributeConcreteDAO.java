@@ -802,7 +802,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     this.initializeStrategyObject();
 
-    this.getMdAttributeStrategy().delete(context.isRemoveValues());
+    this.getMdAttributeStrategy().delete(context);
 
     super.delete(context);
 
