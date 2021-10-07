@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
@@ -40,6 +41,7 @@ import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -54,6 +56,8 @@ import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -156,6 +160,11 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public String getDisplayLabel(Locale locale)
   {
     return ( (AttributeLocalIF) this.getAttributeIF(MdAttributeConcreteInfo.DISPLAY_LABEL) ).getValue(locale);
+  }
+  
+  public StructDAO getDisplayLabel()
+  {
+    return ( (AttributeLocal) this.getAttributeIF(MdAttributeConcreteInfo.DISPLAY_LABEL) ).getStructDAO();
   }
 
   /**

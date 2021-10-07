@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.Entity;
 import com.runwaysdk.constants.StructInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -319,6 +320,34 @@ public class StructDAO extends EntityDAO implements StructDAOIF
   public static StructDAOIF get(String type, String key)
   {
     return (StructDAOIF) EntityDAO.get(type, key);
+  }
+  
+  public Map<String, Object> getAsMap()
+  {
+    Map<String, Object> objectMap = new HashMap<String, Object>();
+
+    for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : this.getMdAttributeDAOs())
+    {
+      if (!mdAttributeConcreteDAOIF.isSystem() && !mdAttributeConcreteDAOIF.definesAttribute().equals(Entity.KEYNAME))
+      {
+        String attributeName = mdAttributeConcreteDAOIF.definesAttribute();
+        objectMap.put(mdAttributeConcreteDAOIF.definesAttribute(), this.getAttribute(attributeName).getValue());
+      }
+    }
+
+    return objectMap;
+  }
+  
+  public void populateFromMap(Map<String, Object> map)
+  {
+    for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : this.getMdAttributeDAOs())
+    {
+      if (!mdAttributeConcreteDAOIF.isSystem() && !mdAttributeConcreteDAOIF.definesAttribute().equals(Entity.KEYNAME))
+      {
+        String attributeName = mdAttributeConcreteDAOIF.definesAttribute();
+        this.getAttribute(attributeName).setValue(map.get(attributeName));
+      }
+    }
   }
 
 }
