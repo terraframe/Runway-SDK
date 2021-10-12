@@ -18,7 +18,18 @@
  */
 package com.runwaysdk.dataaccess.graph;
 
+import java.util.List;
+
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+
 public interface VertexObjectDAOIF extends GraphObjectDAOIF
 {
+  public List<VertexObjectDAOIF> getChildren(MdEdgeDAOIF mdEdge);
+
+  public List<VertexObjectDAOIF> getParents(MdEdgeDAOIF mdEdge);
+
+  public List<VertexObjectDAOIF> getParents(String edgeType);
+
+  public List<VertexObjectDAOIF> getChildren(String edgeType);
 
 }

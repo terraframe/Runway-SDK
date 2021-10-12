@@ -20,5 +20,7 @@ package com.runwaysdk.dataaccess.graph;
 
 public interface EdgeObjectDAOIF extends GraphObjectDAOIF
 {
+  public VertexObjectDAOIF getParent();
 
+  public VertexObjectDAOIF getChild();
 }

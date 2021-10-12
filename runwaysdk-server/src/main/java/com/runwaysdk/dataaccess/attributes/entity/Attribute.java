@@ -43,6 +43,7 @@ import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.ImmutableAttributeProblem;
 import com.runwaysdk.dataaccess.attributes.SystemAttributeProblem;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.query.EntityQuery;
@@ -711,7 +712,7 @@ public abstract class Attribute implements AttributeIF, Serializable
    * 
    * @param entityDAO
    */
-  public void removeReferences(EntityDAO entityDAO, boolean businessContext)
+  public void removeReferences(EntityDAO entityDAO, DeleteContext context)
   {
   }
 

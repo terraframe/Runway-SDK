@@ -103,9 +103,9 @@ public class MdAttributeDimensionDAO extends MetadataDAO implements MdAttributeD
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
 
     MdDimensionDAOIF mdDimensionDAOIF = this.definingMdDimension();
     MdAttributeDAO mdAttributeDAO = (MdAttributeDAO) this.definingMdAttribute().getBusinessDAO();

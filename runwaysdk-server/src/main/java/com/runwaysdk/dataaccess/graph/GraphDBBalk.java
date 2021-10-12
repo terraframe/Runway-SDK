@@ -28,6 +28,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 /**
  * This class implements the Balk pattern for instances where no graph database
@@ -214,10 +215,10 @@ public class GraphDBBalk implements GraphDB
 
   /**
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, DeleteContext)
    */
   @Override
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     return new GraphDDLCommandAction()
     {
@@ -228,7 +229,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     return new GraphDDLCommandAction()
     {
@@ -317,6 +318,18 @@ public class GraphDBBalk implements GraphDB
       }
     };
   }
+  
+  @Override
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+
 
   @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)

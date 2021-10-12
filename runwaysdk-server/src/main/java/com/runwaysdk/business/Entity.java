@@ -57,6 +57,7 @@ import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.UnexpectedTypeException;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.generation.loader.LoaderDecorator;
@@ -688,7 +689,7 @@ public abstract class Entity implements Mutable, Serializable
    */
   public void delete()
   {
-    entityDAO.delete(true);
+    entityDAO.delete(new DeleteContext(true));
   }
 
   /**

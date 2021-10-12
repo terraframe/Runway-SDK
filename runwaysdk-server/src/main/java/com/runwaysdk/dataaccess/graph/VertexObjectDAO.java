@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.graph.GraphQuery;
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
@@ -319,6 +321,30 @@ public class VertexObjectDAO extends GraphObjectDAO implements VertexObjectDAOIF
     GraphRequest request = GraphDBService.getInstance().getGraphDBRequest();
 
     return GraphDBService.getInstance().get(request, mdVertexDAO, oid);
+  }
+
+  public static boolean isChild(VertexObjectDAOIF root, VertexObjectDAOIF attributeRoot, MdEdgeDAOIF referenceMdEdgeDAO)
+  {
+    Object childRid = attributeRoot.getRID();
+    Object parentRid = root.getRID();
+
+    return isChild(parentRid, childRid, referenceMdEdgeDAO);
+  }
+
+  public static boolean isChild(Object parentRid, Object childRid, MdEdgeDAOIF mdEdge)
+  {
+    StringBuilder statement = new StringBuilder();
+    statement.append("SELECT count(*) FROM (");
+    statement.append(" TRAVERSE in('" + mdEdge.getDBClassName() + "') FROM :child");
+    statement.append(") WHERE @rid = :parent");
+
+    GraphQuery<Long> query = new GraphQuery<Long>(statement.toString());
+    query.setParameter("child", childRid);
+    query.setParameter("parent", parentRid);
+
+    Long result = query.getSingleResult();
+
+    return ( result != null && result > 0 );
   }
 
 }

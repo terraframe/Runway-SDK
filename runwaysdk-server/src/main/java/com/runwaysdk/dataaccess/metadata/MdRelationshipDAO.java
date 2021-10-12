@@ -439,9 +439,9 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   *
   */
   // This method is used as a hook for an aspect in TransactionManagement
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**
@@ -1026,7 +1026,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
    * layer instead of the data access layer.
    *
    */
-  public void deleteInstances(boolean businessContext)
+  public void deleteInstances(DeleteContext context)
   {
     // delete all instances of the relationship
     QueryFactory queryFactory = new QueryFactory();
@@ -1035,7 +1035,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
     while (relationshiopIterator.hasNext())
     {
       RelationshipDAO resultObject = (RelationshipDAO)relationshiopIterator.next();
-      resultObject.delete(businessContext);
+      resultObject.delete(context);
     }
   }
 

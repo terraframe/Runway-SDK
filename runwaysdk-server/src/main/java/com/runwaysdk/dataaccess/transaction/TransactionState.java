@@ -44,12 +44,12 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 
-public class TransactionState 
+public class TransactionState
 {
 
   private Connection                           ddlConn;
-  
-  private GraphRequest                       ddlGraphRequest;
+
+  private GraphRequest                         ddlGraphRequest;
 
   private ReentrantLock                        transactionStateLock;
 
@@ -93,7 +93,9 @@ public class TransactionState
   private volatile int                         metadataTempColumnCounter;
 
   private String                               transactionId;
-  
+
+  private Map<String, Object>                  transactionObjects;
+
   protected TransactionState()
   {
     this.transactionStateLock = new ReentrantLock();
@@ -123,6 +125,7 @@ public class TransactionState
 
   private void init()
   {
+    this.transactionObjects = new HashMap<String, Object>(0);
     this.undoableCommandList = new LinkedList<Command>();
     this.doFinallyUndoableCommandList = new LinkedList<Command>();
     this.completedUndoableCommandStack = new Stack<Command>();
@@ -148,17 +151,27 @@ public class TransactionState
     this.setRelLocksSet = new HashSet<String>();
 
     this.metadataTempColumnCounter = 0;
-    
+
     this.transactionId = ServerIDGenerator.nextID();
-    
+
     this.ddlGraphRequest = null;
+  }
+
+  public void putTransactionObject(String key, Object object)
+  {
+    this.transactionObjects.put(key, object);
+  }
+
+  public Object getTransactionObject(String key)
+  {
+    return this.transactionObjects.get(key);
   }
 
   public String getTransactionId()
   {
     return this.transactionId;
   }
-  
+
   /**
    * Returns the temporary metadata column counter.
    * 
@@ -330,7 +343,6 @@ public class TransactionState
     }
   }
 
-  
   /**
    * Indicates whether a DDL connection has already been made for this
    * transaction.
@@ -357,7 +369,7 @@ public class TransactionState
       this.transactionStateLock.unlock();
     }
   }
-  
+
   /**
    * Return the {@link GraphRequest} for DDL commands.
    * 
@@ -372,7 +384,7 @@ public class TransactionState
       {
         this.ddlGraphRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
       }
-        
+
       return this.ddlGraphRequest;
     }
     finally
@@ -380,8 +392,7 @@ public class TransactionState
       this.transactionStateLock.unlock();
     }
   }
-  
-  
+
   /**
    * Indicates whether a Graph DB DDL connection has already been made for this
    * transaction.

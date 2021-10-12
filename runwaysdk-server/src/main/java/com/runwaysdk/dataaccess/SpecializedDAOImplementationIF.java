@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess;
 
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
+
 /**
  * This is a marker interface to be implemented by all specialized subclasses of the standard DAO classes 
  * (e.g. BusinessDAO, RelationshipDAO, and StructDAO).  This interface is used by aspects.
@@ -36,7 +38,8 @@ public interface SpecializedDAOImplementationIF
    *            otherwise. If true then cascading deletes of other Entity
    *            objects will happen at the Business layer instead of the data
    *            access layer.
+   * @param context TODO
    *
    */
-  public void delete(boolean businessContext);
+  public void delete(DeleteContext context);
 }

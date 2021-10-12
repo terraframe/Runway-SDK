@@ -79,6 +79,14 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
   }
 
   /**
+   * Alias for getLocaleMap
+   */
+  public Map<String, String> getLocalValues()
+  {
+    return this.getLocaleMap();
+  }
+  
+  /**
    * Returns a map where the key is the locale and the value is the localized
    * String value.
    *
@@ -86,7 +94,7 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
    * @return map where the key is the locale and the value is the localized
    *   String value.
    */
-  public Map<String, String> getLocalValues()
+  public Map<String, String> getLocaleMap()
   {
     return com.runwaysdk.dataaccess.attributes.entity.AttributeLocal.getLocalValues(this.getStructDAO());
   }

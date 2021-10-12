@@ -34,6 +34,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.SpecializedDAOImplementationIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.util.IdParser;
 
@@ -169,7 +170,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
   }
   
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     String path = this.getFullFilePathAndName();
 
@@ -177,7 +178,7 @@ public class WebFileDAO extends BusinessDAO implements WebFileDAOIF, Specialized
 
     command.doIt();
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
 

@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -253,7 +254,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     return ( (AttributeEnumeration) this.getAttributeIF(MdElementInfo.CACHE_ALGORITHM) ).dereference()[0];
   }
-  
+
   /**
    * Returns an array of MdBusinessIF that defines immediate sub-entities of
    * this entity.
@@ -384,7 +385,6 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   {
     super.validate();
 
-// Heads up: clean up - this is a reduntant check that is already handled in MdAttributeConcreteDAO
 //    if (this.isNew())
 //    {
 //      // make sure an MdBusiness cannot extend MdAttribute.
@@ -518,7 +518,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // We're deleting a type. Find all reference attributes that point to this
     // type,
@@ -527,7 +527,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
     for (MdAttributeReferenceDAOIF mdAttributeReferenceIF : mdAttrRefList)
     {
-      mdAttributeReferenceIF.getBusinessDAO().delete(businessContext);
+      mdAttributeReferenceIF.getBusinessDAO().delete(context);
     }
 
     // If this is subclassing enumerationmaster, then drop all MdEnumerations
@@ -537,10 +537,10 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     for (RelationshipDAOIF mdEnumRelationship : mdEnumerations)
     {
       MdEnumerationDAOIF mdEnumerationIF = (MdEnumerationDAOIF) mdEnumRelationship.getChild();
-      mdEnumerationIF.getBusinessDAO().delete(businessContext);
+      mdEnumerationIF.getBusinessDAO().delete(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   public List<MdAttributeReferenceDAOIF> getMdAttributeReferences()
@@ -583,7 +583,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    * 
    */
   @Override
-  public void deleteInstances(boolean businessContext)
+  public void deleteInstances(DeleteContext context)
   {
     // delete all instances of the struct.
     QueryFactory queryFactory = new QueryFactory();
@@ -592,7 +592,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     while (businessDAOiterator.hasNext())
     {
       BusinessDAO resultObject = (BusinessDAO) businessDAOiterator.next();
-      resultObject.delete(businessContext);
+      resultObject.delete(context);
     }
   }
 
@@ -605,10 +605,10 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
     Database.dropClassTable(this.getTableName());
   }
 
-  protected void removeDependencies(boolean businessContext)
+  protected void removeDependencies(DeleteContext context)
   {
     // 3. Deletes all relationship types that this type participates in.
-    this.deleteMdRelationships(businessContext);
+    this.deleteMdRelationships(context);
   }
 
   /**
@@ -866,7 +866,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    *          layer.
    * 
    */
-  private void deleteMdRelationships(boolean businessContext)
+  private void deleteMdRelationships(DeleteContext context)
   {
     // Delete all relationship types where the parent is of this class we are
     // deleting
@@ -885,7 +885,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
       // earlier in this iteration
       if (mdRelationship.isDefined())
       {
-        mdRelationship.delete(businessContext);
+        mdRelationship.delete(context);
       }
     }
 
@@ -1010,19 +1010,22 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   }
 
   /**
-   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given class.
+   * Returns a {@link MdBusinessDAOIF} instance of the metadata for the given
+   * class.
    * 
    * <br/>
    * <b>Precondition:</b> classType != null <br/>
    * <b>Precondition:</b> !classType.trim().equals("") <br/>
-   * <b>Precondition:</b> classType is a valid class defined in the database <br/>
+   * <b>Precondition:</b> classType is a valid class defined in the database
+   * <br/>
    * <b>Postcondition:</b> return value is not null <br/>
    * <b>Postcondition:</b> Returns a MdBusinessIF instance of the metadata for
    * the given class (MdBusinessDAOIF().definesType().equals(classType)
    * 
    * @param classType
    *          class type
-   * @return {@link MdBusinessDAOIF} instance of the metadata for the given class type.
+   * @return {@link MdBusinessDAOIF} instance of the metadata for the given
+   *         class type.
    */
   public static MdBusinessDAOIF getMdBusinessDAO(String classType)
   {

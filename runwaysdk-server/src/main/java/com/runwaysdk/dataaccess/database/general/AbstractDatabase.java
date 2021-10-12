@@ -63,6 +63,7 @@ import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
 import com.runwaysdk.constants.MdAttributeDateTimeInfo;
@@ -72,6 +73,7 @@ import com.runwaysdk.constants.MdAttributeDoubleInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
@@ -175,14 +177,15 @@ public abstract class AbstractDatabase
       // will initialize the datasource.
     }
   }
-  
+
   /**
    * Initializes this AbstractDatabase object with a connection to the database.
    */
   abstract public void initializeConnection();
 
   /**
-   * Initializes the AbstractDatabase object with a root connection to the database.
+   * Initializes the AbstractDatabase object with a root connection to the
+   * database.
    */
   abstract public void initializeRootConnection(String rootUser, String rootPass, String rootDb);
 
@@ -362,16 +365,17 @@ public abstract class AbstractDatabase
       this.connlock.unlock();
     }
   }
-  
+
   /**
-   * Returns a connection from the root data source. This assumes that we have logged in as root (i.e. initialzeRootConnection has been invoked).
+   * Returns a connection from the root data source. This assumes that we have
+   * logged in as root (i.e. initialzeRootConnection has been invoked).
    */
   public Connection getConnectionRoot()
   {
     this.connlock.lock();
-    
+
     Connection conx = null;
-    
+
     try
     {
       conx = this.rootDataSource.getConnection();
@@ -385,7 +389,7 @@ public abstract class AbstractDatabase
     {
       this.connlock.unlock();
     }
-    
+
     return conx;
   }
 
@@ -3644,7 +3648,7 @@ public abstract class AbstractDatabase
   {
     try
     {
-      if (dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeMultiTermInfo.CLASS) || dataType.equals(MdAttributeHashInfo.CLASS))
+      if (dataType.equals(MdAttributeCharacterInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeGraphReferenceInfo.CLASS) || dataType.equals(MdAttributeClassificationInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeMultiTermInfo.CLASS) || dataType.equals(MdAttributeHashInfo.CLASS))
       {
         if ( ( (String) value ).equals(""))
         {

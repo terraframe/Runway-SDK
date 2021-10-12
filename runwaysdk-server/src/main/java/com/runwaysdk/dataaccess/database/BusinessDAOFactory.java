@@ -58,6 +58,7 @@ import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeClobInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
@@ -72,6 +73,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -138,6 +140,7 @@ import com.runwaysdk.constants.TransactionRecordInfo;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.constants.VaultInfo;
+import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -177,6 +180,7 @@ import com.runwaysdk.dataaccess.metadata.LongConditionDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeClobDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
@@ -191,6 +195,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIndicatorDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -253,6 +258,7 @@ import com.runwaysdk.dataaccess.metadata.MdWebTimeDAO;
 import com.runwaysdk.dataaccess.metadata.SupportedLocaleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAO;
 import com.runwaysdk.dataaccess.metadata.TypeTupleDAOIF;
+import com.runwaysdk.dataaccess.metadata.graph.MdClassificationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.metadata.ontology.OntologyStrategyDAO;
@@ -304,6 +310,7 @@ public class BusinessDAOFactory
 
     // Graoh Database
     map.put(MdVertexInfo.CLASS, new MdVertexDAO());
+    map.put(MdClassificationInfo.CLASS, new MdClassificationDAO());
     map.put(MdEdgeInfo.CLASS, new MdEdgeDAO());
 
     map.put(MdTableInfo.CLASS, new MdTableDAO());
@@ -365,6 +372,8 @@ public class BusinessDAOFactory
     map.put(MdAttributeHashInfo.CLASS, new MdAttributeHashDAO());
     map.put(MdAttributeSymmetricInfo.CLASS, new MdAttributeSymmetricDAO());
     map.put(MdAttributeEmbeddedInfo.CLASS, new MdAttributeEmbeddedDAO());
+    map.put(MdAttributeGraphReferenceInfo.CLASS, new MdAttributeGraphReferenceDAO());
+    map.put(MdAttributeClassificationInfo.CLASS, new MdAttributeClassificationDAO());
     map.put(MdAttributeLocalCharacterEmbeddedInfo.CLASS, new MdAttributeLocalCharacterEmbeddedDAO());
 
     // web form

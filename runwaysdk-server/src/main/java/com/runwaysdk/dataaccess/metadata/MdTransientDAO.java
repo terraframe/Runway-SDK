@@ -259,17 +259,17 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
-    this.deleteAllChildClasses(businessContext);
+    this.deleteAllChildClasses(context);
 
     this.dropAllMdMethods();
 
-    this.dropAllAttributes(businessContext);
+    this.dropAllAttributes(context);
 
     this.dropTuples();
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

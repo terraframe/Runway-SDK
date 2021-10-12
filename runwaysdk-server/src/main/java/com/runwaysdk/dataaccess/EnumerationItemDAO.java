@@ -34,6 +34,7 @@ import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
@@ -201,9 +202,9 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
 
     List<RelationshipDAOIF> relationships = this.getParents(RelationshipTypes.ENUMERATION_ATTRIBUTE_ITEM.getType());
 

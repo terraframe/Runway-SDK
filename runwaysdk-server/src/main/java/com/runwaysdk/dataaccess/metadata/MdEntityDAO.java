@@ -641,33 +641,33 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     this.existenceCheck();
 
-    this.deleteAllChildClasses(businessContext);
+    this.deleteAllChildClasses(context);
 
     // 1. Remove any additional dependencies
-    this.removeDependencies(businessContext);
+    this.removeDependencies(context);
 
     // 2. Delete all instances of this type
-    this.deleteInstances(businessContext);
+    this.deleteInstances(context);
 
     // 2.5 Delete all MdMethods defined by this type
     this.dropAllMdMethods();
 
     // 3. Delete all attribute MdAttribue objects that this type defines
     // delete all attribute metadata for this class
-    this.dropAllAttributes(businessContext);
+    this.dropAllAttributes(context);
 
     // 3.5 Delete all permission tuples that this class participates in
     this.dropTuples();
 
     // 4. Delete all MdMethodDAO objects that this type defines
-    this.dropMdMethods(businessContext);
+    this.dropMdMethods(context);
 
     // 5. Delete this BusinessDAO
-    super.delete(businessContext);
+    super.delete(context);
 
     ObjectCache.removeCacheStrategy(this.definesType());
 
@@ -681,7 +681,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
   // Removes any additional dependencies. Actually this allows classes to
   // disassociate themselves
   // from any relationship types they participate in.
-  protected void removeDependencies(boolean businessContext)
+  protected void removeDependencies(DeleteContext context)
   {
   }
 
@@ -698,7 +698,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    *          layer.
    * 
    */
-  public abstract void deleteInstances(boolean businessContext);
+  public abstract void deleteInstances(DeleteContext context);
 
   /**
    * Removes any MdMdethod that are defined by this MdEntityDAO.
@@ -710,11 +710,11 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
    *          layer.
    * 
    */
-  private void dropMdMethods(boolean businessContext)
+  private void dropMdMethods(DeleteContext context)
   {
     for (MdMethodDAOIF mdMethod : this.getMdMethods())
     {
-      mdMethod.getBusinessDAO().delete(businessContext);
+      mdMethod.getBusinessDAO().delete(context);
     }
   }
 

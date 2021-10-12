@@ -114,11 +114,11 @@ public class MdAttributeIndicatorDAO extends MdAttributeConcreteDAO implements M
   }
 
   @Override
-  public void delete(boolean _businessContext)
+  public void delete(DeleteContext context)
   {    
     // Delete this from the database so that the reference check on the indicator do not prevent
     // it from being deleted because they reference this object.
-    super.delete(_businessContext);
+    super.delete(context);
     
     // Delete referenced indicator
     IndicatorElementDAOIF indicator = this.getIndicator();

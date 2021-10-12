@@ -388,11 +388,16 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
       getter = "getValue(" + attributeConstant + ")";
     }
 
-    getWriter().writeLine("public " + m.javaType(false) + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
-    getWriter().openBracket();
-    getWriter().writeLine("return " + getter + ';');
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    String javaType = m.javaType(false);
+
+    if (javaType != null)
+    {
+      getWriter().writeLine("public " + javaType + " get" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("return " + getter + ';');
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**
@@ -410,18 +415,23 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
 
     String attributeName = m.definesAttribute();
 
-    getWriter().writeLine("public void set" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + m.javaType(false) + " value)");
-    getWriter().openBracket();
-    getWriter().writeLine("if(value == null)");
-    getWriter().openBracket();
-    getWriter().writeLine(m.setterWrapper("\"\"") + ";");
-    getWriter().closeBracket();
-    getWriter().writeLine("else");
-    getWriter().openBracket();
-    getWriter().writeLine(m.generatedClientSetter() + ";");
-    getWriter().closeBracket();
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+    String javaType = m.javaType(false);
+
+    if (javaType != null)
+    {
+      getWriter().writeLine("public void set" + CommonGenerationUtil.upperFirstCharacter(attributeName) + "(" + javaType + " value)");
+      getWriter().openBracket();
+      getWriter().writeLine("if(value == null)");
+      getWriter().openBracket();
+      getWriter().writeLine(m.setterWrapper("\"\"") + ";");
+      getWriter().closeBracket();
+      getWriter().writeLine("else");
+      getWriter().openBracket();
+      getWriter().writeLine(m.generatedClientSetter() + ";");
+      getWriter().closeBracket();
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**
@@ -772,13 +782,16 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
     String attrMdName = ATTRIBUTE_MD_PREFIX + CommonGenerationUtil.upperFirstCharacter(attributeName) + ATTRIBUTE_MD_SUFFIX;
     String attributeMdDTOType = m.attributeMdDTOType();
 
-    String attributeConstant = attributeName.toUpperCase();
+    if (attributeMdDTOType != null)
+    {
+      String attributeConstant = attributeName.toUpperCase();
 
-    getWriter().writeLine("public final " + attributeMdDTOType + " " + attrMdName + "()");
-    getWriter().openBracket();
-    getWriter().writeLine("return (" + attributeMdDTOType + ") getAttributeDTO(" + attributeConstant + ").getAttributeMdDTO();");
-    getWriter().closeBracket();
-    getWriter().writeLine("");
+      getWriter().writeLine("public final " + attributeMdDTOType + " " + attrMdName + "()");
+      getWriter().openBracket();
+      getWriter().writeLine("return (" + attributeMdDTOType + ") getAttributeDTO(" + attributeConstant + ").getAttributeMdDTO();");
+      getWriter().closeBracket();
+      getWriter().writeLine("");
+    }
   }
 
   /**

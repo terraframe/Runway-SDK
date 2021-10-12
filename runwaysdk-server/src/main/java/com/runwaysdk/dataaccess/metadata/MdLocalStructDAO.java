@@ -97,7 +97,7 @@ public class MdLocalStructDAO extends MdStructDAO implements MdLocalStructDAOIF
   {
     if (this.getMdAttributeStruct().size() == 0)
     {
-      this.delete(false);
+      this.delete(new DeleteContext());
     }
   }
 
