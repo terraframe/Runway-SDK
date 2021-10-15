@@ -337,7 +337,7 @@ public class LocalStruct extends Struct implements LocalizedValueIF
       }
       else
       {
-        this.setValue(LocaleUtils.toLocale(entry.getKey()), entry.getValue());
+        this.setValue(entry.getKey(), entry.getValue());
       }
     }
   }

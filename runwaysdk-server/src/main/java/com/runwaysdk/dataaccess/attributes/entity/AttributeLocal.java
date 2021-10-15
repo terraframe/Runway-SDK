@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.constants.StructInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
@@ -90,14 +92,22 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
   }
 
   /**
-   * Returns a map where the key is the locale and the value is the localized
-   * String value.
-   * 
-   * 
-   * @return map where the key is the locale and the value is the localized
-   *         String value.
+   * Alias for getLocaleMap
    */
   public Map<String, String> getLocalValues()
+  {
+    return getLocalValues(this.getStructDAO());
+  }
+  
+  /**
+   * Returns a map where the key is the locale and the value is the localized
+   * String value.
+   *
+   *
+   * @return map where the key is the locale and the value is the localized
+   *   String value.
+   */
+  public Map<String, String> getLocaleMap()
   {
     return getLocalValues(this.getStructDAO());
   }
@@ -111,8 +121,11 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
    * @return map where the key is the locale and the value is the localized
    *         String value.
    */
+  @SuppressWarnings("unchecked")
   public static Map<String, String> getLocalValues(StructDAO structDAO)
   {
+    //return (Map<String, String>) ((Object)(structDAO).getAsMap());
+    
     Map<String, String> localeMap = new HashMap<String, String>();
 
     for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : structDAO.getMdAttributeDAOs())
