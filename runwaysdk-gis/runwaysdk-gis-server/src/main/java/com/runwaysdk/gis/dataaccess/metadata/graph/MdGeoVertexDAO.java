@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK GIS(tm).
  *
- * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK GIS(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
  * Runway SDK GIS(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK GIS(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.gis.dataaccess.metadata.graph;
 
@@ -141,7 +141,7 @@ public class MdGeoVertexDAO extends MdVertexDAO implements MdGeoVertexDAOIF
   @Override
   public MdGeoVertexDAOIF getSuperClass()
   {
-    return (MdGeoVertexDAOIF)super.getSuperClass();
+    return (MdGeoVertexDAOIF) super.getSuperClass();
   }
 
   /**
@@ -163,7 +163,13 @@ public class MdGeoVertexDAO extends MdVertexDAO implements MdGeoVertexDAOIF
     
     Stream<String> defaultAttrs = Arrays.stream(GeoEntityInfo.DEFAULT_ATTRIBUTES);
     
-    defaultAttrs.forEach(attrName -> this.copyAttribute(mdBusGeoEntity.definesAttribute(attrName)));
+    defaultAttrs.forEach(attrName -> {
+      if(!attrName.equals("geoId")) {
+        
+      this.copyAttribute(mdBusGeoEntity.definesAttribute(attrName));
+      }
+    }
+    );
 
 // Heads up: clean up   
 //    MdAttributePointDAO mdAttributePointDAO = MdAttributePointDAO.newInstance();
@@ -248,25 +254,25 @@ public class MdGeoVertexDAO extends MdVertexDAO implements MdGeoVertexDAOIF
 //    mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
 //    mdAttributeMultiPolygonDAO.apply();
   }
-  
-// Heads up: Clean up
-//  /**
-//   * Adds the geometry attributes.
-//   */
-//  @Override
-//  protected void createClassInDB()
-//  {
-//    super.createClassInDB();
-//  }
-//
-//  /**
-//   * 
-//   */
-//  @Override
-//  protected void deleteClassInDB()
-//  {
-//    super.deleteClassInDB();
-//  }
+
+  // Heads up: Clean up
+  // /**
+  // * Adds the geometry attributes.
+  // */
+  // @Override
+  // protected void createClassInDB()
+  // {
+  // super.createClassInDB();
+  // }
+  //
+  // /**
+  // *
+  // */
+  // @Override
+  // protected void deleteClassInDB()
+  // {
+  // super.deleteClassInDB();
+  // }
 
   /**
    * 
@@ -299,11 +305,12 @@ public class MdGeoVertexDAO extends MdVertexDAO implements MdGeoVertexDAOIF
    * ({@link MdGeoVertexDAOIF}().definesType().equals(vertexType)
    * 
    * @param vertexType
-   * @return {@link MdGeoVertexDAOIF} instance of the metadata for the given type.
+   * @return {@link MdGeoVertexDAOIF} instance of the metadata for the given
+   *         type.
    */
   public static MdGeoVertexDAOIF getMdGeoVertexDAO(String vertexType)
   {
-    return (MdGeoVertexDAOIF)ObjectCache.getMdVertexDAO(vertexType);
+    return (MdGeoVertexDAOIF) ObjectCache.getMdVertexDAO(vertexType);
   }
 
   /**
