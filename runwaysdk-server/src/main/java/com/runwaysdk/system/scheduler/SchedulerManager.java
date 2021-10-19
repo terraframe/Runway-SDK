@@ -149,6 +149,11 @@ public class SchedulerManager implements JobListener, TriggerListener
   
   public static JobDetail getJobDetail(QuartzRunwayJob quartzJob) throws SchedulerException
   {
+    if (!initialized())
+    {
+      return null;
+    }
+	  
     return scheduler().getJobDetail(quartzJob.buildJobKey());
   }
   
@@ -341,6 +346,11 @@ public class SchedulerManager implements JobListener, TriggerListener
    */
   public static void removeTriggers(QuartzRunwayJob quartzJob) throws SchedulerException
   {
+    if (!initialized())
+    {
+      return;
+    }
+    
     JobKey key = quartzJob.buildJobKey();
 
     // Remove any existing triggers
@@ -359,6 +369,11 @@ public class SchedulerManager implements JobListener, TriggerListener
    */
   private static void schedule(JobDetail detail, Trigger trigger) throws SchedulerException
   {
+    if (!initialized())
+    {
+      throw new ProgrammingErrorException("The scheduler has not been started!");
+    }
+    
     if (scheduler().checkExists(detail.getKey()))
     {
       scheduler().scheduleJob(trigger);
@@ -371,6 +386,11 @@ public class SchedulerManager implements JobListener, TriggerListener
 
   public synchronized static void remove(QuartzRunwayJob job)
   {
+	if (!initialized())
+	{
+	  return;
+	}
+	
     try
     {
       JobKey key = job.buildJobKey();
@@ -392,6 +412,11 @@ public class SchedulerManager implements JobListener, TriggerListener
 
   public synchronized static void standby()
   {
+    if (!initialized())
+    {
+      throw new ProgrammingErrorException("The scheduler has not been started!");
+    }
+    
     try
     {
       scheduler().standby();
@@ -404,7 +429,11 @@ public class SchedulerManager implements JobListener, TriggerListener
 
   public static synchronized boolean initialized()
   {
-    return instance != null;
+    try {
+		return instance != null && scheduler().isStarted();
+	} catch (SchedulerException e) {
+		throw new ProgrammingErrorException(e);
+	}
   }
 
   public synchronized static void shutdown()
