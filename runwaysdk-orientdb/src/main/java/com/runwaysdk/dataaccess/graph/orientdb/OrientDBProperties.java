@@ -33,7 +33,7 @@ public class OrientDBProperties
    * The orientdb.properties configuration file
    */
   private ConfigurationReaderIF props;
-
+  
   /**
    * Private constructor loads the server.properties configuration
    */
@@ -64,11 +64,23 @@ public class OrientDBProperties
 
   public static String getRootUserName()
   {
+    String username = System.getenv("ORIENTDB_ROOT_USERNAME");
+    if (username != null)
+    {
+      return username;
+    }
+    
     return Singleton.INSTANCE.props.getString("orientdb.root.username", "root");
   }
 
   public static String getRootUserPassword()
   {
+    String password = System.getenv("ORIENTDB_ROOT_PASSWORD");
+    if (password != null)
+    {
+      return password;
+    }
+    
     return Singleton.INSTANCE.props.getString("orientdb.root.password", "root");
   }
 
@@ -82,13 +94,25 @@ public class OrientDBProperties
     return Singleton.INSTANCE.props.getInteger("orientdb.pool.max", 20);
   }
 
-  public static String getAdminUserName()
+  public static String getAppUserName()
   {
+    String username = System.getenv("ORIENTDB_APP_USERNAME");
+    if (username != null)
+    {
+      return username;
+    }
+    
     return Singleton.INSTANCE.props.getString("orientdb.admin.username", "admin");
   }
 
-  public static String getAdminUserPassword()
+  public static String getAppUserPassword()
   {
+    String password = System.getenv("ORIENTDB_APP_PASSWORD");
+    if (password != null)
+    {
+      return password;
+    }
+    
     return Singleton.INSTANCE.props.getString("orientdb.admin.password", "admin");
   }
 

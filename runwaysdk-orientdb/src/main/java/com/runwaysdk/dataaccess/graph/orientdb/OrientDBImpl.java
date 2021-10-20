@@ -179,10 +179,10 @@ public class OrientDBImpl implements GraphDB
 
   private void createAppUser()
   {
-    String adminUser = OrientDBProperties.getAdminUserName();
-    String adminPass = OrientDBProperties.getAdminUserPassword();
-
-    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getRootUserName(), OrientDBProperties.getRootUserPassword());
+    String adminUser = OrientDBProperties.getAppUserName();
+    String adminPass = OrientDBProperties.getAppUserPassword();
+    
+    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass);
 
     try
     {
@@ -261,7 +261,7 @@ public class OrientDBImpl implements GraphDB
   {
     // ODatabaseSession dbSession = this.pool.acquire();
 
-    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAdminUserName(), OrientDBProperties.getAdminUserPassword());
+    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAppUserName(), OrientDBProperties.getAppUserPassword());
 
     return new OrientDBRequest(dbSession);
   }
