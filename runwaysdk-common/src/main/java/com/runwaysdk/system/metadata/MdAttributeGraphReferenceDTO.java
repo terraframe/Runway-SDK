@@ -1,10 +1,10 @@
 package com.runwaysdk.system.metadata;
 
-public class MdAttributeClassificationDTO extends MdAttributeClassificationDTOBase
+public class MdAttributeGraphReferenceDTO extends MdAttributeGraphReferenceDTOBase
 {
-  private static final long serialVersionUID = 1667277745;
+  private static final long serialVersionUID = 1695151860;
   
-  public MdAttributeClassificationDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  public MdAttributeGraphReferenceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(clientRequest);
   }
@@ -15,7 +15,7 @@ public class MdAttributeClassificationDTO extends MdAttributeClassificationDTOBa
   * @param businessDTO The BusinessDTO to duplicate
   * @param clientRequest The clientRequest this DTO should use to communicate with the server.
   */
-  protected MdAttributeClassificationDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+  protected MdAttributeGraphReferenceDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(businessDTO, clientRequest);
   }
