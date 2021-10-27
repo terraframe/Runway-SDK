@@ -3,22 +3,23 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.locationtech.spatial4j.shape.Shape;
 import org.slf4j.Logger;
@@ -181,7 +183,7 @@ public class OrientDBImpl implements GraphDB
   {
     String adminUser = OrientDBProperties.getAppUserName();
     String adminPass = OrientDBProperties.getAppUserPassword();
-    
+
     ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass);
 
     try
@@ -1169,31 +1171,49 @@ public class OrientDBImpl implements GraphDB
         }
         else
         {
-          Set<String> names = result.getPropertyNames();
-
-          if (names.size() > 1)
-          {
-            LinkedList<Object> row = new LinkedList<Object>();
-
-            for (String name : names)
-            {
-              row.add(result.getProperty(name));
-            }
-
-            results.add(row);
-          }
-          else
-          {
-            String name = names.iterator().next();
-            Object value = result.getProperty(name);
-
-            results.add(value);
-          }
+          results.add(this.getPropertyValue(result));
         }
       }
     }
 
     return results;
+  }
+
+  public Object getPropertyValue(Object value)
+  {
+    if (value instanceof OResult)
+    {
+      OResult result = (OResult) value;
+
+      Set<String> names = result.getPropertyNames();
+
+      if (names.size() > 1)
+      {
+        Map<String, Object> row = new HashMap<String, Object>();
+
+        for (String name : names)
+        {
+          if (!name.equals("@class"))
+          {
+            row.put(name, this.getPropertyValue(result.getProperty(name)));
+          }
+        }
+
+        return row;
+      }
+      else
+      {
+        String name = names.iterator().next();
+
+        return this.getPropertyValue(result.getProperty(name));
+      }
+    }
+    else if (value instanceof List)
+    {
+      return ( (List<?>) value ).stream().map(v -> this.getPropertyValue(v)).collect(Collectors.toList());
+    }
+
+    return value;
   }
 
   @Override
