@@ -292,9 +292,10 @@ public abstract class Attribute implements AttributeIF
     this.validate(value);
 
     // If the new value is the same as the old one, skip it
-    if (this.value == null || !this.value.equals(value))
+    if (this.valueIsDifferent(value))
     {
       this.value = value;
+      this.isModified = true;
     }
   }
 
@@ -485,6 +486,18 @@ public abstract class Attribute implements AttributeIF
       ImmutableAttributeProblem problem = new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
       problem.throwIt();
     }
+  }
+  
+  /**
+   * Returns true if the given value is different than the value of this
+   * attribute.
+   * 
+   * @return true if the given value is different than the value of this
+   *         attribute.
+   */
+  protected boolean valueIsDifferent(Object value)
+  {
+    return this.value == null || !this.value.equals(value);
   }
 
   /**
