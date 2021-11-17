@@ -320,7 +320,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       final String dl1 = (String) embedded1.getObjectValue(com.runwaysdk.constants.MdAttributeLocalInfo.DEFAULT_LOCALE);
       final String dl2 = (String) embedded2.getObjectValue(com.runwaysdk.constants.MdAttributeLocalInfo.DEFAULT_LOCALE);
       
-      if (!dl1.equals(dl2))
+      if (!areValuesEqual(dl1, dl2))
       {
         return false;
       }
@@ -332,7 +332,7 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
         final String localeVal1 = (String) embedded1.getObjectValue(locale.toString());
         final String localeVal2 = (String) embedded2.getObjectValue(locale.toString());
         
-        if (!localeVal1.equals(localeVal2))
+        if (!areValuesEqual(localeVal1, localeVal2))
         {
           return false;
         }
