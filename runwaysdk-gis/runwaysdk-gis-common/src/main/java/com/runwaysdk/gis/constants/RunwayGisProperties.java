@@ -21,7 +21,6 @@ package com.runwaysdk.gis.constants;
 import com.runwaysdk.configuration.ConfigurationManager;
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroup;
 import com.runwaysdk.configuration.ConfigurationReaderIF;
-import com.runwaysdk.configuration.ProfileReader;
 
 public class RunwayGisProperties
 {

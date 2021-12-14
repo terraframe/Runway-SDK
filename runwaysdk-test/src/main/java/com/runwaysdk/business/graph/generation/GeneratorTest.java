@@ -18,21 +18,8 @@
  */
 package com.runwaysdk.business.graph.generation;
 
-import java.io.BufferedWriter;
-import java.io.StringWriter;
-import java.util.LinkedList;
-
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.runwaysdk.business.generation.DelegateCompiler;
-import com.runwaysdk.business.generation.GenerationManager;
-import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.dataaccess.Command;
-import com.runwaysdk.dataaccess.MdTypeDAOIF;
-import com.runwaysdk.dataaccess.io.SourceWriter;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;

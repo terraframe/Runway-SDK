@@ -1,28 +1,10 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 217364400)
+@com.runwaysdk.business.ClassSignature(hash = 1151618306)
 public abstract class MdAttributeTermDTOBase extends com.runwaysdk.system.metadata.MdAttributeReferenceDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeTerm";
-  private static final long serialVersionUID = 217364400;
+  private static final long serialVersionUID = 1151618306;
   
   protected MdAttributeTermDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -43,6 +25,168 @@ public abstract class MdAttributeTermDTOBase extends com.runwaysdk.system.metada
   protected java.lang.String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO> getAllGeoEntityTermAttributeRoots()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO> getAllGeoEntityTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO> getAllGeoEntityTermAttributeRootsRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO> getAllGeoEntityTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO addGeoEntityTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntityDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO addGeoEntityTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.GeoEntityDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  public void removeGeoEntityTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO relationship)
+  {
+    getRequest().deleteChild(relationship.getOid());
+  }
+  
+  public static void removeGeoEntityTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO relationship)
+  {
+    clientRequestIF.deleteChild(relationship.getOid());
+  }
+  
+  public void removeAllGeoEntityTermAttributeRoots()
+  {
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  public static void removeAllGeoEntityTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymDTO> getAllSynonymTermAttributeRoots()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymDTO> getAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO> getAllSynonymTermAttributeRootsRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO> getAllSynonymTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO addSynonymTermAttributeRoots(com.runwaysdk.system.gis.geo.SynonymDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO addSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.SynonymDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  public void removeSynonymTermAttributeRoots(com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO relationship)
+  {
+    getRequest().deleteChild(relationship.getOid());
+  }
+  
+  public static void removeSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO relationship)
+  {
+    clientRequestIF.deleteChild(relationship.getOid());
+  }
+  
+  public void removeAllSynonymTermAttributeRoots()
+  {
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  public static void removeAllSynonymTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.geo.SynonymTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllUniversalTermAttributeRoots()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) getRequest().getChildren(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO> getAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalDTO>) clientRequestIF.getChildren(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO> getAllUniversalTermAttributeRootsRelationships()
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) getRequest().getChildRelationships(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO> getAllUniversalTermAttributeRootsRelationships(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    return (java.util.List<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO>) clientRequestIF.getChildRelationships(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO addUniversalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) getRequest().addChild(this.getOid(), child.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  public static com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO addUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid, com.runwaysdk.system.gis.geo.UniversalDTO child)
+  {
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO) clientRequestIF.addChild(oid, child.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  public void removeUniversalTermAttributeRoots(com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO relationship)
+  {
+    getRequest().deleteChild(relationship.getOid());
+  }
+  
+  public static void removeUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO relationship)
+  {
+    clientRequestIF.deleteChild(relationship.getOid());
+  }
+  
+  public void removeAllUniversalTermAttributeRoots()
+  {
+    getRequest().deleteChildren(this.getOid(), com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
+  }
+  
+  public static void removeAllUniversalTermAttributeRoots(com.runwaysdk.constants.ClientRequestIF clientRequestIF, String oid)
+  {
+    clientRequestIF.deleteChildren(oid, com.runwaysdk.system.gis.geo.UniversalTermAttributeRootDTO.CLASS);
   }
   
   public static com.runwaysdk.system.metadata.MdAttributeTermDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)

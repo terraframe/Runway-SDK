@@ -356,7 +356,6 @@ public class IdConversionTest
     {
       Thread t = new Thread()
       {
-        @SuppressWarnings("unchecked")
         public void run()
         {
           onThreadStart(mobileId);

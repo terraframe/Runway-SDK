@@ -777,7 +777,6 @@ public class RequestDecorator implements ServletRequestIF
     return ServletFileUpload.isMultipartContent(this.request);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public List<FileItem> getFileItems(ServletFileUpload upload) throws FileUploadException
   {

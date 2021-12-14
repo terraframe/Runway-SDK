@@ -29,7 +29,6 @@ import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.SupportedLocale;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
-import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DuplicateDataException;

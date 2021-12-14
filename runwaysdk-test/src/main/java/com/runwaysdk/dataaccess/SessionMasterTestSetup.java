@@ -124,7 +124,7 @@ public class SessionMasterTestSetup
 
       mdView = childMdView;
 
-      if (this.activeType.getType().equals(PARENT_SESSION_CLASS))
+      if (this.activeType.getType().equals(PARENT_SESSION_CLASS.getType()))
       {
         attributeMdView = parentMdView;
       }

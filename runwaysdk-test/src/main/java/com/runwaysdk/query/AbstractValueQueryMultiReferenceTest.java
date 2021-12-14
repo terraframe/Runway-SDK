@@ -205,6 +205,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
 
   // test enumeration equal to enumeration
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testMultiReferenceContainsAny()
@@ -258,6 +259,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testMultiReferenceNotContainsAny()
@@ -311,6 +313,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testMultiReferenceContainsAll()
@@ -363,6 +366,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testMultiReferenceNotContainsAll()
@@ -415,6 +419,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testMultiReferenceContainsExactly()
@@ -467,6 +472,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualBoolean()
@@ -520,6 +526,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualString()
@@ -573,6 +580,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualNull()
@@ -642,6 +650,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualBoolean()
@@ -738,6 +747,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString()
@@ -790,6 +800,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString_IgnoreCase()
@@ -842,6 +853,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray()
@@ -894,6 +906,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
@@ -946,6 +959,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualNull()
@@ -1014,6 +1028,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString()
@@ -1066,6 +1081,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString_IgnoreCase()
@@ -1118,6 +1134,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString()
@@ -1170,6 +1187,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString_IgnoreCase()
@@ -1222,6 +1240,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray()
@@ -1274,6 +1293,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
@@ -1326,6 +1346,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString()
@@ -1378,6 +1399,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString_IgnoreCase()
@@ -1430,6 +1452,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualDate()
@@ -1485,6 +1508,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualString()
@@ -1537,6 +1561,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTDate()
@@ -1592,6 +1617,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTString()
@@ -1644,6 +1670,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEDate()
@@ -1722,6 +1749,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEString()
@@ -1795,6 +1823,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualNull()
@@ -1863,6 +1892,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTDate()
@@ -1918,6 +1948,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTString()
@@ -1970,6 +2001,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEDate()
@@ -2048,6 +2080,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEString()
@@ -2121,6 +2154,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualDate()
@@ -2176,6 +2210,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualString()
@@ -2228,6 +2263,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualDateTime()
@@ -2283,6 +2319,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualString()
@@ -2335,6 +2372,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTDateTime()
@@ -2390,6 +2428,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTString()
@@ -2442,6 +2481,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEDateTime()
@@ -2520,6 +2560,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEString()
@@ -2593,6 +2634,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualNull()
@@ -2661,6 +2703,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTDateTime()
@@ -2716,6 +2759,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTString()
@@ -2768,6 +2812,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEDateTime()
@@ -2846,6 +2891,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEString()
@@ -2919,6 +2965,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualDateTime()
@@ -2974,6 +3021,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualString()
@@ -3026,6 +3074,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualDecimal()
@@ -3078,6 +3127,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualString()
@@ -3130,6 +3180,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTDecimal()
@@ -3182,6 +3233,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTString()
@@ -3234,6 +3286,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEDecimal()
@@ -3307,6 +3360,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEString()
@@ -3380,6 +3434,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualNull()
@@ -3448,6 +3503,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTDecimal()
@@ -3500,6 +3556,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTString()
@@ -3552,6 +3609,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEDecimal()
@@ -3625,6 +3683,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEString()
@@ -3698,6 +3757,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualDecimal()
@@ -3750,6 +3810,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualString()
@@ -3802,6 +3863,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualDouble()
@@ -3854,6 +3916,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualString()
@@ -3906,6 +3969,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTDouble()
@@ -3958,6 +4022,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTString()
@@ -4010,6 +4075,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEDouble()
@@ -4083,6 +4149,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEString()
@@ -4156,6 +4223,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualNull()
@@ -4224,6 +4292,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTDouble()
@@ -4276,6 +4345,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTString()
@@ -4328,6 +4398,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEDouble()
@@ -4401,6 +4472,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEString()
@@ -4474,6 +4546,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualDouble()
@@ -4526,6 +4599,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualString()
@@ -4578,6 +4652,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualFloat()
@@ -4630,6 +4705,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualString()
@@ -4682,6 +4758,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTFloat()
@@ -4734,6 +4811,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTString()
@@ -4786,6 +4864,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEFloat()
@@ -4859,6 +4938,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEString()
@@ -4932,6 +5012,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualNull()
@@ -5000,6 +5081,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTFloat()
@@ -5052,6 +5134,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTString()
@@ -5104,6 +5187,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEFloat()
@@ -5177,6 +5261,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEString()
@@ -5250,6 +5335,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualFloat()
@@ -5301,7 +5387,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
         i.close();
     }
   }
-
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualString()
@@ -5354,6 +5440,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualInteger()
@@ -5406,6 +5493,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualString()
@@ -5458,6 +5546,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTInteger()
@@ -5510,6 +5599,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTString()
@@ -5562,6 +5652,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEInteger()
@@ -5635,6 +5726,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEString()
@@ -5708,6 +5800,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualNull()
@@ -5776,6 +5869,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTInteger()
@@ -5828,6 +5922,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTString()
@@ -5880,6 +5975,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEInteger()
@@ -5953,6 +6049,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEString()
@@ -6025,7 +6122,8 @@ public abstract class AbstractValueQueryMultiReferenceTest
         i.close();
     }
   }
-
+ 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualInteger()
@@ -6078,6 +6176,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualString()
@@ -6130,6 +6229,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualLong()
@@ -6182,6 +6282,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualString()
@@ -6234,6 +6335,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTLong()
@@ -6286,6 +6388,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTString()
@@ -6338,6 +6441,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGELong()
@@ -6411,6 +6515,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGEString()
@@ -6484,6 +6589,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualNull()
@@ -6552,6 +6658,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTLong()
@@ -6604,6 +6711,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTString()
@@ -6656,6 +6764,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLELong()
@@ -6729,6 +6838,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLEString()
@@ -6802,6 +6912,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualLong()
@@ -6854,6 +6965,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualString()
@@ -6906,6 +7018,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString()
@@ -6958,6 +7071,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString_IgnoreCase()
@@ -7010,6 +7124,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray()
@@ -7062,6 +7177,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray_IgnoreCase()
@@ -7114,6 +7230,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualNull()
@@ -7182,6 +7299,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString()
@@ -7234,6 +7352,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString_IgnoreCase()
@@ -7286,6 +7405,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString()
@@ -7338,6 +7458,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString_IgnoreCase()
@@ -7390,6 +7511,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray()
@@ -7442,6 +7564,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
@@ -7494,6 +7617,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotLikeString_IgnoreCase()
@@ -7546,6 +7670,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualTime()
@@ -7601,6 +7726,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualString()
@@ -7653,6 +7779,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTTime()
@@ -7708,6 +7835,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTString()
@@ -7760,6 +7888,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGETime()
@@ -7838,6 +7967,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGEString()
@@ -7911,6 +8041,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualNull()
@@ -7979,6 +8110,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTTime()
@@ -8034,6 +8166,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTString()
@@ -8086,6 +8219,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLETime()
@@ -8164,6 +8298,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLEString()
@@ -8237,6 +8372,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualTime()
@@ -8292,6 +8428,7 @@ public abstract class AbstractValueQueryMultiReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualString()

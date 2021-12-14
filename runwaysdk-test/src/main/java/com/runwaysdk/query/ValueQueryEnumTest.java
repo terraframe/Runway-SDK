@@ -36,6 +36,7 @@ public class ValueQueryEnumTest
 {
   // test enumeration equal to enumeration
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testEnumerationContainsAny()
@@ -92,6 +93,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testEnumerationNotContainsAny()
@@ -148,6 +150,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testEnumerationContainsAll()
@@ -204,6 +207,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testEnumerationNotContainsAll()
@@ -260,6 +264,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testEnumerationContainsExactly()
@@ -316,6 +321,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualBoolean()
@@ -373,6 +379,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualString()
@@ -430,6 +437,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualNull()
@@ -503,6 +511,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualBoolean()
@@ -560,10 +569,13 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualString()
   {
+    OIterator<ValueObject> i = null;
+    
     try
     {
       // perform a query for true values that should find exactly 2 matches
@@ -575,7 +587,7 @@ public class ValueQueryEnumTest
       vQ.SELECT(query.aEnumeration("queryEnumeration").aBoolean("enumQueryBoolean"), query.oid("objectId"));
       vQ.WHERE(query.aEnumeration("queryEnumeration").aBoolean("enumQueryBoolean").NE(MdAttributeBooleanInfo.FALSE));
 
-      OIterator<ValueObject> i = vQ.getIterator();
+      i = vQ.getIterator();
 
       if (!i.hasNext())
       {
@@ -608,8 +620,14 @@ public class ValueQueryEnumTest
     {
       Assert.fail(e.getMessage());
     }
+    finally
+    {
+      if (i != null)
+        i.close();
+    }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString()
@@ -666,6 +684,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString_IgnoreCase()
@@ -722,6 +741,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray()
@@ -778,6 +798,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
@@ -834,6 +855,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualNull()
@@ -906,6 +928,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString()
@@ -962,6 +985,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString_IgnoreCase()
@@ -1018,6 +1042,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString()
@@ -1074,6 +1099,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString_IgnoreCase()
@@ -1130,6 +1156,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray()
@@ -1186,6 +1213,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
@@ -1242,6 +1270,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString()
@@ -1298,6 +1327,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString_IgnoreCase()
@@ -1354,6 +1384,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualDate()
@@ -1413,6 +1444,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualString()
@@ -1469,6 +1501,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTDate()
@@ -1528,6 +1561,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTString()
@@ -1584,6 +1618,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEDate()
@@ -1666,6 +1701,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEString()
@@ -1743,6 +1779,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualNull()
@@ -1815,6 +1852,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTDate()
@@ -1874,6 +1912,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTString()
@@ -1930,6 +1969,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEDate()
@@ -2012,6 +2052,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEString()
@@ -2089,6 +2130,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualDate()
@@ -2148,6 +2190,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualString()
@@ -2204,6 +2247,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualDateTime()
@@ -2263,6 +2307,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualString()
@@ -2319,6 +2364,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTDateTime()
@@ -2378,6 +2424,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTString()
@@ -2434,6 +2481,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEDateTime()
@@ -2516,6 +2564,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEString()
@@ -2593,6 +2642,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualNull()
@@ -2665,6 +2715,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTDateTime()
@@ -2724,6 +2775,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTString()
@@ -2780,6 +2832,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEDateTime()
@@ -2862,6 +2915,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEString()
@@ -2939,6 +2993,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualDateTime()
@@ -2998,6 +3053,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualString()
@@ -3054,6 +3110,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualDecimal()
@@ -3110,6 +3167,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualString()
@@ -3166,6 +3224,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTDecimal()
@@ -3222,6 +3281,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTString()
@@ -3278,6 +3338,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEDecimal()
@@ -3355,6 +3416,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEString()
@@ -3432,6 +3494,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualNull()
@@ -3504,6 +3567,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTDecimal()
@@ -3560,6 +3624,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTString()
@@ -3616,6 +3681,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEDecimal()
@@ -3693,6 +3759,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEString()
@@ -3770,6 +3837,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualDecimal()
@@ -3826,6 +3894,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualString()
@@ -3882,6 +3951,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualDouble()
@@ -3938,6 +4008,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualString()
@@ -3994,6 +4065,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTDouble()
@@ -4050,6 +4122,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTString()
@@ -4106,6 +4179,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEDouble()
@@ -4183,6 +4257,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEString()
@@ -4260,6 +4335,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualNull()
@@ -4332,6 +4408,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTDouble()
@@ -4388,6 +4465,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTString()
@@ -4444,6 +4522,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEDouble()
@@ -4521,6 +4600,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEString()
@@ -4598,6 +4678,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualDouble()
@@ -4653,7 +4734,9 @@ public class ValueQueryEnumTest
         i.close();
     }
   }
-
+  
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualString()
@@ -4710,6 +4793,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualFloat()
@@ -4766,6 +4850,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualString()
@@ -4822,6 +4907,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTFloat()
@@ -4878,6 +4964,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTString()
@@ -4934,6 +5021,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEFloat()
@@ -5011,6 +5099,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEString()
@@ -5088,6 +5177,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualNull()
@@ -5160,6 +5250,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTFloat()
@@ -5216,6 +5307,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTString()
@@ -5272,6 +5364,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEFloat()
@@ -5349,6 +5442,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEString()
@@ -5426,6 +5520,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualFloat()
@@ -5482,6 +5577,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualString()
@@ -5538,6 +5634,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualInteger()
@@ -5594,6 +5691,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualString()
@@ -5650,6 +5748,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTInteger()
@@ -5706,6 +5805,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTString()
@@ -5762,6 +5862,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEInteger()
@@ -5839,6 +5940,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEString()
@@ -5916,6 +6018,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualNull()
@@ -5988,6 +6091,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTInteger()
@@ -6044,6 +6148,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTString()
@@ -6100,6 +6205,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEInteger()
@@ -6177,6 +6283,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEString()
@@ -6254,6 +6361,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualInteger()
@@ -6310,6 +6418,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualString()
@@ -6366,6 +6475,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualLong()
@@ -6422,6 +6532,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualString()
@@ -6478,6 +6589,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTLong()
@@ -6534,6 +6646,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTString()
@@ -6590,6 +6703,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGELong()
@@ -6667,6 +6781,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGEString()
@@ -6744,6 +6859,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualNull()
@@ -6816,6 +6932,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTLong()
@@ -6872,6 +6989,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTString()
@@ -6928,6 +7046,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLELong()
@@ -7005,6 +7124,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLEString()
@@ -7082,6 +7202,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualLong()
@@ -7138,6 +7259,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualString()
@@ -7194,6 +7316,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString()
@@ -7250,6 +7373,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString_IgnoreCase()
@@ -7306,6 +7430,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray()
@@ -7362,6 +7487,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray_IgnoreCase()
@@ -7417,7 +7543,8 @@ public class ValueQueryEnumTest
         i.close();
     }
   }
-
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualNull()
@@ -7490,6 +7617,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString()
@@ -7546,6 +7674,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString_IgnoreCase()
@@ -7602,6 +7731,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString()
@@ -7658,6 +7788,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString_IgnoreCase()
@@ -7714,6 +7845,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray()
@@ -7770,6 +7902,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
@@ -7826,6 +7959,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotLikeString_IgnoreCase()
@@ -7882,6 +8016,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualTime()
@@ -7941,6 +8076,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualString()
@@ -7997,6 +8133,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTTime()
@@ -8056,6 +8193,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTString()
@@ -8112,6 +8250,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGETime()
@@ -8194,6 +8333,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGEString()
@@ -8271,6 +8411,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualNull()
@@ -8343,6 +8484,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTTime()
@@ -8402,6 +8544,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTString()
@@ -8458,6 +8601,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLETime()
@@ -8540,6 +8684,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLEString()
@@ -8617,6 +8762,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualTime()
@@ -8676,6 +8822,7 @@ public class ValueQueryEnumTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualString()

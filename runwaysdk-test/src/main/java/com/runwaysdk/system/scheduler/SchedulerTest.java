@@ -42,12 +42,10 @@ import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.ProblemException;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;

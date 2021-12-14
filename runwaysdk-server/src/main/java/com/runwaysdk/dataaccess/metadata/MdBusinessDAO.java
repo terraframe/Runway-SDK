@@ -39,6 +39,7 @@ import com.runwaysdk.business.generation.dto.BusinessDTOStubGenerator;
 import com.runwaysdk.business.generation.dto.BusinessQueryDTOGenerator;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -383,8 +384,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
   protected void validate()
   {
     super.validate();
-
-// Heads up: clean up - this is a reduntant check that is already handled in MdAttributeConcreteDAO
+// Heads up: Test - no longer a valid concern
 //    if (this.isNew())
 //    {
 //      // make sure an MdBusiness cannot extend MdAttribute.

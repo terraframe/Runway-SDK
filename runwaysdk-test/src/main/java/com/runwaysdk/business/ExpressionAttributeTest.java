@@ -68,8 +68,6 @@ import com.runwaysdk.system.metadata.MdWebFloat;
 import com.runwaysdk.system.metadata.MdWebForm;
 import com.runwaysdk.system.metadata.MdWebPrimitive;
 
-import ognl.OgnlClassResolver;
-
 @RunWith(ClasspathTestRunner.class)
 public class ExpressionAttributeTest
 {

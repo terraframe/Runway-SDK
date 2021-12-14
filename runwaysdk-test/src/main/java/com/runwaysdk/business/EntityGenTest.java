@@ -249,9 +249,9 @@ public class EntityGenTest
 
   private static String                       suitEnumDTO;
 
-  private boolean                             didSetup        = false;
-
-  private boolean                             didTeardown     = false;
+//  private boolean                             didSetup        = false;
+//
+//  private boolean                             didTeardown     = false;
 
   @Request
   @Before

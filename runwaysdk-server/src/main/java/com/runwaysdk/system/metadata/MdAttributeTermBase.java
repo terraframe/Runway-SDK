@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 930084400)
+@com.runwaysdk.business.ClassSignature(hash = 722910850)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,7 +11,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.MdAttributeReference
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeTerm";
-  private static final long serialVersionUID = 930084400;
+  private static final long serialVersionUID = 722910850;
   
   public MdAttributeTermBase()
   {
@@ -39,6 +21,90 @@ public abstract class MdAttributeTermBase extends com.runwaysdk.system.metadata.
   protected String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  public com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot addGeoEntityTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    return (com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot) addChild(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  public void removeGeoEntityTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    removeAllChildren(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntity> getAllGeoEntityTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntity>) getChildren(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot> getAllGeoEntityTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot> getGeoEntityTermAttributeRootsRel(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot>) getRelationshipsWithChild(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot addSynonymTermAttributeRoots(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    return (com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot) addChild(synonym, com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.CLASS);
+  }
+  
+  public void removeSynonymTermAttributeRoots(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    removeAllChildren(synonym, com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Synonym> getAllSynonymTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Synonym>) getChildren(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot> getAllSynonymTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot> getSynonymTermAttributeRootsRel(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot>) getRelationshipsWithChild(synonym, com.runwaysdk.system.gis.geo.SynonymTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot addUniversalTermAttributeRoots(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    return (com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot) addChild(universal, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  public void removeUniversalTermAttributeRoots(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    removeAllChildren(universal, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Universal> getAllUniversalTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Universal>) getChildren(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot> getAllUniversalTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot> getUniversalTermAttributeRootsRel(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot>) getRelationshipsWithChild(universal, com.runwaysdk.system.gis.geo.UniversalTermAttributeRoot.CLASS);
   }
   
   public static MdAttributeTerm get(String oid)

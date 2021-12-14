@@ -18,8 +18,6 @@
  */
 package com.runwaysdk.gis.constants;
 
-import com.runwaysdk.gis.constants.GISConstants;
-
 public interface MdAttributePointInfo extends MdAttributeGeometryInfo
 {
   /**

@@ -256,7 +256,7 @@ public class DatabaseBuilder
       this.path = path;
     }
 
-    if (extensions != null && !extensions.equals(""))
+    if (extensions != null && !extensions.get(0).equals(""))
     {
       this.extensions = extensions;
     }

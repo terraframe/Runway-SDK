@@ -187,6 +187,7 @@ public class ValueQueryStructTest
    * ); } } catch (Exception e) { Assert.fail(e.getMessage()); } finally { if (i
    * != null) i.close(); } }
    */
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testStructEnumerationContainsAll()
@@ -243,6 +244,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testStructEnumerationContainsAny()
@@ -299,6 +301,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testStructEnumerationContainsExactly()
@@ -355,6 +358,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testStructEnumerationNotContainsAll()
@@ -411,6 +415,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testStructEnumerationNotContainsAny()
@@ -467,6 +472,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualBoolean()
@@ -524,6 +530,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualString()
@@ -581,6 +588,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualNull()
@@ -645,6 +653,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualBoolean()
@@ -752,6 +761,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString()
@@ -808,6 +818,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString_IgnoreCase()
@@ -864,6 +875,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray()
@@ -920,6 +932,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
@@ -976,6 +989,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualNull()
@@ -1039,6 +1053,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString()
@@ -1095,6 +1110,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString_IgnoreCase()
@@ -1151,6 +1167,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString()
@@ -1207,6 +1224,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString_IgnoreCase()
@@ -1263,6 +1281,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray()
@@ -1319,6 +1338,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
@@ -1375,6 +1395,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString()
@@ -1431,6 +1452,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString_IgnoreCase()
@@ -1487,6 +1509,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualDate()
@@ -1546,6 +1569,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualString()
@@ -1602,6 +1626,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTDate()
@@ -1661,6 +1686,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTString()
@@ -1717,6 +1743,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEDate()
@@ -1799,6 +1826,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEString()
@@ -1876,6 +1904,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualNull()
@@ -1939,6 +1968,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTDate()
@@ -1998,6 +2028,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTString()
@@ -2054,6 +2085,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEDate()
@@ -2136,6 +2168,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEString()
@@ -2213,6 +2246,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualDate()
@@ -2272,6 +2306,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualString()
@@ -2328,6 +2363,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualDateTime()
@@ -2387,6 +2423,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualString()
@@ -2443,6 +2480,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTDateTime()
@@ -2502,6 +2540,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTString()
@@ -2558,6 +2597,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEDateTime()
@@ -2640,6 +2680,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEString()
@@ -2717,6 +2758,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualNull()
@@ -2779,7 +2821,8 @@ public class ValueQueryStructTest
         i.close();
     }
   }
-
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTDateTime()
@@ -2839,6 +2882,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTString()
@@ -2895,6 +2939,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEDateTime()
@@ -2977,6 +3022,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEString()
@@ -3054,6 +3100,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualDateTime()
@@ -3113,6 +3160,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualString()
@@ -3169,6 +3217,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualDecimal()
@@ -3225,6 +3274,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualString()
@@ -3281,6 +3331,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTDecimal()
@@ -3337,6 +3388,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTString()
@@ -3393,6 +3445,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEDecimal()
@@ -3470,6 +3523,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEString()
@@ -3547,6 +3601,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualNull()
@@ -3610,6 +3665,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTDecimal()
@@ -3666,6 +3722,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTString()
@@ -3722,6 +3779,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEDecimal()
@@ -3799,6 +3857,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEString()
@@ -3875,7 +3934,8 @@ public class ValueQueryStructTest
         i.close();
     }
   }
-
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualDecimal()
@@ -3932,6 +3992,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualString()
@@ -3988,6 +4049,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualDouble()
@@ -4044,6 +4106,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualString()
@@ -4100,6 +4163,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTDouble()
@@ -4156,6 +4220,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTString()
@@ -4212,6 +4277,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEDouble()
@@ -4289,6 +4355,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEString()
@@ -4366,6 +4433,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualNull()
@@ -4429,6 +4497,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTDouble()
@@ -4485,6 +4554,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTString()
@@ -4541,6 +4611,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEDouble()
@@ -4618,6 +4689,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEString()
@@ -4695,6 +4767,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualDouble()
@@ -4751,6 +4824,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualString()
@@ -4807,6 +4881,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualFloat()
@@ -4863,6 +4938,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualString()
@@ -4919,6 +4995,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTFloat()
@@ -4975,6 +5052,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTString()
@@ -5031,6 +5109,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEFloat()
@@ -5108,6 +5187,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEString()
@@ -5185,6 +5265,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualNull()
@@ -5248,6 +5329,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTFloat()
@@ -5304,6 +5386,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTString()
@@ -5359,7 +5442,8 @@ public class ValueQueryStructTest
         i.close();
     }
   }
-
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEFloat()
@@ -5437,6 +5521,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEString()
@@ -5514,6 +5599,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualFloat()
@@ -5570,6 +5656,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualString()
@@ -5626,6 +5713,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualInteger()
@@ -5682,6 +5770,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualString()
@@ -5738,6 +5827,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTInteger()
@@ -5794,6 +5884,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTString()
@@ -5850,6 +5941,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEInteger()
@@ -5927,6 +6019,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEString()
@@ -6004,6 +6097,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualNull()
@@ -6067,6 +6161,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTInteger()
@@ -6123,6 +6218,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTString()
@@ -6179,6 +6275,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEInteger()
@@ -6256,6 +6353,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEString()
@@ -6333,6 +6431,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualInteger()
@@ -6389,6 +6488,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualString()
@@ -6445,6 +6545,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualLong()
@@ -6501,6 +6602,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualString()
@@ -6557,6 +6659,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTLong()
@@ -6613,6 +6716,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTString()
@@ -6669,6 +6773,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGELong()
@@ -6746,6 +6851,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGEString()
@@ -6823,6 +6929,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualNull()
@@ -6889,6 +6996,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTLong()
@@ -6945,6 +7053,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTString()
@@ -7001,6 +7110,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLELong()
@@ -7078,6 +7188,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLEString()
@@ -7155,6 +7266,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualLong()
@@ -7211,6 +7323,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualString()
@@ -7267,6 +7380,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString()
@@ -7323,6 +7437,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString_IgnoreCase()
@@ -7379,6 +7494,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray()
@@ -7435,6 +7551,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray_IgnoreCase()
@@ -7491,6 +7608,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualNull()
@@ -7554,6 +7672,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString()
@@ -7610,6 +7729,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString_IgnoreCase()
@@ -7666,6 +7786,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString()
@@ -7722,6 +7843,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString_IgnoreCase()
@@ -7778,6 +7900,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray()
@@ -7834,6 +7957,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
@@ -7890,6 +8014,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotLikeString_IgnoreCase()
@@ -7946,6 +8071,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualTime()
@@ -8005,6 +8131,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualString()
@@ -8061,6 +8188,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTTime()
@@ -8120,6 +8248,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTString()
@@ -8176,6 +8305,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGETime()
@@ -8258,6 +8388,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGEString()
@@ -8335,6 +8466,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualNull()
@@ -8397,6 +8529,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTTime()
@@ -8456,6 +8589,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTString()
@@ -8512,6 +8646,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLETime()
@@ -8594,6 +8729,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLEString()
@@ -8671,6 +8807,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualTime()
@@ -8730,6 +8867,7 @@ public class ValueQueryStructTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualString()

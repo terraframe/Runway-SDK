@@ -30,7 +30,6 @@ import org.junit.Test;
 import com.runwaysdk.business.generation.DelegateCompiler;
 import com.runwaysdk.business.generation.GenerationManager;
 import com.runwaysdk.constants.LocalProperties;
-import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.io.SourceWriter;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;

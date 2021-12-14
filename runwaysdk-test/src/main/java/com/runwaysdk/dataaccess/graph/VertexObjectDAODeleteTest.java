@@ -18,67 +18,20 @@
  */
 package com.runwaysdk.dataaccess.graph;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.runwaysdk.AttributeCharacterParseException;
-import com.runwaysdk.AttributeIntegerParseException;
-import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
-import com.runwaysdk.constants.MdAttributeDateInfo;
-import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.dataaccess.AttributeIF;
-import com.runwaysdk.dataaccess.BusinessDAO;
-import com.runwaysdk.dataaccess.DuplicateDataException;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeCharacter;
-import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
-import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeTextDAO;
-import com.runwaysdk.dataaccess.metadata.MdAttributeTimeDAO;
-import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
-import com.runwaysdk.dataaccess.metadata.MdEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
-import com.runwaysdk.gis.AttributeLineStringParseException;
-import com.runwaysdk.gis.AttributeMultiLineStringParseException;
-import com.runwaysdk.gis.AttributeMultiPointParseException;
-import com.runwaysdk.gis.AttributeMultiPolygonParseException;
-import com.runwaysdk.gis.AttributePointParseException;
-import com.runwaysdk.gis.AttributePolygonParseException;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
-import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
 import com.runwaysdk.session.Request;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 public class VertexObjectDAODeleteTest
 {

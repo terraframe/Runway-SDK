@@ -266,7 +266,7 @@ public class AllpathsTestUtil
 
   public Set<String> validateParentAllpaths(Term child, Term parent)
   {
-    if (parent.equals(root))
+    if (parent.getOid().equals(root.getOid()))
     {
       return new HashSet<String>();
     }

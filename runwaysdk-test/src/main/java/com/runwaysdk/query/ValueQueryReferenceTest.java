@@ -32,6 +32,7 @@ import com.runwaysdk.session.Request;
 
 public class ValueQueryReferenceTest
 {
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEqualID()
@@ -88,6 +89,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceNotEqualID()
@@ -144,6 +146,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceInID()
@@ -200,6 +203,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceNiID()
@@ -256,6 +260,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEnumerationContainsAll()
@@ -312,6 +317,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEnumerationContainsAny()
@@ -368,6 +374,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEnumerationContainsExactly()
@@ -424,6 +431,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEnumerationNotContainsAll()
@@ -480,6 +488,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testReferenceEnumerationNotContainsAny()
@@ -536,6 +545,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualBoolean()
@@ -593,6 +603,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualString()
@@ -650,6 +661,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanEqualNull()
@@ -714,6 +726,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualBoolean()
@@ -771,6 +784,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testBooleanNotEqualString()
@@ -821,6 +835,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString()
@@ -877,6 +892,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualString_IgnoreCase()
@@ -933,6 +949,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray()
@@ -989,6 +1006,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualStringInArray_IgnoreCase()
@@ -1045,6 +1063,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterEqualNull()
@@ -1108,6 +1127,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString()
@@ -1164,6 +1184,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterLikeString_IgnoreCase()
@@ -1220,6 +1241,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString()
@@ -1276,6 +1298,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualString_IgnoreCase()
@@ -1332,6 +1355,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray()
@@ -1388,6 +1412,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotEqualStringInArray_IgnoreCase()
@@ -1444,6 +1469,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString()
@@ -1500,6 +1526,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testCharacterNotLikeString_IgnoreCase()
@@ -1556,6 +1583,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualDate()
@@ -1615,6 +1643,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualString()
@@ -1671,6 +1700,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTDate()
@@ -1730,6 +1760,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGTString()
@@ -1786,6 +1817,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEDate()
@@ -1868,6 +1900,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateGEString()
@@ -1944,7 +1977,8 @@ public class ValueQueryReferenceTest
         i.close();
     }
   }
-
+  
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateEqualNull()
@@ -2008,6 +2042,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTDate()
@@ -2067,6 +2102,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLTString()
@@ -2123,6 +2159,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEDate()
@@ -2205,6 +2242,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateLEString()
@@ -2282,6 +2320,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualDate()
@@ -2341,6 +2380,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateNotEqualString()
@@ -2397,6 +2437,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualDateTime()
@@ -2456,6 +2497,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualString()
@@ -2512,6 +2554,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTDateTime()
@@ -2571,6 +2614,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGTString()
@@ -2627,6 +2671,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEDateTime()
@@ -2709,6 +2754,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeGEString()
@@ -2786,6 +2832,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeEqualNull()
@@ -2849,6 +2896,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTDateTime()
@@ -2908,6 +2956,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLTString()
@@ -2964,6 +3013,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEDateTime()
@@ -3046,6 +3096,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeLEString()
@@ -3123,6 +3174,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualDateTime()
@@ -3182,6 +3234,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDateTimeNotEqualString()
@@ -3238,6 +3291,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualDecimal()
@@ -3294,6 +3348,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualString()
@@ -3350,6 +3405,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTDecimal()
@@ -3406,6 +3462,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGTString()
@@ -3462,6 +3519,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEDecimal()
@@ -3539,6 +3597,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalGEString()
@@ -3616,6 +3675,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalEqualNull()
@@ -3679,6 +3739,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTDecimal()
@@ -3735,6 +3796,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLTString()
@@ -3791,6 +3853,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEDecimal()
@@ -3868,6 +3931,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalLEString()
@@ -3945,6 +4009,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualDecimal()
@@ -4001,6 +4066,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDecimalNotEqualString()
@@ -4057,6 +4123,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualDouble()
@@ -4113,6 +4180,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualString()
@@ -4169,6 +4237,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTDouble()
@@ -4225,6 +4294,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGTString()
@@ -4281,6 +4351,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEDouble()
@@ -4358,6 +4429,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleGEString()
@@ -4435,6 +4507,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleEqualNull()
@@ -4498,6 +4571,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTDouble()
@@ -4554,6 +4628,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLTString()
@@ -4610,6 +4685,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEDouble()
@@ -4687,6 +4763,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleLEString()
@@ -4764,6 +4841,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualDouble()
@@ -4820,6 +4898,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testDoubleNotEqualString()
@@ -4876,6 +4955,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualFloat()
@@ -4932,6 +5012,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualString()
@@ -4988,6 +5069,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTFloat()
@@ -5044,6 +5126,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGTString()
@@ -5100,6 +5183,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEFloat()
@@ -5177,6 +5261,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatGEString()
@@ -5254,6 +5339,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatEqualNull()
@@ -5317,6 +5403,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTFloat()
@@ -5373,6 +5460,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLTString()
@@ -5429,6 +5517,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEFloat()
@@ -5506,6 +5595,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatLEString()
@@ -5583,6 +5673,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualFloat()
@@ -5639,6 +5730,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testFloatNotEqualString()
@@ -5695,6 +5787,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualInteger()
@@ -5751,6 +5844,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualString()
@@ -5807,6 +5901,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTInteger()
@@ -5863,6 +5958,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGTString()
@@ -5919,6 +6015,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEInteger()
@@ -5996,6 +6093,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerGEString()
@@ -6073,6 +6171,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerEqualNull()
@@ -6136,6 +6235,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTInteger()
@@ -6192,6 +6292,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLTString()
@@ -6248,6 +6349,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEInteger()
@@ -6325,6 +6427,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerLEString()
@@ -6402,6 +6505,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualInteger()
@@ -6458,6 +6562,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testIntegerNotEqualString()
@@ -6514,6 +6619,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualLong()
@@ -6570,6 +6676,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualString()
@@ -6626,6 +6733,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTLong()
@@ -6682,6 +6790,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGTString()
@@ -6738,6 +6847,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGELong()
@@ -6815,6 +6925,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongGEString()
@@ -6892,6 +7003,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongEqualNull()
@@ -6958,6 +7070,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTLong()
@@ -7014,6 +7127,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLTString()
@@ -7070,6 +7184,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLELong()
@@ -7147,6 +7262,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongLEString()
@@ -7224,6 +7340,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualLong()
@@ -7280,6 +7397,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testLongNotEqualString()
@@ -7336,6 +7454,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString()
@@ -7392,6 +7511,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualString_IgnoreCase()
@@ -7448,6 +7568,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray()
@@ -7504,6 +7625,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualStringInArray_IgnoreCase()
@@ -7560,6 +7682,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextEqualNull()
@@ -7623,6 +7746,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString()
@@ -7679,6 +7803,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextLikeString_IgnoreCase()
@@ -7735,6 +7860,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString()
@@ -7791,6 +7917,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualString_IgnoreCase()
@@ -7847,6 +7974,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray()
@@ -7903,6 +8031,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotEqualStringInArray_IgnoreCase()
@@ -7959,6 +8088,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTextNotLikeString_IgnoreCase()
@@ -8015,6 +8145,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualTime()
@@ -8074,6 +8205,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualString()
@@ -8130,6 +8262,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTTime()
@@ -8189,6 +8322,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGTString()
@@ -8245,6 +8379,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGETime()
@@ -8327,6 +8462,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeGEString()
@@ -8404,6 +8540,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeEqualNull()
@@ -8466,6 +8603,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTTime()
@@ -8525,6 +8663,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLTString()
@@ -8581,6 +8720,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLETime()
@@ -8663,6 +8803,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeLEString()
@@ -8740,6 +8881,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualTime()
@@ -8799,6 +8941,7 @@ public class ValueQueryReferenceTest
     }
   }
 
+  @SuppressWarnings("resource")
   @Request
   @Test
   public void testTimeNotEqualString()

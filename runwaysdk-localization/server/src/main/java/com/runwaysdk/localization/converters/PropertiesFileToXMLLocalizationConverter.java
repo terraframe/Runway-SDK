@@ -41,8 +41,6 @@ import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
 import com.runwaysdk.localization.LocalizedValueStore;
-import com.runwaysdk.localization.LocalizedValueStoreQuery;
-import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
 
 public class PropertiesFileToXMLLocalizationConverter

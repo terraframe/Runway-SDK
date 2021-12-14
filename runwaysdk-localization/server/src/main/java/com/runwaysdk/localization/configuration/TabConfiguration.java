@@ -27,7 +27,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.runwaysdk.localization.LocaleDimension;
 import com.runwaysdk.localization.exception.ExpectedColumnException;
 import com.runwaysdk.localization.exception.ExpectedSheetException;
 import com.runwaysdk.localization.progress.LocalizationImportProgressMonitorIF;

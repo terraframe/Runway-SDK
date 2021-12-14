@@ -20,7 +20,6 @@ package com.runwaysdk.system.scheduler;
 
 import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.RunwayException;
-import com.runwaysdk.SchedulerExceptionMessageLocalizer;
 import com.runwaysdk.constants.CommonProperties;
 
 

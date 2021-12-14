@@ -464,8 +464,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
 
       Point point = (Point) viewDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d == point.getY());
 
       viewDTO.setValue("testPoint", "POINT(191108 243242)");
       tommyRequest.update(viewDTO);
@@ -473,8 +473,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getOid());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108 == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
     }
     finally
     {
@@ -825,8 +825,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d == point.getY());
 
       point = geometryFactory.createPoint(new Coordinate(191108, 243242));
 
@@ -836,8 +836,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
     }
     catch (Throwable e)
     {
@@ -1602,8 +1602,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getOid());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
 
       viewDTO.setValue("testPoint", null);
       tommyRequest.update(viewDTO);
@@ -1993,8 +1993,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(viewDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
 
       viewDTO = (ViewDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, viewDTO.getOid());
       testClass.getMethod("setTestPoint", Point.class).invoke(viewDTO, (Point) null);
@@ -2408,8 +2408,8 @@ public class GISVirtualAdapterTest extends GISAbstractTest implements DoNotWeave
       viewDTO = (ViewDTO) tommyRequest.get(viewDTO.getOid());
       point = (Point) viewDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
 
       viewDTO.setValue("testPoint", "");
       tommyRequest.update(viewDTO);

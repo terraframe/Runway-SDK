@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 2067633401)
+@com.runwaysdk.business.ClassSignature(hash = 817352664)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,7 +11,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.metadata.MdAttributeMultiReference
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeMultiTerm";
-  private static final long serialVersionUID = 2067633401;
+  private static final long serialVersionUID = 817352664;
   
   public MdAttributeMultiTermBase()
   {
@@ -39,6 +21,90 @@ public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.meta
   protected String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  public com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot addGeoEntityMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    return (com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot) addChild(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  public void removeGeoEntityMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    removeAllChildren(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntity> getAllGeoEntityMultiTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntity>) getChildren(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot> getAllGeoEntityMultiTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot> getGeoEntityMultiTermAttributeRootsRel(com.runwaysdk.system.gis.geo.GeoEntity geoEntity)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot>) getRelationshipsWithChild(geoEntity, com.runwaysdk.system.gis.geo.GeoEntityMultiTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot addSynonymMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    return (com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot) addChild(synonym, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot.CLASS);
+  }
+  
+  public void removeSynonymMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    removeAllChildren(synonym, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Synonym> getAllSynonymMultiTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Synonym>) getChildren(com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot> getAllSynonymMultiTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot> getSynonymMultiTermAttributeRootsRel(com.runwaysdk.system.gis.geo.Synonym synonym)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot>) getRelationshipsWithChild(synonym, com.runwaysdk.system.gis.geo.SynonymMultiTermAttributeRoot.CLASS);
+  }
+  
+  public com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot addUniversalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    return (com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot) addChild(universal, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  public void removeUniversalMultiTermAttributeRoots(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    removeAllChildren(universal, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Universal> getAllUniversalMultiTermAttributeRoots()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.Universal>) getChildren(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot> getAllUniversalMultiTermAttributeRootsRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot>) getChildRelationships(com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot> getUniversalMultiTermAttributeRootsRel(com.runwaysdk.system.gis.geo.Universal universal)
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot>) getRelationshipsWithChild(universal, com.runwaysdk.system.gis.geo.UniversalMultiTermAttributeRoot.CLASS);
   }
   
   public static MdAttributeMultiTerm get(String oid)
