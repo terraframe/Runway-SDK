@@ -303,6 +303,10 @@ public abstract class Attribute implements AttributeIF
   {
     this.validate(value);
 
+    if (endDate == null)
+    {
+      endDate = ValueOverTime.INFINITY_END_DATE;
+    }
     
     if (startDate == null)
     {
@@ -314,7 +318,7 @@ public abstract class Attribute implements AttributeIF
       {
         Date date = new Date();
 
-        this.valuesOverTime.add(new ValueOverTime(date, date, value));
+        this.valuesOverTime.add(new ValueOverTime(date, endDate, value));
       }
     }
     else

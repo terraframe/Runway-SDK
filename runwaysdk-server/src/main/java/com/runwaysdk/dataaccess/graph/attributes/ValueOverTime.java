@@ -107,6 +107,11 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public void setStartDate(Date startDate)
   {
+    if (startDate == null)
+    {
+      startDate = new Date();
+    }
+    
     this.startDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
   }
 
@@ -140,7 +145,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     }
     else
     {
-      endDate = null;
+      endDate = INFINITY_END_DATE;
     }
   }
 
