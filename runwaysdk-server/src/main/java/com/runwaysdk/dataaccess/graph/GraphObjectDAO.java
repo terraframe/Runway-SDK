@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.graph.GraphClassInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
@@ -146,6 +147,12 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   public void setIsNew(boolean isNew)
   {
     this.isNew = isNew;
+  }
+
+  @Override
+  public String getKey()
+  {
+    return (String) this.getObjectValue(ComponentInfo.OID);
   }
 
   public void setRID(Object rid)
@@ -454,7 +461,8 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
   }
 
   /**
-   * Graph attributes store values over time. This will return the entire collection.
+   * Graph attributes store values over time. This will return the entire
+   * collection.
    */
   public ValueOverTimeCollection getValuesOverTime(String name)
   {
@@ -462,9 +470,10 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     return attribute.getValuesOverTime();
   }
-  
+
   /**
-   * Graph attributes store values over time. This will set the entire collection.
+   * Graph attributes store values over time. This will set the entire
+   * collection.
    */
   public void setValuesOverTime(String name, ValueOverTimeCollection collection)
   {
@@ -487,7 +496,7 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
 
     Attribute attribute = this.getAttribute(name);
 
-    attribute.setValue(value, startDate);
+    attribute.setValue(value, startDate, endDate);
   }
 
   /**
@@ -668,10 +677,13 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
     {
       GraphDBService.getInstance().insert(request, this);
       this.setAppliedToDB(true);
-      
-      // isNew=false is supposed to happen at the end of the transaction. Since we aren't managing
-      // that with graph objects, we're just not going to set isNew to false (ever). This decision
-      // was made by @nmceachen and @rrowlands to facilitate the needs of the GeoRegistry data importer.
+
+      // isNew=false is supposed to happen at the end of the transaction. Since
+      // we aren't managing
+      // that with graph objects, we're just not going to set isNew to false
+      // (ever). This decision
+      // was made by @nmceachen and @rrowlands to facilitate the needs of the
+      // GeoRegistry data importer.
       this.setIsNew(true);
     }
     else
@@ -688,10 +700,13 @@ public abstract class GraphObjectDAO extends ComponentDAO implements GraphObject
    */
   public void setCommitState()
   {
-    // isNew=false is supposed to happen at the end of the transaction. Since we aren't managing
-    // that with graph objects, we're just not going to set isNew to false (ever). This decision
-    // was made by @nmceachen and @rrowlands to facilitate the needs of the GeoRegistry data importer.
-//    this.setIsNew(false);
+    // isNew=false is supposed to happen at the end of the transaction. Since we
+    // aren't managing
+    // that with graph objects, we're just not going to set isNew to false
+    // (ever). This decision
+    // was made by @nmceachen and @rrowlands to facilitate the needs of the
+    // GeoRegistry data importer.
+    // this.setIsNew(false);
 
     this.problemNotificationId = "";
 

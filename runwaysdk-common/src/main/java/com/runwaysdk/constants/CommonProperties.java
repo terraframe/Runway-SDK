@@ -188,9 +188,11 @@ public class CommonProperties
   }
 
   /**
-   * Returns the Default locale, which is cached to avoid a costly conversion.
-   * 
-   * @return
+   * Returns a default locale which is specified in a properties file and is
+   * only used for populating sessions when the user has no locale. This locale
+   * HAS NO RELATION to the LocalStruct DEFAULT_LOCALE concept and they are NOT
+   * interchangable. This locale is also as opposed to the Java Locale.getDefault(),
+   * which instead comes from the operating system.
    */
   public static java.util.Locale getDefaultLocale()
   {

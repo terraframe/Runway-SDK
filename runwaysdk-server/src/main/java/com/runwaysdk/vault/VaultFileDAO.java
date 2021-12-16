@@ -32,6 +32,7 @@ import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.SpecializedDAOImplementationIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.io.FileReadException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.util.IdParser;
 
 public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, SpecializedDAOImplementationIF
@@ -221,7 +222,7 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     VaultDAOIF vault = VaultDAO.get(this.getVaultReference());
 
@@ -231,10 +232,10 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
     DeleteFileCommand command = new DeleteFileCommand(path, this, true);
     command.doIt();
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
-  public void deleteNoNotify(boolean businessContext)
+  public void deleteNoNotify(DeleteContext context)
   {
     VaultDAOIF vault = VaultDAO.get(this.getVaultReference());
 
@@ -244,7 +245,7 @@ public class VaultFileDAO extends BusinessDAO implements VaultFileDAOIF, Special
     DeleteFileCommand command = new DeleteFileCommand(path, this, false);
     command.doIt();
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

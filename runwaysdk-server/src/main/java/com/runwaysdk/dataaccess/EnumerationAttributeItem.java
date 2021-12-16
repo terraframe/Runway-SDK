@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 
 public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOImplementationIF
@@ -63,9 +64,9 @@ public class EnumerationAttributeItem extends TreeDAO implements SpecializedDAOI
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

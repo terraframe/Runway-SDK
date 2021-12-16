@@ -18,8 +18,9 @@
  */
 package com.runwaysdk.session;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
+
 import com.runwaysdk.business.BusinessException;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 /**
  * Encapsulates errors in the session layer 

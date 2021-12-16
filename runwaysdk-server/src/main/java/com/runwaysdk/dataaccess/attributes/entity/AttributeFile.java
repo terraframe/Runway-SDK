@@ -26,6 +26,7 @@ import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.attributes.InvalidReferenceException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.QueryFactory;
@@ -157,9 +158,9 @@ public class AttributeFile extends Attribute implements AttributeFileIF
   /**
    * Removes the VaultFile object this AttributeFile references.
    */
-  public void removeReferences(EntityDAO entityDAO, boolean businessContext)
+  public void removeReferences(EntityDAO entityDAO, DeleteContext context)
   {
-    super.removeReferences(entityDAO, businessContext);
+    super.removeReferences(entityDAO, context);
     
     // remove the file
     if(!this.getValue().trim().equals(""))

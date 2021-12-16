@@ -96,6 +96,20 @@ public class LocalizedValueStore extends LocalizedValueStoreBase
     }
   }
   
+  public static LocalizedValueIF localizeAll(String key)
+  {
+    try
+    {
+      LocalizedValueStore store = LocalizedValueStore.getByKey(key);
+      
+      return store.getStoreValue();
+    }
+    catch (DataNotFoundException e)
+    {
+      return null;
+    }
+  }
+  
   public static Map<String, String> getAll()
   {
     return LocalizedValueStore.getAll(Session.getCurrentLocale());

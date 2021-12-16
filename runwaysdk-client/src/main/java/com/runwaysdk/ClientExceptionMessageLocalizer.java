@@ -20,6 +20,8 @@ package com.runwaysdk;
 
 import java.util.Locale;
 
+import com.runwaysdk.localization.LocalizationFacade;
+
 public class ClientExceptionMessageLocalizer
 {
   private static final String UnspecifiedExceptionMsg = "We are unable to complete your request at this time.  Try again later.  If the problem persists, contact your system administrator.";

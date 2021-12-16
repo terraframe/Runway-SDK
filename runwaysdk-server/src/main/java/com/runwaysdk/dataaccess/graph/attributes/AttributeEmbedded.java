@@ -108,7 +108,7 @@ public class AttributeEmbedded extends Attribute
    */
   public void setValue(String attributeName, Object value, Date startDate, Date endDate)
   {
-    ValueOverTime vt = this.getValueOverTime(startDate);
+    ValueOverTime vt = this.getValueOverTime(startDate, endDate);
 
     if (vt != null)
     {
@@ -120,7 +120,7 @@ public class AttributeEmbedded extends Attribute
       VertexObjectDAO object = VertexObjectDAO.newInstance((MdVertexDAOIF) this.getMdAttributeConcrete().getEmbeddedMdClassDAOIF());
       object.setValue(attributeName, value);
 
-      this.setValue(object, startDate);
+      this.setValue(object, startDate, endDate);
     }
   }
 

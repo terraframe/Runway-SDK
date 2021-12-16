@@ -616,7 +616,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Drop all MdAttributeEnumerations that use this MdEnumeration
     QueryFactory queryFactory = new QueryFactory();
@@ -630,10 +630,10 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
       // there is no need to delete instances
       // from that table. It will cause a database deadlock on some databases.
       MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF) mdAttrEnumIterator.next();
-      ( mdAttributeEnumerationIF.getBusinessDAO() ).deleteButDoNotDeleteMappingInstances(businessContext);
+      ( mdAttributeEnumerationIF.getBusinessDAO() ).deleteButDoNotDeleteMappingInstances(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
 
     Database.dropEnumerationTable(this.getTableName(), this.getOid());
   }

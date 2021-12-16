@@ -49,6 +49,7 @@ import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
 {
@@ -255,7 +256,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
    *          will happen at the Business layer instead of the data access
    *          layer.
    */
-  protected void deleteAllChildClasses(boolean businessContext)
+  protected void deleteAllChildClasses(DeleteContext context)
   {
     // delete all child classes
     for (MdVertexDAOIF subMdVertexDAOIF : getSubClasses())
@@ -263,7 +264,7 @@ public class MdVertexDAO extends MdGraphClassDAO implements MdVertexDAOIF
       if (!subMdVertexDAOIF.definesType().equals(this.definesType()))
       {
         MdVertexDAO subMdBusinessDAO = subMdVertexDAOIF.getBusinessDAO();
-        subMdBusinessDAO.delete(businessContext);
+        subMdBusinessDAO.delete(context);
       }
     }
   }

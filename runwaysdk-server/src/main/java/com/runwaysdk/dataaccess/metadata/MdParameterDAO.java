@@ -245,9 +245,9 @@ public class MdParameterDAO extends MetadataDAO implements MdParameterDAOIF
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

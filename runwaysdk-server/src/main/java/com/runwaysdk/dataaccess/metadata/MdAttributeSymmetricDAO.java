@@ -190,10 +190,10 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
-  {
+  public void delete(DeleteContext context)
+  {    
     deleteKey(this.getOid());
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /* (non-Javadoc)

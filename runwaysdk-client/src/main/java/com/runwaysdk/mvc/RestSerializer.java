@@ -32,6 +32,11 @@ public class RestSerializer implements JsonSerializer
   @Override
   public Object serialize(Object object, JsonConfiguration configuration) throws JSONException
   {
+    if (object == null)
+    {
+      return null;
+    }
+    
     if (object instanceof ComponentDTO)
     {
       return this.serialize((ComponentDTO) object, configuration);

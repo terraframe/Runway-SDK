@@ -41,6 +41,7 @@ import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved.
@@ -422,9 +423,9 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
    * pointed to. <b>Precondition: </b> this attribute MUST be a member of the
    * given EntityDAO <br>
    */
-  public void removeReferences(EntityDAO enitityObject, boolean businessContext)
+  public void removeReferences(EntityDAO enitityObject, DeleteContext context)
   {
-    super.removeReferences(enitityObject, businessContext);
+    super.removeReferences(enitityObject, context);
 
     this.reset();
   }

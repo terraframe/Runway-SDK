@@ -89,6 +89,7 @@ import com.runwaysdk.session.PermissionEntity;
 import com.runwaysdk.session.RequestState;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.util.IdParser;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 /**
  * @author nathan
@@ -1092,13 +1093,13 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   }
 
   protected pointcut metadataDAODeleteLog()
-  : execution(* com.runwaysdk.dataaccess.SpecializedDAOImplementationIF+.delete(boolean));
+  : execution(* com.runwaysdk.dataaccess.SpecializedDAOImplementationIF+.delete(DeleteContext));
 
   protected pointcut deleteDAOLog(EntityDAO entityDAO)
   // Don't invoke this multiple times for each sub-classed delete method. Only do
   // it once.
   : (
-      (execution (* com.runwaysdk.dataaccess.EntityDAO.delete(boolean)) && target(entityDAO))
+      (execution (* com.runwaysdk.dataaccess.EntityDAO.delete(DeleteContext)) && target(entityDAO))
       && within(com.runwaysdk.dataaccess.EntityDAO)
       && !cflow( metadataDAODeleteLog())
     )

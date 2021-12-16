@@ -95,6 +95,7 @@ import com.runwaysdk.dataaccess.transaction.SynchronizationSequenceGapException;
 import com.runwaysdk.dataaccess.transaction.TransactionImportInvalidItem;
 import com.runwaysdk.dataaccess.transaction.TransactionVersionException;
 import com.runwaysdk.facade.GroovyQueryException;
+import com.runwaysdk.localization.LocalizationFacade;
 import com.runwaysdk.query.AmbiguousAttributeException;
 import com.runwaysdk.query.AttributeNotInGroupByOrAggregate;
 import com.runwaysdk.query.InvalidMomentSelectableException;

@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.business.Business;
+import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
 import com.runwaysdk.constants.IndexAttributeInfo;
@@ -40,6 +41,7 @@ import com.runwaysdk.dataaccess.AttributeBooleanIF;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
@@ -54,6 +56,8 @@ import com.runwaysdk.dataaccess.MdTableDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeLocal;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -114,7 +118,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Returns a {@link MdAttributeConcreteDAOIF} that uses the database index of a given name.
+   * Returns a {@link MdAttributeConcreteDAOIF} that uses the database index of
+   * a given name.
    * 
    * <br/>
    * <b>Precondition:</b> indexName != null <br/>
@@ -124,7 +129,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * 
    * @param indexName
    *          Name of the database index.
-   * @return {@link MdAttributeConcreteDAOIF} that uses the database index of a given name.
+   * @return {@link MdAttributeConcreteDAOIF} that uses the database index of a
+   *         given name.
    */
   public static MdAttributeConcreteDAOIF getMdAttributeWithIndex(String indexName)
   {
@@ -132,9 +138,11 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   }
 
   /**
-   * Returns the {@link MdClassDAOIF} that defines this <code>MdAttributeConcreteDAO</code>.
+   * Returns the {@link MdClassDAOIF} that defines this
+   * <code>MdAttributeConcreteDAO</code>.
    * 
-   * @return the {@link MdClassDAOIF} that defines this <code>MdAttributeConcreteDAO</code>.
+   * @return the {@link MdClassDAOIF} that defines this
+   *         <code>MdAttributeConcreteDAO</code>.
    */
   public MdClassDAOIF definedByClass()
   {
@@ -152,6 +160,11 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   public String getDisplayLabel(Locale locale)
   {
     return ( (AttributeLocalIF) this.getAttributeIF(MdAttributeConcreteInfo.DISPLAY_LABEL) ).getValue(locale);
+  }
+  
+  public StructDAO getDisplayLabel()
+  {
+    return ( (AttributeLocal) this.getAttributeIF(MdAttributeConcreteInfo.DISPLAY_LABEL) ).getStructDAO();
   }
 
   /**
@@ -176,7 +189,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   {
     return this;
   }
-  
+
   /**
    * Creates the relationship such that the given virtual attribute virtualizes
    * this attribute.
@@ -263,7 +276,7 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
   {
     return this.getAttributeIF(MdAttributeConcreteInfo.INDEX_NAME).getValue();
   }
-  
+
   /**
    * Returns the {@link IndexTypes} of this {@link MdAttributeConcreteDAOIF}.
    * 
@@ -271,17 +284,17 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    */
   public IndexTypes getIndexType()
   {
-    AttributeEnumerationIF attributeIndex = (AttributeEnumerationIF)this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
-    
+    AttributeEnumerationIF attributeIndex = (AttributeEnumerationIF) this.getAttributeIF(MdAttributeConcreteInfo.INDEX_TYPE);
+
     Set<String> itemOids = attributeIndex.getEnumItemIdList();
-    
+
     EnumerationItemDAOIF enumItem = null;
-    
-    for (String oid: itemOids)
+
+    for (String oid : itemOids)
     {
       enumItem = EnumerationItemDAO.get(oid);
     }
-    
+
     return IndexTypes.valueOf(enumItem.getName());
   }
 
@@ -688,8 +701,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
   /**
    * Applies the state of this BusinessDAO to the database. If this is a new
-   * BusinessDAO, then records are created in the database and an OID is created.
-   * If this is not a new BusinessDAO, then records are modified in the
+   * BusinessDAO, then records are created in the database and an OID is
+   * created. If this is not a new BusinessDAO, then records are modified in the
    * database.
    * 
    * <br/>
@@ -764,28 +777,8 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
    * Initializes the strategy object.
    */
   protected abstract void initializeStrategyObject();
-
-  /**
-   * Deletes an attribute from the runway. The BusinessDAO is deleted from the
-   * database and removed from the cache. All relationships pertaining to this
-   * BusinessDAO are also removed as well.
-   * 
-   * <br/>
-   * <b>Postcondition: </b> BusinessDAO and all dependencies are removed from
-   * the runway <br/>
-   * <b>Postcondition: </b> Corresponding column from the defining table is
-   * dropped
-   * 
-   * @param p_mdAttribute
-   *          Attribute metadata BusinessDAO
-   * @param businessContext
-   *          true if this is being called from a business context, false
-   *          otherwise. If true then cascading deletes of other Entity objects
-   *          will happen at the Business layer instead of the data access
-   *          layer.
-   * 
-   */
-  public void delete(boolean businessContext)
+  
+  public void delete(DeleteContext context)
   {
     // Remove virtual attributes that point to this attribute.
     QueryFactory queryFactory = new QueryFactory();
@@ -809,9 +802,9 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
 
     this.initializeStrategyObject();
 
-    this.getMdAttributeStrategy().delete();
+    this.getMdAttributeStrategy().delete(context);
 
-    super.delete(businessContext);
+    super.delete(context);
 
     this.getMdAttributeStrategy().postDelete();
   }
@@ -875,10 +868,11 @@ public abstract class MdAttributeConcreteDAO extends MdAttributeDAO implements M
       throw new InvalidColumnNameException(error, columnName);
     }
 
-//    if (ReservedWords.sqlContains(columnName))
-//    {
-//      throw new ReservedWordException("The column name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
-//    }
+    // if (ReservedWords.sqlContains(columnName))
+    // {
+    // throw new ReservedWordException("The column name [" + columnName + "] is
+    // reserved.", columnName, ReservedWordException.Origin.COLUMN);
+    // }
   }
 
 }

@@ -37,6 +37,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.database.RelationshipDAOFactory;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.query.BusinessDAOQuery;
@@ -878,7 +879,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     MdBusinessDAOIF mdBusiness = this.getMdBusinessDAO();
 
@@ -953,7 +954,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
         // delete occurs as a result of an import.
         if (EntityDAO.isMasteredHere(child) || this.isImport())
         {
-          if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdBusinessDAO()))
+          if (context.isBusinessContext() && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdBusinessDAO()))
           {
             Business business = BusinessFacade.get(child);
             business.delete();
@@ -968,10 +969,10 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
     }
 
     // Remove all relationships to this object
-    this.deleteFromAllParentRelations(businessContext);
-    this.deleteAllChildRelations(businessContext);
+    this.deleteFromAllParentRelations(context);
+    this.deleteAllChildRelations(context);
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**
@@ -982,11 +983,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * (RelationshipFactory.getParents(businessDAO.getOid(), "")).length == 0
    * 
    */
-  private void deleteFromAllParentRelations(boolean businessContext)
+  private void deleteFromAllParentRelations(DeleteContext context)
   {
     for (RelationshipDAOIF parent : this.getAllParents())
     {
-      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(parent.getMdRelationshipDAO()))
+      if (context.isBusinessContext() && !GenerationUtil.isSkipCompileAndCodeGeneration(parent.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(parent);
         relationship.delete();
@@ -1006,11 +1007,11 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
    * (RelationshipFactory.getChildren(businessDAO.getOid(), "")).length == 0
    * 
    */
-  private void deleteAllChildRelations(boolean businessContext)
+  private void deleteAllChildRelations(DeleteContext context)
   {
     for (RelationshipDAOIF child : this.getAllChildren())
     {
-      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdRelationshipDAO()))
+      if (context.isBusinessContext() && !GenerationUtil.isSkipCompileAndCodeGeneration(child.getMdRelationshipDAO()))
       {
         Relationship relationship = BusinessFacade.get(child);
         relationship.delete();

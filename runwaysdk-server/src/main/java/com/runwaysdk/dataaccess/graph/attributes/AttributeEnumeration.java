@@ -67,7 +67,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
   }
   
   @SuppressWarnings("unchecked")
-  public synchronized void setValue(Object value, Date startDate)
+  public synchronized void setValue(Object value, Date startDate, Date endDate)
   {
     this.validate(value);
 
@@ -121,7 +121,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
     }
     else
     {
-      ValueOverTime vot = this.getValueOverTime(startDate);
+      ValueOverTime vot = this.getValueOverTime(startDate, endDate );
 
       if (vot != null)
       {
@@ -131,7 +131,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, null, setValue));
+        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, setValue));
         modified = true;
       }
     }

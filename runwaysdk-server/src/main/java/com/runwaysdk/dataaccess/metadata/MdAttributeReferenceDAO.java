@@ -313,6 +313,32 @@ public class MdAttributeReferenceDAO extends MdAttributeConcreteDAO implements M
   {
     return MdAttributeReferenceDAOIF.class.getName();
   }
+  
+  @Override
+  public void setValue(String name, String value)
+  {
+    if (name.equals(MdAttributeReferenceInfo.REF_MD_ENTITY))
+    {
+      if (!this.isNew())
+      {
+        String oldId = this.getAttribute(name).getValue();
+        
+        MdBusinessDAO oldBiz = (MdBusinessDAO) MdBusinessDAO.get(oldId);
+        
+        MdBusinessDAO newBiz = (MdBusinessDAO) MdBusinessDAO.get(value);
+        
+        List<String> supers = oldBiz.getSuperTypes();
+        
+        if (!supers.contains(newBiz.definesType()))
+        {
+          String error = "You may only change the reference type to a super type of [" + oldBiz.definesType() + "]";
+          throw new UnsupportedOperationException(error);
+        }
+      }
+    }
+    
+    super.setValue(name, value);
+  }
 
   /**
    * If no index type has been set, then the default for reference attributes is

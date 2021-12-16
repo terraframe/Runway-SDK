@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.graph.orientdb;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.locationtech.spatial4j.shape.Shape;
 import org.slf4j.Logger;
@@ -64,14 +66,16 @@ import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeDecimalDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDoubleDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
@@ -96,8 +100,11 @@ import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef;
+import com.runwaysdk.dataaccess.graph.attributes.AttributeGraphRef.ID;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
@@ -174,10 +181,10 @@ public class OrientDBImpl implements GraphDB
 
   private void createAppUser()
   {
-    String adminUser = OrientDBProperties.getAdminUserName();
-    String adminPass = OrientDBProperties.getAdminUserPassword();
+    String adminUser = OrientDBProperties.getAppUserName();
+    String adminPass = OrientDBProperties.getAppUserPassword();
 
-    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getRootUserName(), OrientDBProperties.getRootUserPassword());
+    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass);
 
     try
     {
@@ -256,7 +263,7 @@ public class OrientDBImpl implements GraphDB
   {
     // ODatabaseSession dbSession = this.pool.acquire();
 
-    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAdminUserName(), OrientDBProperties.getAdminUserPassword());
+    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAppUserName(), OrientDBProperties.getAppUserPassword());
 
     return new OrientDBRequest(dbSession);
   }
@@ -517,6 +524,12 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
+  {
+    return new OrientDBCreateLinkPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
+  }
+
+  @Override
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
     return new OrientDBCreateGeometryPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required, cot);
@@ -587,10 +600,10 @@ public class OrientDBImpl implements GraphDB
 
   /**
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, boolean)
    */
   @Override
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -615,10 +628,13 @@ public class OrientDBImpl implements GraphDB
             {
               oClass.dropProperty(attr);
 
-              // Delete any existing values
-              try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+              if (context.isRemoveValues())
               {
-                // Do nothing
+                // Delete any existing values
+                try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+                {
+                  // Do nothing
+                }
               }
             }
           }
@@ -630,7 +646,7 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
     GraphDDLCommandAction action = new OrientDBDDLAction(graphRequest, ddlGraphDBRequest)
     {
@@ -661,9 +677,12 @@ public class OrientDBImpl implements GraphDB
             oClass.dropProperty(attr);
 
             // Delete any existing values
-            try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+            if (context.isRemoveValues())
             {
-              // Do nothing
+              try (OResultSet rs = db.command("UPDATE " + className + " REMOVE " + attr))
+              {
+                // Do nothing
+              }
             }
           }
         }
@@ -899,6 +918,10 @@ public class OrientDBImpl implements GraphDB
     {
       return OType.FLOAT.name();
     }
+    else if (mdAttribute instanceof MdAttributeDecimalDAOIF)
+    {
+      return OType.DECIMAL.name();
+    }
     else if (mdAttribute instanceof MdAttributeBooleanDAOIF)
     {
       return OType.BOOLEAN.name();
@@ -934,6 +957,10 @@ public class OrientDBImpl implements GraphDB
     else if (mdAttribute instanceof MdAttributeEnumerationDAOIF)
     {
       return OType.STRING.name();
+    }
+    else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
+    {
+      return OType.LINK.name();
     }
     else if (mdAttribute instanceof MdAttributePointDAOIF)
     {
@@ -1114,7 +1141,12 @@ public class OrientDBImpl implements GraphDB
 
       if (value instanceof Geometry)
       {
-        entry.setValue(OShapeFactory.INSTANCE.toDoc((Geometry) value));
+        ODocument docVal = geometryToDocument((Geometry) value);
+
+        if (docVal != null)
+        {
+          entry.setValue(docVal);
+        }
       }
     }
 
@@ -1139,31 +1171,49 @@ public class OrientDBImpl implements GraphDB
         }
         else
         {
-          Set<String> names = result.getPropertyNames();
-
-          if (names.size() > 1)
-          {
-            LinkedList<Object> row = new LinkedList<Object>();
-
-            for (String name : names)
-            {
-              row.add(result.getProperty(name));
-            }
-
-            results.add(row);
-          }
-          else
-          {
-            String name = names.iterator().next();
-            Object value = result.getProperty(name);
-
-            results.add(value);
-          }
+          results.add(this.getPropertyValue(result));
         }
       }
     }
 
     return results;
+  }
+
+  public Object getPropertyValue(Object value)
+  {
+    if (value instanceof OResult)
+    {
+      OResult result = (OResult) value;
+
+      Set<String> names = result.getPropertyNames();
+
+      if (names.size() > 1)
+      {
+        Map<String, Object> row = new HashMap<String, Object>();
+
+        for (String name : names)
+        {
+          if (!name.equals("@class"))
+          {
+            row.put(name, this.getPropertyValue(result.getProperty(name)));
+          }
+        }
+
+        return row;
+      }
+      else
+      {
+        String name = names.iterator().next();
+
+        return this.getPropertyValue(result.getProperty(name));
+      }
+    }
+    else if (value instanceof List)
+    {
+      return ( (List<?>) value ).stream().map(v -> this.getPropertyValue(v)).collect(Collectors.toList());
+    }
+
+    return value;
   }
 
   @Override
@@ -1184,7 +1234,7 @@ public class OrientDBImpl implements GraphDB
 
       if (value instanceof Geometry)
       {
-        entry.setValue(OShapeFactory.INSTANCE.toDoc((Geometry) value));
+        entry.setValue(geometryToDocument((Geometry) value));
       }
     }
 
@@ -1376,6 +1426,18 @@ public class OrientDBImpl implements GraphDB
 
           attribute.setValueInternal(geometry);
         }
+        else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
+        {
+          if (value instanceof OVertex)
+          {
+            OVertex ref = (OVertex) value;
+            String oid = (String) ref.getProperty("oid");
+
+            attribute.setValueInternal(oid);
+
+            ( (AttributeGraphRef) attribute ).setId(new ID(oid, ref.getIdentity()));
+          }
+        }
         else if (mdAttribute instanceof MdAttributeEnumerationDAO)
         {
           attribute.setValueInternal(value);
@@ -1405,11 +1467,12 @@ public class OrientDBImpl implements GraphDB
               Date startDate = element.getProperty(OrientDBConstant.START_DATE);
               Date endDate = element.getProperty(OrientDBConstant.END_DATE);
               OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+              String oid = element.getProperty(OrientDBConstant.OID);
 
               VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
               this.populateDAO(vElement, votDAO);
 
-              attribute.setValueInternal(votDAO, startDate, endDate);
+              attribute.setValueInternal(oid, votDAO, startDate, endDate);
             }
           }
         }
@@ -1447,11 +1510,12 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
           VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
           this.populateDAO(vElement, votDAO);
 
-          attribute.setValueInternal(votDAO, startDate, endDate);
+          attribute.setValueInternal(oid, votDAO, startDate, endDate);
         }
       }
     }
@@ -1467,11 +1531,44 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
-          Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
-          Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
+          if (vElement != null)
+          {
+            Shape shape = OShapeFactory.INSTANCE.fromDoc((ODocument) vElement);
+            Geometry geometry = OShapeFactory.INSTANCE.toGeometry(shape);
 
-          attribute.setValueInternal(geometry, startDate, endDate);
+            attribute.setValueInternal(oid, geometry, startDate, endDate);
+          }
+          else
+          {
+            attribute.setValueInternal(oid, null, startDate, endDate);
+          }
+        }
+      }
+    }
+    else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
+    {
+      List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
+      attribute.clearValuesOverTime();
+
+      if (elements != null)
+      {
+        for (OElement element : elements)
+        {
+          Date startDate = element.getProperty(OrientDBConstant.START_DATE);
+          Date endDate = element.getProperty(OrientDBConstant.END_DATE);
+          Object value = element.getProperty(OrientDBConstant.VALUE);
+
+          if (value instanceof OVertex)
+          {
+            OVertex ref = (OVertex) value;
+            String oid = (String) ref.getProperty("oid");
+
+            ID id = new ID(oid, ref.getIdentity());
+
+            attribute.setValueInternal(oid, id, startDate, endDate);
+          }
         }
       }
     }
@@ -1487,13 +1584,37 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           Object votValue = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
-          attribute.setValueInternal(votValue, startDate, endDate);
+          attribute.setValueInternal(oid, votValue, startDate, endDate);
         }
       }
     }
 
     attribute.getValuesOverTime().validate();
+  }
+
+  private ODocument geometryToDocument(Geometry geom)
+  {
+    // The OrientDB spatial library has a bug where if the geometry is empty it
+    // will detect the type incorrectly.
+    // You can see this here:
+    // https://github.com/orientechnologies/orientdb-spatial/blob/514fe655155f7f1b3db53b79e784b8919f841156/src/main/java/com/orientechnologies/spatial/shape/OComplexShapeBuilder.java#L113
+    // Where if the collection is an empty array it just always returns true
+    // We're hacking around this here by just setting null if it's empty.
+    if (geom != null && geom.isEmpty())
+    {
+      geom = null;
+    }
+
+    if (geom == null)
+    {
+      return null;
+    }
+
+    ODocument document = OShapeFactory.INSTANCE.toDoc(geom);
+
+    return document;
   }
 
   protected void populateElement(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
@@ -1510,16 +1631,7 @@ public class OrientDBImpl implements GraphDB
         Geometry value = (Geometry) attribute.getObjectValue();
         String columnName = mdAttribute.getColumnName();
 
-        if (value != null)
-        {
-          ODocument document = OShapeFactory.INSTANCE.toDoc(value);
-
-          element.setProperty(columnName, document);
-        }
-        else
-        {
-          element.setProperty(columnName, null);
-        }
+        element.setProperty(columnName, geometryToDocument(value));
 
         if (mdClass.isEnableChangeOverTime())
         {
@@ -1585,6 +1697,25 @@ public class OrientDBImpl implements GraphDB
           this.populateEnumChangeOverTime(db, element, attribute, columnName);
         }
       }
+      else if (mdAttribute instanceof MdAttributeGraphRefDAOIF)
+      {
+        ID id = ( (AttributeGraphRef) attribute ).getRID();
+        String columnName = mdAttribute.getColumnName();
+
+        if (id != null)
+        {
+          element.setProperty(columnName, id.getRid());
+        }
+        else
+        {
+          element.setProperty(columnName, null);
+        }
+
+        if (mdClass.isEnableChangeOverTime())
+        {
+          this.populateLinkChangeOverTime(db, element, (AttributeGraphRef) attribute, columnName);
+        }
+      }
       else
       {
         String columnName = mdAttribute.getColumnName();
@@ -1613,6 +1744,43 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
+
+        documents.add(document);
+      }
+    }
+
+    element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
+  }
+
+  protected void populateLinkChangeOverTime(ODatabaseSession db, OElement element, AttributeGraphRef attribute, String columnName)
+  {
+    ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
+    valuesOverTime.validate();
+    List<OVertex> documents = new LinkedList<OVertex>();
+
+    for (ValueOverTime vot : valuesOverTime)
+    {
+      Object value = vot.getValue();
+
+      if (value != null)
+      {
+
+        OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
+        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
+
+        if (value instanceof ID)
+        {
+          document.setProperty(OrientDBConstant.VALUE, ( (ID) value ).getRid());
+        }
+        else
+        {
+          VertexObjectDAOIF v = attribute.dereference((String) value);
+
+          document.setProperty(OrientDBConstant.VALUE, v.getRID());
+        }
 
         documents.add(document);
       }
@@ -1635,6 +1803,7 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
 
         documents.add(document);
       }
@@ -1651,15 +1820,19 @@ public class OrientDBImpl implements GraphDB
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      if (vot.getValue() != null)
-      {
-        OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
-        document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
-        document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
-        document.setProperty(OrientDBConstant.VALUE, OShapeFactory.INSTANCE.toDoc((Geometry) vot.getValue()));
+      OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
+      document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
+      document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
+      document.setProperty(OrientDBConstant.OID, vot.getOid());
 
-        documents.add(document);
+      ODocument docVal = geometryToDocument((Geometry) vot.getValue());
+
+      if (docVal != null)
+      {
+        document.setProperty(OrientDBConstant.VALUE, docVal);
       }
+
+      documents.add(document);
     }
 
     element.setProperty(columnName + OrientDBConstant.COT_SUFFIX, documents);
@@ -1682,6 +1855,7 @@ public class OrientDBImpl implements GraphDB
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, votVertex);
+        document.setProperty(OrientDBConstant.OID, vot.getOid());
 
         documents.add(document);
       }
@@ -1756,6 +1930,7 @@ public class OrientDBImpl implements GraphDB
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.ANY);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;
@@ -1771,12 +1946,13 @@ public class OrientDBImpl implements GraphDB
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDEDSET, OType.STRING);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;
   }
 
-  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass)
+  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass, OType type)
   {
     OClass oClass = db.getClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
 
@@ -1785,7 +1961,8 @@ public class OrientDBImpl implements GraphDB
       oClass = db.createVertexClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
-      oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDED, vClass);
+      oClass.createProperty(OrientDBConstant.VALUE, type, vClass);
+      oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
     return oClass;

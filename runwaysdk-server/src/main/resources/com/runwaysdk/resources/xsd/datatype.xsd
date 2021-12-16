@@ -68,6 +68,7 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdClassification" type="mdClassification" />      
       <xs:element name="mdEdge" type="mdEdge" />            
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="relationship" type="entity" minOccurs="0" maxOccurs="unbounded" />
@@ -80,6 +81,8 @@
       <xs:element name="mdEnumeration" type="mdEnumeration" />
       <xs:element name="object" type="entity" />
       <xs:element name="relationship" type="relationshipCreate" />
+      <xs:element name="vertex" type="entity" />
+      <xs:element name="edge" type="relationshipCreate" />
       <xs:element name="enumerationMaster" type="mdBusiness" />
       <xs:element name="mdTable" type="mdTable" />      
       <xs:element name="mdStruct" type="mdStruct" />
@@ -100,6 +103,7 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdClassification" type="mdClassification" />
       <xs:element name="mdEdge" type="mdEdge" />      
       <xs:element name="timestamp" type="timestamp" />
     </xs:choice>
@@ -242,6 +246,16 @@
         <!--name:The qualified path/name of the mdBusiness -->
         <xs:attribute name="name" type="xs:string" use="required" />
         <xs:attribute name="exported" type="xs:boolean" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="mdClassification">
+    <xs:complexContent>
+      <xs:extension base="metadata">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="root" type="xs:string" use="optional" />
+        <xs:attribute name="generateSource" type="xs:boolean" use="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -951,6 +965,7 @@
       <xs:element name="localText" type="localText" />
       <xs:element name="virtual" type="virtual" />
       <xs:element name="embedded" type="embedded" />
+      <xs:element name="graphReference" type="graphReference" />      
       <xs:element name="localCharEmbedded" type="localCharEmbedded" />
     </xs:choice>
   </xs:complexType>
@@ -1141,6 +1156,10 @@
 
   <!-- referenceName: Must reference a defined mdBusiness type -->
   <xs:complexType name="reference">
+    <xs:attributeGroup ref="attributeReference" />
+  </xs:complexType>
+  
+  <xs:complexType name="graphReference">
     <xs:attributeGroup ref="attributeReference" />
   </xs:complexType>
 

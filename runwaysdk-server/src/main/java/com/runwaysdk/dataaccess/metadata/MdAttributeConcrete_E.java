@@ -654,11 +654,10 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
    * the runway <br/>
    * <b>Postcondition: </b> Coresponding column from the defining table is
    * dropped
-   *
    * @param p_mdAttribute
    *          Attribute metadata BusinessDAO
    */
-  public void delete()
+  public void delete(DeleteContext context)
   {
     // Delete all tuples this MdAttribute is part of
     this.dropTuples();
@@ -717,7 +716,7 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
     while (iterator.hasNext())
     {
       BusinessDAOIF businessDAOIF = iterator.next();
-      businessDAOIF.getBusinessDAO().delete(false);
+      businessDAOIF.getBusinessDAO().delete(new DeleteContext());
     }
   }
 

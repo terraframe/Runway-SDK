@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.constants.DatabaseProperties;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.ServerProperties;
@@ -130,8 +131,10 @@ public class DatabaseBuilder
     
     options.addOption(Option.builder("install").hasArg().argName("install").longOpt("install").desc("Indicates that we are doing a new install. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
     options.addOption(Option.builder("patch").hasArg().argName("patch").longOpt("patch").desc("Indicates that we are doing a patch. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
-    options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("The username of the root database user. Only required when bootstrapping.").optionalArg(true).build());
-    options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("The password of the root database user. Only required when bootstrapping.").optionalArg(true).build());
+    options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("Deprecated. Use 'postgresRootUser' instead. The username of the root Postgres database user. Only required when bootstrapping. The OrientDB root credentials are specified in orientdb.properties.").optionalArg(true).build());
+    options.addOption(Option.builder("rootPass").hasArg().argName("rootPass").longOpt("rootPass").desc("Deprecated. Use 'postgresRootPass' instead. The password of the root Postgres database user. Only required when bootstrapping. The OrientDB root credentials are specified in orientdb.properties.").optionalArg(true).build());
+    options.addOption(Option.builder("postgresRootUser").hasArg().argName("postgresRootUser").longOpt("postgresRootUser").desc("The username of the root Postgres database user. Only required when bootstrapping. The OrientDB root credentials are specified in orientdb.properties.").optionalArg(true).build());
+    options.addOption(Option.builder("postgresRootPass").hasArg().argName("postgresRootPass").longOpt("postgresRootPass").desc("The password of the root Postgres database user. Only required when bootstrapping. The OrientDB root credentials are specified in orientdb.properties.").optionalArg(true).build());
     options.addOption(Option.builder("templateDb").hasArg().argName("templateDb").longOpt("templateDb").desc("The template database to use when creating the application database. Only required when bootstrapping.").optionalArg(true).build());
     options.addOption(Option.builder("extensions").hasArg().argName("extensions").longOpt("extensions").desc("A comma separated list of extensions denoting which schema files to run. If unspecified we will use all supported.").optionalArg(true).build());
     options.addOption(Option.builder("clean").hasArg().argName("clean").longOpt("clean").desc("A boolean parameter denoting whether or not to clean the database and delete all data. Default is false.").optionalArg(true).build());
@@ -182,8 +185,8 @@ public class DatabaseBuilder
         }
       }
       
-      String user = line.getOptionValue("rootUser");
-      String pass = line.getOptionValue("rootPass");
+      String user = line.getOptionValue("postgresRootUser") == null ? line.getOptionValue("rootUser") : line.getOptionValue("postgresRootUser");
+      String pass = line.getOptionValue("postgresRootPass") == null ? line.getOptionValue("rootPass") : line.getOptionValue("postgresRootPass");
       String template = line.getOptionValue("templateDb");
       String extensions = line.getOptionValue("extensions");
       String sPlugins = line.getOptionValue("plugins");
@@ -212,7 +215,17 @@ public class DatabaseBuilder
       {
         if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
         {
-          if (user != null && pass != null)
+          if (user == null || user.length() == 0)
+          {
+            user = DatabaseProperties.getRootUser();
+          }
+          
+          if (pass == null || pass.length() == 0)
+          {
+            pass = DatabaseProperties.getRootPassword();
+          }
+          
+          if ( (user != null && user.length() > 0) && (pass != null && pass.length() > 0) )
           {
             patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
           }
@@ -231,7 +244,7 @@ public class DatabaseBuilder
         {
           DatabaseBootstrapper.bootstrap(user, pass, template, clean);
         }
-
+        
         DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
       }
       finally

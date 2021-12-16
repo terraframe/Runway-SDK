@@ -16,25 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-public interface RunwayLocalizationProviderIF
-{
-  public String localize(String key);
-  
-  public String localize(String key, Locale locale);
-  
-  public Map<String, String> getAll();
-  
-  public Map<String, String> getAll(Locale locale);
-  
-  public void install(Locale locale);
-  
-  public void uninstall(Locale locale);
-  
-  public List<Locale> getInstalledLocales();
-}
+/**
+ * This file is just a placeholder. The actual source exists in : src/main/java/com/runwaysdk/build/domain
+ */

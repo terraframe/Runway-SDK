@@ -94,7 +94,7 @@ public class StreamResource implements ApplicationResource
   {
     try
     {
-      Path path = Files.createTempFile(this.getBaseName(), this.getNameExtension());
+      Path path = Files.createTempFile(this.getBaseName(), "." + this.getNameExtension());
       
       CloseableFile tempFile = new CloseableFile(path.toFile().toURI(), true);
       

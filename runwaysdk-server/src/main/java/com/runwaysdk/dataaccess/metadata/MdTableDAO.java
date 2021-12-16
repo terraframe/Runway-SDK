@@ -102,13 +102,13 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
-    this.deleteAllChildClasses(businessContext);
+    this.deleteAllChildClasses(context);
     
     // Delete all attribute MdAttribue objects that this type defines
     // delete all attribute metadata for this class
-    this.dropAllAttributes(businessContext);
+    this.dropAllAttributes(context);
     
     // Delete all permission tuples that this class participates in
     this.dropTuples();
@@ -117,7 +117,7 @@ public class MdTableDAO extends MdClassDAO implements MdTableDAOIF
     this.dropAllMdMethods();
     
     // Delete this BusinessDAO
-    super.delete(businessContext);
+    super.delete(context);
   }
   
   

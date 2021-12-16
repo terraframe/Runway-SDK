@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.RelationshipDAOFactory;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdElementDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
@@ -477,16 +478,16 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
-    super.delete(businessContext);
+    super.delete(context);
 
     MdRelationshipDAOIF mdRelationshipIF = this.getMdRelationshipDAO();
     if (mdRelationshipIF.isComposition())
     {
       BusinessDAOIF childDAOIF = this.getChild();
 
-      if (businessContext && !GenerationUtil.isSkipCompileAndCodeGeneration(childDAOIF.getMdBusinessDAO()))
+      if (context.isBusinessContext() && !GenerationUtil.isSkipCompileAndCodeGeneration(childDAOIF.getMdBusinessDAO()))
       {
         Business business = BusinessFacade.get(childDAOIF);
         business.delete();

@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 
 public interface XMLTags
 {
@@ -259,6 +261,11 @@ public interface XMLTags
   public static final String   EMBEDDED_TAG                     = "embedded";
 
   /**
+   * The xml tag for an MdAttributeStruct
+   */
+  public static final String   GRAPH_REFERENCE_TAG              = "graphReference";
+
+  /**
    * The xml tag for an MdAttributeReference
    */
   public static final String   REFERENCE_TAG                    = "reference";
@@ -415,9 +422,19 @@ public interface XMLTags
   public static final String   OBJECT_TAG                       = "object";
 
   /**
+   * The xml tag for the VertexObject type
+   */
+  public static final String   VERTEX_TAG                       = "vertex";
+
+  /**
    * The xml tag for the Relationship type
    */
   public static final String   RELATIONSHIP_TAG                 = "relationship";
+
+  /**
+   * The xml tag for the Relationship type
+   */
+  public static final String   EDGE_TAG                         = "edge";
 
   /**
    * The xml tag for an attribute-value pairing of a Business/Relationship type
@@ -999,6 +1016,8 @@ public interface XMLTags
   public static final String   MD_TABLE_TAG                     = "mdTable";
 
   public static final String   MD_VERTEX_TAG                    = "mdVertex";
+
+  public static final String   MD_CLASSIFICATION_TAG            = "mdClassification";
 
   public static final String   MD_EDGE_TAG                      = "mdEdge";
 

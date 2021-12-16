@@ -18,8 +18,13 @@
  */
 package com.runwaysdk.business;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.LocaleUtils;
 
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.dataaccess.AttributeDoesNotExistException;
@@ -31,9 +36,11 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.generation.CommonGenerationUtil;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.localization.LocalizationFacade;
+import com.runwaysdk.localization.LocalizedValueIF;
 import com.runwaysdk.session.Session;
 
-public class LocalStruct extends Struct
+public class LocalStruct extends Struct implements LocalizedValueIF
 {
   private static final long serialVersionUID = -5905286574707516282L;
 
@@ -126,7 +133,12 @@ public class LocalStruct extends Struct
     this.setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, value);
   }
 
-
+  /**
+   * TODO : It's embarrassing that we're using locale.toString() here instead of locale.toLanguageTag()
+   * 
+   * @param locale
+   * @param value
+   */
   public void setValue(Locale locale, String value)
   {
     this.setValue(locale.toString(), value);
@@ -203,7 +215,8 @@ public class LocalStruct extends Struct
   }
 
   /**
-   * Returns the localized string that is the best fit for the given locale.
+   * Returns the localized string for the given locale. If bestFit is true, we will coalesce with other locales
+   * and attempt to find a best fit.
    *
    * Duplicated in <code>AttributeLocal</code>
    */
@@ -280,5 +293,52 @@ public class LocalStruct extends Struct
   public String toString()
   {
     return getValue();
+  }
+  
+  @Override
+  public Map<String, String> getLocaleMap()
+  {
+    return this.getLocaleMap(false);
+  }
+
+  /**
+   * @param bestFitLocales If set to true, we will coalesce the value for each locale. Otherwise, we will simply return the value as is.
+   * @return
+   */
+  public Map<String, String> getLocaleMap(boolean bestFitLocales)
+  {
+    Map<String, String> map = new HashMap<String, String>();
+    
+    for (Locale locale : LocalizationFacade.getInstalledLocales())
+    {
+      if (bestFitLocales)
+      {
+        map.put(locale.toString(), this.getValue(locale));
+      }
+      else
+      {
+        map.put(locale.toString(), this.getValue(locale.toString()));
+      }
+    }
+    
+    map.put(MdAttributeLocalInfo.DEFAULT_LOCALE, this.getDefaultValue());
+    
+    return map;
+  }
+
+  @Override
+  public void setLocaleMap(Map<String, String> map)
+  {
+    for (Entry<String,String> entry : map.entrySet())
+    {
+      if (entry.getKey().equals(MdAttributeLocalInfo.DEFAULT_LOCALE))
+      {
+        this.setDefaultValue(map.get(MdAttributeLocalInfo.DEFAULT_LOCALE));
+      }
+      else
+      {
+        this.setValue(entry.getKey(), entry.getValue());
+      }
+    }
   }
 }

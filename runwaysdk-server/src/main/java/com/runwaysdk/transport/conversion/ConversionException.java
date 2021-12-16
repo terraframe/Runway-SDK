@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.transport.conversion;
 
-import com.runwaysdk.CommonExceptionMessageLocalizer;
 import com.runwaysdk.RunwayException;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 /**
  * Exception that is thrown when there is a problem with converting objects to DOM Documents

@@ -71,16 +71,11 @@ public abstract class MdFieldDAO extends MetadataDAO implements MdFieldDAOIF
   }
 
   @Override
-  public void delete(boolean businessContext)
-  {
-    this.delete(businessContext, true);
-  }
-
-  public void delete(boolean businessContext, boolean enforceRemovable)
+  public void delete(DeleteContext context)
   {
     String conditionId = this.getAttribute(MdFieldInfo.FIELD_CONDITION).getValue();
     
-    super.delete(businessContext, enforceRemovable);
+    super.delete(context);
     
     // If there is a condition on the field then delete the condition also
     if (conditionId != null && conditionId.length() > 0)

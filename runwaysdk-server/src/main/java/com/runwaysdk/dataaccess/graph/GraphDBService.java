@@ -29,6 +29,7 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 
 public class GraphDBService
@@ -192,6 +193,13 @@ public class GraphDBService
   {
     return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
   }
+  
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  {
+    return this.graphDB.createGraphReferenceAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassType, required, changeOverTime);
+  }
+
+
 
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
@@ -240,23 +248,25 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
+   * @param context TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, DeleteContext)
    */
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
-    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
+    return this.graphDB.dropAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, context);
   }
 
   /**
    * @param cot
    *          TODO
+   * @param context TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
-   *      boolean)
+   *      boolean, DeleteContext)
    */
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot)
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context)
   {
-    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot);
+    return this.graphDB.dropGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, cot, context);
   }
 
   /**

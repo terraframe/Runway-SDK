@@ -44,6 +44,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.EntityDAOFactory;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.resolver.IEntityContainer;
@@ -1280,7 +1281,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   public void delete()
   {
-    this.delete(false);
+    this.delete(new DeleteContext());
   }
 
   /**
@@ -1297,7 +1298,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     try
     {
-      this.delete(false);
+      this.delete(new DeleteContext());
     }
     finally
     {
@@ -1425,9 +1426,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    *          otherwise. If true then cascading deletes of other Entity objects
    *          will happen at the Business layer instead of the data access
    *          layer.
+   * @param context TODO
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     if (!this.isAppliedToDB())
     {
@@ -1445,7 +1447,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       String attributeName = m.definesAttribute();
       if (this.hasAttribute(attributeName))
       {
-        this.getAttribute(attributeName).removeReferences(this, businessContext);
+        this.getAttribute(attributeName).removeReferences(this, context);
       }
     }
 

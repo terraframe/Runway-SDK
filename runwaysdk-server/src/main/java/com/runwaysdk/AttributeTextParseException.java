@@ -21,6 +21,8 @@
  */
 package com.runwaysdk;
 
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 

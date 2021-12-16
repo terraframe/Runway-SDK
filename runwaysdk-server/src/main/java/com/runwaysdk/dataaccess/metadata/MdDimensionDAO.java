@@ -339,7 +339,7 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Delete all corresponding MdAttributeDimensions
     List<MdAttributeDimensionDAOIF> list = this.getMdAttributeDimensions();
@@ -361,10 +361,10 @@ public class MdDimensionDAO extends MetadataDAO implements MdDimensionDAOIF
     // support this dimension
     for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : this.getLocalStructMdAttributes())
     {
-      mdAttributeConcreteDAOIF.getBusinessDAO().delete(businessContext);
+      mdAttributeConcreteDAOIF.getBusinessDAO().delete(context);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

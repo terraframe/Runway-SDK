@@ -156,6 +156,8 @@ public interface MdClassDAOIF extends MdTypeDAOIF
    * @return an List of <code>MdAttributeDAOIF</code> objects that this <code>MdClassDAOIF</code> defines.
    */
   public List<? extends MdAttributeDAOIF> definesAttributesOrdered();
+  
+  public MdAttributeDAOIF definesAttributeRecursive(String attributeName);
 
   /**
    * Returns the MdAttribute that defines the given attribute for the this entity.  This method

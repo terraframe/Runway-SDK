@@ -462,7 +462,7 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
    *          layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Drop index:
     // Index is actually dropped when the RelationshipTypes.INDEX_ATTRIBUTE
@@ -470,10 +470,10 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
     for (IndexAttributeIF indexAttributeIF : this.getIndexedAttributeDAOs())
     {
-      indexAttributeIF.getRelationshipDAO().deleteFromMdIndex(this, businessContext);
+      indexAttributeIF.getRelationshipDAO().deleteFromMdIndex(this, context);
     }
     
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

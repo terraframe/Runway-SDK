@@ -21,8 +21,8 @@ package com.runwaysdk.dataaccess.attributes.value;
 import java.util.Set;
 
 import com.runwaysdk.dataaccess.AttributeUUIDIF;
-import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 
 public class AttributeUUID extends Attribute implements AttributeUUIDIF
 {

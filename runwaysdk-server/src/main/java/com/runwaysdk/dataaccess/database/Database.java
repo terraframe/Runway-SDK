@@ -2160,9 +2160,9 @@ public class Database
    *          The sequence number of the record to delete.
    * @return The SQL delete statement.
    */
-  public static String buildSQLDeleteStatement(String table, String oid, long seq)
+  public static String buildSQLDeleteStatement(String table, String oid, String seqColumnName, long seq)
   {
-    return instance().buildSQLDeleteStatement(table, oid, seq);
+    return instance().buildSQLDeleteStatement(table, oid, seqColumnName, seq);
   }
 
   /**

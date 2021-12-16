@@ -37,6 +37,7 @@ import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.VisibilityModifier;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeGraphReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
@@ -466,7 +467,7 @@ public class GenerationUtil
     // don't create accessors for oid or type because
     // we don't want to override the native getOid()/getType()
     // in EntityDTO
-    if (m.definesAttribute().equals(EntityInfo.OID) || m.definesAttribute().equals(EntityInfo.TYPE))
+    if (m.definesAttribute().equals(EntityInfo.OID) || m.definesAttribute().equals(EntityInfo.TYPE) || (m instanceof MdAttributeGraphReferenceDAOIF))
     {
       return true;
     }
@@ -486,7 +487,7 @@ public class GenerationUtil
   {
     MdClassDAOIF mdClassDAOIF = m.definedByClass();
 
-    if (!m.getSetterVisibility().equals(VisibilityModifier.PUBLIC) || ( m.isSystem() && !isHardcodedType(mdClassDAOIF) ) )
+    if (!m.getSetterVisibility().equals(VisibilityModifier.PUBLIC) || ( m.isSystem() && !isHardcodedType(mdClassDAOIF) ) || (m instanceof MdAttributeGraphReferenceDAOIF) )
     {
       return true;
     }

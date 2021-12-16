@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.graph;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
@@ -36,15 +37,19 @@ import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTime;
+import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBooleanDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDateTimeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeDecimalDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDoubleDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
@@ -60,6 +65,8 @@ import com.vividsolutions.jts.geom.Point;
 
 public class VertexObjectDAOChangeOverTimeTest
 {
+  private static MdVertexDAO                          mdClassificationDAO;
+
   private static MdVertexDAO                          mdVertexDAO;
 
   private static MdBusinessDAO                        mdEnumMasterDAO;
@@ -75,6 +82,8 @@ public class VertexObjectDAOChangeOverTimeTest
   private static MdAttributeFloatDAO                  mdFloatAttribute;
 
   private static MdAttributeDoubleDAO                 mdDoubleAttribute;
+
+  private static MdAttributeDecimalDAO                mdDecimalAttribute;
 
   private static MdAttributeBooleanDAO                mdBooleanAttribute;
 
@@ -92,6 +101,8 @@ public class VertexObjectDAOChangeOverTimeTest
 
   private static MdAttributeEnumerationDAO            mdEnumerationAttribute;
 
+  private static MdAttributeGraphReferenceDAO         mdGraphReferenceAttribute;
+
   @Request
   @BeforeClass
   public static void classSetup()
@@ -106,6 +117,10 @@ public class VertexObjectDAOChangeOverTimeTest
   @Transaction
   private static void classSetup_Transaction()
   {
+    // Define the link class
+    mdClassificationDAO = TestFixtureFactory.createMdVertex("TestLinkClass");
+    mdClassificationDAO.apply();
+
     mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
     mdEnumMasterDAO.apply();
 
@@ -131,6 +146,9 @@ public class VertexObjectDAOChangeOverTimeTest
     mdDoubleAttribute = TestFixtureFactory.addDoubleAttribute(mdVertexDAO);
     mdDoubleAttribute.apply();
 
+    mdDecimalAttribute = TestFixtureFactory.addDecimalAttribute(mdVertexDAO);
+    mdDecimalAttribute.apply();
+
     mdBooleanAttribute = TestFixtureFactory.addBooleanAttribute(mdVertexDAO);
     mdBooleanAttribute.apply();
 
@@ -155,6 +173,9 @@ public class VertexObjectDAOChangeOverTimeTest
 
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnumerationDAO);
     mdEnumerationAttribute.apply();
+
+    mdGraphReferenceAttribute = TestFixtureFactory.addGraphReferenceAttribute(mdVertexDAO, mdClassificationDAO);
+    mdGraphReferenceAttribute.apply();
   }
 
   @Request
@@ -172,6 +193,7 @@ public class VertexObjectDAOChangeOverTimeTest
     TestFixtureFactory.delete(mdVertexDAO);
     TestFixtureFactory.delete(mdEnumerationDAO);
     TestFixtureFactory.delete(mdEnumMasterDAO);
+    TestFixtureFactory.delete(mdClassificationDAO);
   }
 
   public Date startDate()
@@ -484,6 +506,50 @@ public class VertexObjectDAOChangeOverTimeTest
 
       // Test update
       value = new Double(10D);
+
+      vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
+      vertexDAO.apply();
+
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
+      Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+
+  @Request
+  @Test
+  public void testDecimalAttribute()
+  {
+    String attributeName = mdDecimalAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+    BigDecimal value = new BigDecimal(5.5D);
+    vertexDAO.setValue(attributeName, value, startDate(), endDate());
+
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
+
+    try
+    {
+      vertexDAO.apply();
+
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+      Assert.assertNotNull(test);
+
+      Assert.assertEquals(value, test.getObjectValue(attributeName, date()));
+      Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
+
+      // Test update
+      value = new BigDecimal(10.2D);
 
       vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
       vertexDAO.apply();
@@ -835,13 +901,13 @@ public class VertexObjectDAOChangeOverTimeTest
       Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
       String value = businessDAO.getOid();
-      
+
       Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
 
       vertexDAO.setValue(attributeName, value, startDate(), endDate());
-      
+
       Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
-      
+
       VertexObjectDAO test = null;
 
       try
@@ -851,54 +917,55 @@ public class VertexObjectDAOChangeOverTimeTest
         test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
         Assert.assertNotNull(test);
-        
+
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
 
         Set<String> set = (Set<String>) test.getObjectValue(attributeName, date());
 
         Assert.assertTrue(set.contains(value));
-        
-        // If we set the value to what it already is, the modified flag should still be false
+
+        // If we set the value to what it already is, the modified flag should
+        // still be false
         test.setValue(attributeName, value, startDate(), endDate());
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
         Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
-        
+
         // Test setting null
         test.setValue(attributeName, null, startDate(), endDate());
-        
+
         Assert.assertTrue(test.getAttributeIF(attributeName).isModified());
-        
+
         test.apply();
-        
+
         test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
         Assert.assertNotNull(test);
-        
+
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
-        
+
         Set<String> set2 = (Set<String>) test.getObjectValue(attributeName, date());
 
         Assert.assertEquals(0, set2.size());
-        
+
         Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
-        
+
         // Test a null date
         test.setValue(attributeName, null, null, null);
-        
+
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
-        
+
         test.apply();
-        
+
         test = (VertexObjectDAO) VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
-        
+
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
 
         Assert.assertNotNull(test);
-        
+
         Set<String> set3 = (Set<String>) test.getObjectValue(attributeName, endDate());
 
         Assert.assertEquals(0, set3.size());
-        
+
         Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
       }
       finally
@@ -920,7 +987,7 @@ public class VertexObjectDAOChangeOverTimeTest
       businessDAO.delete();
     }
   }
-  
+
   @SuppressWarnings("unchecked")
   @Request
   @Test
@@ -929,7 +996,7 @@ public class VertexObjectDAOChangeOverTimeTest
     BusinessDAO businessDAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
     businessDAO.setValue(EnumerationMasterInfo.NAME, "test");
     businessDAO.apply();
-    
+
     BusinessDAO business2DAO = BusinessDAO.newInstance(mdEnumMasterDAO.definesType());
     business2DAO.setValue(EnumerationMasterInfo.NAME, "test2");
     business2DAO.apply();
@@ -940,15 +1007,15 @@ public class VertexObjectDAOChangeOverTimeTest
       VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
       Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
-      
+
       Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
 
       vertexDAO.setValue(attributeName, businessDAO.getOid(), startDate(), date());
-      
+
       Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
-      
+
       vertexDAO.setValue(attributeName, business2DAO.getOid(), date(), endDate());
-      
+
       Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
 
       try
@@ -964,11 +1031,11 @@ public class VertexObjectDAOChangeOverTimeTest
 
         Assert.assertEquals(1, set.size());
         Assert.assertEquals(businessDAO.getOid(), set.iterator().next());
-        
+
         Assert.assertFalse(test.getAttributeIF(attributeName).isModified());
-        
+
         Assert.assertEquals(2, test.getValuesOverTime(attributeName).size());
-        
+
         // Assert test2 at date()
         VertexObjectDAOIF test2 = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
@@ -978,9 +1045,9 @@ public class VertexObjectDAOChangeOverTimeTest
 
         Assert.assertEquals(1, set2.size());
         Assert.assertEquals(business2DAO.getOid(), set2.iterator().next());
-        
+
         Assert.assertFalse(test2.getAttributeIF(attributeName).isModified());
-        
+
         // Assert test2 at endDate()
         VertexObjectDAOIF test3 = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
 
@@ -990,7 +1057,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
         Assert.assertEquals(1, set3.size());
         Assert.assertEquals(business2DAO.getOid(), set3.iterator().next());
-        
+
         Assert.assertFalse(test3.getAttributeIF(attributeName).isModified());
       }
       finally
@@ -1007,14 +1074,83 @@ public class VertexObjectDAOChangeOverTimeTest
     }
   }
 
-//  @Request
-//  @Test(expected = AttributeFrequencyException.class)
-//  public void testBadFrequency()
-//  {
-//    String attributeName = mdFloatAttribute.definesAttribute();
-//    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
-//
-//    vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
-//  }
+  @Request
+  @Test
+  public void testBooleanAttribute_Extend()
+  {
+    String attributeName = mdBooleanAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+    Boolean value = Boolean.TRUE;
+    vertexDAO.setValue(attributeName, value, startDate(), date());
+    vertexDAO.setValue(attributeName, value, startDate(), endDate());
+
+    ValueOverTimeCollection entries = vertexDAO.getValuesOverTime(attributeName);
+
+    Assert.assertEquals(1, entries.size());
+
+    ValueOverTime vot = entries.get(0);
+
+    Assert.assertEquals(vot.getStartDate(), startDate());
+    Assert.assertEquals(vot.getEndDate(), endDate());
+  }
+
+  // @Request
+  // @Test(expected = AttributeFrequencyException.class)
+  // public void testBadFrequency()
+  // {
+  // String attributeName = mdFloatAttribute.definesAttribute();
+  // VertexObjectDAO vertexDAO =
+  // VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+  //
+  // vertexDAO.setValue(attributeName, new Float(5F), new Date(), new Date());
+  // }
+
+  @Request
+  @Test
+  public void testLinkAttribute()
+  {
+    VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdClassificationDAO.definesType());
+
+    try
+    {
+      classifierDAO.apply();
+
+      String attributeName = mdGraphReferenceAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+
+      Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
+
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+
+      vertexDAO.setValue(attributeName, classifierDAO.getOid(), startDate(), endDate());
+
+      // Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+
+      try
+      {
+        // Test create
+        vertexDAO.apply();
+
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+
+        Assert.assertNotNull(test);
+
+        Assert.assertEquals(classifierDAO.getOid(), test.getObjectValue(attributeName, date()));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      classifierDAO.delete();
+    }
+  }
 
 }

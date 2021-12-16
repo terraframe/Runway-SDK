@@ -35,6 +35,7 @@ import com.runwaysdk.business.EntityDTO;
 import com.runwaysdk.business.LocalStructDTO;
 import com.runwaysdk.business.MutableDTO;
 import com.runwaysdk.business.RelationshipDTO;
+import com.runwaysdk.configuration.RunwayConfigurationException;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.format.AbstractFormatFactory;
@@ -590,19 +591,25 @@ public class RequestScraper
   public static Method getMethod(String methodName, Class<?> c)
   {
     Method[] methods = c.getMethods();
-
+    
     // Get the method corresponding to the action name.
     // This is ok because method overloading is not allowed
     // in the metadata.
+    Method found = null;
     for (Method m : methods)
     {
       if (m.getName().equals(methodName))
       {
-        return m;
+        if (found != null)
+        {
+          throw new RunwayConfigurationException("Duplicate methods with the name [" + methodName + "] defined on class [" + c.getName() + "].");
+        }
+        
+        found = m;
       }
     }
 
-    return null;
+    return found;
   }
 
   /**

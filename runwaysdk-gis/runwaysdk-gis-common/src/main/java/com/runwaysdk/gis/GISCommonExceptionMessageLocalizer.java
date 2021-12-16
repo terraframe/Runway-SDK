@@ -20,7 +20,7 @@ package com.runwaysdk.gis;
 
 import java.util.Locale;
 
-import com.runwaysdk.LocalizationFacade;
+import com.runwaysdk.localization.LocalizationFacade;
 
 public class GISCommonExceptionMessageLocalizer
 {

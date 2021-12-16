@@ -269,13 +269,13 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     // Drop all struct attributes on other classes that use this class to store
     // those struct attributes.
-    this.dropStructAttributes(businessContext);
+    this.dropStructAttributes(context);
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**
@@ -297,7 +297,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    * otherwise. If true then cascading deletes of other Entity objects will happen at the Business
    * layer instead of the data access layer.
    */
-  public void deleteInstances(boolean businessContext)
+  public void deleteInstances(DeleteContext context)
   {
     // delete all instances of the struct.
     QueryFactory queryFactory = new QueryFactory();
@@ -306,7 +306,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
     while (structDAOQueryIterator.hasNext())
     {
       StructDAO resultObject = (StructDAO)structDAOQueryIterator.next();
-      resultObject.delete(businessContext);
+      resultObject.delete(context);
     }
   }
 
@@ -328,7 +328,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
    * layer instead of the data access layer.
    *
    */
-  private void dropStructAttributes(boolean businessContext)
+  private void dropStructAttributes(DeleteContext context)
   {
     QueryFactory qFactory = new QueryFactory();
 
@@ -339,7 +339,7 @@ public class MdStructDAO extends MdEntityDAO implements MdStructDAOIF
     while (mdAttrStrIterator.hasNext())
     {
       MdAttributeStructDAO mdAttributeStruct = (MdAttributeStructDAO) mdAttrStrIterator.next();
-      mdAttributeStruct.delete(businessContext);
+      mdAttributeStruct.delete(context);
     }
   }
 

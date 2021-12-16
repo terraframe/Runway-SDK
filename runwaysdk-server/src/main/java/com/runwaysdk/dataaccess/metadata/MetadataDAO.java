@@ -105,20 +105,15 @@ public abstract class MetadataDAO extends BusinessDAO implements MetadataDAOIF, 
    * 
    */
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
-    this.delete(businessContext, true);
-  }
-
-  public void delete(boolean businessContext, boolean enforceRemovable)
-  {
-    if (enforceRemovable && !this.isRemovable() && !this.isImport())
+    if (context.isEnforceRemovable() && !this.isRemovable() && !this.isImport())
     {
       String error = "Metadata [" + this.getOid() + "] is not allowed to be deleted.";
       throw new MetadataCannotBeDeletedException(error, this);
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

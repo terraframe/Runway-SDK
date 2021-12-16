@@ -268,9 +268,9 @@ public abstract class Attribute implements AttributeIF
     return this.getObjectValue();
   }
 
-  public ValueOverTime getValueOverTime(Date startDate)
+  public ValueOverTime getValueOverTime(Date startDate, Date endDate)
   {
-    return this.valuesOverTime.getValueOverTime(startDate);
+    return this.valuesOverTime.getValueOverTime(startDate, endDate);
   }
 
   /**
@@ -292,13 +292,14 @@ public abstract class Attribute implements AttributeIF
     this.validate(value);
 
     // If the new value is the same as the old one, skip it
-    if (this.value == null || !this.value.equals(value))
+    if (this.valueIsDifferent(value))
     {
       this.value = value;
+      this.isModified = true;
     }
   }
 
-  public void setValue(Object value, Date startDate)
+  public void setValue(Object value, Date startDate, Date endDate)
   {
     this.validate(value);
 
@@ -318,7 +319,7 @@ public abstract class Attribute implements AttributeIF
     }
     else
     {
-      ValueOverTime vot = this.getValueOverTime(startDate);
+      ValueOverTime vot = this.getValueOverTime(startDate, endDate);
 
       if (vot != null)
       {
@@ -326,7 +327,7 @@ public abstract class Attribute implements AttributeIF
       }
       else
       {
-        this.valuesOverTime.add(new ValueOverTime(startDate, null, value));
+        this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
       }
     }
 
@@ -343,9 +344,9 @@ public abstract class Attribute implements AttributeIF
     this.value = value;
   }
 
-  public void setValueInternal(Object value, Date startDate, Date endDate)
+  public void setValueInternal(String votOid, Object value, Date startDate, Date endDate)
   {
-    this.valuesOverTime.add(new ValueOverTime(startDate, endDate, value));
+    this.valuesOverTime.add(new ValueOverTime(votOid, startDate, endDate, value));
   }
 
   public ValueOverTimeCollection getValuesOverTime()
@@ -485,6 +486,18 @@ public abstract class Attribute implements AttributeIF
       ImmutableAttributeProblem problem = new ImmutableAttributeProblem(this.getContainingComponent().getProblemNotificationId(), mdAttribute.definedByClass(), mdAttribute, error, this);
       problem.throwIt();
     }
+  }
+  
+  /**
+   * Returns true if the given value is different than the value of this
+   * attribute.
+   * 
+   * @return true if the given value is different than the value of this
+   *         attribute.
+   */
+  protected boolean valueIsDifferent(Object value)
+  {
+    return this.value == null || !this.value.equals(value);
   }
 
   /**

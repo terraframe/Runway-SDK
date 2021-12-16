@@ -20,6 +20,7 @@ package com.runwaysdk.dataaccess.graph;
 
 import java.util.Date;
 
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.ComponentDAOIF;
 import com.runwaysdk.dataaccess.graph.attributes.ValueOverTimeCollection;
@@ -47,4 +48,6 @@ public interface GraphObjectDAOIF extends ComponentDAOIF
   public ValueOverTimeCollection getValuesOverTime(String name);
 
   public void setValue(String name, Object value, Date startDate, Date endDate);
+
+  public AttributeIF[] getAttributeArrayIF();
 }

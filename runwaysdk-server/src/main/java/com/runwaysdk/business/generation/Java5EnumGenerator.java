@@ -21,8 +21,6 @@ package com.runwaysdk.business.generation;
 import java.util.Iterator;
 import java.util.Map;
 
-
-
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 
 

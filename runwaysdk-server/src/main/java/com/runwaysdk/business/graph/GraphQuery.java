@@ -109,4 +109,22 @@ public class GraphQuery<T>
 
     return list;
   }
+
+  @SuppressWarnings("unchecked")
+  public List<T> getRawResults()
+  {
+    GraphDBService service = GraphDBService.getInstance();
+    GraphRequest request = service.getGraphDBRequest();
+
+    List<Object> results = service.query(request, statement, parameters);
+
+    LinkedList<T> list = new LinkedList<T>();
+
+    for (Object result : results)
+    {
+      list.add((T) result);
+    }
+
+    return list;
+  }
 }

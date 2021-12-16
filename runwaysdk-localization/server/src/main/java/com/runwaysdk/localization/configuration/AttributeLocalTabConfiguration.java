@@ -47,6 +47,7 @@ import com.runwaysdk.dataaccess.StructDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeStruct;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.io.excel.ExcelUtil;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.localization.LocaleDimension;
 import com.runwaysdk.localization.LocalizedValueStore;
@@ -126,7 +127,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
     }
     else
     {
-      key = keyCell.getStringCellValue();
+      key = ExcelUtil.getString(keyCell);
     }
     
     String type;
@@ -143,7 +144,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
         throw new ProgrammingErrorException("The configuration for this spreadsheet is invalid. If the spreadsheet does not contain the type for this entity then one must be provided for the tab configuration.");
       }
       
-      type = row.getCell(column.getIndex()).getStringCellValue();
+      type = ExcelUtil.getString(row.getCell(column.getIndex()));
     }
     
     String attributeName;
@@ -160,7 +161,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
         throw new ProgrammingErrorException("The configuration for this spreadsheet is invalid. If the spreadsheet does not contain the attribute name for the attribute local then one must be provided for the tab configuration.");
       }
       
-      attributeName = row.getCell(column.getIndex()).getStringCellValue();
+      attributeName = ExcelUtil.getString(row.getCell(column.getIndex()));
     }
     
     StructDAO struct;
@@ -196,7 +197,7 @@ public class AttributeLocalTabConfiguration extends TabConfiguration
       String value = new String();
       if (cell != null)
       {
-        value = row.getCell(index).getStringCellValue();
+        value = ExcelUtil.getString(row.getCell(index));
       }
       if (value == null)
       {

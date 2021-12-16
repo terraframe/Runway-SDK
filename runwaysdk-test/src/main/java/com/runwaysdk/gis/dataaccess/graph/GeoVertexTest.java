@@ -39,20 +39,20 @@ import com.runwaysdk.session.Request;
 
 public class GeoVertexTest
 {
-  public static String TEST_PACKAGE               = TestFixConst.TEST_PACKAGE;
-  
-  public static String GEO_VERTEX_CLASS_NAME_1    = "TestGeoVertexClass1";
+  public static String TEST_PACKAGE            = TestFixConst.TEST_PACKAGE;
 
-  public static String GEO_VERTEX_CLASS_NAME_2    = "TestGeoVertexClass2";
-  
-  public static String GEO_VERTEX_CLASS_1         = TEST_PACKAGE + "." + GEO_VERTEX_CLASS_NAME_1;
+  public static String GEO_VERTEX_CLASS_NAME_1 = "TestGeoVertexClass1";
 
-  public static String GEO_VERTEX_CLASS_2         = TEST_PACKAGE + "." + GEO_VERTEX_CLASS_NAME_2;
-  
-  public static String GEO_EDGE_CLASS_NAME        = "GeoTestEdgeClass";
+  public static String GEO_VERTEX_CLASS_NAME_2 = "TestGeoVertexClass2";
 
-  public static String GEO_EDGE_CLASS             = TEST_PACKAGE + "." + GEO_EDGE_CLASS_NAME;
-  
+  public static String GEO_VERTEX_CLASS_1      = TEST_PACKAGE + "." + GEO_VERTEX_CLASS_NAME_1;
+
+  public static String GEO_VERTEX_CLASS_2      = TEST_PACKAGE + "." + GEO_VERTEX_CLASS_NAME_2;
+
+  public static String GEO_EDGE_CLASS_NAME     = "GeoTestEdgeClass";
+
+  public static String GEO_EDGE_CLASS          = TEST_PACKAGE + "." + GEO_EDGE_CLASS_NAME;
+
   @Request
   @BeforeClass
   public static void classSetUp()
@@ -72,14 +72,14 @@ public class GeoVertexTest
   {
     LocalProperties.setSkipCodeGenAndCompile(false);
   }
-  
+
   @Request
   @Before
   public void setUp() throws Exception
   {
 
   }
-  
+
   @Request
   @After
   public void tearDown() throws Exception
@@ -90,7 +90,7 @@ public class GeoVertexTest
 
     TestFixtureFactory.deleteMdClass(GEO_VERTEX_CLASS_1);
   }
-  
+
   @Request
   @Test
   public void testCreateMdGeoVertex()
@@ -101,22 +101,24 @@ public class GeoVertexTest
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
 
     MdGraphClassTest.examineMdGraphClassCreationAndDefaultAttributes(mdGeoVertexDAO, dbClassName, graphRequest);
-    
-    boolean attrDefined; 
-    
+
+    boolean attrDefined;
+
     for (String dbAttrName : GeoEntityInfo.DEFAULT_ATTRIBUTES)
     {
-      attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
-      Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+      if (!dbAttrName.equals(GeoEntityInfo.GEOID))
+      {
+        attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+        Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+      }
     }
 
     mdGeoVertexDAO.delete();
-    
+
     boolean classDefined = GraphDBService.getInstance().isVertexClassDefined(graphRequest, dbClassName);
     Assert.assertEquals("Vertex class still exists in the database", false, classDefined);
   }
-  
-  
+
   private static MdGeoVertexDAO createGeoVertexClass(String className)
   {
     MdGeoVertexDAO mdGeoVertexDAO = TestFixtureFactory.createMdGeoVertex(className);

@@ -29,6 +29,7 @@ import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.SpecializedDAOImplementationIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -102,7 +103,7 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     QueryFactory queryFactory = new QueryFactory();
     BusinessDAOQuery query = queryFactory.businessDAOQuery(VaultFileInfo.CLASS);
@@ -112,13 +113,13 @@ public class VaultDAO extends BusinessDAO implements VaultDAOIF, SpecializedDAOI
     while (iterator.hasNext())
     {
       VaultFileDAO file = ( (VaultFileDAOIF) iterator.next() ).getBusinessDAO();
-      file.deleteNoNotify(businessContext);
+      file.deleteNoNotify(context);
     }
 
     VaultCommand command = new VaultCommand(this.getVaultPath());
     command.doIt();
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /*

@@ -69,6 +69,10 @@ public class DatabaseProperties
    * increase performance.
    */
   private Hashtable<String, String> attributeTypes;
+  
+  private static final String appUsername = System.getenv("POSTGRES_APP_USERNAME");
+  
+  private static final String appPassword = System.getenv("POSTGRES_APP_PASSWORD");
 
   /**
    * A holder class for access to the singleton. Allows for lazy instantiation and thread
@@ -243,7 +247,23 @@ public class DatabaseProperties
    */
   public static String getPassword()
   {
+    if (appPassword != null)
+    {
+      return appPassword;
+    }
+    
     return Singleton.INSTANCE.common_props.getString("database.password");
+  }
+  
+  public static String getRootPassword()
+  {
+    String rootPassword = System.getenv("POSTGRES_ROOT_PASSWORD");
+    if (rootPassword != null)
+    {
+      return rootPassword;
+    }
+    
+    return Singleton.INSTANCE.common_props.getString("database.rootPassword");
   }
 
   /**
@@ -275,7 +295,23 @@ public class DatabaseProperties
    */
   public static String getUser()
   {
+    if (appUsername != null)
+    {
+      return appUsername;
+    }
+    
     return Singleton.INSTANCE.common_props.getString("database.user");
+  }
+  
+  public static String getRootUser()
+  {
+    String rootUsername = System.getenv("POSTGRES_ROOT_USERNAME");
+    if (rootUsername != null)
+    {
+      return rootUsername;
+    }
+    
+    return Singleton.INSTANCE.common_props.getString("database.rootUser");
   }
 
   /**

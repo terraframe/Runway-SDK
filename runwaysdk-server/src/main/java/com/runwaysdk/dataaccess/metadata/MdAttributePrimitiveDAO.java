@@ -117,14 +117,6 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
   }
   
   
-  @Override
-  public void delete(boolean businessContext)
-  {
-    
-    
-    super.delete(businessContext);
-  }
-  
   /**
    * Creates an <code>EmptyValueProblem</code> if this is set to be an expression attribute,
    * yet no expression is defined.

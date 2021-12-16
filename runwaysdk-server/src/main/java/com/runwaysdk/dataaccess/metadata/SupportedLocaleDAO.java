@@ -125,7 +125,7 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
   }
 
   @Override
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {
     String enumName = this.getAttribute(EnumerationMasterInfo.NAME).getValue();
 
@@ -145,7 +145,7 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
       if (localeMdAttributeDAOIF != null && !deletedObjectIds.contains(localeMdAttributeDAOIF.getOid()))
       {
         MdAttributeDAO localeMdAttributeDAO = (MdAttributeDAO) localeMdAttributeDAOIF.getBusinessDAO();
-        localeMdAttributeDAO.delete(businessContext);
+        localeMdAttributeDAO.delete(context);
         deletedObjectIds.add(localeMdAttributeDAO.getOid());
       }
 
@@ -160,13 +160,13 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
         if (dimensionLocaleMdAttributeDAOIF != null && !deletedObjectIds.contains(dimensionLocaleMdAttributeDAOIF.getOid()))
         {
           MdAttributeDAO dimensionLocaleMdAttributeDAO = (MdAttributeDAO) dimensionLocaleMdAttributeDAOIF.getBusinessDAO();
-          dimensionLocaleMdAttributeDAO.delete(businessContext);
+          dimensionLocaleMdAttributeDAO.delete(context);
           deletedObjectIds.add(dimensionLocaleMdAttributeDAO.getOid());
         }
       }
     }
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**

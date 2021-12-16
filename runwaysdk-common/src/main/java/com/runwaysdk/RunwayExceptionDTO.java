@@ -21,6 +21,7 @@ package com.runwaysdk;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.RunwayExceptionDTOInfo;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.localization.CommonExceptionMessageLocalizer;
 
 public class RunwayExceptionDTO extends RuntimeException implements RunwayExceptionIF
 {

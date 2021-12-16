@@ -26,7 +26,7 @@ import java.util.TreeSet;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EnumerationMasterInfo;
-import com.runwaysdk.constants.SupportedLocale;
+//import com.runwaysdk.constants.SupportedLocale;
 import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -168,10 +168,10 @@ public class UserDAO extends SingleActorDAO implements UserDAOIF
    *
    * @param value for the locale
    */
-  public void setLocale(SupportedLocale locale)
-  {
-    super.addItem(UserInfo.LOCALE, locale.getOid());
-  }
+//  public void setLocale(SupportedLocale locale)
+//  {
+//    super.addItem(UserInfo.LOCALE, locale.getOid());
+//  }
 
   /**
    * Return the maximum number of sessions a user can have open concurrently

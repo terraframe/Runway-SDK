@@ -16,55 +16,26 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.constants;
+package com.runwaysdk.system.metadata;
 
-public enum SupportedLocale
+public class MdAttributeGraphReferenceDTO extends MdAttributeGraphReferenceDTOBase
 {
-
-  /**
-   * English (United States) locale
-   */
-  EN_US("20070322JN000000000000000000001020070322JN0000000000000000000009", "English (United States)");
+  private static final long serialVersionUID = 1695151860;
   
-  /**
-   * 
-   */
-  public static final String LOCALE_LABEL = "localeLabel";
-  
-  /**
-   * The oid of the locale
-   */
-  private String oid;
-  
-  /**
-   * The label of the local
-   */
-  private String localeLabel;
-  
-  /**
-   * Enum constructor
-   * 
-   * @param oid
-   */
-  private SupportedLocale(String oid, String localeLabel)
+  public MdAttributeGraphReferenceDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
-    this.oid = oid;
-    this.localeLabel = localeLabel;
+    super(clientRequest);
   }
   
   /**
-   * Returns the oid 
-   */
-  public String getOid()
+  * Copy Constructor: Duplicates the values and attributes of the given BusinessDTO into a new DTO.
+  * 
+  * @param businessDTO The BusinessDTO to duplicate
+  * @param clientRequest The clientRequest this DTO should use to communicate with the server.
+  */
+  protected MdAttributeGraphReferenceDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
-    return oid;
+    super(businessDTO, clientRequest);
   }
   
-  /**
-   * Returns the local label
-   */
-  public String getLocaleLabel()
-  {
-    return this.localeLabel;
-  }
 }

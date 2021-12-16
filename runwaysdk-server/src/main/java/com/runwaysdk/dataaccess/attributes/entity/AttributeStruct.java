@@ -30,6 +30,7 @@ import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.StructDAO;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 /**
  * @author nathan
@@ -351,7 +352,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
    *          layer.
    * 
    */
-  public void delete(boolean businessContext)
+  public void delete(DeleteContext context)
   {
     StructDAO structDAO = this.getStructDAO();
 
@@ -359,7 +360,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
     {
       try
       {
-        this.getStructDAO().delete(businessContext);
+        this.getStructDAO().delete(context);
       }
       catch (StaleEntityException e)
       {
@@ -393,10 +394,10 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
   /**
    * Cleans up any object that references this attribute in some way. Deletes the StructDAO instance used by this struct. <b>Precondition: </b> this attribute MUST be a member of the given BusinessDAO <br>
    */
-  public void removeReferences(EntityDAO componentData, boolean businessContext)
+  public void removeReferences(EntityDAO componentData, DeleteContext context)
   {
-    super.removeReferences(componentData, businessContext);
-    this.delete(businessContext);
+    super.removeReferences(componentData, context);
+    this.delete(context);
   }
 
   /**

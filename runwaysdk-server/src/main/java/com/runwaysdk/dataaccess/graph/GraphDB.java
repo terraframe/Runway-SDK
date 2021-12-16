@@ -27,6 +27,7 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 
 public interface GraphDB
 {
@@ -217,12 +218,13 @@ public interface GraphDB
    * @param attributeName
    * @param cot
    *          TODO
+   * @param context TODO
    * @return {@link GraphDDLCommandAction} so that it can be closed or committed
    *         in the command object.
    */
-  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot);
+  public GraphDDLCommandAction dropAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context);
 
-  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot);
+  public GraphDDLCommandAction dropGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean cot, DeleteContext context);
 
   /**
    * Returns true if the attribute is defined on the class, false otherwise.
@@ -305,6 +307,20 @@ public interface GraphDB
    * @return
    */
   public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
+
+  /**
+   * Adds an link attribute of the given name and type.
+   * 
+   * @param graphRequest
+   * @param graphDDLRequest
+   * @param dbClassName
+   * @param dbAttrName
+   * @param linkClassType
+   * @param required
+   * @param changeOverTime
+   * @return
+   */
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime);
 
   /**
    * Adds a geometry attribute of the given name and type.

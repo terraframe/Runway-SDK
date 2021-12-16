@@ -23,6 +23,7 @@ import java.util.Map;
 import com.runwaysdk.constants.IndexAttributeInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.AttributeInvalidUniquenessConstraintException;
+import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.InvalidAttributeForIndexDefinitionException;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
@@ -155,7 +156,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext)
+  public void delete(boolean businessContext, DeleteContext context)
   {     
     MdIndexDAO mdIndexDAO = (MdIndexDAO)this.getMdIndexDAO().getBusinessDAO();
 
@@ -163,7 +164,7 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
     // cannot be properly rolled back.
     mdIndexDAO.dropIndex(true);
 
-    super.delete(businessContext);
+    super.delete(context);
   }
 
   /**
@@ -177,13 +178,13 @@ public class IndexAttributeDAO extends TreeDAO implements IndexAttributeIF, Spec
    * layer instead of the data access layer.
    *
    */
-  public void deleteFromMdIndex(MdIndexDAO mdIndexDAO, boolean businessContext)
+  public void deleteFromMdIndex(MdIndexDAO mdIndexDAO, DeleteContext context)
   {
     // Must be called BEFORE this relationship is deleted.  Otherwise, the drop
     // cannot be properly rolled back.
     mdIndexDAO.dropIndex(true);
 
-	super.delete(businessContext);
+	super.delete(context);
   }
 
   /**

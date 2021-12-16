@@ -18,9 +18,9 @@
  */
 package com.runwaysdk.system.scheduler;
 
-import com.runwaysdk.LocalizationFacade;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.CommonProperties;
+import com.runwaysdk.localization.LocalizationFacade;
 
 
 /**

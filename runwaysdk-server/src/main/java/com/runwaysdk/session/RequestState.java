@@ -28,8 +28,8 @@ import org.aspectj.lang.JoinPoint;
 import com.runwaysdk.ProblemIF;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.dataaccess.database.DatabaseException;
-import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class RequestState
 {
