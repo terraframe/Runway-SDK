@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import com.runwaysdk.util.FileIO;
-import com.terraframe.utf8.UTF8ResourceBundle;
+import com.runwaysdk.utf8.UTF8ResourceBundle;
 
 /**
  * Manages access to properties files in profiles

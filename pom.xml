@@ -30,6 +30,7 @@
   <description>This is the root for all runwaysdk projects. All runwaysdk projects inherit from this pom.</description>
   
   <modules>
+    <module>runwaysdk-utf8resource</module>
     <module>runwaysdk-common</module>
     <module>runwaysdk-client</module>
     <module>runwaysdk-server</module>
@@ -88,11 +89,6 @@
     </developer>
   </developers>
   
-  <ciManagement>
-    <system>Hudson</system>
-    <url>http://23.31.94.170:5925/hudson/</url>
-  </ciManagement>
-  
   <scm>
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
@@ -108,34 +104,34 @@
     <aspectj.plugin.version>1.7</aspectj.plugin.version>    
 
     <runway.url>http://www.terraframe.com</runway.url>
-
-    <mvn.server.url>https://nexus.terraframe.com/</mvn.server.url>
   </properties>
 
   <url>${runway.url}</url>
 
   <repositories>
     <repository>
-      <id>terraframe</id>
-      <name>terraframe</name>
-      <url>${mvn.server.url}content/groups/allrepos</url>
-      <layout>default</layout>
+      <id>terraframe-public</id>
+      <url>https://dl.cloudsmith.io/public/terraframe/public/maven/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
     </repository>
   </repositories>
 
   <distributionManagement>
-    <repository>
-      <id>terraframe-releases</id>
-      <name>terraframe-releases</name>
-      <url>${mvn.server.url}content/repositories/releases/</url>
-      <layout>default</layout>
-    </repository>
     <snapshotRepository>
-      <id>terraframe-snapshots</id>
-      <name>terraframe-snapshots</name>
-      <url>${mvn.server.url}content/repositories/snapshots/</url>
-      <layout>default</layout>
+      <id>cloudsmith</id>
+      <url>https://maven.cloudsmith.io/terraframe/public/</url>
     </snapshotRepository>
+    <repository>
+      <id>cloudsmith</id>
+      <url>https://maven.cloudsmith.io/terraframe/public/</url>
+    </repository>
   </distributionManagement>
   
   <!-- These profiles allow for Maven execution of Runway-SDK's Java Tools, 
@@ -439,8 +435,8 @@
   <build>
     <plugins>
       <plugin>
-	      <artifactId>maven-release-plugin</artifactId>
-	      <version>2.5.3</version>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
       </plugin>
 <!-- 
       <plugin>

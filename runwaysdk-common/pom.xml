@@ -28,9 +28,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.terraframe</groupId>
-      <artifactId>UTF8Resource</artifactId>
-      <version>1.0</version>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-utf8resource</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
