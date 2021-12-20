@@ -26,19 +26,18 @@ git config --global user.name "$GIT_TF_BUILDER_USERNAME"
 git config --global user.email builder@terraframe.com
 
 cd $WORKSPACE/runway-sdk
-
-git checkout dev
-git pull
+BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 
 mvn license:format
 git add -A
 git diff-index --quiet HEAD || git commit -m 'License headers'
 git push
 
-git checkout master
-git merge dev
-git push
-
+if [ "$BRANCH" == "dev" ]; then
+  git checkout master
+  git merge dev
+  git push
+fi
 
 mvn release:prepare -B -Dtag=$VERSION \
                  -DreleaseVersion=$VERSION \
@@ -46,13 +45,14 @@ mvn release:prepare -B -Dtag=$VERSION \
                  
 mvn release:perform -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
 
-
-cd ..
-rm -rf rwdev
-mkdir rwdev
-cd rwdev
-git clone -b master git@github.com:terraframe/Runway-SDK.git
-cd Runway-SDK
-git checkout dev
-git merge master
-git push
+if [ "$BRANCH" == "dev" ]; then
+  cd ..
+  rm -rf rwdev
+  mkdir rwdev
+  cd rwdev
+  git clone -b master git@github.com:terraframe/Runway-SDK.git
+  cd Runway-SDK
+  git checkout dev
+  git merge master
+  git push
+fi
