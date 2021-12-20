@@ -25,6 +25,10 @@
 git config --global user.name "$GIT_TF_BUILDER_USERNAME"
 git config --global user.email builder@terraframe.com
 
+echo "printing branch information"
+echo $GIT_BRANCH
+echo $GIT_LOCAL_BRANCH
+
 cd $WORKSPACE/runway-sdk
 #BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 BRANCH=${GIT_BRANCH#*/}
