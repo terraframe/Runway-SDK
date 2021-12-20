@@ -26,7 +26,8 @@ git config --global user.name "$GIT_TF_BUILDER_USERNAME"
 git config --global user.email builder@terraframe.com
 
 cd $WORKSPACE/runway-sdk
-BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+#BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+BRANCH=${GIT_BRANCH#*/}
 
 mvn license:format
 git add -A
