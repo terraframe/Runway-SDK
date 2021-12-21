@@ -126,11 +126,11 @@
   <distributionManagement>
     <snapshotRepository>
       <id>cloudsmith</id>
-      <url>https://maven.cloudsmith.io/terraframe/public/</url>
+      <url>https://maven.cloudsmith.io/terraframe/runwaysdk/</url>
     </snapshotRepository>
     <repository>
       <id>cloudsmith</id>
-      <url>https://maven.cloudsmith.io/terraframe/public/</url>
+      <url>https://maven.cloudsmith.io/terraframe/runwaysdk/</url>
     </repository>
   </distributionManagement>
   
