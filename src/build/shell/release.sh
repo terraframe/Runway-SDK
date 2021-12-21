@@ -48,7 +48,7 @@ mvn release:prepare -B -Dtag=$VERSION \
                  -DreleaseVersion=$VERSION \
                  -DdevelopmentVersion=$NEXT
                  
-mvn release:perform -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
+mvn release:perform -B -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
 
 if [ "$BRANCH" == "dev" ]; then
   cd ..
