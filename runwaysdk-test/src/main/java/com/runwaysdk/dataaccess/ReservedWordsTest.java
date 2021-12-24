@@ -211,7 +211,7 @@ public class ReservedWordsTest
     {
       MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
       mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "PurpleMonkeyDishwasher");
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.COLUMN_NAME, "blob");
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.COLUMN_NAME, "SELECT");
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");

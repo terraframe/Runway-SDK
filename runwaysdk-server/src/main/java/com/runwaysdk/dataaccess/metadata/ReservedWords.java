@@ -460,7 +460,9 @@ public class ReservedWords
 			"or", "order", "ordinality",
 			"out", "outer", "output",
 			"overlaps", "overlay", "overriding",
-			"owner", "pad", "parameter",
+	        "pad", "parameter",
+// Heads up: test	         
+//			"owner", "pad", "parameter",
 			"parameters", "parameter_mode", "parameter_name",
 			"parameter_ordinal_position", "parameter_specific_catalog", "parameter_specific_name",
 			"parameter_specific_schema", "partial", "pascal",
