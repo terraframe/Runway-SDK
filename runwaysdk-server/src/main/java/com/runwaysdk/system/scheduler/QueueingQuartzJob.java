@@ -124,24 +124,17 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   @Request
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
   {
-    try
+    if (!tryAcquireLock())
     {
-      boolean didLock = lock.tryAcquire(300, TimeUnit.SECONDS);
-      
-      if (!didLock)
-      {
-        logger.error("Unable to obtain lock after waiting a decently long time. Deadlocked?");
-        return;
-      }
-    }
-    catch (InterruptedException e)
-    {
-      logger.error("Was interrupted unexpectedly", e);
+      return;
     }
     
-    ExecutableJob startExecJob = null;
-    JobHistoryRecord startRecord = null;
+    String nextHistoryId = null;
     
+    // !Important! We are now entering LOCK DEPENDENT code. If your code does not require the lock, then you should either run it
+    // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
+    // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
+    // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
     try
     {
       String historyId = (String) context.get(HISTORY_RECORD_ID);
@@ -157,13 +150,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       
       if (queue.size() > 0) // Kick off the next job in the queue (if one exists)
       {
-        String nextHistoryId = queue.peek();
-        
-        JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
-        ExecutableJob execJob = history.getParent();
-        
-        startExecJob = execJob;
-        startRecord = history;
+        nextHistoryId = queue.peek();
       }
     }
     finally
@@ -171,9 +158,12 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       lock.release();
     }
     
-    if (startExecJob != null && startRecord != null)
+    if (nextHistoryId != null)
     {
-      startExecJob.getQuartzJob().start(startRecord);
+      JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
+      ExecutableJob execJob = history.getParent();
+      
+      execJob.getQuartzJob().start(history);
     }
     
     super.jobWasExecuted(context, jobException);
@@ -190,7 +180,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     
     return queue(execJobId, historyId);
   }
-
+  
   private boolean queue(String execJobId, String historyId)
   {
     if (historyId == null)
@@ -204,29 +194,25 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       historyId = record.getOid();
     }
     
-    try
+    if (!tryAcquireLock())
     {
-      boolean didLock = lock.tryAcquire(300, TimeUnit.SECONDS);
-      
-      if (!didLock)
-      {
-        logger.error("Unable to obtain lock after waiting a decently long time. Deadlocked?");
-        return true;
-      }
-    }
-    catch (InterruptedException e)
-    {
-      logger.error("Was interrupted unexpectedly", e);
       return true;
     }
     
+    boolean invokeHandleQueued = false;
+    boolean stopJobExecution = true;
+    
+    // !Important! We are now entering LOCK DEPENDENT code. If your code does not require the lock, then you should either run it
+    // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
+    // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
+    // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
     try
     {
       Queue<String> queue = getQueue();
       
       if (queue.size() > 0 && queue.peek().equals(historyId)) // We're first in line. Allow execution and just pass through
       {
-        return false;
+        stopJobExecution = false;
       }
       else if (!queue.contains(historyId))
       {
@@ -234,31 +220,64 @@ public class QueueingQuartzJob extends QuartzRunwayJob
         {
           queue.add(historyId);
           
-          this.handleQueued(execJobId, historyId);
+          invokeHandleQueued = true;
           
-          return true;
+          stopJobExecution = true;
         }
         else // Nobody is currently running. Add us to the front of the queue and begin running.
         {
           queue.add(historyId);
           
-          return false;
+          stopJobExecution = false;
         }
       }
       else
       {
-        return true; // If the job is already queued then just ignore the firing.
+        stopJobExecution = true; // If the job is already queued then just ignore the firing.
       }
     }
     finally
     {
       lock.release();
     }
+    
+    if (invokeHandleQueued)
+    {
+      this.handleQueued(execJobId, historyId);
+    }
+    
+    return stopJobExecution;
   }
   
   @Override
   public void jobExecutionVetoed(JobExecutionContext context)
   {
     // Do nothing
+  }
+  
+  private boolean tryAcquireLock()
+  {
+    try
+    {
+      boolean didLock = lock.tryAcquire(300, TimeUnit.SECONDS);
+      
+      if (!didLock)
+      {
+        logger.error("Unable to acquire lock.");
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    catch (InterruptedException e)
+    {
+      // If we get an InterruptedException it likely means that the server is dying for some reason. Maybe the OS sent us kill signal because
+      // it ran out of memory or something. We just want to stop running as quick as we can in this scenario.
+      logger.error("Was interrupted unexpectedly", e);
+      
+      return false;
+    }
   }
 }
