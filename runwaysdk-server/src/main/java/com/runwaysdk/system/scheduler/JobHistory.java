@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.SmartException;
+import com.runwaysdk.business.SmartExceptionDTO;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -198,6 +199,27 @@ public class JobHistory extends JobHistoryBase
           
           attr.put("key", mdAttr.definesAttribute());
           attr.put("value", se.getValue(mdAttr.definesAttribute()));
+          
+          attrs.put(attr);
+        }
+        
+        json.put("attributes", attrs);
+      }
+      else if (t instanceof SmartExceptionDTO)
+      {
+        SmartExceptionDTO se = ( (SmartExceptionDTO) t );
+        
+        json.put("type", se.getType());
+        
+        JSONArray attrs = new JSONArray();
+        
+        List<String> attrNames = se.getAttributeNames();
+        for (String name : attrNames)
+        {
+          JSONObject attr = new JSONObject();
+          
+          attr.put("key", name);
+          attr.put("value", se.getValue(name));
           
           attrs.put(attr);
         }
