@@ -104,6 +104,41 @@
 
   <profiles>
     <profile>
+      <id>import-working</id>
+      <activation>
+        <property>
+          <name>import-working</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>import-working</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <executable>java</executable>
+                  <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
+                  <arguments>
+                    <argument>${project.basedir}/src/main/domain</argument>
+                    <argument />
+                    <argument>false</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>unimport-working</id>
       <activation>
         <property>
@@ -138,6 +173,7 @@
         </plugins>
       </build>
     </profile>
+    
   </profiles>
 
   <build>

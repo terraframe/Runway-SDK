@@ -20,24 +20,20 @@
 -->
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
-    <create>
-      <mdBusiness 
-        label="Md Attribute Classification" 
-        name="com.runwaysdk.system.metadata.MdAttributeClassification" 
-        extends="com.runwaysdk.system.metadata.MdAttributeConcrete"
-        isAbstract="false"
-        generateController="false" >
+    <update>
+      <mdVertex
+        name="com.runwaysdk.system.AbstractClassification">
+        <create>
         <attributes>
-          <reference name="referenceMdClassification" type="com.runwaysdk.system.metadata.MdClassification" label="Reference MdClassification" description="The class linked by this attribute, must be a MdClassification" required="true" />
-          <graphReference name="root" label="root" required="false" immutable="false" description="Root node for the attribute" type="com.runwaysdk.system.AbstractClassification" />                            
+          <localCharEmbedded name="description" required="true" size="2000" />  
         </attributes>
-      </mdBusiness>
-    
-    </create>
+        </create>
+      </mdVertex>    
+     </update>    
   </doIt>
   <undoIt>
     <delete>
-      <object type="com.runwaysdk.system.metadata.MdBusiness" key="com.runwaysdk.system.metadata.MdAttributeClassification" />    
+      <object type="com.runwaysdk.system.metadata.MdAttribute" key="com.runwaysdk.system.AbstractClassification.description" />
     </delete>
   </undoIt>
 </version>
