@@ -1559,13 +1559,14 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           Object value = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
           if (value instanceof OVertex)
           {
             OVertex ref = (OVertex) value;
-            String oid = (String) ref.getProperty("oid");
+            String itemOid = (String) ref.getProperty("oid");
 
-            ID id = new ID(oid, ref.getIdentity());
+            ID id = new ID(itemOid, ref.getIdentity());
 
             attribute.setValueInternal(oid, id, startDate, endDate);
           }

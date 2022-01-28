@@ -249,7 +249,7 @@ public class AttributeGraphRef extends Attribute
         objectValue = id.oid;
       }
 
-      collection.add(new ValueOverTime(vot.getStartDate(), vot.getEndDate(), objectValue));
+      collection.add(new ValueOverTime(vot.getOid(), vot.getStartDate(), vot.getEndDate(), objectValue));
     }
 
     return collection;
