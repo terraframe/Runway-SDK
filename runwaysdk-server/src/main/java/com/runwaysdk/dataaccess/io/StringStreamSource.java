@@ -3,25 +3,28 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.apache.tools.ant.filters.StringInputStream;
+import org.apache.commons.io.IOUtils;
+
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public class StringStreamSource implements StreamSource
 {
@@ -43,16 +46,25 @@ public class StringStreamSource implements StreamSource
   @Override
   public InputStream getInputStream()
   {
-    return new StringInputStream(source);
+    try
+    {
+      return IOUtils.toInputStream(this.source, "UTF-8");
+    }
+    catch (IOException e)
+    {
+      throw new ProgrammingErrorException(e);
+    }
   }
-  
+
   @Override
   public String getToString()
   {
     return "an in memory string source";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.io.StreamSource#toURI()
    */
   @Override
