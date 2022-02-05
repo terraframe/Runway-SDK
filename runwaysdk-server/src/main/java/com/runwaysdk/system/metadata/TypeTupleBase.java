@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1008096034)
+@com.runwaysdk.business.ClassSignature(hash = 1815577532)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -33,8 +15,8 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
   private com.runwaysdk.business.Struct displayLabel = null;
   
   public static java.lang.String METADATA = "metadata";
-  public static java.lang.String STATEMASTER = "stateMaster";
-  private static final long serialVersionUID = 1008096034;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1815577532;
   
   public TypeTupleBase()
   {
@@ -52,10 +34,10 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     this.validateAttribute(DISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(DISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public com.runwaysdk.system.metadata.Metadata getMetadata()
@@ -70,7 +52,7 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     }
   }
   
-  public String getMetadataId()
+  public String getMetadataOid()
   {
     return getValue(METADATA);
   }
@@ -80,10 +62,10 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     this.validateAttribute(METADATA);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getMetadataMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getMetadataMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(METADATA);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(METADATA);
   }
   
   public void setMetadata(com.runwaysdk.system.metadata.Metadata value)
@@ -95,6 +77,18 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     else
     {
       setValue(METADATA, value.getOid());
+    }
+  }
+  
+  public void setMetadataId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(METADATA, "");
+    }
+    else
+    {
+      setValue(METADATA, oid);
     }
   }
   

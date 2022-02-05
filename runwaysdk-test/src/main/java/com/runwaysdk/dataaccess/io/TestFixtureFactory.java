@@ -44,6 +44,7 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.LongConditionInfo;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.constants.MdAttributeBooleanUtil;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeClassificationInfo;
 import com.runwaysdk.constants.MdAttributeDateInfo;
@@ -429,13 +430,28 @@ public class TestFixtureFactory
     return mdTable;
   }
 
+  /**
+   * Generates source
+   * @return
+   */
   public static MdBusinessDAO createMdBusiness1()
+  {
+    return createMdBusiness1(true);
+  }
+  
+  /**
+   * 
+   * @param generateSource true to generate source, false otherwise.
+   * @return
+   */
+  public static MdBusinessDAO createMdBusiness1(boolean generateSource)
   {
     MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
     mdBusiness.setValue(MdBusinessInfo.NAME, TestFixConst.TEST_CLASS1);
     mdBusiness.setValue(MdBusinessInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
     mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdBusiness Set Test");
     mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdBusiness Attributes Test");
+    mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanUtil.getStringValue(generateSource));
 
     return mdBusiness;
   }

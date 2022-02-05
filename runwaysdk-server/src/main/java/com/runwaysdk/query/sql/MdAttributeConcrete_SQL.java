@@ -466,6 +466,7 @@ public abstract class MdAttributeConcrete_SQL implements MdAttributeConcreteDAOI
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);
   }
 
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     throw new UnsupportedOperationException(this.unsupportedOperationMessage);

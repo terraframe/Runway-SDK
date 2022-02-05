@@ -38,6 +38,7 @@ import com.runwaysdk.session.Session;
 
 public abstract class AbstractClassification extends AbstractClassificationBase
 {
+  @SuppressWarnings("unused")
   private static final long  serialVersionUID = -1972569469;
 
   public static final String CODE             = "code";

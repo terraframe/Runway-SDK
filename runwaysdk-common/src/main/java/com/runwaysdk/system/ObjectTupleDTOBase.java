@@ -1,28 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -2108503365)
+@com.runwaysdk.business.ClassSignature(hash = 78772462)
 public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ObjectTuple";
-  private static final long serialVersionUID = -2108503365;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 78772462;
   
   protected ObjectTupleDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -49,16 +32,15 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String DATAOBJECT = "dataObject";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String STATEMASTER = "stateMaster";
   public static java.lang.String TYPE = "type";
   public java.util.Date getCreateDate()
   {
@@ -97,7 +79,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -136,7 +118,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getDataObjectId()
+  public String getDataObjectOid()
   {
     return getValue(DATAOBJECT);
   }
@@ -185,7 +167,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -296,7 +278,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -333,7 +315,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -370,7 +352,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getMdAttributeConcreteId()
+  public String getMdAttributeConcreteOid()
   {
     return getValue(MDATTRIBUTECONCRETE);
   }
@@ -419,7 +401,7 @@ public abstract class ObjectTupleDTOBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }

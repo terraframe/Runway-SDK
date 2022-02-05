@@ -1,6 +1,6 @@
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -1142653233)
+@com.runwaysdk.business.ClassSignature(hash = -1944827653)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -11,7 +11,8 @@ package com.runwaysdk.business;
 public abstract class BusinessSystemBase extends com.runwaysdk.business.ElementSystem
 {
   public final static String CLASS = "com.runwaysdk.business.Business";
-  private static final long serialVersionUID = -1142653233;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1944827653;
   
   public BusinessSystemBase()
   {

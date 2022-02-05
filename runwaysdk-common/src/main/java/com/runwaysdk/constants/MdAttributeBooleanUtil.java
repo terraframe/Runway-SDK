@@ -93,6 +93,26 @@ public class MdAttributeBooleanUtil extends MdAttributeUtil
         return false;
       }
    }
+    
+   /**
+    * Returns the corresponding boolean as a string, either {@link MdAttributeBooleanInfo.TRUE)
+    * or {@link MdAttributeBooleanInfo.FALSE).
+    * 
+    * @param booleanValue
+    * @return the corresponding boolean as a string, either {@link MdAttributeBooleanInfo.TRUE)
+    * or {@link MdAttributeBooleanInfo.FALSE).
+    */
+   public static String getStringValue(boolean value)
+   {
+     if (value)
+     {
+       return MdAttributeBooleanInfo.TRUE;
+     }
+     else
+     {
+       return MdAttributeBooleanInfo.FALSE;
+     }
+   }
 
   /**
    * Format the the given value to the internal DAO  boolean format.  If it is not a valid

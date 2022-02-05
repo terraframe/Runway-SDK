@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -946656427)
+@com.runwaysdk.business.ClassSignature(hash = 1165130574)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +12,8 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
   public static java.lang.String OID = "oid";
-  private static final long serialVersionUID = -946656427;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1165130574;
   
   public TermUtilBase()
   {
@@ -42,15 +25,15 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return getValue(OID);
   }
   
-  public void validateId()
+  public void validateOid()
   {
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.TermUtil.CLASS);
-    return mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()
@@ -63,7 +46,7 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
     return (TermUtil) com.runwaysdk.business.Util.get(oid);
   }
   
-  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childOid, java.lang.String oldParentOid, java.lang.String oldRelType, java.lang.String newParentOid, java.lang.String newRelType)
+  public static com.runwaysdk.business.Relationship addAndRemoveLink(java.lang.String childOid, java.lang.String oldparentOid, java.lang.String oldRelType, java.lang.String newparentOid, java.lang.String newRelType)
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
@@ -100,12 +83,6 @@ public abstract class TermUtilBase extends com.runwaysdk.business.Util
   }
   
   public static com.runwaysdk.business.ontology.TermAndRel[] getDirectDescendants(java.lang.String termId, java.lang.String[] relationshipType)
-  {
-    String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
-    throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);
-  }
-  
-  public static java.lang.String getTimestamp()
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.ontology.TermUtil.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

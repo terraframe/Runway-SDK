@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -33,7 +32,6 @@ import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.io.ImportManager;
 
 public class AttributeHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF

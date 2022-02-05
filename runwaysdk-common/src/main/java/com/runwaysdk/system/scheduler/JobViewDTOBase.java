@@ -1,28 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 166736944)
+@com.runwaysdk.business.ClassSignature(hash = 480121125)
 public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
-  private static final long serialVersionUID = 166736944;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 480121125;
   
   protected JobViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -36,8 +19,8 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
   
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String OID = "oid";
   public static java.lang.String JOB = "job";
+  public static java.lang.String OID = "oid";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   public com.runwaysdk.system.scheduler.ExecutableJobDTO getDownstreamJob()
   {
@@ -51,7 +34,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
   }
   
-  public String getDownstreamJobId()
+  public String getDownstreamJobOid()
   {
     return getValue(DOWNSTREAMJOB);
   }
@@ -137,7 +120,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
   }
   
-  public String getJobId()
+  public String getJobOid()
   {
     return getValue(JOB);
   }

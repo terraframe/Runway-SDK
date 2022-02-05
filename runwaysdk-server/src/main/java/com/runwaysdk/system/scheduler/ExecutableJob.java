@@ -21,17 +21,12 @@ package com.runwaysdk.system.scheduler;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
 public abstract class ExecutableJob extends ExecutableJobBase
 {
   private static final long        serialVersionUID = 328266996;
-
-  private final static Logger              logger           = LoggerFactory.getLogger(ExecutableJob.class);
 
   private QuartzRunwayJob quartzJob;
   

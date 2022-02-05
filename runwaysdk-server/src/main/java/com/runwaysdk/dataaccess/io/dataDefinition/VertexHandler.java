@@ -21,11 +21,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.dataaccess.EntityDAO;
-import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.io.ImportManager;
-import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 
 /**

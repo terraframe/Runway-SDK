@@ -1,11 +1,11 @@
-package com.runwaysdk.business;
+package com.runwaysdk.system.metadata;
 
-public abstract class ComponentSystemDTO extends ComponentSystemDTOBase
+public class MdAttributeUUIDDTO extends MdAttributeUUIDDTOBase
 {
   @SuppressWarnings("unused")
-  private static final long serialVersionUID = 559946463;
+  private static final long serialVersionUID = 1636795084;
   
-  public ComponentSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
+  public MdAttributeUUIDDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(clientRequest);
   }
@@ -16,7 +16,7 @@ public abstract class ComponentSystemDTO extends ComponentSystemDTOBase
   * @param businessDTO The BusinessDTO to duplicate
   * @param clientRequest The clientRequest this DTO should use to communicate with the server.
   */
-  protected ComponentSystemDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
+  protected MdAttributeUUIDDTO(com.runwaysdk.business.BusinessDTO businessDTO, com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
     super(businessDTO, clientRequest);
   }

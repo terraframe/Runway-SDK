@@ -1,10 +1,11 @@
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -379142723)
+@com.runwaysdk.business.ClassSignature(hash = 1151618306)
 public abstract class MdAttributeTermDTOBase extends com.runwaysdk.system.metadata.MdAttributeReferenceDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeTerm";
-  private static final long serialVersionUID = -379142723;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1151618306;
   
   protected MdAttributeTermDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

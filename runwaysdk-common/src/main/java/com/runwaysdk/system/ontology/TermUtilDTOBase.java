@@ -1,28 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -335631147)
+@com.runwaysdk.business.ClassSignature(hash = -66999858)
 public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  private static final long serialVersionUID = -335631147;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -66999858;
   
   protected TermUtilDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -35,10 +18,10 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
   }
   
   public static java.lang.String OID = "oid";
-  public static final com.runwaysdk.business.RelationshipDTO addAndRemoveLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String oldParentOid, java.lang.String oldRelType, java.lang.String newParentOid, java.lang.String newRelType)
+  public static final com.runwaysdk.business.RelationshipDTO addAndRemoveLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String oldparentOid, java.lang.String oldRelType, java.lang.String newparentOid, java.lang.String newRelType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String"};
-    Object[] _parameters = new Object[]{childOid, oldParentOid, oldRelType, newParentOid, newRelType};
+    Object[] _parameters = new Object[]{childOid, oldparentOid, oldRelType, newparentOid, newRelType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "addAndRemoveLink", _declaredTypes);
     return (com.runwaysdk.business.RelationshipDTO) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
@@ -89,14 +72,6 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
     Object[] _parameters = new Object[]{termId, relationshipType};
     com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "getDirectDescendants", _declaredTypes);
     return (com.runwaysdk.business.ontology.TermAndRelDTO[]) clientRequest.invokeMethod(_metadata, null, _parameters);
-  }
-  
-  public static final java.lang.String getTimestamp(com.runwaysdk.constants.ClientRequestIF clientRequest)
-  {
-    String[] _declaredTypes = new String[]{};
-    Object[] _parameters = new Object[]{};
-    com.runwaysdk.business.MethodMetaData _metadata = new com.runwaysdk.business.MethodMetaData(com.runwaysdk.system.ontology.TermUtilDTO.CLASS, "getTimestamp", _declaredTypes);
-    return (java.lang.String) clientRequest.invokeMethod(_metadata, null, _parameters);
   }
   
   public static final void removeLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String parentOid, java.lang.String relationshipType)

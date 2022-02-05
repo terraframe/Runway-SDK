@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1830422843)
+@com.runwaysdk.business.ClassSignature(hash = 1540164206)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -33,18 +15,18 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String DATAOBJECT = "dataObject";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
   public static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String STATEMASTER = "stateMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = 1830422843;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1540164206;
   
   public ObjectTupleBase()
   {
@@ -79,7 +61,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -107,7 +89,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getDataObjectId()
+  public String getDataObjectOid()
   {
     return getValue(DATAOBJECT);
   }
@@ -135,6 +117,18 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
+  public void setDataObjectId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(DATAOBJECT, "");
+    }
+    else
+    {
+      setValue(DATAOBJECT, oid);
+    }
+  }
+  
   public com.runwaysdk.system.metadata.MdDomain getEntityDomain()
   {
     if (getValue(ENTITYDOMAIN).trim().equals(""))
@@ -147,7 +141,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -175,20 +169,16 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOid()
+  public void setEntityDomainId(java.lang.String oid)
   {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ObjectTuple.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
+    }
   }
   
   public String getKeyName()
@@ -247,7 +237,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -275,7 +265,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -303,7 +293,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getMdAttributeConcreteId()
+  public String getMdAttributeConcreteOid()
   {
     return getValue(MDATTRIBUTECONCRETE);
   }
@@ -331,6 +321,34 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
+  public void setMdAttributeConcreteId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(MDATTRIBUTECONCRETE, "");
+    }
+    else
+    {
+      setValue(MDATTRIBUTECONCRETE, oid);
+    }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ObjectTuple.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -343,7 +361,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -368,6 +386,18 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     else
     {
       setValue(OWNER, value.getOid());
+    }
+  }
+  
+  public void setOwnerId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, oid);
     }
   }
   
@@ -402,7 +432,7 @@ public abstract class ObjectTupleBase extends com.runwaysdk.business.Business
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ObjectTuple.CLASS);
     return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
-    
+  
   public String getType()
   {
     return getValue(TYPE);

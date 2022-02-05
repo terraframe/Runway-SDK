@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -2024211446)
+@com.runwaysdk.business.ClassSignature(hash = -1720639023)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,9 +11,10 @@ package com.runwaysdk.system.metadata;
 public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CreateBackupException";
-  public static java.lang.String OID = "oid";
   public static java.lang.String LOCATION = "location";
-  private static final long serialVersionUID = -2024211446;
+  public static java.lang.String OID = "oid";
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1720639023;
   
   public CreateBackupExceptionBase()
   {
@@ -51,22 +34,6 @@ public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.S
   public CreateBackupExceptionBase(java.lang.Throwable cause)
   {
     super(cause);
-  }
-  
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.CreateBackupException.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getLocation()
@@ -97,6 +64,22 @@ public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.S
     }
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.CreateBackupException.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   protected String getDeclaredType()
   {
     return CLASS;
@@ -105,8 +88,8 @@ public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.S
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{location}", this.getLocation());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

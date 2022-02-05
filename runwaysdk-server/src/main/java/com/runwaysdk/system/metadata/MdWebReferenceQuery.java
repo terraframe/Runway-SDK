@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1065661705)
+@com.runwaysdk.business.ClassSignature(hash = -612585644)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -56,23 +38,6 @@ public  class MdWebReferenceQuery extends com.runwaysdk.system.metadata.MdWebAtt
   {
     return com.runwaysdk.system.metadata.MdWebReference.CLASS;
   }
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
-  {
-    return getShowOnSearch(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, displayLabel);
-
-  }
   /**  
    * Returns an iterator of Business objects that match the query criteria specified
    * on this query object. 
@@ -105,9 +70,6 @@ public  class MdWebReferenceQuery extends com.runwaysdk.system.metadata.MdWebAtt
   public interface MdWebReferenceQueryReferenceIF extends com.runwaysdk.system.metadata.MdWebAttributeQuery.MdWebAttributeQueryReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdWebReference mdWebReference);
 
@@ -143,23 +105,6 @@ public  class MdWebReferenceQuery extends com.runwaysdk.system.metadata.MdWebAtt
       return this.NE(mdWebReference.getOid());
     }
 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
-  {
-    return getShowOnSearch(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, displayLabel);
-
-  }
   }
 
 /**
@@ -169,9 +114,6 @@ public  class MdWebReferenceQuery extends com.runwaysdk.system.metadata.MdWebAtt
   public interface MdWebReferenceQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdWebAttributeQuery.MdWebAttributeQueryMultiReferenceIF
   {
 
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch();
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias);
-    public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdWebReference ... mdWebReference);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdWebReference ... mdWebReference);
@@ -255,23 +197,6 @@ public  class MdWebReferenceQuery extends com.runwaysdk.system.metadata.MdWebAtt
       }
 
       return this.containsExactly(itemIdArray);
-  }
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch()
-  {
-    return getShowOnSearch(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableBoolean getShowOnSearch(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableBoolean)this.get(com.runwaysdk.system.metadata.MdWebReference.SHOWONSEARCH, alias, displayLabel);
-
   }
   }
 }

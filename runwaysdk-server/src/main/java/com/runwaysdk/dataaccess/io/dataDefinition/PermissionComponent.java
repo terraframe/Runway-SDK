@@ -131,6 +131,7 @@ public class PermissionComponent implements ComponentIF
    * 
    * @see com.runwaysdk.ComponentIF#getObjectValue(java.lang.String)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Object getObjectValue(String name)
   {

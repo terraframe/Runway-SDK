@@ -21,7 +21,6 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.EntityInfo;
-import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;

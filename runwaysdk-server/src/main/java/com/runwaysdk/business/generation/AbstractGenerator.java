@@ -213,6 +213,8 @@ public abstract class AbstractGenerator implements GeneratorIF
   {
     long serialUID = getSerialVersionUID();
 
+// Heads up: test    
+    getWriter().writeLine("@SuppressWarnings(\"unused\")");
     getWriter().writeLine("private static final long serialVersionUID = " + serialUID + ";");
     getWriter().writeLine("");
   }

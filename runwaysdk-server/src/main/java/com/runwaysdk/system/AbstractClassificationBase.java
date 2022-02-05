@@ -32,6 +32,7 @@ public abstract class AbstractClassificationBase extends com.runwaysdk.business.
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String OID = "oid";
   public static java.lang.String SEQ = "seq";
+  @SuppressWarnings("unused")
   private static final long serialVersionUID = -691042304;
   
   public AbstractClassificationBase()

@@ -31,6 +31,7 @@ import com.runwaysdk.configuration.LegacyPropertiesSupport;
 
 public class DeployProperties
 {
+  @SuppressWarnings("unused")
   private static final Logger logger = LoggerFactory.getLogger(DeployProperties.class);
   
   private ConfigurationReaderIF props;

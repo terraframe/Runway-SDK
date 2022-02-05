@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1597990885)
+@com.runwaysdk.business.ClassSignature(hash = -347211403)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,7 +13,8 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   public final static String CLASS = "com.runwaysdk.system.metadata.MdBusiness";
   public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
   public static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
-  private static final long serialVersionUID = -1597990885;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -347211403;
   
   public MdBusinessBase()
   {
@@ -70,10 +53,10 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     this.validateAttribute(CACHEALGORITHM);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCacheAlgorithmMd()
+  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getCacheAlgorithmMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdBusiness.CLASS);
-    return mdClassIF.definesAttribute(CACHEALGORITHM);
+    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(CACHEALGORITHM);
   }
   
   public com.runwaysdk.system.metadata.MdBusiness getSuperMdBusiness()
@@ -88,7 +71,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
   }
   
-  public String getSuperMdBusinessId()
+  public String getSuperMdBusinessOid()
   {
     return getValue(SUPERMDBUSINESS);
   }
@@ -98,10 +81,10 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     this.validateAttribute(SUPERMDBUSINESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSuperMdBusinessMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getSuperMdBusinessMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdBusiness.CLASS);
-    return mdClassIF.definesAttribute(SUPERMDBUSINESS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(SUPERMDBUSINESS);
   }
   
   public void setSuperMdBusiness(com.runwaysdk.system.metadata.MdBusiness value)
@@ -113,6 +96,18 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     else
     {
       setValue(SUPERMDBUSINESS, value.getOid());
+    }
+  }
+  
+  public void setSuperMdBusinessId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(SUPERMDBUSINESS, "");
+    }
+    else
+    {
+      setValue(SUPERMDBUSINESS, oid);
     }
   }
   

@@ -73,8 +73,12 @@ public class PostGIS extends PostgreSQL
     String dbName = DatabaseProperties.getDatabaseName();
 
     BaseDataSource pgRootDataSource = new PGSimpleDataSource();
-    pgRootDataSource.setServerName(DatabaseProperties.getServerName());
-    pgRootDataSource.setPortNumber(DatabaseProperties.getPort());
+        
+// Heads up: test    
+    pgRootDataSource.setServerNames(new String[] {DatabaseProperties.getServerName()});
+    pgRootDataSource.setPortNumbers(new int[] {DatabaseProperties.getPort()});
+//    pgRootDataSource.setServerName(DatabaseProperties.getServerName());
+//    pgRootDataSource.setPortNumber(DatabaseProperties.getPort());
 
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);

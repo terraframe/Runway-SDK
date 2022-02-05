@@ -21,9 +21,8 @@ package com.runwaysdk;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import com.runwaysdk.constants.XMLConstants;
+import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
-import com.runwaysdk.dataaccess.io.Versioning;
 import com.runwaysdk.session.Request;
 
 /**
@@ -60,6 +59,8 @@ public class Sandbox
     long daysBetween = ChronoUnit.MONTHS.between(LocalDate.parse("2016-08-31"), LocalDate.parse("2016-12-20"));
 
     System.out.println(daysBetween);
+    
+    GenerationFacade.regenerateSystemBaseClasses();
 
     // UUID uuid1 = UUID.nameUUIDFromBytes( ("Test String" ).getBytes());
     // UUID uuid2 = UUID.nameUUIDFromBytes( ("Test String" ).getBytes());
@@ -68,7 +69,7 @@ public class Sandbox
     // System.out.println(uuid2.getMostSignificantBits()+"
     // "+uuid2.getLeastSignificantBits());
 
-    Versioning.run(new String[] { "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain", XMLConstants.VERSION_XSD });
+//    Versioning.run(new String[] { "/home/terraframe/git/Runway-SDK/runwaysdk-test/src/main/domain", XMLConstants.VERSION_XSD });
 
     // ServerProperties.setAllowModificationOfMdAttribute(true);
     //

@@ -1,28 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -990797406)
+@com.runwaysdk.business.ClassSignature(hash = -369900228)
 public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.TypeTuple";
-  private static final long serialVersionUID = -990797406;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -369900228;
   
   protected TypeTupleDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -47,7 +30,6 @@ public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.Met
   
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String METADATA = "metadata";
-  public static java.lang.String STATEMASTER = "stateMaster";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();
@@ -85,7 +67,7 @@ public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.Met
     }
   }
   
-  public String getMetadataId()
+  public String getMetadataOid()
   {
     return getValue(METADATA);
   }

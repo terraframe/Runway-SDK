@@ -34,8 +34,8 @@ import org.junit.runners.Suite;
   MethodTest.class,
   IntegratedMethodTest.class,
   LocaleManagerTest.class,
-//  IntegratedSessionTest.class,
-  SessionTest.class,
+  IntegratedSessionTest.class,
+  SessionTest.class
 })
 public class SessionTestSuite
 {

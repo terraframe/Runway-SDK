@@ -108,7 +108,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String lastUpdatedBy = getColumn(termAllPaths, MetadataInfo.LAST_UPDATED_BY);
     String parentTerm = getColumn(termAllPaths, DatabaseAllPathsStrategy.PARENT_TERM_ATTR);
     String childTerm = getColumn(termAllPaths, DatabaseAllPathsStrategy.CHILD_TERM_ATTR);
-    String sequenceName = this.getSequenceName(termAllPaths);
+//    String sequenceName = this.getSequenceName(termAllPaths);
 
     String[] metadataColumns = new String[] { oid, siteMaster, key, type, domain, lastUpdateDate, sequence, createdBy, lockedBy, createDate, owner, lastUpdatedBy, parentTerm, childTerm };
 
@@ -222,7 +222,7 @@ public class PostgresOntolgoyDatabase implements OntologyDatabase
     String parentTerm = getColumn(allPaths, DatabaseAllPathsStrategy.PARENT_TERM_ATTR);
     String childTerm = getColumn(allPaths, DatabaseAllPathsStrategy.CHILD_TERM_ATTR);
     String allPathsRootTypeId = this.getAllPathsTypeIdRoot(allPaths);
-    String sequenceName = this.getSequenceName(allPaths);
+//    String sequenceName = this.getSequenceName(allPaths);
 
     String createdById = new String();
     SessionIF sessionIF = Session.getCurrentSession();

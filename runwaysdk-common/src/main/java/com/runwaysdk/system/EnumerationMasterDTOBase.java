@@ -1,28 +1,11 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -676180407)
+@com.runwaysdk.business.ClassSignature(hash = 2031984916)
 public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.EnumerationMaster";
-  private static final long serialVersionUID = -676180407;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 2031984916;
   
   protected EnumerationMasterDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -50,11 +33,11 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
   public static java.lang.String ENUMNAME = "enumName";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -96,7 +79,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -158,7 +141,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -306,7 +289,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -343,7 +326,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -380,7 +363,7 @@ public abstract class EnumerationMasterDTOBase extends com.runwaysdk.business.Bu
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }

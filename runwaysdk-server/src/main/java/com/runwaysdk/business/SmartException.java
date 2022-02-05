@@ -271,6 +271,7 @@ public abstract class SmartException extends RuntimeException implements RunwayE
    * @param name
    * @return object stored on the attribute.
    */
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     return this.transientDAO.getObjectValue(name);

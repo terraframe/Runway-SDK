@@ -55,9 +55,10 @@ public class TermControllerUtil
       String parentTermDisplay = parentTerm.getDisplayLabel().getValue();
       String mdDisplay = parentTerm.getMd().getDisplayLabel();
 
-      String version = TermUtilDTO.getTimestamp(clientRequest);
-
-      String filename = mdDisplay + "-" + parentTermDisplay + "(" + version + ").xml.gz";
+// Heads up: test
+//      String version = TermUtilDTO.getTimestamp(clientRequest);
+//      String filename = mdDisplay + "-" + parentTermDisplay + "(" + version + ").xml.gz";
+      String filename = mdDisplay + "-" + parentTermDisplay + ".xml.gz";
 
       resp.addHeader("Content-Disposition", "attachment;filename=\"" + filename + "\"");
       resp.setContentType("application/gzip");

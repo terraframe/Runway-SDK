@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 446330977)
+@com.runwaysdk.business.ClassSignature(hash = 670594422)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,11 +17,11 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
   public static java.lang.String FILEEXTENSION = "fileExtension";
   public static java.lang.String FILENAME = "fileName";
   public static java.lang.String FILESIZE = "fileSize";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -47,7 +29,8 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
   public static java.lang.String VAULTNAME = "vaultName";
   public static java.lang.String VAULTPATH = "vaultPath";
   public static java.lang.String VAULTREFERENCE = "vaultReference";
-  private static final long serialVersionUID = 446330977;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 670594422;
   
   public VaultFileBase()
   {
@@ -82,7 +65,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -110,7 +93,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -135,6 +118,18 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     else
     {
       setValue(ENTITYDOMAIN, value.getOid());
+    }
+  }
+  
+  public void setEntityDomainId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
     }
   }
   
@@ -222,22 +217,6 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.VaultFile.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -294,7 +273,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -322,7 +301,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -338,6 +317,22 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.VaultFile.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -350,7 +345,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -375,6 +370,18 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     else
     {
       setValue(OWNER, value.getOid());
+    }
+  }
+  
+  public void setOwnerId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, oid);
     }
   }
   
@@ -470,7 +477,7 @@ public abstract class VaultFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getVaultReferenceId()
+  public String getVaultReferenceOid()
   {
     return getValue(VAULTREFERENCE);
   }

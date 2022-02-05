@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 159095155)
+@com.runwaysdk.business.ClassSignature(hash = -326102336)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -56,22 +38,21 @@ public  class MdAttributeUUIDQuery extends com.runwaysdk.system.metadata.MdAttri
   {
     return com.runwaysdk.system.metadata.MdAttributeUUID.CLASS;
   }
-  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue()
+  public com.runwaysdk.query.SelectableUUID getDefaultValue()
   {
     return getDefaultValue(null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
 
   }
   /**  
@@ -105,9 +86,10 @@ public  class MdAttributeUUIDQuery extends com.runwaysdk.system.metadata.MdAttri
  **/
   public interface MdAttributeUUIDQueryReferenceIF extends com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryReferenceIF
   {
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue();
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias);
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias, String displayLabel);
+
+    public com.runwaysdk.query.SelectableUUID getDefaultValue();
+    public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias);
+    public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdAttributeUUID mdAttributeUUID);
 
@@ -142,22 +124,22 @@ public  class MdAttributeUUIDQuery extends com.runwaysdk.system.metadata.MdAttri
       if(mdAttributeUUID == null) return this.NE((java.lang.String)null);
       return this.NE(mdAttributeUUID.getOid());
     }
-    
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue()
+
+  public com.runwaysdk.query.SelectableUUID getDefaultValue()
   {
     return getDefaultValue(null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
 
   }
   }
@@ -169,9 +151,9 @@ public  class MdAttributeUUIDQuery extends com.runwaysdk.system.metadata.MdAttri
   public interface MdAttributeUUIDQueryMultiReferenceIF extends com.runwaysdk.system.metadata.MdAttributePrimitiveQuery.MdAttributePrimitiveQueryMultiReferenceIF
   {
 
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue();
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias);
-    public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias, String displayLabel);
+    public com.runwaysdk.query.SelectableUUID getDefaultValue();
+    public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias);
+    public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdAttributeUUID ... mdAttributeUUID);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdAttributeUUID ... mdAttributeUUID);
@@ -256,21 +238,21 @@ public  class MdAttributeUUIDQuery extends com.runwaysdk.system.metadata.MdAttri
 
       return this.containsExactly(itemIdArray);
   }
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue()
+  public com.runwaysdk.query.SelectableUUID getDefaultValue()
   {
     return getDefaultValue(null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, null);
 
   }
  
-  public com.runwaysdk.query.SelectablePrimitive getDefaultValue(String alias, String displayLabel)
+  public com.runwaysdk.query.SelectableUUID getDefaultValue(String alias, String displayLabel)
   {
-    return (com.runwaysdk.query.SelectablePrimitive)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
+    return (com.runwaysdk.query.SelectableUUID)this.get(com.runwaysdk.system.metadata.MdAttributeUUID.DEFAULTVALUE, alias, displayLabel);
 
   }
   }
