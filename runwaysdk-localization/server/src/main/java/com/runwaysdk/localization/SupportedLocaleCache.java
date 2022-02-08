@@ -48,8 +48,15 @@ public class SupportedLocaleCache
       {
         internalRefresh();
       }
+      
+      // The person calling this method needs their own copy of our cache otherwise they're vulnerable to threading issues.
+      Set<SupportedLocaleIF> clone = new HashSet<SupportedLocaleIF>();
+      for (SupportedLocaleIF locale : supportedLocales)
+      {
+        clone.add(locale);
+      }
   
-      return supportedLocales;
+      return clone;
     }
     finally
     {
@@ -67,8 +74,15 @@ public class SupportedLocaleCache
       {
         internalRefresh();
       }
+      
+      // The person calling this method needs their own copy of our cache otherwise they're vulnerable to threading issues.
+      Set<Locale> clone = new HashSet<Locale>();
+      for (Locale locale : locales)
+      {
+        clone.add(locale);
+      }
   
-      return locales;
+      return clone;
     }
     finally
     {
