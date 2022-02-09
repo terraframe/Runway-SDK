@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -62,19 +62,19 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   /**
    * 
    */
-  private static final long        serialVersionUID      = 7578346295961644414L;
+  private static final long serialVersionUID = 7578346295961644414L;
 
   /**
    * Stores the state of this {@link EntityDAO} object.
    */
-  private DAOState objectState;
-  
+  private DAOState          objectState;
+
   /**
    * Indicates if this instance is being imported to the database from an
    * external source. Many auto-generated attributes and encryptions are
    * bypassed when importing.
    */
-  private boolean                  isImport;
+  private boolean           isImport;
 
   /**
    * True when this object is being applied within the context of an import, but
@@ -84,47 +84,47 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * bypassed when we are modifying an object within the context of import
    * conflict resolution.
    */
-  private boolean                  importResolution;
+  private boolean           importResolution;
 
   /**
    * Indicates whether the delete method has completed execution and the object
    * has been deleted;
    */
-  private boolean                  isDeleted             = false;
-  
+  private boolean           isDeleted        = false;
+
   /**
    * Either cache MRU.
    */
-  private boolean                  isFromCacheMRU        = false;
+  private boolean           isFromCacheMRU   = false;
 
   /**
    * From cache all.
    */
-  private boolean                  isFromCacheAll        = false;
+  private boolean           isFromCacheAll   = false;
 
   /**
    * Flag denoting if this represents a non-persisting disconnected object
    */
-  private boolean                  disconnected          = false;
+  private boolean           disconnected     = false;
 
   /**
-   * The old OID of the object should the OID ever need to change due to a new key
-   * value from which the OID is hashed. This is used to update caches with the
-   * the new OID.
+   * The old OID of the object should the OID ever need to change due to a new
+   * key value from which the OID is hashed. This is used to update caches with
+   * the the new OID.
    */
-  private String                   oldId                 = null;
+  private String            oldId            = null;
 
   /**
    * True if <code>this.hasIdChanged()</code> is true and the new oid has been
    * applied to the database.
    */
-  private boolean                  newIdApplied          = false;
+  private boolean           newIdApplied     = false;
 
   /**
    * The old KEY of the object should the KEY ever need to change. This is used
    * to update caches with the the new KEY.
    */
-  private String                   oldKey                = null;
+  private String            oldKey           = null;
 
   /**
    * The default constructor, does not set any attributes
@@ -158,11 +158,14 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
     this.linkAttributes();
   }
-  
+
   /**
-   * Returns a boolean that indicates if this is a new instance (i.e. has not been committed to the database).
+   * Returns a boolean that indicates if this is a new instance (i.e. has not
+   * been committed to the database).
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    *
    * @return a boolean that indicates if this is a new instance
    */
@@ -172,15 +175,18 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   }
 
   /**
-   * Do not call this method unless you know what you are doing.  Sets the new state of the object.
+   * Do not call this method unless you know what you are doing. Sets the new
+   * state of the object.
    *
-   * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
+   * <br/>
+   * <b>Precondition:</b> true <br/>
+   * <b>Postcondition:</b> true
    */
   public void setIsNew(boolean isNew)
   {
     this.getObjectState().setIsNew(isNew);
   }
-  
+
   /**
    * @return the state of this {@link EntityDAO} object.
    */
@@ -188,7 +194,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     return this.objectState;
   }
-  
+
   /**
    * Sets the internal state of the object.
    * 
@@ -198,7 +204,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     this.objectState = daoState;
   }
-  
+
   /**
    * Sets the internal state of the object.
    * 
@@ -208,10 +214,10 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
   {
     this.objectState = new DAOStatePostTransaction(this, this.objectState);
   }
-  
+
   /**
-   * Return the old OID of the object should the OID ever need to change due to a
-   * new key value from which the OID is hashed. This is used to update caches
+   * Return the old OID of the object should the OID ever need to change due to
+   * a new key value from which the OID is hashed. This is used to update caches
    * with the the new OID.
    */
   public String getOldId()
@@ -540,7 +546,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * <b>Precondition:</b> name != null <br/>
    * <b>Precondition:</b> !name.trim().equals("") <br/>
    * <b>Precondition:</b> value != null <br/>
-   * <b>Precondition:</b> Attribute name is valid for this EntityDAO's class <br/>
+   * <b>Precondition:</b> Attribute name is valid for this EntityDAO's class
+   * <br/>
    * <b>Postcondition:</b> Attribute is set with the given value
    * 
    * <br/>
@@ -641,7 +648,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     {
       if (!this.getAttribute(ComponentInfo.KEY).getValue().trim().equals(""))
       {
-        this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue();        
+        this.oldKey = this.getAttribute(ComponentInfo.KEY).getValue();
       }
       this.getAttribute(ComponentInfo.KEY).setValue(newKey);
     }
@@ -978,7 +985,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * <br/>
    * <b>Precondition:</b> Attributes must have correct values as defined in
    * their meta data. <br/>
-   * <b>Postcondition:</b> state of the EntityDAO is preserved in the database. <br/>
+   * <b>Postcondition:</b> state of the EntityDAO is preserved in the database.
+   * <br/>
    * <b>Postcondition:</b> return value is not null
    * 
    * @param validateRequired
@@ -1145,7 +1153,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       {
         continue;
       }
-      
+
       // A new attribute may have been added since this object was instantiated.
       if (this.hasAttribute(mdAttribute.definesAttribute()))
       {
@@ -1202,7 +1210,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       {
         continue;
       }
-      
+
       // A new attribute may have been added since this object was instantiated.
       if (this.hasAttribute(mdAttribute.definesAttribute()))
       {
@@ -1235,7 +1243,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * EntityDAO <br/>
    * <b>Precondition:</b> Attribues must have correct values as defined in their
    * meta data. <br/>
-   * <b>Postcondition:</b> state of the EntityDAO is preserved in the database. <br/>
+   * <b>Postcondition:</b> state of the EntityDAO is preserved in the database.
+   * <br/>
    * <b>Postcondition:</b> return value is not null
    * 
    * @return OID of the EntityDAO.
@@ -1426,7 +1435,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    *          otherwise. If true then cascading deletes of other Entity objects
    *          will happen at the Business layer instead of the data access
    *          layer.
-   * @param context TODO
+   * @param context
+   *          TODO
    * 
    */
   public void delete(DeleteContext context)
@@ -1577,113 +1587,125 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     EntityQuery entityQ = mdEntityIF.getEntityQuery();
     QueryFactory qf = entityQ.getQueryFactory();
     ValueQuery q = qf.valueQuery();
+    boolean attributeExists = true;
 
-    q.SELECT(entityQ.oid("entityId"));
-    q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value));
-
-    OIterator<ValueObject> i = q.getIterator();
-
-    List<String> columnNames = new LinkedList<String>();
-    List<String> prepStmtVars = new LinkedList<String>();
-    List<Object> values = new LinkedList<Object>();
-    List<String> attributeTypes = new LinkedList<String>();
-
-    List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
-
-    while (i.hasNext())
+    try
     {
-      String entityId = i.next().getValue("entityId");
+      q.SELECT(entityQ.oid("entityId"));
+      q.WHERE(entityQ.get(mdAttributeIF.definesAttribute()).EQ(value));
+    }
+    catch (NullPointerException e)
+    {
+      // This will occur if the type being reference was of the MdAttribute class
+      attributeExists = false;
+    }
 
-      TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
-      EntityDAO entityDAO = (EntityDAO) cache.getEntityDAO(entityId);
+    if (attributeExists)
+    {
+      OIterator<ValueObject> i = q.getIterator();
 
-      // check to see if the object is in the global cache, if so, use that
-      // object.
-      if (entityDAO == null)
+      List<String> columnNames = new LinkedList<String>();
+      List<String> prepStmtVars = new LinkedList<String>();
+      List<Object> values = new LinkedList<Object>();
+      List<String> attributeTypes = new LinkedList<String>();
+
+      List<PreparedStatement> preparedStatementList = new LinkedList<PreparedStatement>();
+
+      while (i.hasNext())
       {
-        EntityDAOIF globalCachedObject = ObjectCache.getEntityDAOIFfromCache(entityId);
-        if (globalCachedObject != null)
+        String entityId = i.next().getValue("entityId");
+
+        TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+        EntityDAO entityDAO = (EntityDAO) cache.getEntityDAO(entityId);
+
+        // check to see if the object is in the global cache, if so, use that
+        // object.
+        if (entityDAO == null)
         {
-          entityDAO = globalCachedObject.getEntityDAO();
+          EntityDAOIF globalCachedObject = ObjectCache.getEntityDAOIFfromCache(entityId);
+          if (globalCachedObject != null)
+          {
+            entityDAO = globalCachedObject.getEntityDAO();
+          }
         }
-      }
 
-      // If the attribute is required, then we cannot remove it.
-      if (mdAttributeIF.isRequired())
-      {
-        String error = "Cannot clear attribute [" + mdAttributeIF.definesAttribute() + "] on type [" + mdEntityIF.definesType() + "] -  it is required";
+        // If the attribute is required, then we cannot remove it.
+        if (mdAttributeIF.isRequired())
+        {
+          String error = "Cannot clear attribute [" + mdAttributeIF.definesAttribute() + "] on type [" + mdEntityIF.definesType() + "] -  it is required";
 
-        throw new AttributeValueException(error, "");
-      }
+          throw new AttributeValueException(error, "");
+        }
 
-      columnNames.add(mdAttributeIF.getColumnName());
-      prepStmtVars.add(Attribute.getPreparedStatementVariable());
-      values.add("");
-      attributeTypes.add(mdAttributeIF.getType());
+        columnNames.add(mdAttributeIF.getColumnName());
+        prepStmtVars.add(Attribute.getPreparedStatementVariable());
+        values.add("");
+        attributeTypes.add(mdAttributeIF.getType());
 
-      if (mdEntityIF instanceof MdElementDAOIF)
-      {
-        MdElementDAOIF mdElementDAOIF = (MdElementDAOIF) mdEntityIF;
-        MdAttributeConcreteDAOIF seqMdAttr = mdElementDAOIF.getAllDefinedMdAttributeMap().get(ElementInfo.SEQUENCE.toLowerCase());
-        MdElementDAOIF seqMdElementDAOIF = (MdElementDAOIF) seqMdAttr.definedByClass();
+        if (mdEntityIF instanceof MdElementDAOIF)
+        {
+          MdElementDAOIF mdElementDAOIF = (MdElementDAOIF) mdEntityIF;
+          MdAttributeConcreteDAOIF seqMdAttr = mdElementDAOIF.getAllDefinedMdAttributeMap().get(ElementInfo.SEQUENCE.toLowerCase());
+          MdElementDAOIF seqMdElementDAOIF = (MdElementDAOIF) seqMdAttr.definedByClass();
 
-        String nextSequence = Database.getNextSequenceNumber();
+          String nextSequence = Database.getNextSequenceNumber();
 
+          if (entityDAO != null)
+          {
+            entityDAO.getAttribute(ElementInfo.SEQUENCE).setValue(nextSequence);
+          }
+
+          // Column being cleared and sequence column are defined in the same
+          // table.
+          if (mdElementDAOIF.getTableName().equals(seqMdElementDAOIF.getTableName()))
+          {
+            columnNames.add(seqMdAttr.getColumnName());
+            prepStmtVars.add(Attribute.getPreparedStatementVariable());
+            values.add(nextSequence);
+            attributeTypes.add(seqMdAttr.getType());
+          }
+          // Sequence column is defined on a separate table
+          else
+          {
+            List<String> seqNumColumnNames = new LinkedList<String>();
+            List<String> seqNumPrepStmtVars = new LinkedList<String>();
+            List<Object> seqNumValues = new LinkedList<Object>();
+            List<String> seqNumAttributeTypes = new LinkedList<String>();
+
+            seqNumColumnNames.add(seqMdAttr.getColumnName());
+            seqNumPrepStmtVars.add(Attribute.getPreparedStatementVariable());
+            seqNumValues.add(nextSequence);
+            seqNumAttributeTypes.add(seqMdAttr.getType());
+
+            PreparedStatement seqPreparedStmt = Database.buildPreparedSQLUpdateStatement(seqMdElementDAOIF.getTableName(), seqNumColumnNames, seqNumPrepStmtVars, seqNumValues, seqNumAttributeTypes, entityId);
+            preparedStatementList.add(seqPreparedStmt);
+          }
+        }
+
+        PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, entityId);
+        preparedStatementList.add(preparedStmt);
+
+        Database.executeStatementBatch(preparedStatementList);
+
+        // Mark the object to be removed from the global cache so that it can be
+        // refreshed on the next request.
         if (entityDAO != null)
         {
-          entityDAO.getAttribute(ElementInfo.SEQUENCE).setValue(nextSequence);
+          entityDAO.getAttribute(mdAttributeIF.definesAttribute()).setValue("");
+          cache.updateEntityDAO(entityDAO);
         }
-
-        // Column being cleared and sequence column are defined in the same
-        // table.
-        if (mdElementDAOIF.getTableName().equals(seqMdElementDAOIF.getTableName()))
-        {
-          columnNames.add(seqMdAttr.getColumnName());
-          prepStmtVars.add(Attribute.getPreparedStatementVariable());
-          values.add(nextSequence);
-          attributeTypes.add(seqMdAttr.getType());
-        }
-        // Sequence column is defined on a separate table
         else
         {
-          List<String> seqNumColumnNames = new LinkedList<String>();
-          List<String> seqNumPrepStmtVars = new LinkedList<String>();
-          List<Object> seqNumValues = new LinkedList<Object>();
-          List<String> seqNumAttributeTypes = new LinkedList<String>();
-
-          seqNumColumnNames.add(seqMdAttr.getColumnName());
-          seqNumPrepStmtVars.add(Attribute.getPreparedStatementVariable());
-          seqNumValues.add(nextSequence);
-          seqNumAttributeTypes.add(seqMdAttr.getType());
-
-          PreparedStatement seqPreparedStmt = Database.buildPreparedSQLUpdateStatement(seqMdElementDAOIF.getTableName(), seqNumColumnNames, seqNumPrepStmtVars, seqNumValues, seqNumAttributeTypes, entityId);
-          preparedStatementList.add(seqPreparedStmt);
+          cache.refreshEntityInGlobalCache(entityId);
         }
+
+        columnNames.clear();
+        prepStmtVars.clear();
+        values.clear();
+        attributeTypes.clear();
+
+        preparedStatementList.clear();
       }
-
-      PreparedStatement preparedStmt = Database.buildPreparedSQLUpdateStatement(mdEntityIF.getTableName(), columnNames, prepStmtVars, values, attributeTypes, entityId);
-      preparedStatementList.add(preparedStmt);
-
-      Database.executeStatementBatch(preparedStatementList);
-
-      // Mark the object to be removed from the global cache so that it can be
-      // refreshed on the next request.
-      if (entityDAO != null)
-      {
-        entityDAO.getAttribute(mdAttributeIF.definesAttribute()).setValue("");
-        cache.updateEntityDAO(entityDAO);
-      }
-      else
-      {
-        cache.refreshEntityInGlobalCache(entityId);
-      }
-
-      columnNames.clear();
-      prepStmtVars.clear();
-      values.clear();
-      attributeTypes.clear();
-
-      preparedStatementList.clear();
     }
   }
 
@@ -1693,7 +1715,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    * <br/>
    * <b>Precondition:</b> oid != null <br/>
    * <b>Precondition:</b> !oid.trim().equals("") <br/>
-   * <b>Precondition:</b> given oid represents a valid item in the database <br/>
+   * <b>Precondition:</b> given oid represents a valid item in the database
+   * <br/>
    * <b>Postcondition:</b> return value may not be null <br/>
    * <b>Postcondition:</b> EntityDAO representing the item in the database of
    * the given oid is returned
