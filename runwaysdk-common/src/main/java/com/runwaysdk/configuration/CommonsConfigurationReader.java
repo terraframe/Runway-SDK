@@ -63,7 +63,11 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
     {
       URL resource = ConfigurationManager.getResource(group, config);
       
-      cconfig.addConfiguration(new PropertiesConfiguration(resource));
+      PropertiesConfiguration propConfig = new PropertiesConfiguration();
+      propConfig.setDelimiterParsingDisabled(true);
+      propConfig.load(resource);
+      
+      cconfig.addConfiguration(propConfig);
       interpolate();
       CommonsConfigurationResolver.getInMemoryConfigurator().addInterpolateDependency(this);
     }
