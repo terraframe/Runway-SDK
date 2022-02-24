@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 
 import com.runwaysdk.AttributeNotificationDTO;
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.business.ProblemDTO;
+import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.constants.ClientConstants;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.request.RequestDecorator;
@@ -58,7 +58,7 @@ public class RequestManager
   /**
    * List of problems which have occurred
    */
-  private List<ProblemDTO>               problems;
+  private List<ProblemDTOIF>             problems;
 
   /**
    * The clientRequest
@@ -86,7 +86,7 @@ public class RequestManager
     HttpSession httpSession = req.getSession();
 
     this.attributeNotifications = new LinkedList<AttributeNotificationDTO>();
-    this.problems = new LinkedList<ProblemDTO>();
+    this.problems = new LinkedList<ProblemDTOIF>();
     this.clientReq = (ClientRequestIF) req.getAttribute(ClientConstants.CLIENTREQUEST);
     this.clientSession = (ClientSession) httpSession.getAttribute(ClientConstants.CLIENTSESSION);
 
@@ -117,7 +117,7 @@ public class RequestManager
     this.clientSession = clientSession;
     this.clientReq = clientReq;
     this.attributeNotifications = new LinkedList<AttributeNotificationDTO>();
-    this.problems = new LinkedList<ProblemDTO>();
+    this.problems = new LinkedList<ProblemDTOIF>();
   }
 
   public ServletRequestIF getReq()
@@ -167,12 +167,12 @@ public class RequestManager
     attributeNotifications.add(problem);
   }
 
-  public List<ProblemDTO> getProblems()
+  public List<ProblemDTOIF> getProblems()
   {
     return problems;
   }
 
-  public void addProblem(ProblemDTO problem)
+  public void addProblem(ProblemDTOIF problem)
   {
     problems.add(problem);
   }

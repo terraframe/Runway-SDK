@@ -29,4 +29,7 @@ public @interface RequestParamter {
   public String name();
 
   public ParseType parser() default ParseType.NONE;
+  
+  public boolean required() default false;
+
 }

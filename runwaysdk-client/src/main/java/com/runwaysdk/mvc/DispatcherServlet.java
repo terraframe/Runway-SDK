@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.mvc;
 
@@ -23,22 +23,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -46,13 +40,11 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.ProblemExceptionDTO;
-import com.runwaysdk.business.ProblemDTO;
-import com.runwaysdk.controller.BasicParameter;
+import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.controller.DispatchUtil;
 import com.runwaysdk.controller.DispatcherIF;
 import com.runwaysdk.controller.ErrorUtility;
 import com.runwaysdk.controller.IllegalURIMethodException;
-import com.runwaysdk.controller.MultipartFileParameter;
 import com.runwaysdk.controller.ParameterIF;
 import com.runwaysdk.controller.ParameterValue;
 import com.runwaysdk.controller.RequestManager;
@@ -63,7 +55,7 @@ import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.runwaysdk.request.ServletRequestIF;
+import com.runwaysdk.transport.conversion.json.ProblemExceptionDTOToJSON;
 import com.runwaysdk.transport.conversion.json.RunwayExceptionDTOToJSON;
 import com.runwaysdk.web.ServletUtility;
 
@@ -237,7 +229,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
       // parameters to objects. If an exception did occur then invoke the
       // failure
       // case
-      List<ProblemDTO> problems = manager.getProblems();
+      List<ProblemDTOIF> problems = manager.getProblems();
 
       if (problems.size() > 0)
       {
@@ -258,8 +250,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
           e = ( (InvocationTargetException) e ).getTargetException();
         }
 
-        RunwayExceptionDTOToJSON converter = new RunwayExceptionDTOToJSON(e.getClass().getName(), e.getMessage(), e.getLocalizedMessage());
-        JSONObject json = converter.populate();
+        JSONObject json = this.convertErrorToJson(e);
 
         ErrorRestResponse response = new ErrorRestResponse(json.toString());
         response.handle(manager);
@@ -269,6 +260,18 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
         throw e;
       }
     }
+  }
+
+  public JSONObject convertErrorToJson(Throwable e) throws JSONException
+  {
+    if (e instanceof ProblemExceptionDTO)
+    {
+      ProblemExceptionDTOToJSON converter = new ProblemExceptionDTOToJSON((ProblemExceptionDTO) e);
+      return converter.populate();
+    }
+
+    RunwayExceptionDTOToJSON converter = new RunwayExceptionDTOToJSON(e.getClass().getName(), e.getMessage(), e.getLocalizedMessage());
+    return converter.populate();
   }
 
   private Map<String, ParameterValue> getParameters(RequestManager manager, Endpoint annotation)

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk;
 
@@ -33,7 +33,7 @@ import com.runwaysdk.business.BusinessDTO;
 import com.runwaysdk.business.InformationDTO;
 import com.runwaysdk.business.MessageDTO;
 import com.runwaysdk.business.MutableDTO;
-import com.runwaysdk.business.ProblemDTO;
+import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.business.WarningDTO;
 import com.runwaysdk.constants.ClientProperties;
 import com.runwaysdk.constants.ClientRequestIF;
@@ -57,7 +57,7 @@ public abstract class ClientRequest implements ClientRequestIF
   /**
    *
    */
-  private static final long serialVersionUID = -1889363548399160805L;
+  private static final long                           serialVersionUID                = -1889363548399160805L;
 
   private ClientSession                               clientSession;
 
@@ -72,17 +72,17 @@ public abstract class ClientRequest implements ClientRequestIF
 
   private List<InformationDTO>                        informationList;
 
-  private List<ProblemDTO>                            problemList;
+  private List<ProblemDTOIF>                          problemList;
 
   private Map<String, List<AttributeNotificationDTO>> attributeNotificationMap;
 
   /**
-   * True if messages should be kept between requests to the server, false otherwise.
+   * True if messages should be kept between requests to the server, false
+   * otherwise.
    */
-  private boolean keepMessages;
+  private boolean                                     keepMessages;
 
   private final static String                         ATTRIBUTENOTIFICATION_KEY_DELIM = "-";
-
 
   /**
    * Creates a <code>CleintRequest</code> object and logs in anonymously.
@@ -130,7 +130,7 @@ public abstract class ClientRequest implements ClientRequestIF
     this.clientSession = clientSession;
     this.messageList = new LinkedList<MessageDTO>();
     this.warningList = new LinkedList<WarningDTO>();
-    this.problemList = new LinkedList<ProblemDTO>();
+    this.problemList = new LinkedList<ProblemDTOIF>();
     this.informationList = new LinkedList<InformationDTO>();
     this.attributeNotificationMap = new HashMap<String, List<AttributeNotificationDTO>>();
     this.keepMessages = true;
@@ -148,7 +148,8 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * True if messages should be kept between requests to the server, false otherwise.
+   * True if messages should be kept between requests to the server, false
+   * otherwise.
    *
    * @param keepMessages
    */
@@ -158,14 +159,17 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Returns true if messages should be kept between requests to the server, false otherwise.
+   * Returns true if messages should be kept between requests to the server,
+   * false otherwise.
    *
-   * @return true if messages should be kept between requests to the server, false otherwise.
+   * @return true if messages should be kept between requests to the server,
+   *         false otherwise.
    */
   public boolean getKeepMessages()
   {
     return this.keepMessages;
   }
+
   /**
    * Returns all messages made in the previous request, including
    * <code>AttributeNotification</code>s.
@@ -242,9 +246,9 @@ public abstract class ClientRequest implements ClientRequestIF
     }
   }
 
-  protected void addProblems(List<ProblemDTO> problems)
+  protected void addProblems(List<ProblemDTOIF> problems)
   {
-    for(ProblemDTO problem : problems)
+    for (ProblemDTOIF problem : problems)
     {
       problemList.add(problem);
     }
@@ -278,9 +282,9 @@ public abstract class ClientRequest implements ClientRequestIF
 
     Set<String> keySet = this.attributeNotificationMap.keySet();
 
-    for(String key : keySet)
+    for (String key : keySet)
     {
-      if(key.contains(componentId))
+      if (key.contains(componentId))
       {
         list.addAll(this.attributeNotificationMap.get(key));
       }
@@ -288,7 +292,6 @@ public abstract class ClientRequest implements ClientRequestIF
 
     return list;
   }
-
 
   private void updateMessageCollections(MessageDTO typeSafeMessageDTO)
   {
@@ -325,8 +328,8 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Converts the given generic messages into typesafe ones. <b>precondition:</b>Message
-   * lists have been cleared.<br/>
+   * Converts the given generic messages into typesafe ones.
+   * <b>precondition:</b>Message lists have been cleared.<br/>
    *
    * @param messageExceptionDTO
    */
@@ -366,7 +369,9 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Returns the session oid used by the clientRequest to connect to the back-end.
+   * Returns the session oid used by the clientRequest to connect to the
+   * back-end.
+   * 
    * @return session oid used by the clientRequest to connect to the back-end.
    */
   public String getSessionId()
@@ -376,6 +381,7 @@ public abstract class ClientRequest implements ClientRequestIF
 
   /**
    * Returns the <code>Locale</code> used by the clientRequest.
+   * 
    * @return <code>Locale</code> used by the clientRequest.
    */
   public Locale[] getLocales()
@@ -443,13 +449,16 @@ public abstract class ClientRequest implements ClientRequestIF
   /**
    * Sets the dimension of an existing Session.
    *
-   * @param sessionId The oid of the Session.
-   * @param dimensionKey key of a MdDimension.
+   * @param sessionId
+   *          The oid of the Session.
+   * @param dimensionKey
+   *          key of a MdDimension.
    */
   protected abstract void setDimension(String sessionId, String dimensionKey);
 
   /**
-   * Attempts to log a user in with the specified username and password for the given dimension.
+   * Attempts to log a user in with the specified username and password for the
+   * given dimension.
    *
    * @param username
    * @param password
@@ -591,7 +600,7 @@ public abstract class ClientRequest implements ClientRequestIF
    */
   protected static ClientRequestIF getRequest(ClientSession clientSession, String userName, String password)
   {
-    return getRequest(clientSession, userName, password, new Locale[]{CommonProperties.getDefaultLocale()});
+    return getRequest(clientSession, userName, password, new Locale[] { CommonProperties.getDefaultLocale() });
   }
 
   /**
@@ -620,7 +629,7 @@ public abstract class ClientRequest implements ClientRequestIF
         Class<?> clazz = LoaderDecorator.load(JavaClientRequestInfo.CLASS);
 
         Constructor<?> constructor = clazz.getConstructor(ClientSession.class, String.class, String.class, Locale[].class);
-        Object object = constructor.newInstance(clientSession, userName,password, locales);
+        Object object = constructor.newInstance(clientSession, userName, password, locales);
 
         return (ClientRequestIF) object;
       }
@@ -737,8 +746,8 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Converts the given generic messages into typesafe ones. <b>precondition:</b>Message
-   * lists have been cleared.<br/>
+   * Converts the given generic messages into typesafe ones.
+   * <b>precondition:</b>Message lists have been cleared.<br/>
    *
    * @param clientRequest
    * @param messageExceptionDTO
@@ -749,8 +758,8 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Sets the type safe messages onto the given clientRequest. <b>precondition:</b>Message
-   * lists have been cleared.<br/>
+   * Sets the type safe messages onto the given clientRequest.
+   * <b>precondition:</b>Message lists have been cleared.<br/>
    *
    * @param clientRequest
    * @param messageExceptionDTO
@@ -772,7 +781,7 @@ public abstract class ClientRequest implements ClientRequestIF
     clientRequest.addAttributeNotification(attributeNotification);
   }
 
-  public static void addProblems(ClientRequest clientRequest, List<ProblemDTO> problems)
+  public static void addProblems(ClientRequest clientRequest, List<ProblemDTOIF> problems)
   {
     clientRequest.addProblems(problems);
   }

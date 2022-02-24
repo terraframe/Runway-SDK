@@ -63,6 +63,12 @@ public class ParameterWrapper implements ParameterIF
   {
     this.type = type;
   }
+  
+  @Override
+  public boolean isRequired()
+  {
+    return false;
+  }
 
   @Override
   public ParseType getParseType()

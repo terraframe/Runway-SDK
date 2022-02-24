@@ -89,25 +89,35 @@ public class RequestScraper
   public Object convert()
   {
     Class<?> c = LoaderDecorator.load(this.parameter.getType());
+    
+    Object objectValue = null;
 
     if (c.isArray() && DispatchUtil.isPrimitive(c))
     {
-      return convertPrimitiveArray(c);
+      objectValue = convertPrimitiveArray(c);
     }
     else if (c.isArray())
     {
-      return convertDTOArray(c);
+      objectValue = convertDTOArray(c);
     }
     else if (MultipartFileParameter.class.isAssignableFrom(c))
     {
-      return (MultipartFileParameter) this.getParameter(this.parameter.getName());
+      objectValue = (MultipartFileParameter) this.getParameter(this.parameter.getName());
     }
     else
     {
       String value = getValue(this.parameter.getName());
 
-      return convertValue(c, value);
+      objectValue = convertValue(c, value);
     }
+    
+    if(objectValue == null && this.parameter.isRequired()) {
+      Locale locale = manager.getReq().getLocale();
+      
+      manager.addProblem(new RequiredAttributeProblemDTO(this.parameter.getName(), locale));
+    }
+    
+    return objectValue;
   }
 
   /**
