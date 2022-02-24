@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /**
  * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
@@ -18,7 +16,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
->>>>>>> refs/remotes/origin/dev
 package com.runwaysdk.system.scheduler;
 
 @com.runwaysdk.business.ClassSignature(hash = 108679103)
