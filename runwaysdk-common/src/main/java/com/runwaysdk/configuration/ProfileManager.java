@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import com.runwaysdk.util.FileIO;
-import com.terraframe.utf8.UTF8ResourceBundle;
+import com.runwaysdk.utf8.UTF8ResourceBundle;
 
 /**
  * Manages access to properties files in profiles

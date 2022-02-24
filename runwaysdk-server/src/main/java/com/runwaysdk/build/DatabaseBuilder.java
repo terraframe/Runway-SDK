@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -87,6 +87,10 @@ import com.runwaysdk.session.Request;
  * Metadata file timestamps may be appended with -ALWAYS to specify that the file will still run, regardless of if it
  * has already been imported or not. 
  * 
+ * All metadata is by default imported inside a single transaction with a SYSTEM request. This includes any java classes
+ * which are run. If you do not wish for your domain builder to run inside a transaction, you may append -NOTRANS to the
+ * end of the timestamp. NOTRANS files will be run after all regular metadata files are imported.
+ * 
  * For a complete list of options you may run this tool with `--help`, or you may view the `buildCliOptions` method
  * in this source. 
  * 
@@ -100,7 +104,7 @@ public class DatabaseBuilder
 
   public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = com.runwaysdk.dataaccess.database.Database.VERSION_TIMESTAMP_PROPERTY;
 
-  private static final String      DATE_PATTEN                                = "\\d{4,}(?:-ALWAYS)?";
+  private static final String      DATE_PATTEN                                = "\\d{4,}(?:-ALWAYS)?(?:-NOTRANS)?";
 
   private static final String      NAME_PATTERN                               = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions, "|") + ")$";
 
@@ -116,6 +120,11 @@ public class DatabaseBuilder
    * to latest
    */
   protected Set<ClasspathResource>       ordered;
+  
+  /**
+   * All resources that have the -NOTRANS timestamp postfix.
+   */
+  protected Set<ClasspathResource>       orderedPostTrans;
 
   private List<String>                   extensions;
 
@@ -308,6 +317,9 @@ public class DatabaseBuilder
   {
     logger.debug("Initializing Runway database builder.");
 
+    /*
+     * Build ordered array
+     */
     this.ordered = new TreeSet<ClasspathResource>(new VersionComparator());
 
     for (ClasspathResource resource : getTimestampedResources(this.path))
@@ -338,6 +350,40 @@ public class DatabaseBuilder
         }
       }
     }
+    
+    /*
+     * Build orderedPostTrans
+     */
+    this.orderedPostTrans = new TreeSet<ClasspathResource>(new VersionComparator());
+    
+    for (ClasspathResource resource : getTimestampedPostTransResources(this.path))
+    {
+      if (resource.getPackage().equals(this.path) && !orderedPostTrans.add(resource) || ordered.contains(resource))
+      {
+        throwDuplicateTimestamp(resource);
+      }
+    }
+    
+    if (isPatch)
+    {
+      for (ClasspathResource resource : getTimestampedPostTransResources(this.path + "/patch"))
+      {
+        if (resource.getPackage().equals(this.path + "/patch") && !orderedPostTrans.add(resource) || ordered.contains(resource))
+        {
+          throwDuplicateTimestamp(resource);
+        }
+      }
+    }
+    else
+    {
+      for (ClasspathResource resource : getTimestampedPostTransResources(this.path + "/install"))
+      {
+        if (resource.getPackage().equals(this.path + "/install") && !orderedPostTrans.add(resource) || ordered.contains(resource))
+        {
+          throwDuplicateTimestamp(resource);
+        }
+      }
+    }
   }
   
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
@@ -347,7 +393,14 @@ public class DatabaseBuilder
     // Only perform the doIt if this file has not already been imported
     if ( (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension())) || alwaysRun(resource) )
     {
-      logger.info("Importing [" + resource.getAbsolutePath() + "].");
+      if (isTransaction)
+      {
+        logger.info("Importing [" + resource.getAbsolutePath() + "].");
+      }
+      else
+      {
+        logger.info("Importing [" + resource.getAbsolutePath() + "] (outside of a transaction).");
+      }
 
       if (!alwaysRun(resource))
       {
@@ -490,6 +543,13 @@ public class DatabaseBuilder
 
     this.performDoIt(list, true);
   }
+  
+  public void doPostNonTransaction()
+  {
+    List<ClasspathResource> list = new LinkedList<ClasspathResource>(orderedPostTrans);
+
+    this.performDoIt(list, false);
+  }
 
   private static ArrayList<String> toList(String string)
   {
@@ -513,6 +573,7 @@ public class DatabaseBuilder
 
     DatabaseBuilder builder = new DatabaseBuilder(extensions, path, ignoreErrors, isPatch);
     builder.doAllInTransaction();
+    builder.doPostNonTransaction();
   }
   
   private static void registerPlugins(List<String> plugins)
@@ -579,6 +640,24 @@ public class DatabaseBuilder
     
     return false;
   }
+  
+  public static Boolean isPostTransRun(ClasspathResource resource)
+  {
+    Pattern namePattern = Pattern.compile(NAME_PATTERN);
+    Matcher nameMatcher = namePattern.matcher(resource.getName());
+
+    if (nameMatcher.find())
+    {
+      String timeGroup = nameMatcher.group(2);
+      
+      if (timeGroup.endsWith("-NOTRANS"))
+      {
+        return true;
+      }
+    }
+    
+    return false;
+  }
 
   public static Long getTimestamp(ClasspathResource resource)
   {
@@ -592,6 +671,11 @@ public class DatabaseBuilder
       if (timeGroup.endsWith("-ALWAYS"))
       {
         timeGroup = timeGroup.replace("-ALWAYS", "");
+      }
+      
+      if (timeGroup.endsWith("-NOTRANS"))
+      {
+        timeGroup = timeGroup.replace("-NOTRANS", "");
       }
       
       Long timeStamp = Long.parseLong(timeGroup);
@@ -617,6 +701,31 @@ public class DatabaseBuilder
   {
     return getTimestamp(resource1).compareTo(getTimestamp(resource2));
   }
+  
+  public static List<ClasspathResource> getTimestampedPostTransResources(String cpPackage)
+  {
+    List<ClasspathResource> list = new LinkedList<ClasspathResource>();
+
+    Pattern namePattern = Pattern.compile(NAME_PATTERN);
+
+    List<ClasspathResource> resources = ClasspathResource.getResourcesInPackage(cpPackage);
+
+    for (ClasspathResource resource : resources)
+    {
+      if (!resource.isPackage())
+      {
+        String name = resource.getName();
+        Matcher nameMatcher = namePattern.matcher(name);
+  
+        if (nameMatcher.find() && isPostTransRun(resource))
+        {
+          list.add(resource);
+        }
+      }
+    }
+
+    return list;
+  }
 
   public static List<ClasspathResource> getTimestampedResources(String cpPackage)
   {
@@ -633,7 +742,7 @@ public class DatabaseBuilder
         String name = resource.getName();
         Matcher nameMatcher = namePattern.matcher(name);
   
-        if (nameMatcher.find())
+        if (nameMatcher.find() && !isPostTransRun(resource))
         {
           list.add(resource);
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -32,7 +32,7 @@ import com.runwaysdk.vault.VaultTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-  DataAccessTestSuite.class, 
+  DataAccessTestSuite.class,
   BusinessTestSuite.class,
   FacadeTestSuite.class,
   VaultTestSuite.class,

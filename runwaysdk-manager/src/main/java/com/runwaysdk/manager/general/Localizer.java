@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -21,7 +21,7 @@ package com.runwaysdk.manager.general;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import com.terraframe.utf8.UTF8ResourceBundle;
+import com.runwaysdk.utf8.UTF8ResourceBundle;
 
 public class Localizer
 {

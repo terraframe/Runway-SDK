@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.runwaysdk.util.FileIO;
-import com.terraframe.utf8.UTF8ResourceBundle;
+import com.runwaysdk.utf8.UTF8ResourceBundle;
 
 public class ProfileReader implements ConfigurationReaderIF
 {

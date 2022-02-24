@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+# Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
 #
 # This file is part of Runway SDK(tm).
 #
@@ -17,7 +17,7 @@
 # License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# if curl -f -s --head "http://nexus.terraframe.com/service/local/artifact/maven/redirect?r=allrepos&g=com.runwaysdk&a=runwaysdk-server&p=jar&v=$VERSION" | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null; then
+# if curl -f -s --head "https://dl.cloudsmith.io/public/terraframe/runwaysdk/maven/com/runwaysdk/runwaysdk-server/$VERSION/runwaysdk-server-$VERSION.jar" | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null; then
 #    echo "The release version $VERSION has already been deployed! Please ensure you are releasing the correct version of runway."
 #    exit 1
 # fi
@@ -26,33 +26,38 @@ git config --global user.name "$GIT_TF_BUILDER_USERNAME"
 git config --global user.email builder@terraframe.com
 
 cd $WORKSPACE/runway-sdk
+#BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+BRANCH=${GIT_BRANCH#*/}
 
-git checkout dev
+# Jenkins locks us onto a specific commit for some reason. We need to be on that branch to be able to do commits.
+git checkout $BRANCH
 git pull
 
-mvn license:format
+mvn license:format -B
 git add -A
 git diff-index --quiet HEAD || git commit -m 'License headers'
 git push
 
-git checkout master
-git merge dev
-git push
-
+if [ "$BRANCH" == "dev" ]; then
+  git checkout master
+  git merge dev
+  git push
+fi
 
 mvn release:prepare -B -Dtag=$VERSION \
                  -DreleaseVersion=$VERSION \
                  -DdevelopmentVersion=$NEXT
                  
-mvn release:perform -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
+mvn release:perform -B -Darguments="-Dmaven.javadoc.skip=true -Dmaven.site.skip=true"
 
-
-cd ..
-rm -rf rwdev
-mkdir rwdev
-cd rwdev
-git clone -b master git@github.com:terraframe/Runway-SDK.git
-cd Runway-SDK
-git checkout dev
-git merge master
-git push
+if [ "$BRANCH" == "dev" ]; then
+  cd ..
+  rm -rf rwdev
+  mkdir rwdev
+  cd rwdev
+  git clone -b master git@github.com:terraframe/Runway-SDK.git
+  cd Runway-SDK
+  git checkout dev
+  git merge master
+  git push
+fi

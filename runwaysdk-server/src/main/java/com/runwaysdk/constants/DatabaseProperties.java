@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -31,7 +31,7 @@ import com.runwaysdk.configuration.LegacyPropertiesSupport;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.database.general.AbstractDatabase;
 import com.runwaysdk.generation.loader.LoaderDecorator;
-import com.terraframe.utf8.UTF8ResourceBundle;
+import com.runwaysdk.utf8.UTF8ResourceBundle;
 
 /**
  * Acesses properties from two files: the agnostic database.properties, and the vendor

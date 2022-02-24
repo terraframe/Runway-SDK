@@ -24,11 +24,11 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-gis</artifactId>
-    <version>3.4.13-SNAPSHOT</version>
+    <version>3.4.21-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>runwaysdk-gis-server</artifactId>
-
+  
   <dependencies>
     <dependency>
       <groupId>com.runwaysdk</groupId>
@@ -40,7 +40,6 @@
       <artifactId>runwaysdk-server</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
     <dependency>
       <groupId>com.vividsolutions</groupId>
       <artifactId>postgis-jts</artifactId>

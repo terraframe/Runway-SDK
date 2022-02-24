@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 TerraFrame, Inc. All rights reserved.
+ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK(tm).
  *
@@ -107,6 +107,11 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public void setStartDate(Date startDate)
   {
+    if (startDate == null)
+    {
+      startDate = new Date();
+    }
+    
     this.startDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
   }
 
@@ -140,7 +145,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     }
     else
     {
-      endDate = null;
+      endDate = INFINITY_END_DATE;
     }
   }
 
