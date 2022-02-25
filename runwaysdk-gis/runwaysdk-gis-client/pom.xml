@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-gis</artifactId>
-    <version>3.4.27</version>
+    <version>3.4.28-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>runwaysdk-gis-client</artifactId>
