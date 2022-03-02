@@ -39,9 +39,9 @@
     <echo>${wms_xml}</echo>
     
     <!-- Geoserver comes pre-bundled with a ton of garbage demo data. Remove it. -->
-    <delete dir="layergroups"/><mkdir dir="layergroups"/>
-    <delete dir="workspaces"/><mkdir dir="workspaces"/>
-    <delete dir="data"/><mkdir dir="data"/>
+    <delete dir="geoserver/data/layergroups"/><mkdir dir="geoserver/data/layergroups"/>
+    <delete dir="geoserver/data/workspaces"/><mkdir dir="geoserver/data/workspaces"/>
+    <delete dir="geoserver/data/data"/><mkdir dir="geoserver/data/data"/>
     
     <zip destfile="geoserver.war" basedir="geoserver" />
 
