@@ -177,6 +177,10 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
     {
       error = t;
       
+      // In the scenario where we cannot connect to the database, we want to make sure we execute this immediately before any database activity happens.
+      // This is because our QuartzQueueingJob needs to remove the job from its queued hashmap otherwise jobs will be permanently queued.
+      this.jobExecutionFailure(context, t);
+      
       String errorMessage = RunwayException.localizeThrowable(t, CommonProperties.getDefaultLocale());
       logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ". " + errorMessage, t);
     }
@@ -188,6 +192,11 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
       
       execJob.executeDownstreamJobs(executionContext.getJob(), error);
     }
+  }
+  
+  protected void jobExecutionFailure(JobExecutionContext context, Throwable t)
+  {
+    
   }
   
   @Request

@@ -121,8 +121,28 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   }
   
   @Override
+  protected void jobExecutionFailure(JobExecutionContext context, Throwable t)
+  {
+    // This is a failsafe for the scenario where we cannot connect to the database any longer (for whatever reason). In this
+    // scenario, we need to immediately remove ourselves from the queue since the 'jobWasExecuted' listener will not be invoked.
+    
+    finalizeJob(context);
+  }
+  
+  @Override
   @Request
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
+  {
+    finalizeJob(context);
+    
+    super.jobWasExecuted(context, jobException);
+  }
+  
+  /**
+   * This method is a catchall for any/all listeners which may tell us that a job has finished executing. It is designed to be
+   * invoked by the individual 'situation specific' listener which may be quartz or runway event specific.
+   */
+  protected void finalizeJob(JobExecutionContext context)
   {
     if (!tryAcquireLock())
     {
@@ -143,7 +163,8 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       
       if (queue.peek() != null && !queue.peek().equals(historyId))
       {
-        logger.error("How in the world did we [" + historyId + "] manage to execute without being in the queue? First in line = [" + String.valueOf(queue.peek()) + "]");
+        // If we're not first in line it might be because a previous listener already removed us from the queue.
+        return;
       }
       
       queue.poll(); // Remove us from the queue
@@ -165,8 +186,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       
       execJob.getQuartzJob().start(history);
     }
-    
-    super.jobWasExecuted(context, jobException);
   }
   
   @Override
