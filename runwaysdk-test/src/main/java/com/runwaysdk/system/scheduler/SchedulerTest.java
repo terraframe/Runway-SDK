@@ -42,13 +42,12 @@ import org.quartz.Trigger;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 
 import com.runwaysdk.ClientSession;
-import com.runwaysdk.ProblemException;
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.constants.ClientRequestIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ServerConstants;
-import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.session.Request;
@@ -216,7 +215,6 @@ public class SchedulerTest
       history.lock();
       try
       {
-        System.out.println("Quartz queueing job [" + executionContext.getJobHistoryRecord().getOid() + "] is executing"); // TODO delete
         Thread.sleep(QUEUE_JOB_RUN_TIME);
       }
       catch (InterruptedException e)
@@ -457,6 +455,66 @@ public class SchedulerTest
     {
       JobHistoryRecord jhr = jhrs.next();
       jhr.getChild().delete();
+    }
+  }
+  
+  /**
+   * Tests to make sure that if a queued job is running, and it gets deleted while its running,
+   * that it is properly removed from the queue so that jobs don't end up permanently queued
+   * waiting on a job which is no longer running.
+   * 
+   * @throws InterruptedException 
+   */
+  @Test
+  @Request
+  public void testDeleteRunningQueuedJob() throws InterruptedException
+  {
+    ExecutableJob job = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
+    
+    try
+    {
+      job.apply();
+
+      TestRecord tr = TestRecord.newRecord(job);
+
+      JobHistory history = job.start();
+      
+      this.waitUntilRunning(history);
+      
+      Assert.assertEquals(1, QuartzRunwayJob.runningThreads.size());
+      
+      job.delete();
+      
+      int sleepNum = 0;
+      while (QuartzRunwayJob.runningThreads.size() == 1)
+      {
+        if (sleepNum > 10)
+        {
+          // TODO : Remove comment out
+          //throw new RuntimeException("Maxed out waiting for the thread to die.");
+        }
+        
+        Thread.sleep(1000);
+        sleepNum++;
+      }
+      
+      Assert.assertEquals(0, QuartzRunwayJob.runningThreads.size());
+      Assert.assertEquals(0, QueueingQuartzJob.queueMap.get(QueueingQuartzJob.class.getName()).size());
+    }
+    finally
+    {
+      Thread.sleep(500);
+      
+      try
+      {
+        ExecutableJob.get(job.getOid()).delete();
+      }
+      catch (DataNotFoundException e)
+      {
+        // This is OK. Ignore
+      }
+      
+      clearHistory();
     }
   }
 

@@ -53,7 +53,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     }
     else
     {
-      return this.createQuartzRunwayJob();
+      return new QuartzRunwayJob(this);
     }
   }
   
@@ -76,11 +76,6 @@ public abstract class ExecutableJob extends ExecutableJobBase
     history.apply();
     
     return history;
-  }
-  
-  protected QuartzRunwayJob createQuartzRunwayJob()
-  {
-    return new QuartzRunwayJob(this);
   }
   
   @Request
@@ -106,9 +101,8 @@ public abstract class ExecutableJob extends ExecutableJobBase
   @Transaction
   protected AllJobStatus writeHistoryInTrans(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
-    JobHistory jh = JobHistory.get(history.getOid());
+    JobHistory jh = JobHistory.lock(history.getOid());
 
-    jh.appLock();
     jh.setEndTime(new Date());
     jh.clearStatus();
     

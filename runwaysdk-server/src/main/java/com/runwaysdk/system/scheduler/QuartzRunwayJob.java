@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.RunwayException;
 import com.runwaysdk.business.BusinessFacade;
+import com.runwaysdk.business.SmartException;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
@@ -66,9 +67,9 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   
   private Logger logger = LoggerFactory.getLogger(QuartzRunwayJob.class);
   
-  private JobDetail detail;
+  protected JobDetail detail;
   
-  private ExecutableJob execJob;
+  protected ExecutableJob execJob;
   
   protected static HashMap<String, Thread> runningThreads = new HashMap<String, Thread>();
   
@@ -148,53 +149,76 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException
   {
-    ExecutionContext executionContext = buildExecutionContext(context);
-    
-    Throwable error = null;
-    
-    // If the job wants to be run as a particular user then we need to create a session and a request for that user.
     try
     {
-      if (executionContext.getRunAsUser() == null)
+      try
       {
-        executeAsSystem(executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
-      }
-      else
-      {
-        String sessionId = logIn(executionContext.getRunAsUser(), executionContext.getRunAsDimension());
+        ExecutionContext executionContext = buildExecutionContext(context);
         
+        Throwable error = null;
+        
+        // If the job wants to be run as a particular user then we need to create a session and a request for that user.
         try
         {
-          executeAsUser(sessionId, executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
+          if (executionContext.getRunAsUser() == null)
+          {
+            executeAsSystem(executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
+          }
+          else
+          {
+            String sessionId = logIn(executionContext.getRunAsUser(), executionContext.getRunAsDimension());
+            
+            try
+            {
+              executeAsUser(sessionId, executionContext.getJob(), executionContext.getHistory(), executionContext.getJobHistoryRecord(), executionContext);
+            }
+            finally
+            {
+              logOut(sessionId);
+            }
+          }
+        }
+        catch (Throwable t)
+        {
+          error = t;
+          
+          String errorMessage = RunwayException.localizeThrowable(t, CommonProperties.getDefaultLocale());
+          logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ". " + errorMessage, t);
         }
         finally
         {
-          logOut(sessionId);
+          runningThreads.remove(executionContext.getHistoryOid());
+          
+          execJob.writeHistory(executionContext.getHistory(), executionContext, error);
+          
+          execJob.executeDownstreamJobs(executionContext.getJob(), error);
         }
       }
-    }
-    catch (Throwable t)
-    {
-      error = t;
-      
-      // In the scenario where we cannot connect to the database, we want to make sure we execute this immediately before any database activity happens.
-      // This is because our QuartzQueueingJob needs to remove the job from its queued hashmap otherwise jobs will be permanently queued.
-      this.jobExecutionFailure(context, t);
-      
-      String errorMessage = RunwayException.localizeThrowable(t, CommonProperties.getDefaultLocale());
-      logger.error("An error occurred while executing job " + executionContext.getExecutableJobToString() + ". " + errorMessage, t);
+      catch (SmartException e)
+      {
+        // SmartException here tries to talk to the database when it localizes its message, which then causes another error..
+        localizeSmartException(e);
+      }
     }
     finally
     {
-      runningThreads.remove(executionContext.getHistoryOid());
-      
-      execJob.writeHistory(executionContext.getHistory(), executionContext, error);
-      
-      execJob.executeDownstreamJobs(executionContext.getJob(), error);
+      this.finalizeJobExecution(context);
     }
   }
   
-  protected void jobExecutionFailure(JobExecutionContext context, Throwable t)
+  @Request
+  private void localizeSmartException(SmartException e)
+  {
+    throw new RuntimeException(e.getLocalizedMessage(), e);
+  }
+  
+  /**
+   * Our QueueingQuartzJob needs a place to remove the job from the queue that will always consistently happen. Don't place anything
+   * in this method which accesses the database or does anything even remotely risky or complicated.
+   * 
+   * @param context
+   */
+  protected void finalizeJobExecution(JobExecutionContext context)
   {
     
   }
