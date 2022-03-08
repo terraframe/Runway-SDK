@@ -463,6 +463,10 @@ public class SchedulerTest
    * that it is properly removed from the queue so that jobs don't end up permanently queued
    * waiting on a job which is no longer running.
    * 
+   * This test is expected to produce three DataNotFoundException's, as the SchedulerManager
+   * attempts to instantiate the ExecutableJob after it runs, but is unable to fetch it from
+   * the database because it has been deleted.
+   * 
    * @throws InterruptedException 
    */
   @Test
