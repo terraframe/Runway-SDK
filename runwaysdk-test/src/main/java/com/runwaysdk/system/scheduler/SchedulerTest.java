@@ -191,7 +191,7 @@ public class SchedulerTest
     }
     
     @Override
-    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return new TestQuartzJob(execJob);
     }
@@ -229,7 +229,7 @@ public class SchedulerTest
     }
     
     @Override
-    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return new QueueingQuartzJob(execJob);
     }
@@ -329,7 +329,7 @@ public class SchedulerTest
     }
     
     @Override
-    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
@@ -360,7 +360,7 @@ public class SchedulerTest
     }
     
     @Override
-    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
@@ -392,7 +392,7 @@ public class SchedulerTest
     }
     
     @Override
-    public QuartzRunwayJob getQuartzJob(ExecutableJob execJob)
+    public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
@@ -490,8 +490,7 @@ public class SchedulerTest
       {
         if (sleepNum > 10)
         {
-          // TODO : Remove comment out
-          //throw new RuntimeException("Maxed out waiting for the thread to die.");
+          throw new RuntimeException("Maxed out waiting for the thread to die.");
         }
         
         Thread.sleep(1000);

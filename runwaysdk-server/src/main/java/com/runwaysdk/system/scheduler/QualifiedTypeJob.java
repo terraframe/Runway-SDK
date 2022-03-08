@@ -39,17 +39,19 @@ public class QualifiedTypeJob extends QualifiedTypeJobBase
   }
   
   @Override
-  public QuartzRunwayJob getQuartzJob()
+  public QuartzRunwayJob createQuartzRunwayJob()
   {
     ExecutableJobIF executableJob = getQualifiedJob();
     
-    if (executableJob.getQuartzJob(this) != null)
+    QuartzRunwayJob qrj = executableJob.createQuartzJob(this);
+    
+    if (qrj != null)
     {
-      return executableJob.getQuartzJob(this);
+      return qrj;
     }
     else
     {
-      return super.getQuartzJob();
+      return super.createQuartzRunwayJob();
     }
   }
 

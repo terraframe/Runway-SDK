@@ -99,7 +99,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   {
     ExecutionContext context = super.buildExecutionContextInTrans(jec);
     
-    QueueingQuartzJob quartzJob = (QueueingQuartzJob) this.execJob.getQuartzJob();
+    QueueingQuartzJob quartzJob = (QueueingQuartzJob) this.execJob.createQuartzRunwayJob();
     this.queueGroup = quartzJob.queueGroup;
     
     return context;

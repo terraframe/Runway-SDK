@@ -53,8 +53,18 @@ public abstract class ExecutableJob extends ExecutableJobBase
     }
     else
     {
-      return new QuartzRunwayJob(this);
+      return this.createQuartzRunwayJob();
     }
+  }
+  
+  /**
+   * Override this method to provide your own Quartz job (such as QueueingQuartzJob).
+   * 
+   * @return
+   */
+  protected QuartzRunwayJob createQuartzRunwayJob()
+  {
+    return new QuartzRunwayJob(this);
   }
   
   public void setQuartzJob(QuartzRunwayJob quartzJob)
