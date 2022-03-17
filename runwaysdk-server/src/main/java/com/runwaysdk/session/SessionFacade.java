@@ -33,6 +33,8 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.constants.ServerConstants;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -115,6 +117,12 @@ public class SessionFacade
    */
   public static String logIn(String username, String password, Locale[] locales)
   {
+    if (ServerConstants.SYSTEM_USER_NAME.equals(username))
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+    
     SessionCache cache = SessionFacade.getSessionCache();
 
     return cache.logIn(username, password, locales);
@@ -135,6 +143,12 @@ public class SessionFacade
    */
   public static String logIn(String username, String password, String dimensionKey, Locale[] locales)
   {
+    if (ServerConstants.SYSTEM_USER_NAME.equals(username))
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+    
     SessionCache cache = SessionFacade.getSessionCache();
 
     return cache.logIn(username, password, dimensionKey, locales);
