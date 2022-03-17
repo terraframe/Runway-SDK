@@ -181,8 +181,8 @@ public class OrientDBImpl implements GraphDB
 
   private void createAppUser()
   {
-    String adminUser = OrientDBProperties.getAppUserName();
-    String adminPass = OrientDBProperties.getAppUserPassword();
+    String adminUser = OrientDBProperties.getRootUserName();
+    String adminPass = OrientDBProperties.getRootUserPassword();
 
     ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass);
 
@@ -205,18 +205,21 @@ public class OrientDBImpl implements GraphDB
       try (OResultSet rs = rootSession.command(deleteWriter))
       {
       }
+      
+      String appUser = OrientDBProperties.getAppUserName();
+      String appPass = OrientDBProperties.getAppUserPassword();
 
-      String sqlAdminUser = "insert into ouser set name = '" + adminUser + "', password = '" + adminPass + "', status = 'ACTIVE', roles = (select from ORole where name = 'admin')";
+      String sqlAdminUser = "insert into ouser set name = '" + appUser + "', password = '" + appPass + "', status = 'ACTIVE', roles = (select from ORole where name = 'admin')";
       try (OResultSet rs = rootSession.command(sqlAdminUser))
       {
       }
+      
+      logger.info("Created app user with name [" + appUser + "].");
     }
     finally
     {
       rootSession.close();
     }
-
-    logger.info("Created app user with name [" + adminUser + "].");
   }
 
   @Override
@@ -1559,13 +1562,14 @@ public class OrientDBImpl implements GraphDB
           Date startDate = element.getProperty(OrientDBConstant.START_DATE);
           Date endDate = element.getProperty(OrientDBConstant.END_DATE);
           Object value = element.getProperty(OrientDBConstant.VALUE);
+          String oid = element.getProperty(OrientDBConstant.OID);
 
           if (value instanceof OVertex)
           {
             OVertex ref = (OVertex) value;
-            String oid = (String) ref.getProperty("oid");
+            String itemOid = (String) ref.getProperty("oid");
 
-            ID id = new ID(oid, ref.getIdentity());
+            ID id = new ID(itemOid, ref.getIdentity());
 
             attribute.setValueInternal(oid, id, startDate, endDate);
           }

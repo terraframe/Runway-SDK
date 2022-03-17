@@ -19,6 +19,10 @@
     License along with Runway GIS(tm).  If not, see <http://www.gnu.org/licenses/>.
 
 -->
+<!--
+  This build process was used to create the CGR Geoserver version 2.20.2-custom. It was NOT used for any IDM
+  geoserver version because this process does not include the custom global mosaic library. 
+-->
 <project name="runwaysdk-gis" default="reconfig_geoserver">
   
   <target name="reconfig_geoserver" description="Opens the war, sets [Enable direct WMS integration = true], then rezips the war." depends="" >
@@ -26,8 +30,7 @@
 
     <unzip src="geoserver_original.war" dest="geoserver" />
     
-
-
+    <!-- We must enable WMS because it's the primary thing we use in Geoserver. -->
     <replace file="geoserver/data/wms.xml" token="&lt;metadata&gt;"
       value="&lt;metadata&gt;&#xD;    &lt;entry key=&quot;GWC_WMS_Integration&quot;&gt;true&lt;/entry&gt;" />
 
@@ -35,8 +38,11 @@
     <loadfile property="wms_xml" srcFile="geoserver/data/wms.xml"/> 
     <echo>${wms_xml}</echo>
     
-
-
+    <!-- Geoserver comes pre-bundled with a ton of garbage demo data. Remove it. -->
+    <delete dir="geoserver/data/layergroups"/><mkdir dir="geoserver/data/layergroups"/>
+    <delete dir="geoserver/data/workspaces"/><mkdir dir="geoserver/data/workspaces"/>
+    <delete dir="geoserver/data/data"/><mkdir dir="geoserver/data/data"/>
+    
     <zip destfile="geoserver.war" basedir="geoserver" />
 
     <delete dir="geoserver" />

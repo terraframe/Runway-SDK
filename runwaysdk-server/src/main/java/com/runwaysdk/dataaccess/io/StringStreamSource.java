@@ -18,10 +18,13 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.apache.tools.ant.filters.StringInputStream;
+import org.apache.commons.io.IOUtils;
+
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public class StringStreamSource implements StreamSource
 {
@@ -43,16 +46,25 @@ public class StringStreamSource implements StreamSource
   @Override
   public InputStream getInputStream()
   {
-    return new StringInputStream(source);
+    try
+    {
+      return IOUtils.toInputStream(this.source, "UTF-8");
+    }
+    catch (IOException e)
+    {
+      throw new ProgrammingErrorException(e);
+    }
   }
-  
+
   @Override
   public String getToString()
   {
     return "an in memory string source";
   }
-  
-  /* (non-Javadoc)
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.io.StreamSource#toURI()
    */
   @Override

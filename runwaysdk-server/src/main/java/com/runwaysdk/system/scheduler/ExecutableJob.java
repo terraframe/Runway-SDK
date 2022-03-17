@@ -52,6 +52,16 @@ public abstract class ExecutableJob extends ExecutableJobBase
     }
   }
   
+  /**
+   * Override this method to provide your own Quartz job (such as QueueingQuartzJob).
+   * 
+   * @return
+   */
+  protected QuartzRunwayJob createQuartzRunwayJob()
+  {
+    return new QuartzRunwayJob(this);
+  }
+  
   public void setQuartzJob(QuartzRunwayJob quartzJob)
   {
     this.quartzJob = quartzJob;
@@ -71,11 +81,6 @@ public abstract class ExecutableJob extends ExecutableJobBase
     history.apply();
     
     return history;
-  }
-  
-  protected QuartzRunwayJob createQuartzRunwayJob()
-  {
-    return new QuartzRunwayJob(this);
   }
   
   @Request
@@ -101,9 +106,8 @@ public abstract class ExecutableJob extends ExecutableJobBase
   @Transaction
   protected AllJobStatus writeHistoryInTrans(JobHistory history, ExecutionContext executionContext, Throwable error)
   {
-    JobHistory jh = JobHistory.get(history.getOid());
+    JobHistory jh = JobHistory.lock(history.getOid());
 
-    jh.appLock();
     jh.setEndTime(new Date());
     jh.clearStatus();
     

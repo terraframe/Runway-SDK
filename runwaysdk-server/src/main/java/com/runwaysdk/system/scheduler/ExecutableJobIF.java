@@ -43,7 +43,7 @@ public interface ExecutableJobIF
 {
   public void execute(ExecutionContext executionContext) throws Throwable;
   
-  public QuartzRunwayJob getQuartzJob(ExecutableJob execJob);
+  public QuartzRunwayJob createQuartzJob(ExecutableJob execJob);
 
 //  public void resume(ExecutionContext executionContext);
 //

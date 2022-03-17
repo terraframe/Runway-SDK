@@ -39,7 +39,8 @@ import com.runwaysdk.vault.VaultTestSuite;
   QueryTestSuite.class,
   MultiThreadTestSuite.class,
   OntologyTestSuite.class,
-  SessionTestSuite.class
+  SessionTestSuite.class,
+  GraphTestSuite.class
 })
 public class UeberTestSuite
 {

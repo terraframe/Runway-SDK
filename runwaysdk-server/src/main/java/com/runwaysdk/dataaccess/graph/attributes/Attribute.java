@@ -78,7 +78,7 @@ public abstract class Attribute implements AttributeIF
    */
   private boolean                    isModified       = false;
 
-  protected ValueOverTimeCollection        valuesOverTime;
+  protected ValueOverTimeCollection  valuesOverTime;
 
   /**
    * Creates an attribute with the given name and initializes the value to
@@ -264,7 +264,7 @@ public abstract class Attribute implements AttributeIF
     {
       return this.valuesOverTime.getValueOnDate(date);
     }
-    
+
     return this.getObjectValue();
   }
 
@@ -307,7 +307,7 @@ public abstract class Attribute implements AttributeIF
     {
       endDate = ValueOverTime.INFINITY_END_DATE;
     }
-    
+
     if (startDate == null)
     {
       if (this.valuesOverTime.size() > 0)
@@ -357,11 +357,11 @@ public abstract class Attribute implements AttributeIF
   {
     return valuesOverTime;
   }
-  
+
   public void setValuesOverTime(ValueOverTimeCollection collection)
   {
     collection.validate();
-    
+
     this.valuesOverTime = collection;
   }
 
@@ -491,7 +491,7 @@ public abstract class Attribute implements AttributeIF
       problem.throwIt();
     }
   }
-  
+
   /**
    * Returns true if the given value is different than the value of this
    * attribute.

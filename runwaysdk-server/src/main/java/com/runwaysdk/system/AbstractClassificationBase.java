@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -691042304)
+@com.runwaysdk.business.ClassSignature(hash = 1145753720)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,15 +29,33 @@ package com.runwaysdk.system;
 public abstract class AbstractClassificationBase extends com.runwaysdk.business.graph.VertexObject
 {
   public final static String CLASS = "com.runwaysdk.system.AbstractClassification";
+  public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String OID = "oid";
   public static java.lang.String SEQ = "seq";
+  
   @SuppressWarnings("unused")
-  private static final long serialVersionUID = -691042304;
+  private static final long serialVersionUID = 1145753720;
   
   public AbstractClassificationBase()
   {
     super();
+  }
+  
+  public com.runwaysdk.ComponentIF getDescription()
+  {
+    return (com.runwaysdk.ComponentIF) this.getObjectValue(DESCRIPTION);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDescriptionMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.AbstractClassification.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeDAOIF)mdClassIF.definesAttribute(DESCRIPTION);
+  }
+  
+  public void setDescription(com.runwaysdk.ComponentIF value)
+  {
+    this.setValue(DESCRIPTION, value);
   }
   
   public com.runwaysdk.ComponentIF getDisplayLabel()

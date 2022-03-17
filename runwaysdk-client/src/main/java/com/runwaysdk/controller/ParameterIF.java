@@ -27,4 +27,6 @@ public interface ParameterIF
   public String getType();
 
   public ParseType getParseType();
+  
+  public boolean isRequired();
 }

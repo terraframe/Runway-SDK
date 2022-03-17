@@ -33,6 +33,8 @@ public class ParameterDecorator implements ParameterIF
 
   private ParseType parseType;
 
+  private boolean   required;
+
   public ParameterDecorator(Parameter parameter)
   {
     Class<?> type = parameter.getType();
@@ -45,6 +47,7 @@ public class ParameterDecorator implements ParameterIF
     {
       this.name = annotation.name();
       this.parseType = annotation.parser();
+      this.required = annotation.required();
     }
     else
     {
@@ -79,6 +82,12 @@ public class ParameterDecorator implements ParameterIF
   public String getName()
   {
     return this.name;
+  }
+  
+  @Override
+  public boolean isRequired()
+  {
+    return required;
   }
 
   @Override

@@ -244,6 +244,21 @@ public class CommonExceptionMessageLocalizer
   }
 
   /**
+   * Gets the localized message for an error thrown when a required parameter is missing
+   *
+   * @param attributeName
+   *          Name of the attribute
+   * @param value
+   *          Value being parsed
+   *
+   * @return
+   */
+  public static String requiredParameterException(Locale locale, String attributeName)
+  {
+    return LocalizationFacade.getMessage(locale, "AttributeRequiredException", "The attribute [{0}] is required.", attributeName);
+  }
+  
+  /**
    * Gets the localized message for an error thrown when parsing date attributes
    * from a request.
    *

@@ -30,6 +30,7 @@ import org.quartz.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
 /**
@@ -42,7 +43,7 @@ import com.runwaysdk.session.Request;
  */
 public class QueueingQuartzJob extends QuartzRunwayJob
 {
-  private static HashMap<String, Queue<String>> queueMap = new HashMap<String, Queue<String>>();
+  protected static HashMap<String, Queue<String>> queueMap = new HashMap<String, Queue<String>>();
   
   private static Semaphore lock = new Semaphore(1);
   
@@ -93,6 +94,17 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       }
   }
   
+  @Override
+  protected ExecutionContext buildExecutionContextInTrans(JobExecutionContext jec)
+  {
+    ExecutionContext context = super.buildExecutionContextInTrans(jec);
+    
+    QueueingQuartzJob quartzJob = (QueueingQuartzJob) this.execJob.createQuartzRunwayJob();
+    this.queueGroup = quartzJob.queueGroup;
+    
+    return context;
+  }
+  
   /*
    * The scheduler won't respect our invocation ordering unless we add it to the queue immediately.
    * 
@@ -121,29 +133,54 @@ public class QueueingQuartzJob extends QuartzRunwayJob
   }
   
   @Override
+  protected void finalizeJobExecution(JobExecutionContext context)
+  {
+    // This is a failsafe for the scenario where we cannot connect to the database any longer (for whatever reason). In this
+    // scenario, we need to immediately remove ourselves from the queue since the 'jobWasExecuted' listener will not be invoked.
+    
+    finalizeJob(context);
+  }
+  
+  @Override
   @Request
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
   {
-    if (!tryAcquireLock())
-    {
-      return;
-    }
+    finalizeJob(context);
     
+    super.jobWasExecuted(context, jobException);
+  }
+  
+  /**
+   * This method is a catchall for any/all listeners which may tell us that a job has finished executing. It is designed to be
+   * invoked by the individual 'situation specific' listener which may be quartz or runway event specific. It is critical
+   * that this method gets invoked at the end of a job's execution because otherwise it will sit in the queue and prevent
+   * all other jobs from running.
+   */
+  @Request
+  protected void finalizeJob(JobExecutionContext context)
+  {
     String nextHistoryId = null;
+    String historyId = (String) context.get(HISTORY_RECORD_ID);
+    
+    
     
     // !Important! We are now entering LOCK DEPENDENT code. If your code does not require the lock, then you should either run it
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
     // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
     // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
+    if (!tryAcquireLock())
+    {
+      return;
+    }
+    
     try
     {
-      String historyId = (String) context.get(HISTORY_RECORD_ID);
-      
       Queue<String> queue = getQueue();
       
       if (queue.peek() != null && !queue.peek().equals(historyId))
       {
-        logger.error("How in the world did we [" + historyId + "] manage to execute without being in the queue? First in line = [" + String.valueOf(queue.peek()) + "]");
+        // If we're not first in line it might be because a previous listener already removed us from the queue.
+        return;
       }
       
       queue.poll(); // Remove us from the queue
@@ -157,6 +194,9 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     {
       lock.release();
     }
+    // End lock dependent code //
+    
+    
     
     if (nextHistoryId != null)
     {
@@ -165,8 +205,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       
       execJob.getQuartzJob().start(history);
     }
-    
-    super.jobWasExecuted(context, jobException);
   }
   
   @Override
@@ -194,10 +232,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       historyId = record.getOid();
     }
     
-    if (!tryAcquireLock())
-    {
-      return true;
-    }
+    
     
     boolean invokeHandleQueued = false;
     boolean stopJobExecution = true;
@@ -206,6 +241,11 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
     // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
     // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
+    if (!tryAcquireLock())
+    {
+      return true;
+    }
+    
     try
     {
       Queue<String> queue = getQueue();
@@ -240,6 +280,9 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     {
       lock.release();
     }
+    // End lock dependent code //
+    
+    
     
     if (invokeHandleQueued)
     {

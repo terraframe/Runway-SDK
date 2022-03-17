@@ -33,13 +33,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileUploadException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.ClientException;
 import com.runwaysdk.ProblemExceptionDTO;
-import com.runwaysdk.business.ProblemDTO;
+import com.runwaysdk.business.ProblemDTOIF;
 import com.runwaysdk.controller.DispatchUtil;
 import com.runwaysdk.controller.DispatcherIF;
 import com.runwaysdk.controller.ErrorUtility;
@@ -54,6 +55,7 @@ import com.runwaysdk.controller.URLConfigurationManager.UriMapping;
 import com.runwaysdk.controller.UnknownServletException;
 import com.runwaysdk.generation.LoaderDecoratorExceptionIF;
 import com.runwaysdk.generation.loader.LoaderDecorator;
+import com.runwaysdk.transport.conversion.json.ProblemExceptionDTOToJSON;
 import com.runwaysdk.transport.conversion.json.RunwayExceptionDTOToJSON;
 import com.runwaysdk.web.ServletUtility;
 
@@ -227,7 +229,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
       // parameters to objects. If an exception did occur then invoke the
       // failure
       // case
-      List<ProblemDTO> problems = manager.getProblems();
+      List<ProblemDTOIF> problems = manager.getProblems();
 
       if (problems.size() > 0)
       {
@@ -248,8 +250,7 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
           e = ( (InvocationTargetException) e ).getTargetException();
         }
 
-        RunwayExceptionDTOToJSON converter = new RunwayExceptionDTOToJSON(e.getClass().getName(), e.getMessage(), e.getLocalizedMessage());
-        JSONObject json = converter.populate();
+        JSONObject json = this.convertErrorToJson(e);
 
         ErrorRestResponse response = new ErrorRestResponse(json.toString());
         response.handle(manager);
@@ -259,6 +260,18 @@ public class DispatcherServlet extends HttpServlet implements DispatcherIF
         throw e;
       }
     }
+  }
+
+  public JSONObject convertErrorToJson(Throwable e) throws JSONException
+  {
+    if (e instanceof ProblemExceptionDTO)
+    {
+      ProblemExceptionDTOToJSON converter = new ProblemExceptionDTOToJSON((ProblemExceptionDTO) e);
+      return converter.populate();
+    }
+
+    RunwayExceptionDTOToJSON converter = new RunwayExceptionDTOToJSON(e.getClass().getName(), e.getMessage(), e.getLocalizedMessage());
+    return converter.populate();
   }
 
   private Map<String, ParameterValue> getParameters(RequestManager manager, Endpoint annotation)
