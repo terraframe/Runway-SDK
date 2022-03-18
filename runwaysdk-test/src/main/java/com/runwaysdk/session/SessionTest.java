@@ -296,16 +296,6 @@ public class SessionTest
       // This is expected
     }
   }
-  
-  /**
-   * Nobody should be able to log in as SYSTEM user.
-   */
-  @Request
-  @Test(expected = InvalidLoginException.class)
-  public void testLogInAsSystem()
-  {
-    SessionFacade.logIn(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-  }
 
   @Request
   @Test

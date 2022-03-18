@@ -33,6 +33,7 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.constants.ServerConstants;
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -117,7 +118,7 @@ public class SessionFacade
    */
   public static String logIn(String username, String password, Locale[] locales)
   {
-    if (ServerConstants.SYSTEM_USER_NAME.equals(username))
+    if (ServerConstants.SYSTEM_USER_NAME.equals(username) && !RunwayProperties.allowLoginAsSystem())
     {
       String devMessage = "Invalid username/password combination.";
       throw new InvalidLoginException(devMessage);
