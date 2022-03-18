@@ -19,17 +19,17 @@
 
 FROM maven:3-openjdk-8
 
+ENV TEST="com/runwaysdk/test/UeberTS.java"
+
 ENV LOG_LEVEL=warning
 
 ENV POSTGRES_HOST=localhost
 ENV POSTGRES_PORT=5432
-
 ENV ORIENTDB_HOST="remote:localhost"
 
 ENV RUNWAY_WORKSPACE=/runwaysdk
 
 ENV MAVEN_OPTS="-Xmx3500M -Xms3500M -XX:+HeapDumpOnOutOfMemoryError"
-
 ENV MAVEN_TEST_FORK_COUNT=0
 
 RUN mkdir $RUNWAY_WORKSPACE
@@ -62,4 +62,4 @@ RUN mkdir $RUNWAY_WORKSPACE/bin
 RUN wget -nv -O $RUNWAY_WORKSPACE/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
 RUN chmod +x $RUNWAY_WORKSPACE/bin/wait-for-it.sh
 
-CMD $RUNWAY_WORKSPACE/bin/wait-for-it.sh -t 60 $POSTGRES_HOST:$POSTGRES_PORT -- && cd runwaysdk-test && mvn process-resources -P build-database -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Droot.clean=true -Dpatch=false && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/UeberTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false
+CMD $RUNWAY_WORKSPACE/bin/wait-for-it.sh -t 60 $POSTGRES_HOST:$POSTGRES_PORT -- && cd runwaysdk-test && mvn process-resources -P build-database -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Droot.clean=true -Dpatch=false && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="$TEST" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false
