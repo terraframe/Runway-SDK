@@ -32,6 +32,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -78,6 +79,20 @@ public class GISAttributeFactory implements PluginIF
       if (attribute == null)
       {
         attribute = new AttributeLineString(attributeName, null, definingType, mdAttributeIF, entityMdAttributeIFset);
+      }
+    }
+    else if (mdAttributeIF.getType().equals(MdAttributeShapeInfo.CLASS))
+    {
+      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      {
+        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        
+        attribute = new AttributeShape(attributeName, geometry, definingType, mdAttributeIF, entityMdAttributeIFset);
+      }
+      
+      if (attribute == null)
+      {
+        attribute = new AttributeShape(attributeName, null, definingType, mdAttributeIF, entityMdAttributeIFset);
       }
     }
     else if (mdAttributeIF.getType().equals(MdAttributePolygonInfo.CLASS))

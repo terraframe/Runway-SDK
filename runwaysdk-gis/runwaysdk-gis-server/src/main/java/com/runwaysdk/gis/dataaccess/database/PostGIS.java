@@ -39,6 +39,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class PostGIS extends PostgreSQL
@@ -248,7 +249,13 @@ public class PostGIS extends PostgreSQL
   {
     try
     {
-      if (dataType.equals(MdAttributePointInfo.CLASS) || dataType.equals(MdAttributeLineStringInfo.CLASS) || dataType.equals(MdAttributePolygonInfo.CLASS) || dataType.equals(MdAttributeMultiPointInfo.CLASS) || dataType.equals(MdAttributeMultiLineStringInfo.CLASS) || dataType.equals(MdAttributeMultiPolygonInfo.CLASS))
+      if (dataType.equals(MdAttributePointInfo.CLASS) 
+          || dataType.equals(MdAttributeLineStringInfo.CLASS)
+          || dataType.equals(MdAttributeShapeInfo.CLASS)
+          || dataType.equals(MdAttributePolygonInfo.CLASS)
+          || dataType.equals(MdAttributeMultiPointInfo.CLASS)
+          || dataType.equals(MdAttributeMultiLineStringInfo.CLASS)
+          || dataType.equals(MdAttributeMultiPolygonInfo.CLASS))
       {
         if (value == null)
         {
@@ -290,7 +297,13 @@ public class PostGIS extends PostgreSQL
 
     String bogusValue = "";
 
-    if (dataType.equals(MdAttributePointInfo.CLASS) || dataType.equals(MdAttributeLineStringInfo.CLASS) || dataType.equals(MdAttributePolygonInfo.CLASS) || dataType.equals(MdAttributeMultiPointInfo.CLASS) || dataType.equals(MdAttributeMultiLineStringInfo.CLASS) || dataType.equals(MdAttributeMultiPolygonInfo.CLASS))
+    if (dataType.equals(MdAttributePointInfo.CLASS) 
+        || dataType.equals(MdAttributeLineStringInfo.CLASS)
+        || dataType.equals(MdAttributeShapeInfo.CLASS)
+        || dataType.equals(MdAttributePolygonInfo.CLASS)
+        || dataType.equals(MdAttributeMultiPointInfo.CLASS)
+        || dataType.equals(MdAttributeMultiLineStringInfo.CLASS)
+        || dataType.equals(MdAttributeMultiPolygonInfo.CLASS))
     {
       bogusValue = "ST_GeometryFromText(NULL)";
     }

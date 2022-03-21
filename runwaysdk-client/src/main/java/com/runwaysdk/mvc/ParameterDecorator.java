@@ -48,6 +48,11 @@ public class ParameterDecorator implements ParameterIF
       this.name = annotation.name();
       this.parseType = annotation.parser();
       this.required = annotation.required();
+      
+      if(this.name.equals("") && parameter.isNamePresent())
+      {
+        this.name = parameter.getName();
+      }
     }
     else
     {

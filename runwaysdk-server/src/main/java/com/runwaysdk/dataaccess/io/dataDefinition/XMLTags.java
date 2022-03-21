@@ -855,6 +855,11 @@ public interface XMLTags
   public static final String   POLYGON_TAG                      = "polygon";
 
   /**
+   * The xml tag for an <code>MdAttributeShape</code>
+   */
+  public static final String   SHAPE_TAG                      = "shape";
+  
+  /**
    * The xml tag for an <code>MdAttributeMultiPoint</code>
    */
   public static final String   MULTIPOINT_TAG                   = "multipoint";

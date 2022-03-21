@@ -25,6 +25,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.transport.attributes.AttributeDTO;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
 import com.vividsolutions.jts.geom.Geometry;
@@ -93,6 +94,25 @@ public class GISAttributeDTOFactory implements AttributeDTOFactory.PluginIF
       if (attributeDTO == null)
       {
         attributeDTO = new AttributeLineStringDTO(attributeName, (LineString)null, readable, writable, modified);
+      }
+    }
+    else if(type.equals(MdAttributeShapeInfo.CLASS))
+    {
+      if (value != null)
+      {
+        if (value instanceof Geometry)
+        {
+          attributeDTO = new AttributeShapeDTO(attributeName, (Geometry)value, readable, writable, modified);
+        }
+        else if (value instanceof String)
+        {
+          attributeDTO = new AttributeShapeDTO(attributeName, (String)value, readable, writable, modified);
+        }
+      }
+      
+      if (attributeDTO == null)
+      {
+        attributeDTO = new AttributeShapeDTO(attributeName, (Geometry)null, readable, writable, modified);
       }
     }
     else if(type.equals(MdAttributePolygonInfo.CLASS))

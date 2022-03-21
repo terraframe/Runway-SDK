@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface RequestParamter {
-  public String name();
+  public String name() default "";
 
   public ParseType parser() default ParseType.NONE;
   

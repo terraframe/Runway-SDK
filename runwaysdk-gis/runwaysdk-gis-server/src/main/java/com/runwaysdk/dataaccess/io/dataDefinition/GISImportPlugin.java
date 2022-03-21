@@ -37,6 +37,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.gis.constants.MdGeoVertexInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeGeometryDAO;
 import com.runwaysdk.query.OIterator;
@@ -300,6 +301,7 @@ public class GISImportPlugin implements ImportPluginIF
     {
       this.addHandler(XMLTags.POINT_TAG, new AttributeGeometryHandler(manager, MdAttributePointInfo.CLASS));
       this.addHandler(XMLTags.LINESTRING_TAG, new AttributeGeometryHandler(manager, MdAttributeLineStringInfo.CLASS));
+      this.addHandler(XMLTags.SHAPE_TAG, new AttributeGeometryHandler(manager, MdAttributeShapeInfo.CLASS));
       this.addHandler(XMLTags.POLYGON_TAG, new AttributeGeometryHandler(manager, MdAttributePolygonInfo.CLASS));
       this.addHandler(XMLTags.MULTIPOINT_TAG, new AttributeGeometryHandler(manager, MdAttributeMultiPointInfo.CLASS));
       this.addHandler(XMLTags.MULTILINESTRING_TAG, new AttributeGeometryHandler(manager, MdAttributeMultiLineStringInfo.CLASS));

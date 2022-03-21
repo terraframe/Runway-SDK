@@ -54,6 +54,7 @@ public class PostGIS extends PostgreSQL
     hashtable.put(MdAttributePointInfo.CLASS,             "POINT");
     hashtable.put(MdAttributeLineStringInfo.CLASS,        "LINESTRING");
     hashtable.put(MdAttributePolygonInfo.CLASS,           "POLYGON");
+    hashtable.put(MdAttributeShapeInfo.CLASS,             "GEOMETRY");
     hashtable.put(MdAttributeMultiPointInfo.CLASS,        "MULTIPOINT");
     hashtable.put(MdAttributeMultiLineStringInfo.CLASS,   "MULTILINESTRING");
     hashtable.put(MdAttributeMultiPolygonInfo.CLASS,      "MULTIPOLYGON");

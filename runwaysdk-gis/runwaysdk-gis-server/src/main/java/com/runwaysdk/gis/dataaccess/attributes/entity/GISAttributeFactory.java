@@ -23,7 +23,6 @@ import java.sql.SQLException;
 
 import org.postgis.jts.JtsGeometry;
 
-import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -34,6 +33,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -68,6 +68,7 @@ public class GISAttributeFactory implements PluginIF
       if (attributeType.equals(MdAttributePointInfo.CLASS) ||
           attributeType.equals(MdAttributeLineStringInfo.CLASS) ||
           attributeType.equals(MdAttributePolygonInfo.CLASS) ||
+          attributeType.equals(MdAttributeShapeInfo.CLASS) ||
           attributeType.equals(MdAttributeMultiPointInfo.CLASS) ||
           attributeType.equals(MdAttributeMultiLineStringInfo.CLASS) ||
           attributeType.equals(MdAttributeMultiPolygonInfo.CLASS))
@@ -133,6 +134,20 @@ public class GISAttributeFactory implements PluginIF
       if (attribute == null)
       {
         attribute = new AttributeLineString(attributeName, mdAttributeKey, definingType);
+      }
+    }
+    else if (attributeType.equals(MdAttributeShapeInfo.CLASS))
+    {
+      if (attributeValue != null && attributeValue instanceof JtsGeometry)
+      {
+        Geometry geometry = ((JtsGeometry)attributeValue).getGeometry();
+        
+        attribute = new AttributeShape(attributeName, mdAttributeKey, definingType, geometry);
+      }
+      
+      if (attribute == null)
+      {
+        attribute = new AttributeShape(attributeName, mdAttributeKey, definingType);
       }
     }
     else if (attributeType.equals(MdAttributePolygonInfo.CLASS))

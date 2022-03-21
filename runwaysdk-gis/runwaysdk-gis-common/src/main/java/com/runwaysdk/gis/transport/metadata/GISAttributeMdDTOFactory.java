@@ -25,6 +25,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTOFactory.PluginIF;
 
@@ -46,6 +47,10 @@ public class GISAttributeMdDTOFactory implements PluginIF
     else if(attributeType.equals(MdAttributeLineStringInfo.CLASS))
     {
       attributeMdDTO = new AttributeLineStringMdDTO();
+    }
+    else if(attributeType.equals(MdAttributeShapeInfo.CLASS))
+    {
+      attributeMdDTO = new AttributeShapeMdDTO();
     }
     else if(attributeType.equals(MdAttributePolygonInfo.CLASS))
     {

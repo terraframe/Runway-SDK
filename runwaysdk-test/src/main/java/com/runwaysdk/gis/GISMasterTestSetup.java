@@ -40,12 +40,14 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeShapeDAO;
 import com.runwaysdk.session.Request;
 
 public class GISMasterTestSetup
@@ -73,6 +75,8 @@ public class GISMasterTestSetup
   public static MdAttributeMultiLineStringDAO mdAttributeMultiLineStringDAO;
 
   public static MdAttributeMultiPolygonDAO    mdAttributeMultiPolygonDAO;
+  
+  public static MdAttributeShapeDAO           mdAttributeShapeDAO;
 
   public static MdViewDAO                     testClassMdViewDAO;
 
@@ -233,6 +237,20 @@ public class GISMasterTestSetup
       mdAttributeMultiPolygonDAO.setValue(MdAttributeMultiPolygonInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
       mdAttributeMultiPolygonDAO.apply();
 
+      mdAttributeShapeDAO = MdAttributeShapeDAO.newInstance();
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.NAME, "testShape");
+      mdAttributeShapeDAO.setStructValue(MdAttributeShapeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Shape");
+      mdAttributeShapeDAO.setStructValue(MdAttributeShapeInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Shape");
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.SRID, "4326");
+      // mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.DIMENSION,
+      // "2");
+      mdAttributeShapeDAO.setValue(MdAttributeShapeInfo.DEFINING_MD_CLASS, testClassMdBusinessDAO.getOid());
+      mdAttributeShapeDAO.apply();
+      
       testClassMdViewDAO = MdViewDAO.newInstance();
       testClassMdViewDAO.setValue(MdViewInfo.NAME, VIEW_CLASS.getTypeName());
       testClassMdViewDAO.setValue(MdViewInfo.PACKAGE, VIEW_CLASS.getPackageName());
