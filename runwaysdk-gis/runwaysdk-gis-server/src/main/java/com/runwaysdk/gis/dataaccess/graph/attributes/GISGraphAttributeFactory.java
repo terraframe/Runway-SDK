@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
+\ * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
  *
  * This file is part of Runway SDK GIS(tm).
  *
@@ -27,6 +27,7 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
 
 public class GISGraphAttributeFactory implements GraphAttributeFactoryIF
 {
@@ -41,6 +42,10 @@ public class GISGraphAttributeFactory implements GraphAttributeFactoryIF
     else if (mdAttributeDAOIF instanceof MdAttributePolygonDAOIF)
     {
       return new AttributePolygon(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeShapeDAOIF)
+    {
+      return new AttributeShape(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeLineStringDAOIF)
     {

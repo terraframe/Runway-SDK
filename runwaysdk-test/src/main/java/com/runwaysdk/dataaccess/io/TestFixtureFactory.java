@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -218,6 +218,7 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
+import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.gis.constants.MdGeoVertexInfo;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeLineStringDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiLineStringDAO;
@@ -225,6 +226,7 @@ import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeShapeDAO;
 import com.runwaysdk.gis.dataaccess.metadata.graph.MdGeoVertexDAO;
 import com.runwaysdk.system.FieldOperation;
 import com.runwaysdk.system.gis.geo.AllowedIn;
@@ -329,6 +331,8 @@ public class TestFixtureFactory
     public static final String ATTRIBUTE_LINESTRING       = "testLineString";
 
     public static final String ATTRIBUTE_POLYGON          = "testPolygon";
+
+    public static final String ATTRIBUTE_SHAPE            = "testShape";
 
     public static final String ATTRIBUTE_MULTI_POINT      = "testMultiPoint";
 
@@ -1214,6 +1218,22 @@ public class TestFixtureFactory
     mdAttribute.setStructValue(MdAttributePolygonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Polygon Set Test");
     mdAttribute.setValue(MdAttributePolygonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     mdAttribute.setValue(MdAttributePolygonInfo.SRID, "4326");
+
+    return mdAttribute;
+  }
+
+  public static MdAttributeShapeDAO addShapeAttribute(MdClassDAOIF mdEntity)
+  {
+    return addShapeAttribute(mdEntity, TestFixConst.ATTRIBUTE_SHAPE);
+  }
+
+  public static MdAttributeShapeDAO addShapeAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeShapeDAO mdAttribute = MdAttributeShapeDAO.newInstance();
+    mdAttribute.setValue(MdAttributeShapeInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeShapeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Shape Set Test");
+    mdAttribute.setValue(MdAttributeShapeInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    mdAttribute.setValue(MdAttributeShapeInfo.SRID, "4326");
 
     return mdAttribute;
   }

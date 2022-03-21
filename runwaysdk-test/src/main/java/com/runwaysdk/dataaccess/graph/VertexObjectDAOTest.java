@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -78,7 +78,9 @@ import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeShapeDAO;
 import com.runwaysdk.session.Request;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -125,6 +127,8 @@ public class VertexObjectDAOTest
   private static MdAttributePointDAO                  mdPointAttribute;
 
   private static MdAttributePolygonDAO                mdPolygonAttribute;
+
+  private static MdAttributeShapeDAO                  mdShapeAttribute;
 
   private static MdAttributeLineStringDAO             mdLineStringAttribute;
 
@@ -228,6 +232,9 @@ public class VertexObjectDAOTest
 
     mdPolygonAttribute = TestFixtureFactory.addPolygonAttribute(mdVertexDAO);
     mdPolygonAttribute.apply();
+
+    mdShapeAttribute = TestFixtureFactory.addShapeAttribute(mdVertexDAO);
+    mdShapeAttribute.apply();
 
     mdLineStringAttribute = TestFixtureFactory.addLineStringAttribute(mdVertexDAO);
     mdLineStringAttribute.apply();
@@ -1018,6 +1025,49 @@ public class VertexObjectDAOTest
     Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
   }
 
+  @Request
+  @Test
+  public void testShapeAttribute()
+  {
+    String attributeName = mdShapeAttribute.definesAttribute();
+    VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+    
+    Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+    
+    Geometry value = TestFixtureFactory.getPoint();
+    
+    vertexDAO.setValue(attributeName, value);
+    
+    Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
+    
+    try
+    {
+      vertexDAO.apply();
+      
+      VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+      
+      Assert.assertNotNull(test);
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+      
+      // Test update
+      value = TestFixtureFactory.getPolygon();
+      
+      vertexDAO.setValue(attributeName, value);
+      vertexDAO.apply();
+      
+      test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertexDAO.delete();
+    }
+    
+    Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+  }
+  
   @Request
   @Test
   public void testLineStringAttribute()

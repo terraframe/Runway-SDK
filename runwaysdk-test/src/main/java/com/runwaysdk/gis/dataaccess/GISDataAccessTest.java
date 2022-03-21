@@ -39,9 +39,12 @@ import com.runwaysdk.gis.dataaccess.attributes.entity.AttributeMultiPoint;
 import com.runwaysdk.gis.dataaccess.attributes.entity.AttributeMultiPolygon;
 import com.runwaysdk.gis.dataaccess.attributes.entity.AttributePoint;
 import com.runwaysdk.gis.dataaccess.attributes.entity.AttributePolygon;
+import com.runwaysdk.gis.dataaccess.attributes.entity.AttributeShape;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.system.gis.metadata.InvalidDimensionException;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -1259,4 +1262,53 @@ public class GISDataAccessTest extends GISAbstractTest
       }
     }
   }
+  
+  /**
+  *
+  */
+ @Request
+ @Test
+ public void testShapeCRUD()
+ {
+   BusinessDAO businessDAO = BusinessDAO.newInstance(GISMasterTestSetup.TEST_CLASS.getType());
+
+   try
+   {
+     GeometryFactory geomertrFactory = new GeometryFactory();
+     Point point1 = geomertrFactory.createPoint(new Coordinate(191232, 243118));
+     Point point2 = geomertrFactory.createPoint(new Coordinate(191108d, 243242d));
+
+     
+     ( (AttributeShape) businessDAO.getAttribute("testShape") ).setValue(point1);
+     businessDAO.apply();
+
+     BusinessDAOIF businessDAOIF = BusinessDAO.get(businessDAO.getOid());
+     Point point = (Point) ( (AttributeGeometryIF) businessDAOIF.getAttributeIF("testShape") ).getGeometry();
+
+     Assert.assertEquals("X Coordinate on the point was not the expected value.", point1.getX(), point.getX(), 0.001);
+     Assert.assertEquals("Y Coordinate on the point was not the expected value.", point1.getY(), point.getY(), 0.001);
+
+     businessDAO = businessDAOIF.getBusinessDAO();
+     
+     ( (AttributeShape) businessDAO.getAttribute("testShape") ).setValue(point2);
+     businessDAO.apply();
+
+     businessDAOIF = BusinessDAO.get(businessDAO.getOid());
+     point = (Point) ( (AttributeGeometryIF) businessDAOIF.getAttributeIF("testShape") ).getGeometry();
+
+     Assert.assertEquals("X Coordinate on the point was not the expected value.", point2.getX(), point.getX(), 0.001);
+     Assert.assertEquals("Y Coordinate on the point was not the expected value.", point2.getY(), point.getY(), 0.001);
+   }
+
+   finally
+   {
+     if (!businessDAO.isNew())
+     {
+       businessDAO = BusinessDAO.get(businessDAO.getOid()).getBusinessDAO();
+       businessDAO.delete();
+     }
+   }
+ }
+
+
 }

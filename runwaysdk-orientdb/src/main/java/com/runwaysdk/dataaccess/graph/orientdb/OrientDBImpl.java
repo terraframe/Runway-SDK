@@ -116,6 +116,7 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
+import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class OrientDBImpl implements GraphDB
@@ -972,6 +973,10 @@ public class OrientDBImpl implements GraphDB
     else if (mdAttribute instanceof MdAttributeLineStringDAOIF)
     {
       return "OLineString";
+    }
+    else if (mdAttribute instanceof MdAttributeShapeDAOIF)
+    {
+      return "OShape";
     }
     else if (mdAttribute instanceof MdAttributePolygonDAOIF)
     {

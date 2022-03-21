@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
@@ -57,7 +57,9 @@ import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeShapeDAO;
 import com.runwaysdk.session.Request;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -86,12 +88,14 @@ public class VertexObjectTest
   private static MdAttributeDateTimeDAO        mdDateTimeAttribute;
 
   private static MdAttributeTimeDAO            mdTimeAttribute;
-  
+
   private static MdAttributeEnumerationDAO     mdEnumerationAttribute;
 
   private static MdAttributePointDAO           mdPointAttribute;
 
   private static MdAttributePolygonDAO         mdPolygonAttribute;
+
+  private static MdAttributeShapeDAO           mdShapeAttribute;
 
   private static MdAttributeLineStringDAO      mdLineStringAttribute;
 
@@ -100,14 +104,14 @@ public class VertexObjectTest
   private static MdAttributeMultiPolygonDAO    mdMultiPolygonAttribute;
 
   private static MdAttributeMultiLineStringDAO mdMultiLineStringAttribute;
-  
-  private static MdBusinessDAO mdBizEnum;
-  
-  private static MdEnumerationDAO mdEnum;
-  
-  private static BusinessDAO colorado;
-  
-  private static BusinessDAO washington;
+
+  private static MdBusinessDAO                 mdBizEnum;
+
+  private static MdEnumerationDAO              mdEnum;
+
+  private static BusinessDAO                   colorado;
+
+  private static BusinessDAO                   washington;
 
   @Request
   @BeforeClass
@@ -146,29 +150,29 @@ public class VertexObjectTest
 
     mdTimeAttribute = TestFixtureFactory.addTimeAttribute(mdVertexDAO);
     mdTimeAttribute.apply();
-    
+
     mdBizEnum = TestFixtureFactory.createEnumClass1();
     mdBizEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBizEnum.apply();
-    
+
     mdEnum = TestFixtureFactory.createMdEnumeation1(mdBizEnum);
     mdEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnum.apply();
-    
+
     TestFixtureFactory.addCharacterAttribute(mdBizEnum).apply();
-    
+
     colorado = BusinessDAO.newInstance(mdBizEnum.definesType());
     colorado.setValue(EnumerationMasterInfo.NAME, "CO");
     colorado.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Colorado");
     colorado.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
     colorado.apply();
-    
+
     washington = BusinessDAO.newInstance(mdBizEnum.definesType());
     washington.setValue(EnumerationMasterInfo.NAME, "WA");
     washington.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Washington");
     washington.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "WA");
     washington.apply();
-    
+
     mdEnumerationAttribute = TestFixtureFactory.addEnumerationAttribute(mdVertexDAO, mdEnum);
     mdEnumerationAttribute.apply();
 
@@ -178,6 +182,9 @@ public class VertexObjectTest
     mdPolygonAttribute = TestFixtureFactory.addPolygonAttribute(mdVertexDAO);
     mdPolygonAttribute.apply();
 
+    mdShapeAttribute = TestFixtureFactory.addShapeAttribute(mdVertexDAO);
+    mdShapeAttribute.apply();
+    
     mdLineStringAttribute = TestFixtureFactory.addLineStringAttribute(mdVertexDAO);
     mdLineStringAttribute.apply();
 
@@ -196,14 +203,14 @@ public class VertexObjectTest
   public static void classTearDown()
   {
     TestFixtureFactory.delete(mdVertexDAO);
-    
+
     TestFixtureFactory.delete(mdEnum);
-    
+
     TestFixtureFactory.delete(mdBizEnum);
-    
+
     LocalProperties.setSkipCodeGenAndCompile(false);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Request
   @Test
@@ -214,11 +221,11 @@ public class VertexObjectTest
     VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
     String value = colorado.getOid();
-    
+
     vertex.setValue(attributeName, value);
 
-    Set<String> getValue = ((Set<String>)vertex.getObjectValue(attributeName));
-    
+    Set<String> getValue = ( (Set<String>) vertex.getObjectValue(attributeName) );
+
     Assert.assertEquals(1, getValue.size());
     Assert.assertEquals(value, getValue.iterator().next());
 
@@ -231,8 +238,8 @@ public class VertexObjectTest
 
       Assert.assertNotNull(test);
 
-      getValue = ((Set<String>)test.getObjectValue(attributeName));
-      
+      getValue = ( (Set<String>) test.getObjectValue(attributeName) );
+
       Assert.assertEquals(1, getValue.size());
       Assert.assertEquals(value, getValue.iterator().next());
 
@@ -244,8 +251,8 @@ public class VertexObjectTest
 
       test = VertexObject.get(mdVertexDAO, vertex.getOid());
 
-      getValue = ((Set<String>)test.getObjectValue(attributeName));
-      
+      getValue = ( (Set<String>) test.getObjectValue(attributeName) );
+
       Assert.assertEquals(1, getValue.size());
       Assert.assertEquals(value, getValue.iterator().next());
     }
@@ -709,6 +716,47 @@ public class VertexObjectTest
     Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
   }
 
+  @Request
+  @Test
+  public void testShapeAttribute()
+  {
+    String attributeName = mdShapeAttribute.definesAttribute();
+    VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
+    
+    Geometry value = TestFixtureFactory.getPolygon();
+    
+    vertex.setValue(attributeName, value);
+    
+    Assert.assertEquals(value, vertex.getObjectValue(attributeName));
+    
+    try
+    {
+      vertex.apply();
+      
+      VertexObject test = VertexObject.get(mdVertexDAO, vertex.getOid());
+      
+      Assert.assertNotNull(test);
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+      
+      // Test update
+      value = TestFixtureFactory.getPoint();
+      
+      vertex.setValue(attributeName, value);
+      vertex.apply();
+      
+      test = VertexObject.get(mdVertexDAO, vertex.getOid());
+      
+      Assert.assertEquals(value, test.getObjectValue(attributeName));
+    }
+    finally
+    {
+      vertex.delete();
+    }
+    
+    Assert.assertNull(VertexObject.get(mdVertexDAO, vertex.getOid()));
+  }
+  
   @Request
   @Test
   public void testLineStringAttribute()

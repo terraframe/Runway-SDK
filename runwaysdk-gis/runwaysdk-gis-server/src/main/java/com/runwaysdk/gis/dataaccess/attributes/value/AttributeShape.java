@@ -63,7 +63,7 @@ public class AttributeShape extends AttributeGeometry implements AttributeGeomet
   @Override
   public Geometry getGeometry()
   {
-    return this.getGeometry();
+    return this.geometry;
   }
 
   /**

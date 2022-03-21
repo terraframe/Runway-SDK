@@ -27,6 +27,7 @@ import com.runwaysdk.gis.GISAbstractTest;
 import com.runwaysdk.gis.GISMasterTestSetup;
 import com.runwaysdk.session.Request;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -493,4 +494,52 @@ public class GISBusinessTest extends GISAbstractTest
     }
   }
 
+  /**
+  *
+  */
+  @Request
+  @Test
+  public void testShapeCRUD() throws Throwable
+  {
+    Business business = null;
+
+    try
+    {
+      Class<?> testClass = LoaderDecorator.load(GISMasterTestSetup.TEST_CLASS.getType());
+
+      String multiPointText1 = "MULTIPOINT(191232 243118, 10000 20000)";
+
+      WKTReader reader = new WKTReader();
+      Geometry multiPoint = (Geometry) reader.read(multiPointText1);
+
+      business = (Business) testClass.getConstructor().newInstance();
+      testClass.getMethod("setTestShape", Geometry.class).invoke(business, multiPoint);
+      testClass.getMethod("apply").invoke(business);
+
+      business = Business.get(business.getOid());
+      Geometry newShape = (Geometry) testClass.getMethod("getTestShape").invoke(business);
+
+      Assert.assertTrue("Returned Shape from the database does not match the Shape that was set on the object.", multiPoint.equalsExact(newShape));
+
+      String multiPointText2 = "MULTIPOINT(191108 243242, 30000 40000)";
+      multiPoint = (Geometry) reader.read(multiPointText2);
+
+      testClass.getMethod("setTestShape", Geometry.class).invoke(business, multiPoint);
+      testClass.getMethod("apply").invoke(business);
+
+      business = Business.get(business.getOid());
+      newShape = (Geometry) testClass.getMethod("getTestShape").invoke(business);
+
+      Assert.assertTrue("Returned Shape from the database does not match the Shape that was set on the object.", multiPoint.equalsExact(newShape));
+    }
+    finally
+    {
+      if (business != null && !business.isNew())
+      {
+        business.delete();
+      }
+    }
+  }
+
+  
 }

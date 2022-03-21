@@ -71,6 +71,7 @@ import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributeMultiPolygonDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePolygonDAO;
+import com.runwaysdk.gis.dataaccess.metadata.MdAttributeShapeDAO;
 import com.runwaysdk.session.Request;
 
 public class MdGraphClassTest
@@ -579,6 +580,25 @@ public class MdGraphClassTest
     Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
   }
 
+  @Request
+  @Test
+  public void testCreateShapeAttrMdVertex()
+  {
+    MdVertexDAO mdVertexDAO = createVertexClass(VERTEX_CLASS_NAME_1);
+    MdAttributeShapeDAO mdAttribute = TestFixtureFactory.addShapeAttribute(mdVertexDAO);
+    mdAttribute.apply();
+    
+    String dbClassName = mdVertexDAO.getValue(MdVertexInfo.DB_CLASS_NAME);
+    String dbAttrName = mdAttribute.definesAttribute();
+    GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
+    
+    Boolean attrDefined = GraphDBService.getInstance().isClassAttributeDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Attribute was not defined in the graph DB", true, attrDefined);
+    
+    Boolean indexDefined = GraphDBService.getInstance().isIndexDefined(graphRequest, dbClassName, dbAttrName);
+    Assert.assertEquals("Index was not defined in the graph DB", true, indexDefined);
+  }
+  
   @Request
   @Test
   public void testCreateLineStringAttrMdVertex()
