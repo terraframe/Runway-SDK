@@ -47,10 +47,10 @@ RUN echo "appcfg=dev\nproject.basedir=$RUNWAY_WORKSPACE\nmaven.m2=/root/.m2" > $
 RUN mvn clean install
 
 # Set the local classpath
-#WORKDIR $RUNWAY_WORKSPACE/runwaysdk-test
-#RUN mvn dependency:build-classpath -Dmdep.pathSeparator=";" -Dmdep.outputFile=$RUNWAY_WORKSPACE/runwaysdk-test/target/build-classpath.out
-#RUN LOCAL_CLASSPATH=$(cat $RUNWAY_WORKSPACE/runwaysdk-test/target/build-classpath.out) && ESCAPED_LOCAL_CLASSPATH=$(printf '%s\n' "$LOCAL_CLASSPATH" | sed -e 's/[]\/$*.^[]/\\&/g') && sed -i -e "s|local\.classpath=.*|local.classpath=$ESCAPED_LOCAL_CLASSPATH|g" $RUNWAY_WORKSPACE/envcfg/dev/runwaysdk/common.properties
-#WORKDIR $RUNWAY_WORKSPACE
+WORKDIR $RUNWAY_WORKSPACE/runwaysdk-test
+RUN mvn dependency:build-classpath -Dmdep.pathSeparator=";" -Dmdep.outputFile=$RUNWAY_WORKSPACE/runwaysdk-test/target/build-classpath.out
+RUN LOCAL_CLASSPATH=$(cat $RUNWAY_WORKSPACE/runwaysdk-test/target/build-classpath.out) && ESCAPED_LOCAL_CLASSPATH=$(printf '%s\n' "$LOCAL_CLASSPATH" | sed -e 's/[]\/$*.^[]/\\&/g') && sed -i -e "s|local\.classpath=.*|local.classpath=$ESCAPED_LOCAL_CLASSPATH|g" $RUNWAY_WORKSPACE/envcfg/dev/runwaysdk/common.properties
+WORKDIR $RUNWAY_WORKSPACE
 
 RUN mkdir $RUNWAY_WORKSPACE/bin
 RUN wget -nv -O $RUNWAY_WORKSPACE/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
