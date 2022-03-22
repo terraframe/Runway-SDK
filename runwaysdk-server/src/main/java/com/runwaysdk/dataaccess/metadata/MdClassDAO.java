@@ -254,11 +254,11 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
     // Create an inheritance relationship, if one is specified.
     if (superMdClassIF != null)
     {
-//      if (!superMdClassIF.isExtendable() )
-//      {
-//        String error = "Super class [" + superMdClassIF.definesType() + "] cannot be extended.";
-//        throw new InheritanceException(error);
-//      }
+      if (!superMdClassIF.isExtendable() )
+      {
+        String error = "Super class [" + superMdClassIF.definesType() + "] cannot be extended.";
+        throw new InheritanceException(error);
+      }
 
       createInheritanceRelationship = true;
     }

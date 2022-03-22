@@ -1,5 +1,13 @@
 <version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doIt>
+    <update>
+	    <mdBusiness 
+          name="com.runwaysdk.system.gis.metadata.MdAttributeGeometry"
+	      extendable="true">
+	    </mdBusiness>
+
+    </update>
+  
     <create>
 	    <object key="SHAPE" type="com.runwaysdk.system.gis.geo.GeometryTypeMaster">
 	      <attribute name="enumName" value="SHAPE" />
