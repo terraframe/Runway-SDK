@@ -35,6 +35,7 @@
             <xs:element name="multipoint" type="multipoint" />
             <xs:element name="multilinestring" type="multilinestring" />
             <xs:element name="multipolygon" type="multipolygon" />
+            <xs:element name="shape" type="shape" />            
           </xs:choice>
         </xs:extension>
       </xs:complexContent>
@@ -94,6 +95,10 @@
   </xs:complexType>
 
   <xs:complexType name="multipolygon">
+    <xs:attributeGroup ref="attributeSpatial" />
+  </xs:complexType>
+  
+  <xs:complexType name="shape">
     <xs:attributeGroup ref="attributeSpatial" />
   </xs:complexType>
   
