@@ -19,6 +19,16 @@
 
 FROM maven:3-openjdk-8
 
+ENV DATA_ACCESS_TEST_SUITE=true
+ENV BUSINESS_TEST_SUITE=true
+ENV FACADE_TEST_SUITE=true
+ENV VAULT_TEST_SUITE=true
+ENV QUERY_TEST_SUITE=true
+ENV MULTITHREADED_TEST_SUITE=true
+ENV ONTOLOGY_TEST_SUITE=true
+ENV SESSION_TEST_SUITE=true
+ENV GRAPH_TEST_SUITE=true
+
 ENV LOG_LEVEL=warning
 
 ENV POSTGRES_HOST=localhost
@@ -59,12 +69,12 @@ RUN chmod +x $RUNWAY_WORKSPACE/bin/wait-for-it.sh
 # The tests are split up like this because otherwise it runs out of memory (memory leak?)
 CMD $RUNWAY_WORKSPACE/bin/wait-for-it.sh -t 60 $POSTGRES_HOST:$POSTGRES_PORT -- \
   && cd runwaysdk-test && mvn process-resources -P build-database -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Droot.clean=true -Dpatch=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/DataAccessTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/BusinessTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/FacadeTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/VaultTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/QueryTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/MultiThreadTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/OntologyTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/SessionTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false \
-  && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/GraphTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false
+  && ($DATA_ACCESS_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/DataAccessTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($BUSINESS_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/BusinessTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($FACADE_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/FacadeTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($VAULT_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/VaultTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($QUERY_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/QueryTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($MULTITHREADED_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/MultiThreadTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($ONTOLOGY_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/OntologyTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($SESSION_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/SessionTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false); \
+  ($GRAPH_TEST_SUITE && mvn test -DforkCount=$MAVEN_TEST_FORK_COUNT -Dtest="com/runwaysdk/test/GraphTS.java" -Dorientdb.db.url=$ORIENTDB_HOST -Ddatabase.hostURL=$POSTGRES_HOST -Ddatabase.port=$POSTGRES_PORT -Drunway.keepSource=false -Drunway.keepBaseSource=false)
