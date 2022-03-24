@@ -2116,6 +2116,8 @@ public class MergeTest
   @Test
   public void testAttributeDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     RoleDAO role = TestFixtureFactory.createRole1();
     role.apply();
 

@@ -171,8 +171,11 @@ public class RBACTest
     newUser.setValue("password", "justin");
     newUser.apply();
 
-    mdDimension = TestFixtureFactory.createMdDimension();
-    mdDimension.apply();
+    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    {
+      mdDimension = TestFixtureFactory.createMdDimension();
+      mdDimension.apply();
+    }
 
     // Create a new MdBusiness
     mdBusiness2 = TestFixtureFactory.createMdBusiness2();
@@ -190,7 +193,10 @@ public class RBACTest
     mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
     mdAttributeCharacter.apply();
 
-    mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
+    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    {
+      mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
+    }
 
     mdMethod = TestFixtureFactory.createMdMethod(mdBusiness);
     mdMethod.apply();
@@ -251,7 +257,11 @@ public class RBACTest
     TestFixtureFactory.delete(methodActor_View);
     TestFixtureFactory.delete(mdMethod_View);
     TestFixtureFactory.delete(mdView);
-    TestFixtureFactory.delete(mdDimension);
+    
+    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    {
+      TestFixtureFactory.delete(mdDimension);
+    }
   }
 
   /**
@@ -2526,6 +2536,8 @@ public class RBACTest
   @Test
   public void testMdAttributeDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
     RoleDAO role2 = role.addAscendant(EXECUTIVE, "Executive");
 
@@ -2569,6 +2581,8 @@ public class RBACTest
   @Test
   public void testMdClassDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
 
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
@@ -2613,6 +2627,8 @@ public class RBACTest
   @Test
   public void testReadAndWriteAllPermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
 
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");

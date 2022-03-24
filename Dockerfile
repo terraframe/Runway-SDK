@@ -37,8 +37,10 @@ ENV ORIENTDB_HOST="remote:localhost"
 
 ENV RUNWAY_WORKSPACE=/runwaysdk
 
-ENV MAVEN_OPTS="-Xmx6000M -Xms6000M -XX:+HeapDumpOnOutOfMemoryError"
+ENV MAVEN_OPTS="-Xmx3500M -Xms3500M -XX:+HeapDumpOnOutOfMemoryError"
 ENV MAVEN_TEST_FORK_COUNT=0
+
+ENV runway.test.ignoreDimensionTests=true
 
 RUN mkdir $RUNWAY_WORKSPACE
 WORKDIR $RUNWAY_WORKSPACE

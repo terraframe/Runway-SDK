@@ -680,6 +680,8 @@ public class SAXParseTest
   @Test
   public void testRequiredForDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
 
@@ -6550,6 +6552,8 @@ public class SAXParseTest
   @Test
   public void testDimensionAttributePermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     RoleDAO role = TestFixtureFactory.createRole1();
     role.apply();
 

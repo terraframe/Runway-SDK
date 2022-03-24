@@ -91,6 +91,8 @@ public class MdDimensionTest
   @BeforeClass
   public static void classSetUp()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     testMdBusiness = TestFixtureFactory.createMdBusiness1();
     testMdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     testMdBusiness.apply();

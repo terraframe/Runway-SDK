@@ -52,6 +52,8 @@ public class ClassAndAttributeDimensionDeleterTest
   @BeforeClass
   public static void classSetUp()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    
     mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
 
