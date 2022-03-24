@@ -151,7 +151,7 @@ public class VertexObjectTest
     mdBizEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdBizEnum.apply();
     
-    mdEnum = TestFixtureFactory.createMdEnumeation1(mdBizEnum);
+    mdEnum = TestFixtureFactory.createMdEnumeration1(mdBizEnum);
     mdEnum.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnum.apply();
     

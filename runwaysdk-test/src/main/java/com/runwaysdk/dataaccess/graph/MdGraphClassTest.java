@@ -681,7 +681,7 @@ public class MdGraphClassTest
     MdBusinessDAO mdBusinessDAO = TestFixtureFactory.createEnumClass(VERTEX_CLASS_NAME_2);
     mdBusinessDAO.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessDAO);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessDAO);
 
     try
     {

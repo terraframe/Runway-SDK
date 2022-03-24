@@ -124,7 +124,7 @@ public class VertexObjectDAOChangeOverTimeTest
     mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
     mdEnumMasterDAO.apply();
 
-    mdEnumerationDAO = TestFixtureFactory.createMdEnumeation1(mdEnumMasterDAO);
+    mdEnumerationDAO = TestFixtureFactory.createMdEnumeration1(mdEnumMasterDAO);
     mdEnumerationDAO.apply();
 
     mdVertexDAO = TestFixtureFactory.createMdVertex();

@@ -102,7 +102,7 @@ public class GeneratorTest
     mdEnumMasterDAO = TestFixtureFactory.createEnumClass1();
     mdEnumMasterDAO.apply();
 
-    mdEnumerationDAO = TestFixtureFactory.createMdEnumeation1(mdEnumMasterDAO);
+    mdEnumerationDAO = TestFixtureFactory.createMdEnumeration1(mdEnumMasterDAO);
     mdEnumerationDAO.apply();
 
     mdParentDAO = TestFixtureFactory.createMdVertex("TestParent");
