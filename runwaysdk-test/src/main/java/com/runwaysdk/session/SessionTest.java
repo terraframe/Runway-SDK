@@ -198,7 +198,7 @@ public class SessionTest
       mdAttributeCharacter = (MdAttributeCharacterDAO) mdView.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
     }
 
-    mdDomain = SharedTestDataManager.getOrCreateMdDomain();
+    mdDomain = SharedTestDataManager.getOrCreateMdDomain(TEST_DATA_PREFIX + TestFixConst.TEST_DOMAIN);
 
     businessDAO = BusinessDAO.newInstance(mdBusiness.definesType());
     businessDAO.getAttribute(ElementInfo.OWNER).setValue(newUser.getOid());

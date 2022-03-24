@@ -7,6 +7,7 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdDimensionInfo;
+import com.runwaysdk.constants.MdDomainInfo;
 import com.runwaysdk.constants.MdEnumerationInfo;
 import com.runwaysdk.constants.MdMethodInfo;
 import com.runwaysdk.constants.MdRelationshipInfo;
@@ -67,13 +68,15 @@ public class SharedTestDataManager
     return mdStruct;
   }
   
-  public static MdDomainDAO getOrCreateMdDomain()
+  public static MdDomainDAO getOrCreateMdDomain(String name)
   {
-    MdDomainDAO mdDomain = getMdDomainIfExist(TestFixConst.TEST_DOMAIN);
+    MdDomainDAO mdDomain = getMdDomainIfExist(name);
     
     if (mdDomain == null)
     {
-      mdDomain = TestFixtureFactory.createMdDomain();
+      mdDomain = MdDomainDAO.newInstance();
+      mdDomain.setValue(MdDomainInfo.DOMAIN_NAME, name);
+      mdDomain.setStructValue(MdDomainInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Domain");
       mdDomain.apply();
     }
     
