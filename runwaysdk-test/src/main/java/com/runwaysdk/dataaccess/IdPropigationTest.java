@@ -267,7 +267,7 @@ public class IdPropigationTest
   @Test
   public void testEnumerationDimensionDefaultValue()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();
@@ -417,7 +417,7 @@ public class IdPropigationTest
   @Test
   public void testReferenceDimensionDefaultValue()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     MdDimensionDAO mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();

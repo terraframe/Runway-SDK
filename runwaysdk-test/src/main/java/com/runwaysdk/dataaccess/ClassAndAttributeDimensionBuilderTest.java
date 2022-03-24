@@ -53,7 +53,7 @@ public class ClassAndAttributeDimensionBuilderTest
   @BeforeClass
   public static void classSetUp()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     mdDimension = TestFixtureFactory.createMdDimension();
     mdDimension.apply();

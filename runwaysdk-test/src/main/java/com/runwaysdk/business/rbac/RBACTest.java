@@ -171,7 +171,7 @@ public class RBACTest
     newUser.setValue("password", "justin");
     newUser.apply();
 
-    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
     {
       mdDimension = TestFixtureFactory.createMdDimension();
       mdDimension.apply();
@@ -193,7 +193,7 @@ public class RBACTest
     mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdBusiness);
     mdAttributeCharacter.apply();
 
-    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
     {
       mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
     }
@@ -258,7 +258,7 @@ public class RBACTest
     TestFixtureFactory.delete(mdMethod_View);
     TestFixtureFactory.delete(mdView);
     
-    if (! "true".equals(System.getenv("runway.test.ignoreDimensionTests")))
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
     {
       TestFixtureFactory.delete(mdDimension);
     }
@@ -2536,7 +2536,7 @@ public class RBACTest
   @Test
   public void testMdAttributeDimension()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     RoleDAO role = RoleDAO.createRole(MASTER, "Master");
     RoleDAO role2 = role.addAscendant(EXECUTIVE, "Executive");
@@ -2581,7 +2581,7 @@ public class RBACTest
   @Test
   public void testMdClassDimension()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
 
@@ -2627,7 +2627,7 @@ public class RBACTest
   @Test
   public void testReadAndWriteAllPermissions()
   {
-    org.junit.Assume.assumeFalse("true".equals(System.getenv("runway.test.ignoreDimensionTests")));
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
     
     MdClassDimensionDAOIF mdClassDimension = mdBusiness.getMdClassDimension(mdDimension);
 
