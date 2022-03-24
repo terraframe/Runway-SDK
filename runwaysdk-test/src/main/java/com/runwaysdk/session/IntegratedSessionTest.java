@@ -265,12 +265,12 @@ public class IntegratedSessionTest
   @BeforeClass
   public static void classSetUp()
   {
-    boolean skipGen = LocalProperties.isSkipCodeGenAndCompile();
-    LocalProperties.setSkipCodeGenAndCompile(true);
+    //boolean skipGen = LocalProperties.isSkipCodeGenAndCompile();
+    //LocalProperties.setSkipCodeGenAndCompile(true);
     
     classSetupInRequest();
     
-    LocalProperties.setSkipCodeGenAndCompile(skipGen);
+    //LocalProperties.setSkipCodeGenAndCompile(skipGen);
   }
 
   @Request
