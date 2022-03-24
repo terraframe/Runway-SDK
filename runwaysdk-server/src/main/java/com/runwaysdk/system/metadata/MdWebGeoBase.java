@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -761424634)
+@com.runwaysdk.business.ClassSignature(hash = -1372929115)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,40 +29,12 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebGeoBase extends com.runwaysdk.system.metadata.MdWebAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebGeo";
-  public static java.lang.String SHOWONSEARCH = "showOnSearch";
-  private static final long serialVersionUID = -761424634;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1372929115;
   
   public MdWebGeoBase()
   {
     super();
-  }
-  
-  public Boolean getShowOnSearch()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONSEARCH));
-  }
-  
-  public void validateShowOnSearch()
-  {
-    this.validateAttribute(SHOWONSEARCH);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getShowOnSearchMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebGeo.CLASS);
-    return mdClassIF.definesAttribute(SHOWONSEARCH);
-  }
-  
-  public void setShowOnSearch(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(SHOWONSEARCH, "");
-    }
-    else
-    {
-      setValue(SHOWONSEARCH, java.lang.Boolean.toString(value));
-    }
   }
   
   protected String getDeclaredType()

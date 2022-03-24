@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class ElementSystem extends ElementSystemBase
 {
-  private static final long serialVersionUID = -175551692;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 570111865;
   
   public ElementSystem()
   {

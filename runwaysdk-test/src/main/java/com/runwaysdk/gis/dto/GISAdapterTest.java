@@ -504,8 +504,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
 
       Point point = (Point) businessDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d == point.getY());
 
       tommyRequest.lock(businessDTO);
       businessDTO.setValue("testPoint", "POINT(191108 243242)");
@@ -514,8 +514,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO = (BusinessDTO) tommyRequest.get(businessDTO.getOid());
       point = (Point) businessDTO.getObjectValue("testPoint");
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
     }
     finally
     {
@@ -901,8 +901,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d == point.getY());
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -914,8 +914,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
     }
     catch (Throwable e)
     {
@@ -1744,8 +1744,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191232d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243118d == point.getY());
 
       testClass.getMethod("lock").invoke(businessDTO);
 
@@ -2722,8 +2722,8 @@ public class GISAdapterTest extends GISAbstractTest implements DoNotWeave
       businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       point = (Point) testClass.getMethod("getTestPoint").invoke(businessDTO);
 
-      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d, point.getX());
-      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d, point.getY());
+      Assert.assertEquals("X Coordinate on the point was not the expected value.", 191108d == point.getX());
+      Assert.assertEquals("Y Coordinate on the point was not the expected value.", 243242d == point.getY());
 
       businessDTO = (BusinessDTO) testClass.getMethod("get", ClientRequestIF.class, String.class).invoke(null, tommyRequest, businessDTO.getOid());
       testClass.getMethod("lock").invoke(businessDTO);

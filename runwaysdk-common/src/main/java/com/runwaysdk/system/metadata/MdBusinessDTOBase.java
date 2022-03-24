@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1612781979)
+@com.runwaysdk.business.ClassSignature(hash = -1399866635)
 public abstract class MdBusinessDTOBase extends com.runwaysdk.system.metadata.MdElementDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdBusiness";
-  private static final long serialVersionUID = 1612781979;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1399866635;
   
   protected MdBusinessDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -105,7 +106,7 @@ public abstract class MdBusinessDTOBase extends com.runwaysdk.system.metadata.Md
     }
   }
   
-  public String getSuperMdBusinessId()
+  public String getSuperMdBusinessOid()
   {
     return getValue(SUPERMDBUSINESS);
   }

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1008096034)
+@com.runwaysdk.business.ClassSignature(hash = 1815577532)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -33,8 +33,8 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
   private com.runwaysdk.business.Struct displayLabel = null;
   
   public static java.lang.String METADATA = "metadata";
-  public static java.lang.String STATEMASTER = "stateMaster";
-  private static final long serialVersionUID = 1008096034;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1815577532;
   
   public TypeTupleBase()
   {
@@ -52,10 +52,10 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     this.validateAttribute(DISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF getDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(DISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF)mdClassIF.definesAttribute(DISPLAYLABEL);
   }
   
   public com.runwaysdk.system.metadata.Metadata getMetadata()
@@ -70,7 +70,7 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     }
   }
   
-  public String getMetadataId()
+  public String getMetadataOid()
   {
     return getValue(METADATA);
   }
@@ -80,10 +80,10 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     this.validateAttribute(METADATA);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getMetadataMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getMetadataMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.TypeTuple.CLASS);
-    return mdClassIF.definesAttribute(METADATA);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(METADATA);
   }
   
   public void setMetadata(com.runwaysdk.system.metadata.Metadata value)
@@ -95,6 +95,18 @@ public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metada
     else
     {
       setValue(METADATA, value.getOid());
+    }
+  }
+  
+  public void setMetadataId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(METADATA, "");
+    }
+    else
+    {
+      setValue(METADATA, oid);
     }
   }
   

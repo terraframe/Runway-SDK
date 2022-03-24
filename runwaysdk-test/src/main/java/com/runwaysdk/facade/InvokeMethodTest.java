@@ -189,6 +189,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       rowCount--;
 
       Assert.assertEquals(recordCount, rowCount);
+      
+      workbook.close();
     }
     finally
     {
@@ -235,6 +237,8 @@ public class InvokeMethodTest extends InvokeMethodTestBase
       rowCount--;
 
       Assert.assertEquals(recordCount, rowCount);
+      
+      workbook.close();
     }
     finally
     {
@@ -279,7 +283,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     Integer[] output = (Integer[]) collectionClass.getMethod("sortIntegers", ClientRequestIF.class, Integer[].class).invoke(null, clientRequest, null);
 
-    Assert.assertEquals(null, output);
+    Assert.assertNull(output);
   }
 
   @Request

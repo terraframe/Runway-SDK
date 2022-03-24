@@ -510,6 +510,9 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
       // call dropIndex and buildIndex.
       relationshipDAO.delete();
     }
+    
+    // Heads up: test
+    this.dropIndex(false);
   }
 
   /**

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -717495607)
+@com.runwaysdk.business.ClassSignature(hash = 815908764)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +30,8 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
 {
   public final static String CLASS = "com.runwaysdk.business.Component";
   public static java.lang.String OID = "oid";
-  private static final long serialVersionUID = -717495607;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 815908764;
   
   public ComponentSystemBase()
   {
@@ -42,15 +43,15 @@ public abstract class ComponentSystemBase extends com.runwaysdk.business.Busines
     return getValue(OID);
   }
   
-  public void validateId()
+  public void validateOid()
   {
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Component.CLASS);
-    return mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

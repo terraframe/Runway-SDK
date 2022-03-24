@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -415030448)
+@com.runwaysdk.business.ClassSignature(hash = 518105509)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system.metadata;
  */
 public class MobileGridFieldQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = -415030448;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 518105509;
 
   protected MobileGridFieldQueryDTO(String type)
   {

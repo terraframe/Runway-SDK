@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1517503982)
+@com.runwaysdk.business.ClassSignature(hash = 517056925)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -200,23 +200,6 @@ public  class TypePermissionQuery extends com.runwaysdk.query.GeneratedRelations
     return (com.runwaysdk.system.metadata.MdDomainQuery.MdDomainQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.TypePermission.ENTITYDOMAIN, mdAttributeIF, this, alias, displayLabel);
 
   }
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.TypePermission.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.TypePermission.OID, alias, displayLabel);
-
-  }
   public com.runwaysdk.query.SelectableChar getKeyName()
   {
     return getKeyName(null);
@@ -295,6 +278,23 @@ public  class TypePermissionQuery extends com.runwaysdk.query.GeneratedRelations
     com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.TypePermission.LOCKEDBY);
 
     return (com.runwaysdk.system.SingleActorQuery.SingleActorQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.TypePermission.LOCKEDBY, mdAttributeIF, this, alias, displayLabel);
+
+  }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.TypePermission.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getComponentQuery().get(com.runwaysdk.system.TypePermission.OID, alias, displayLabel);
 
   }
   public com.runwaysdk.system.OperationsQuery.AllOperationsQueryIF getOperations()

@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -87817143)
+@com.runwaysdk.business.ClassSignature(hash = -159995620)
 public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.business.Component";
-  private static final long serialVersionUID = -87817143;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -159995620;
   
   protected ComponentSystemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

@@ -280,6 +280,7 @@ public abstract class SessionComponent implements Transient, Ownable, Serializab
    * @param name
    * @return object stored on the attribute.
    */
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     return this.transientDAO.getObjectValue(name);

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1173541668)
+@com.runwaysdk.business.ClassSignature(hash = 2052795463)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,12 +30,13 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
 {
   public final static String CLASS = "com.runwaysdk.system.EmailKey";
   public static java.lang.String EMAIL = "email";
-  public static java.lang.String OID = "oid";
   public static java.lang.String ISSUEDONDATE = "issuedOnDate";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String UNIQUEKEY = "uniqueKey";
-  private static final long serialVersionUID = -1173541668;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 2052795463;
   
   public EmailKeyBase()
   {
@@ -67,10 +68,10 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     this.validateAttribute(EMAIL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEmailMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getEmailMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(EMAIL);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(EMAIL);
   }
   
   protected void setEmail(String value)
@@ -85,22 +86,6 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(OID);
-  }
-  
   public java.util.Date getIssuedOnDate()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(ISSUEDONDATE));
@@ -111,10 +96,10 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     this.validateAttribute(ISSUEDONDATE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getIssuedOnDateMd()
+  public static com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF getIssuedOnDateMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(ISSUEDONDATE);
+    return (com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF)mdClassIF.definesAttribute(ISSUEDONDATE);
   }
   
   protected void setIssuedOnDate(java.util.Date value)
@@ -139,10 +124,10 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -157,6 +142,22 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     }
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public String getSiteMaster()
   {
     return getValue(SITEMASTER);
@@ -167,10 +168,10 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public String getUniqueKey()
@@ -183,10 +184,10 @@ public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
     this.validateAttribute(UNIQUEKEY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getUniqueKeyMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getUniqueKeyMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.EmailKey.CLASS);
-    return mdClassIF.definesAttribute(UNIQUEKEY);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(UNIQUEKEY);
   }
   
   protected void setUniqueKey(String value)

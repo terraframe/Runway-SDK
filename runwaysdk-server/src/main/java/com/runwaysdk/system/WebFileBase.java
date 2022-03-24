@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1508653330)
+@com.runwaysdk.business.ClassSignature(hash = -1612972541)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,16 +35,17 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
   public static java.lang.String FILEEXTENSION = "fileExtension";
   public static java.lang.String FILENAME = "fileName";
   public static java.lang.String FILEPATH = "filePath";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TYPE = "type";
-  private static final long serialVersionUID = -1508653330;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1612972541;
   
   public WebFileBase()
   {
@@ -79,7 +80,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -107,7 +108,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -132,6 +133,18 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     else
     {
       setValue(ENTITYDOMAIN, value.getOid());
+    }
+  }
+  
+  public void setEntityDomainId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
     }
   }
   
@@ -219,22 +232,6 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.WebFile.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -291,7 +288,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -319,7 +316,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -335,6 +332,22 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(LOCKEDBY);
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.WebFile.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public com.runwaysdk.system.Actor getOwner()
   {
     if (getValue(OWNER).trim().equals(""))
@@ -347,7 +360,7 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -372,6 +385,18 @@ public abstract class WebFileBase extends com.runwaysdk.business.Business
     else
     {
       setValue(OWNER, value.getOid());
+    }
+  }
+  
+  public void setOwnerId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(OWNER, "");
+    }
+    else
+    {
+      setValue(OWNER, oid);
     }
   }
   

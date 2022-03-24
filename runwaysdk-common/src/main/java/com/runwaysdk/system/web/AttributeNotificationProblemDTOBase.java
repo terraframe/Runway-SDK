@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.web;
 
-@com.runwaysdk.business.ClassSignature(hash = -408192448)
+@com.runwaysdk.business.ClassSignature(hash = -448402477)
 public abstract class AttributeNotificationProblemDTOBase extends com.runwaysdk.business.ProblemDTO
 {
   public final static String CLASS = "com.runwaysdk.system.web.AttributeNotificationProblem";
-  private static final long serialVersionUID = -408192448;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -448402477;
   
   public AttributeNotificationProblemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequestIF)
   {

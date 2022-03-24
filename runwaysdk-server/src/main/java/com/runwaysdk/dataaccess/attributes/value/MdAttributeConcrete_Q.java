@@ -664,6 +664,7 @@ public abstract class MdAttributeConcrete_Q implements MdAttributeConcreteDAOIF
    * @param name
    * @return object stored on the attribute.
    */
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     return this.getValue(name);

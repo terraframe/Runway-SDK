@@ -42,6 +42,7 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.EntityCacheMaster;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -60,6 +61,7 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
+import com.runwaysdk.dataaccess.io.SharedTestDataManager;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
@@ -266,8 +268,8 @@ public class IntegratedMethodTest
   /**
    * The setup done before the test suite is run
    */
-  @Request
   @BeforeClass
+  @Request
   public static void classSetUp()
   {
     setup = false;
@@ -279,8 +281,7 @@ public class IntegratedMethodTest
     newUser.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
     newUser.apply();
 
-    mdDimension = TestFixtureFactory.createMdDimension();
-    mdDimension.apply();
+    mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
 
     // Create an enumeration master class
     enumMasterMdBusiness = MdBusinessDAO.newInstance();
@@ -630,7 +631,7 @@ public class IntegratedMethodTest
     TestFixtureFactory.delete(mdBusiness);
     TestFixtureFactory.delete(mdStruct);
     TestFixtureFactory.delete(newUser);
-    TestFixtureFactory.delete(mdDimension);
+//    TestFixtureFactory.delete(mdDimension);
   }
 
   /**

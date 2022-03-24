@@ -866,7 +866,7 @@ public class SAXParseTest
     businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
     businessDAO.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum1);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 
@@ -3509,7 +3509,7 @@ public class SAXParseTest
     businessDAO3.setValue("testFloat", "435329.1");
     businessDAO3.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum1);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
@@ -5160,7 +5160,7 @@ public class SAXParseTest
     businessDAO.setValue(TestFixConst.ATTRIBUTE_CHARACTER, "CO");
     businessDAO.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum1);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum1);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 

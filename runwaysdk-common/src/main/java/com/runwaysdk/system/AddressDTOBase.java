@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -254652680)
+@com.runwaysdk.business.ClassSignature(hash = 1412466995)
 public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.Address";
-  private static final long serialVersionUID = -254652680;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1412466995;
   
   protected AddressDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -46,8 +47,8 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
   }
   
   public static java.lang.String CITY = "city";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String POSTALCODE = "postalCode";
   public static java.lang.String PRIMARYADDRESS = "primaryAddress";
   public static java.lang.String SECONDARYADDRESS = "secondaryAddress";

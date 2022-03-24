@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -191605411)
+@com.runwaysdk.business.ClassSignature(hash = -474320344)
 public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.SDuty";
-  private static final long serialVersionUID = -191605411;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -474320344;
   
   protected SDutyDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -48,11 +49,11 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SDCARDINALITY = "sdCardinality";
   public static java.lang.String SDNAME = "sdName";
@@ -96,7 +97,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -133,7 +134,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -244,7 +245,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -281,7 +282,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -318,7 +319,7 @@ public abstract class SDutyDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }

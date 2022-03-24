@@ -18,8 +18,12 @@
  */
 package com.runwaysdk.session;
 
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+import com.runwaysdk.dataaccess.io.SharedTestDataManager;
+import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
@@ -34,9 +38,24 @@ import org.junit.runners.Suite;
   MethodTest.class,
   IntegratedMethodTest.class,
   LocaleManagerTest.class,
-//  IntegratedSessionTest.class,
-  SessionTest.class,
+  IntegratedSessionTest.class,
+  SessionTest.class
 })
 public class SessionTestSuite
 {
+  public static final String TEST_DATA_PREFIX = "SessionTestSuite";
+  
+  public static final String MD_DIMENSION_NAME = TEST_DATA_PREFIX + "D1";
+  
+  @Request
+  @AfterClass
+  public static void classTearDown()
+  {
+    MdDimensionDAO dimension = SharedTestDataManager.getMdDimensionIfExist(MD_DIMENSION_NAME);
+    
+    if (dimension != null)
+    {
+      dimension.delete();
+    }
+  }
 }

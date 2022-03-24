@@ -19,7 +19,6 @@
 package com.runwaysdk.localization;
 
 import java.util.Locale;
-import java.util.Map;
 
 public interface SupportedLocaleIF
 {

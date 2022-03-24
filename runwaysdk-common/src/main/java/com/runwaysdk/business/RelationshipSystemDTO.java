@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class RelationshipSystemDTO extends RelationshipSystemDTOBase
 {
-  private static final long serialVersionUID = 476791438;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -479797581;
   
   public RelationshipSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest, String parentOid, String childOid)
   {

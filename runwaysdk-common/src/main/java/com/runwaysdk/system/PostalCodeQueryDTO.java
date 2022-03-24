@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1566658682)
+@com.runwaysdk.business.ClassSignature(hash = 1952704075)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system;
  */
 public class PostalCodeQueryDTO extends com.runwaysdk.system.EnumerationMasterQueryDTO
 {
-private static final long serialVersionUID = 1566658682;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 1952704075;
 
   protected PostalCodeQueryDTO(String type)
   {

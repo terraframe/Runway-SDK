@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1512215581)
+@com.runwaysdk.business.ClassSignature(hash = 996882434)
 public abstract class PostalCodeDTOBase extends com.runwaysdk.system.EnumerationMasterDTO
 {
   public final static String CLASS = "com.runwaysdk.system.PostalCode";
-  private static final long serialVersionUID = -1512215581;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 996882434;
   
   protected PostalCodeDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

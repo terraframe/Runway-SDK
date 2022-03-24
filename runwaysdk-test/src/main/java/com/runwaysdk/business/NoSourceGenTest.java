@@ -260,7 +260,7 @@ public class NoSourceGenTest
 
     try
     {
-      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(enumMaster);
+      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(enumMaster);
       mdEnumeration.apply();
 
       try
@@ -299,7 +299,7 @@ public class NoSourceGenTest
 
     try
     {
-      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(enumMaster);
+      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(enumMaster);
       mdEnumeration.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdEnumeration.apply();
 

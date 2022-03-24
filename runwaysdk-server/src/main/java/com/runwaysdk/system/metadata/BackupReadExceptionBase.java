@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1269263396)
+@com.runwaysdk.business.ClassSignature(hash = -1067471125)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,9 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class BackupReadExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.BackupReadException";
-  public static java.lang.String OID = "oid";
   public static java.lang.String LOCATION = "location";
-  private static final long serialVersionUID = 1269263396;
+  public static java.lang.String OID = "oid";
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1067471125;
   
   public BackupReadExceptionBase()
   {
@@ -51,22 +52,6 @@ public abstract class BackupReadExceptionBase extends com.runwaysdk.business.Sma
   public BackupReadExceptionBase(java.lang.Throwable cause)
   {
     super(cause);
-  }
-  
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.BackupReadException.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getLocation()
@@ -97,6 +82,22 @@ public abstract class BackupReadExceptionBase extends com.runwaysdk.business.Sma
     }
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.BackupReadException.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   protected String getDeclaredType()
   {
     return CLASS;
@@ -105,8 +106,8 @@ public abstract class BackupReadExceptionBase extends com.runwaysdk.business.Sma
   public java.lang.String localize(java.util.Locale locale)
   {
     java.lang.String message = super.localize(locale);
-    message = replace(message, "{oid}", this.getOid());
     message = replace(message, "{location}", this.getLocation());
+    message = replace(message, "{oid}", this.getOid());
     return message;
   }
   

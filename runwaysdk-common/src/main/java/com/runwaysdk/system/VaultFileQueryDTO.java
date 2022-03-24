@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 480982328)
+@com.runwaysdk.business.ClassSignature(hash = 1453274573)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system;
  */
 public class VaultFileQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = 480982328;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 1453274573;
 
   protected VaultFileQueryDTO(String type)
   {

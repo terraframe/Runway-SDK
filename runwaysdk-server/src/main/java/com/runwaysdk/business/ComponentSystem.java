@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class ComponentSystem extends ComponentSystemBase
 {
-  private static final long serialVersionUID = -1497318644;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1535850847;
   
   public ComponentSystem()
   {

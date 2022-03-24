@@ -25,8 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
 import com.runwaysdk.controller.RequestManager;
-import com.runwaysdk.mvc.ResponseIF;
-import com.runwaysdk.mvc.RestResponse;
 import com.runwaysdk.request.ServletResponseIF;
 
 public class CookieResponse extends RestResponse implements ResponseIF

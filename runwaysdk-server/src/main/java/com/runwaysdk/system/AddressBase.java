@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -636338056)
+@com.runwaysdk.business.ClassSignature(hash = -1843053901)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,14 +30,15 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
 {
   public final static String CLASS = "com.runwaysdk.system.Address";
   public static java.lang.String CITY = "city";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String POSTALCODE = "postalCode";
   public static java.lang.String PRIMARYADDRESS = "primaryAddress";
   public static java.lang.String SECONDARYADDRESS = "secondaryAddress";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String ZIPCODE = "zipCode";
-  private static final long serialVersionUID = -636338056;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1843053901;
   
   public AddressBase()
   {
@@ -69,10 +70,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(CITY);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCityMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getCityMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(CITY);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(CITY);
   }
   
   public void setCity(String value)
@@ -87,22 +88,6 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(OID);
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -113,10 +98,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -129,6 +114,22 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   @SuppressWarnings("unchecked")
@@ -163,10 +164,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(POSTALCODE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPostalCodeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getPostalCodeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(POSTALCODE);
+    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(POSTALCODE);
   }
   
   public String getPrimaryAddress()
@@ -179,10 +180,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(PRIMARYADDRESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPrimaryAddressMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getPrimaryAddressMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(PRIMARYADDRESS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(PRIMARYADDRESS);
   }
   
   public void setPrimaryAddress(String value)
@@ -207,10 +208,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SECONDARYADDRESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSecondaryAddressMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSecondaryAddressMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(SECONDARYADDRESS);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SECONDARYADDRESS);
   }
   
   public void setSecondaryAddress(String value)
@@ -235,10 +236,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public String getZipCode()
@@ -251,10 +252,10 @@ public abstract class AddressBase extends com.runwaysdk.business.Struct
     this.validateAttribute(ZIPCODE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getZipCodeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getZipCodeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Address.CLASS);
-    return mdClassIF.definesAttribute(ZIPCODE);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ZIPCODE);
   }
   
   public void setZipCode(String value)

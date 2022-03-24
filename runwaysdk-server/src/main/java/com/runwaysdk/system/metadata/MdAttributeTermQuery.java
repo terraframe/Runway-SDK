@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -756119257)
+@com.runwaysdk.business.ClassSignature(hash = -1984672341)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -79,7 +79,6 @@ public  class MdAttributeTermQuery extends com.runwaysdk.system.metadata.MdAttri
     java.sql.ResultSet results = com.runwaysdk.dataaccess.database.Database.query(sqlStmt);
     return new com.runwaysdk.business.BusinessIterator<MdAttributeTerm>(this.getComponentQuery().getMdEntityIF(), columnInfoMap, results);
   }
-
 
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.

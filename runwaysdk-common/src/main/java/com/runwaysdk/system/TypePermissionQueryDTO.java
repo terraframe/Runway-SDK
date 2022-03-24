@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -59779612)
+@com.runwaysdk.business.ClassSignature(hash = 892305007)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system;
  */
 public class TypePermissionQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = -59779612;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 892305007;
 
   protected TypePermissionQueryDTO(String type)
   {

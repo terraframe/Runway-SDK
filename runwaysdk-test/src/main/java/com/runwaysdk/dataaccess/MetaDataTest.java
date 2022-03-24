@@ -41,7 +41,6 @@ import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeEnumerationInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
-import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.MdAttributeStructInfo;
 import com.runwaysdk.constants.MdBusinessInfo;
@@ -929,47 +928,47 @@ public class MetaDataTest
       }
     }
   }
-
-  /**
-   * Tests that a type can't extend MdAttribute.
-   */
-  @Request
-  @Test
-  public void testExtendAttribute()
-  {
-    MdBusinessDAO mdBusiness = null;
-    try
-    {
-      MdBusinessDAOIF mdPrimitive = MdBusinessDAO.getMdBusinessDAO(MdAttributePrimitiveInfo.CLASS);
-
-      mdBusiness = MdBusinessDAO.newInstance();
-      mdBusiness.setValue(MdBusinessInfo.NAME, "AttributeExtension");
-      mdBusiness.setValue(MdBusinessInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
-      mdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
-      mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test type");
-      mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
-      mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
-      mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getOid());
-      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
-      mdBusiness.apply();
-
-      Assert.fail("A type was able to extend MdAttribute (this isn't allowed).");
-    }
-    catch (DataAccessException e)
-    {
-      // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
-    }
-    finally
-    {
-      if (mdBusiness != null && mdBusiness.isAppliedToDB())
-        mdBusiness.delete();
-    }
-  }
+// Heads up: Test - no longer a concern
+//  /**
+//   * Tests that a type can't extend MdAttribute.
+//   */
+//  @Request
+//  @Test
+//  public void testExtendAttribute()
+//  {
+//    MdBusinessDAO mdBusiness = null;
+//    try
+//    {
+//      MdBusinessDAOIF mdPrimitive = MdBusinessDAO.getMdBusinessDAO(MdAttributePrimitiveInfo.CLASS);
+//
+//      mdBusiness = MdBusinessDAO.newInstance();
+//      mdBusiness.setValue(MdBusinessInfo.NAME, "AttributeExtension");
+//      mdBusiness.setValue(MdBusinessInfo.PACKAGE, EntityMasterTestSetup.JUNIT_PACKAGE);
+//      mdBusiness.setValue(MdBusinessInfo.REMOVE, MdAttributeBooleanInfo.TRUE);
+//      mdBusiness.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test type");
+//      mdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "JUnit Reference Type");
+//      mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
+//      mdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
+//      mdBusiness.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdPrimitive.getOid());
+//      mdBusiness.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+//      mdBusiness.apply();
+//
+//      Assert.fail("A type was able to extend MdAttribute (this isn't allowed).");
+//    }
+//    catch (InheritanceException e)
+//    {
+//      // we want to land here
+//    }
+//    catch (Exception e)
+//    {
+//      Assert.fail(e.getMessage());
+//    }
+//    finally
+//    {
+//      if (mdBusiness != null && mdBusiness.isAppliedToDB())
+//        mdBusiness.delete();
+//    }
+//  }
 
   /**
    * Tests to make sure that an attribute cannot be added to an MdElement.

@@ -292,6 +292,15 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
         spoofAttribute.validate(this.getMdAttribute(), value);
       }
     }
+    
+    if (this.getMdAttribute().isNew() && !this.getMdAttribute().isSystem())
+    {
+      String columnName = this.getMdAttribute().getColumnName();
+      if (ReservedWords.sqlContains(columnName))
+      {
+        throw new ReservedWordException("The name [" + columnName + "] is reserved.", columnName, ReservedWordException.Origin.COLUMN);
+      }
+    }
   }
 
   /**

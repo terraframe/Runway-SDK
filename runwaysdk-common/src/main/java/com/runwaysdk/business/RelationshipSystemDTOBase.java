@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -759986741)
+@com.runwaysdk.business.ClassSignature(hash = 1847871600)
 public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.RelationshipDTO
 {
   public final static String CLASS = "com.runwaysdk.business.Relationship";
-  private static final long serialVersionUID = -759986741;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1847871600;
   
   public RelationshipSystemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String parentOid, java.lang.String childOid)
   {
@@ -47,8 +48,8 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
   }
   
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public com.runwaysdk.system.metadata.MdDomainDTO getEntityDomain()
   {
     if(getValue(ENTITYDOMAIN) == null || getValue(ENTITYDOMAIN).trim().equals(""))
@@ -61,7 +62,7 @@ public abstract class RelationshipSystemDTOBase extends com.runwaysdk.business.R
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }

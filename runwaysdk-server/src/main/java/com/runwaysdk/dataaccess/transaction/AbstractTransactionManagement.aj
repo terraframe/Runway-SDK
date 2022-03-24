@@ -251,6 +251,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // com.runwaysdk.dataaccess.database.general.AbstractDatabase+.dropField(String,
   // ..)) && args(tableName, ..))
 
+  @SuppressAjWarnings
   protected pointcut junitTransaction()
   : (execution (* junit.framework.TestCase+.classSetUp(..))
     || execution (* junit.framework.TestCase+.classTearDown(..))

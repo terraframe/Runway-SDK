@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -142186849)
+@com.runwaysdk.business.ClassSignature(hash = 594342084)
 public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.PhoneNumber";
-  private static final long serialVersionUID = -142186849;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 594342084;
   
   protected PhoneNumberDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -47,8 +48,8 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
   
   public static java.lang.String AREACODE = "areaCode";
   public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PREFIX = "prefix";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String SUFFIX = "suffix";

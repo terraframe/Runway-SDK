@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1163730651)
+@com.runwaysdk.business.ClassSignature(hash = 1767577456)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system.metadata;
  */
 public class MetadataRelationshipQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = 1163730651;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 1767577456;
 
   protected MetadataRelationshipQueryDTO(String type)
   {

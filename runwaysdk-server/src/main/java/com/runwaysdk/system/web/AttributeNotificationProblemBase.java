@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.web;
 
-@com.runwaysdk.business.ClassSignature(hash = -1390556224)
+@com.runwaysdk.business.ClassSignature(hash = -1214448301)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -35,7 +35,8 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
   public static java.lang.String DEFININGTYPE = "definingType";
   public static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
   public static java.lang.String OID = "oid";
-  private static final long serialVersionUID = -1390556224;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1214448301;
   
   public AttributeNotificationProblemBase()
   {
@@ -57,10 +58,10 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(ATTRIBUTEDISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getAttributeDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getAttributeDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(ATTRIBUTEDISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ATTRIBUTEDISPLAYLABEL);
   }
   
   public void setAttributeDisplayLabel(String value)
@@ -85,10 +86,10 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(ATTRIBUTENAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getAttributeNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getAttributeNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(ATTRIBUTENAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ATTRIBUTENAME);
   }
   
   public void setAttributeName(String value)
@@ -113,10 +114,10 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(COMPONENTID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getComponentIdMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getComponentIdMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(COMPONENTID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(COMPONENTID);
   }
   
   public void setComponentId(String value)
@@ -141,10 +142,10 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(DEFININGTYPE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDefiningTypeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getDefiningTypeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(DEFININGTYPE);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(DEFININGTYPE);
   }
   
   public void setDefiningType(String value)
@@ -169,10 +170,10 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     this.validateAttribute(DEFININGTYPEDISPLAYLABEL);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDefiningTypeDisplayLabelMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getDefiningTypeDisplayLabelMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(DEFININGTYPEDISPLAYLABEL);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(DEFININGTYPEDISPLAYLABEL);
   }
   
   public void setDefiningTypeDisplayLabel(String value)
@@ -192,15 +193,15 @@ public abstract class AttributeNotificationProblemBase extends com.runwaysdk.bus
     return getValue(OID);
   }
   
-  public void validateId()
+  public void validateOid()
   {
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.web.AttributeNotificationProblem.CLASS);
-    return mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

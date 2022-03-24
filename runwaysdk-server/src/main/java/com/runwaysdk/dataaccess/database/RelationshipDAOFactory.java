@@ -612,7 +612,8 @@ public class RelationshipDAOFactory
       }
       else if (mdRelationshipIF instanceof MdGraphDAOIF)
       {
-        MdRelationshipDAOIF superMdRelationshipIF = mdRelationshipIF.getSuperClass();
+// Heads up: test 
+//        MdRelationshipDAOIF superMdRelationshipIF = mdRelationshipIF.getSuperClass();
 
         return new GraphDAO(parentOid, childOid, attributeMap, relationshipType);
       }

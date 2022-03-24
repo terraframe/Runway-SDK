@@ -34,7 +34,6 @@ import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
-import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
@@ -702,7 +701,7 @@ public class MdGraphClassTest
     MdBusinessDAO mdBusinessDAO = TestFixtureFactory.createEnumClass(VERTEX_CLASS_NAME_2);
     mdBusinessDAO.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessDAO);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessDAO);
 
     try
     {

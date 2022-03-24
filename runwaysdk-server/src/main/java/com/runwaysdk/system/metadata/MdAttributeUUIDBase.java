@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 280277322)
+@com.runwaysdk.business.ClassSignature(hash = 866538441)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,7 +30,8 @@ public abstract class MdAttributeUUIDBase extends com.runwaysdk.system.metadata.
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeUUID";
   public static java.lang.String DEFAULTVALUE = "defaultValue";
-  private static final long serialVersionUID = 280277322;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 866538441;
   
   public MdAttributeUUIDBase()
   {
@@ -47,10 +48,10 @@ public abstract class MdAttributeUUIDBase extends com.runwaysdk.system.metadata.
     this.validateAttribute(DEFAULTVALUE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDefaultValueMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getDefaultValueMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdAttributeUUID.CLASS);
-    return mdClassIF.definesAttribute(DEFAULTVALUE);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(DEFAULTVALUE);
   }
   
   public void setDefaultValue(String value)

@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 166736944)
+@com.runwaysdk.business.ClassSignature(hash = 480121125)
 public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
-  private static final long serialVersionUID = 166736944;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 480121125;
   
   protected JobViewDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -36,8 +37,8 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
   
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String OID = "oid";
   public static java.lang.String JOB = "job";
+  public static java.lang.String OID = "oid";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   public com.runwaysdk.system.scheduler.ExecutableJobDTO getDownstreamJob()
   {
@@ -51,7 +52,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
   }
   
-  public String getDownstreamJobId()
+  public String getDownstreamJobOid()
   {
     return getValue(DOWNSTREAMJOB);
   }
@@ -137,7 +138,7 @@ public abstract class JobViewDTOBase extends com.runwaysdk.business.ViewDTO
     }
   }
   
-  public String getJobId()
+  public String getJobOid()
   {
     return getValue(JOB);
   }

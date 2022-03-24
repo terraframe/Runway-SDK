@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1205258767)
+@com.runwaysdk.business.ClassSignature(hash = 697045553)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,7 +29,8 @@ package com.runwaysdk.system.scheduler;
 public abstract class JobStatusBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobStatus";
-  private static final long serialVersionUID = -1205258767;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 697045553;
   
   public JobStatusBase()
   {

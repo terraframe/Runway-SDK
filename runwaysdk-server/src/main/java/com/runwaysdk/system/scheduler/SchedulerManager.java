@@ -37,8 +37,6 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.transaction.Transaction;
@@ -64,8 +62,6 @@ public class SchedulerManager implements JobListener, TriggerListener
   public static final String TRIGGER_GROUP = SchedulerManager.class.getName();
   
   public static final String JOB_GROUP = SchedulerManager.class.getName();
-  
-  private static final Logger logger = LoggerFactory.getLogger(SchedulerManager.class);
 
   private SchedulerManager()
   {

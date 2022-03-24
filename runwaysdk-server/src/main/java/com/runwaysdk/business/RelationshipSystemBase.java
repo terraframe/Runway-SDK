@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.business;
 
-@com.runwaysdk.business.ClassSignature(hash = -373742517)
+@com.runwaysdk.business.ClassSignature(hash = -776132880)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -30,9 +30,10 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
 {
   public final static String CLASS = "com.runwaysdk.business.Relationship";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
-  private static final long serialVersionUID = -373742517;
+  public static java.lang.String OID = "oid";
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -776132880;
   
   public RelationshipSystemBase(String parentOid, String childOid)
   {
@@ -51,7 +52,7 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -61,10 +62,10 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     this.validateAttribute(ENTITYDOMAIN);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getEntityDomainMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getEntityDomainMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
-    return mdClassIF.definesAttribute(ENTITYDOMAIN);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(ENTITYDOMAIN);
   }
   
   public void setEntityDomain(com.runwaysdk.system.metadata.MdDomain value)
@@ -79,20 +80,16 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     }
   }
   
-  public String getOid()
+  public void setEntityDomainId(java.lang.String oid)
   {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
-    return mdClassIF.definesAttribute(OID);
+    if(oid == null)
+    {
+      setValue(ENTITYDOMAIN, "");
+    }
+    else
+    {
+      setValue(ENTITYDOMAIN, oid);
+    }
   }
   
   public String getKeyName()
@@ -105,10 +102,10 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -121,6 +118,22 @@ public abstract class RelationshipSystemBase extends com.runwaysdk.business.Rela
     {
       setValue(KEYNAME, value);
     }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.business.Relationship.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()

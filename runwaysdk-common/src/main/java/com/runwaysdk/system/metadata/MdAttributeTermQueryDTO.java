@@ -28,6 +28,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdAttributeTermQueryDTO extends com.runwaysdk.system.metadata.MdAttributeReferenceQueryDTO
 {
+@SuppressWarnings("unused")
 private static final long serialVersionUID = -554195559;
 
   protected MdAttributeTermQueryDTO(String type)

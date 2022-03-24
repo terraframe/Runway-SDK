@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 795436464)
+@com.runwaysdk.business.ClassSignature(hash = 627835557)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,10 +31,11 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
   public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
   public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String OID = "oid";
   public static java.lang.String JOB = "job";
+  public static java.lang.String OID = "oid";
   public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
-  private static final long serialVersionUID = 795436464;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 627835557;
   
   public JobViewBase()
   {
@@ -53,7 +54,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getDownstreamJobId()
+  public String getDownstreamJobOid()
   {
     return getValue(DOWNSTREAMJOB);
   }
@@ -78,6 +79,18 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     else
     {
       setValue(DOWNSTREAMJOB, value.getOid());
+    }
+  }
+  
+  public void setDownstreamJobId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(DOWNSTREAMJOB, "");
+    }
+    else
+    {
+      setValue(DOWNSTREAMJOB, oid);
     }
   }
   
@@ -109,22 +122,6 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobView.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
-  }
-  
   public com.runwaysdk.system.scheduler.ExecutableJob getJob()
   {
     if (getValue(JOB).trim().equals(""))
@@ -137,7 +134,7 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     }
   }
   
-  public String getJobId()
+  public String getJobOid()
   {
     return getValue(JOB);
   }
@@ -163,6 +160,34 @@ public abstract class JobViewBase extends com.runwaysdk.business.View
     {
       setValue(JOB, value.getOid());
     }
+  }
+  
+  public void setJobId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(JOB, "");
+    }
+    else
+    {
+      setValue(JOB, oid);
+    }
+  }
+  
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.scheduler.JobView.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public Boolean getTriggerOnFailure()

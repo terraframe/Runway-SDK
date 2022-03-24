@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1718070457)
+@com.runwaysdk.business.ClassSignature(hash = -952561787)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system.metadata;
  */
 public class TypeTupleQueryDTO extends com.runwaysdk.system.metadata.MetadataQueryDTO
 {
-private static final long serialVersionUID = 1718070457;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = -952561787;
 
   protected TypeTupleQueryDTO(String type)
   {

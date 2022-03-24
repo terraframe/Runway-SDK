@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -990797406)
+@com.runwaysdk.business.ClassSignature(hash = -369900228)
 public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.MetadataDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.TypeTuple";
-  private static final long serialVersionUID = -990797406;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -369900228;
   
   protected TypeTupleDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -47,7 +48,6 @@ public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.Met
   
   public static java.lang.String DISPLAYLABEL = "displayLabel";
   public static java.lang.String METADATA = "metadata";
-  public static java.lang.String STATEMASTER = "stateMaster";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();
@@ -85,7 +85,7 @@ public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.Met
     }
   }
   
-  public String getMetadataId()
+  public String getMetadataOid()
   {
     return getValue(METADATA);
   }

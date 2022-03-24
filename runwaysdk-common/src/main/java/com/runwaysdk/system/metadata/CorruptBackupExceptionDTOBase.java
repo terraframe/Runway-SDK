@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 1530205919)
+@com.runwaysdk.business.ClassSignature(hash = -400773134)
 public abstract class CorruptBackupExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CorruptBackupException";
-  private static final long serialVersionUID = 1530205919;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -400773134;
   
   public CorruptBackupExceptionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequestIF)
   {

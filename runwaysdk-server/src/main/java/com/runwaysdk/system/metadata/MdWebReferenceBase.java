@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1694143040)
+@com.runwaysdk.business.ClassSignature(hash = 134544683)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,40 +29,12 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebReferenceBase extends com.runwaysdk.system.metadata.MdWebAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebReference";
-  public static java.lang.String SHOWONSEARCH = "showOnSearch";
-  private static final long serialVersionUID = -1694143040;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 134544683;
   
   public MdWebReferenceBase()
   {
     super();
-  }
-  
-  public Boolean getShowOnSearch()
-  {
-    return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(SHOWONSEARCH));
-  }
-  
-  public void validateShowOnSearch()
-  {
-    this.validateAttribute(SHOWONSEARCH);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getShowOnSearchMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdWebReference.CLASS);
-    return mdClassIF.definesAttribute(SHOWONSEARCH);
-  }
-  
-  public void setShowOnSearch(Boolean value)
-  {
-    if(value == null)
-    {
-      setValue(SHOWONSEARCH, "");
-    }
-    else
-    {
-      setValue(SHOWONSEARCH, java.lang.Boolean.toString(value));
-    }
   }
   
   protected String getDeclaredType()

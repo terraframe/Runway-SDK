@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1443511431)
+@com.runwaysdk.business.ClassSignature(hash = 644685400)
 public abstract class MdAttributeMultiTermDTOBase extends com.runwaysdk.system.metadata.MdAttributeMultiReferenceDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeMultiTerm";
-  private static final long serialVersionUID = -1443511431;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 644685400;
   
   protected MdAttributeMultiTermDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -44,7 +45,7 @@ public abstract class MdAttributeMultiTermDTOBase extends com.runwaysdk.system.m
   {
     return CLASS;
   }
-  
+
   public static com.runwaysdk.system.metadata.MdAttributeMultiTermDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
     com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);

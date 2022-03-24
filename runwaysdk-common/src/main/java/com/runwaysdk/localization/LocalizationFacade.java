@@ -30,8 +30,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.constants.CommonProperties;
-
 /**
  * Provides a clean abstraction for all localization related activities in Runway. These methods are implemented by a 
  * {@link com.runwaysdk.localization.RunwayLocalizationProviderIF}, which is resolved at runtime using the java service loader paradigm.

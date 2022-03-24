@@ -327,6 +327,7 @@ public abstract class Notification implements MutableWithStructs, LocalizableIF,
    * @param name
    * @return object stored on the attribute.
    */
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     return this.transientDAO.getObjectValue(name);

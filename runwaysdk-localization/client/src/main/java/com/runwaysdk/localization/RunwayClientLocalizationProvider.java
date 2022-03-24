@@ -115,7 +115,6 @@ public class RunwayClientLocalizationProvider implements RunwayLocalizationProvi
     return (Set<SupportedLocaleIF>) invoke("getInstalledLocales", new Class<?>[] {}); // TODO : This object would have to be converted to a DTO to actually work in a client context
   }
   
-  @SuppressWarnings("unchecked")
   @Override
   public SupportedLocaleIF getSupportedLocale(Locale locale)
   {

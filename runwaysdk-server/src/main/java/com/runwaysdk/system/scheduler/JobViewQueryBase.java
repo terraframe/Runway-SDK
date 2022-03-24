@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = -1060414119)
+@com.runwaysdk.business.ClassSignature(hash = 348534478)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -80,24 +80,6 @@ public  abstract  class JobViewQueryBase extends com.runwaysdk.query.GeneratedVi
 
   }
  
-  public com.runwaysdk.query.SelectableUUID getOid()
-  {
-    return getOid(null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, null);
-
-  }
- 
-  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
-  {
-    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, displayLabel);
-
-  }
- 
   public com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF getJob()
   {
     return getJob(null);
@@ -117,6 +99,24 @@ public  abstract  class JobViewQueryBase extends com.runwaysdk.query.GeneratedVi
     return (com.runwaysdk.system.scheduler.ExecutableJobQuery.ExecutableJobQueryReferenceIF)this.getSelectable(com.runwaysdk.system.scheduler.JobView.JOB, alias, displayLabel);
 
   }
+  public com.runwaysdk.query.SelectableUUID getOid()
+  {
+    return getOid(null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, null);
+
+  }
+ 
+  public com.runwaysdk.query.SelectableUUID getOid(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.query.SelectableUUID)this.getSelectable(com.runwaysdk.system.scheduler.JobView.OID, alias, displayLabel);
+
+  }
+ 
   public com.runwaysdk.query.SelectableBoolean getTriggerOnFailure()
   {
     return getTriggerOnFailure(null);

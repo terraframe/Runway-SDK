@@ -1636,7 +1636,7 @@ public class MergeTest
     EnumerationItemDAO clubs = TestFixtureFactory.createEnumObject(mdEnumerationMaster, "Clubs");
     clubs.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdEnumerationMaster);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdEnumerationMaster);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
 

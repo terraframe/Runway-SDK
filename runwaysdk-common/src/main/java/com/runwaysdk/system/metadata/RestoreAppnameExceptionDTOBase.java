@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 508475528)
+@com.runwaysdk.business.ClassSignature(hash = -1336864171)
 public abstract class RestoreAppnameExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.RestoreAppnameException";
-  private static final long serialVersionUID = 508475528;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1336864171;
   
   public RestoreAppnameExceptionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequestIF)
   {

@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.transaction;
 
-@com.runwaysdk.business.ClassSignature(hash = -2076139864)
+@com.runwaysdk.business.ClassSignature(hash = -61608869)
 public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.transaction.ImportLog";
-  private static final long serialVersionUID = -2076139864;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -61608869;
   
   protected ImportLogDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -48,12 +49,12 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTEXPORTSEQ = "lastExportSeq";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -96,7 +97,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -133,7 +134,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -281,7 +282,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -318,7 +319,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -355,7 +356,7 @@ public abstract class ImportLogDTOBase extends com.runwaysdk.business.BusinessDT
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }

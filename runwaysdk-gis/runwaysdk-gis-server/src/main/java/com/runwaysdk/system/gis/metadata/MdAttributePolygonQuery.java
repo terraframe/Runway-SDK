@@ -29,6 +29,7 @@ package com.runwaysdk.system.gis.metadata;
 public  class MdAttributePolygonQuery extends com.runwaysdk.system.gis.metadata.MdAttributeGeometryQuery
 
 {
+@SuppressWarnings("unused")
 private static final long serialVersionUID = 1476981898;
 
   public MdAttributePolygonQuery(com.runwaysdk.query.QueryFactory componentQueryFactory)
@@ -104,6 +105,7 @@ private static final long serialVersionUID = 1476981898;
  implements MdAttributePolygonQueryReferenceIF
 
   {
+@SuppressWarnings("unused")
 private static final long serialVersionUID = 344158508;
 
   public MdAttributePolygonQueryReference(com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)

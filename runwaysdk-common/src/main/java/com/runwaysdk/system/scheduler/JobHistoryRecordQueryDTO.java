@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1368961473)
+@com.runwaysdk.business.ClassSignature(hash = 353232086)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system.scheduler;
  */
 public class JobHistoryRecordQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = 1368961473;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = 353232086;
 
   protected JobHistoryRecordQueryDTO(String type)
   {

@@ -21,9 +21,6 @@
  */
 package com.runwaysdk.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -45,8 +42,6 @@ import org.slf4j.LoggerFactory;
 public class RunwayConfigurationException extends RuntimeException
 {
   private static final long serialVersionUID = -2380136509604511730L;
-
-  private Logger log = LoggerFactory.getLogger(RunwayConfigurationException.class);
   
   public RunwayConfigurationException(String ex) {
     super(ex);

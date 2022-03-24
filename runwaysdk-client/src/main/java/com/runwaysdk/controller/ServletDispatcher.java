@@ -239,7 +239,6 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
    * @return
    * @throws FileUploadException
    */
-  @SuppressWarnings("unchecked")
   private Map<String, ParameterValue> getParameters(HttpServletRequest req, ActionParameters annotation)
   {
     String mojaxObject = req.getParameter(MOJAX_OBJECT);

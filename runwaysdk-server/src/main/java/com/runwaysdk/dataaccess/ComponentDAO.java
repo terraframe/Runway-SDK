@@ -150,6 +150,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    * @param name
    * @return object stored on the attribute.
    */
+  @SuppressWarnings("unchecked")
   public Object getObjectValue(String name)
   {
     AttributeIF attribute = this.getAttributeIF(name);

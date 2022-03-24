@@ -20,6 +20,7 @@ package com.runwaysdk.business;
 
 public abstract class BusinessSystemDTO extends BusinessSystemDTOBase
 {
+  @SuppressWarnings("unused")
   private static final long serialVersionUID = -714052456;
   
   public BusinessSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

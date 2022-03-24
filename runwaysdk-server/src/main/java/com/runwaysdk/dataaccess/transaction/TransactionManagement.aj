@@ -302,6 +302,14 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       {
         continue;
       }
+      
+ // Heads up: test
+      // Do not generate source if this is a test environment or Runway development and the type is a system type.
+      if ((LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment()) 
+          && mdTypeIF.isSystemPackage())
+      {
+        continue;
+      }
 
       // Delete generated artifacts
       // if (!LocalProperties.isKeepSource())

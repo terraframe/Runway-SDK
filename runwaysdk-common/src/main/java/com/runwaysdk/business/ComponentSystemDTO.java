@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class ComponentSystemDTO extends ComponentSystemDTOBase
 {
-  private static final long serialVersionUID = -867640180;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 559946463;
   
   public ComponentSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

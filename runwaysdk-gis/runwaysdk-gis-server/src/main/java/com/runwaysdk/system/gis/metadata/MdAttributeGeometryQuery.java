@@ -29,6 +29,7 @@ package com.runwaysdk.system.gis.metadata;
 public  class MdAttributeGeometryQuery extends com.runwaysdk.system.metadata.MdAttributeConcreteQuery
 
 {
+@SuppressWarnings("unused")
 private static final long serialVersionUID = 916896192;
 
   public MdAttributeGeometryQuery(com.runwaysdk.query.QueryFactory componentQueryFactory)
@@ -144,6 +145,7 @@ private static final long serialVersionUID = 916896192;
  implements MdAttributeGeometryQueryReferenceIF
 
   {
+@SuppressWarnings("unused")  
 private static final long serialVersionUID = -1106393374;
 
   public MdAttributeGeometryQueryReference(com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String alias, String displayLabel)

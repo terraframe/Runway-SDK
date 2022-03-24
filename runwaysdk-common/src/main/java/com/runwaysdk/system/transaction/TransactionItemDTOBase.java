@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.transaction;
 
-@com.runwaysdk.business.ClassSignature(hash = -125034782)
+@com.runwaysdk.business.ClassSignature(hash = -776681277)
 public abstract class TransactionItemDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.transaction.TransactionItem";
-  private static final long serialVersionUID = -125034782;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -776681277;
   
   protected TransactionItemDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -51,13 +52,13 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
   public static java.lang.String CREATEDATE = "createDate";
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
   public static java.lang.String ITEMACTION = "itemAction";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String SEQ = "seq";
   public static java.lang.String SITEMASTER = "siteMaster";
@@ -176,7 +177,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -213,7 +214,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -392,7 +393,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -429,7 +430,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -466,7 +467,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }
@@ -565,7 +566,7 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     }
   }
   
-  public String getTransactionRecordId()
+  public String getTransactionRecordOid()
   {
     return getValue(TRANSACTIONRECORD);
   }

@@ -174,6 +174,8 @@ public abstract class ComponentQueryDTOGenerator implements GeneratorIF, ClientM
   {
     long serialUID = getSerialVersionUID();
     
+// Heads up: test
+    this.writeLine(this.srcBuffer, "@SuppressWarnings(\"unused\")");   
     this.writeLine(this.srcBuffer, "private static final long serialVersionUID = "+serialUID+";");
     this.writeLine(this.srcBuffer, "");
   }

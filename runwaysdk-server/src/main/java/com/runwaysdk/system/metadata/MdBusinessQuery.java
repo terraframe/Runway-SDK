@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1135426414)
+@com.runwaysdk.business.ClassSignature(hash = 103226988)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -548,7 +548,6 @@ public  class MdBusinessQuery extends com.runwaysdk.system.metadata.MdElementQue
   public com.runwaysdk.query.Condition SUBSELECT_subClass(com.runwaysdk.system.metadata.MdBusinessQuery mdBusinessQuery);
 
   public com.runwaysdk.query.Condition SUBSELECT_subClass(com.runwaysdk.system.metadata.MdBusinessQuery mdBusinessQuery, com.runwaysdk.system.metadata.BusinessInheritanceQuery businessInheritanceQuery);
-
 
 
   public com.runwaysdk.query.Condition NOT_IN_mdEnumeration();

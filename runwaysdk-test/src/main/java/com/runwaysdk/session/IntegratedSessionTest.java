@@ -48,6 +48,7 @@ import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EnumerationMasterInfo;
+import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdAttributeBlobInfo;
 import com.runwaysdk.constants.MdAttributeBooleanInfo;
 import com.runwaysdk.constants.MdAttributeCharacterInfo;
@@ -62,6 +63,7 @@ import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
+import com.runwaysdk.dataaccess.io.SharedTestDataManager;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.metadata.MdAttributeBlobDAO;
@@ -78,6 +80,8 @@ import com.runwaysdk.facade.Facade;
 @RunWith(ClasspathTestRunner.class)
 public class IntegratedSessionTest
 {
+  public static final String TEST_DATA_PREFIX = "IntegratedSessionTest";
+  
   /**
    * The test user object
    */
@@ -218,7 +222,7 @@ public class IntegratedSessionTest
   /**
    * The username for the user .
    */
-  private final static String              username1    = "smethie";
+  private final static String              username1    = (TEST_DATA_PREFIX + "smethie").toLowerCase();
 
   /**
    * The password for the user.
@@ -228,13 +232,13 @@ public class IntegratedSessionTest
   /**
    * The username for the user .
    */
-  private final static String              username2    = "jdoe";
+  private final static String              username2    = (TEST_DATA_PREFIX + "jdoe").toLowerCase();
 
   /**
    * The password for the user.
    */
   private final static String              password2    = "9876";
-
+  
   /**
    * The maximum number of sessions for the user.
    */
@@ -258,80 +262,108 @@ public class IntegratedSessionTest
   /**
    * The setup done before the test suite is run
    */
-  @Request
   @BeforeClass
   public static void classSetUp()
   {
-    // Create a new user
-    newUser1 = UserDAO.newInstance();
-    newUser1.setValue(UserInfo.USERNAME, username1);
-    newUser1.setValue(UserInfo.PASSWORD, password1);
-    newUser1.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
-    newUser1.apply();
+    boolean skipGen = LocalProperties.isSkipCodeGenAndCompile();
+    LocalProperties.setSkipCodeGenAndCompile(true);
+    
+    classSetupInRequest();
+    
+    LocalProperties.setSkipCodeGenAndCompile(skipGen);
+  }
 
-    // Create a new user
-    newUser2 = UserDAO.newInstance();
-    newUser2.setValue(UserInfo.USERNAME, username2);
-    newUser2.setValue(UserInfo.PASSWORD, password2);
-    newUser2.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
-    newUser2.apply();
+  @Request
+  private static void classSetupInRequest()
+  {
+    newUser1 = SharedTestDataManager.getOrCreateUserDAO(username1, password1, sessionLimit, false);
+    newUser2 = SharedTestDataManager.getOrCreateUserDAO(username2, password2, sessionLimit, false);
 
-    mdActor = TestFixtureFactory.createMdBusiness("TestUser");
-    mdActor.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS).getOid());
-    mdActor.apply();
+    mdActor = SharedTestDataManager.getOrCreateMdBusiness(TEST_DATA_PREFIX + "TestUser", mdBiz -> {
+      mdBiz.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, MdBusinessDAO.getMdBusinessDAO(SingleActorInfo.CLASS).getOid());
+    });
 
     newActor1 = (SingleActorDAO) BusinessDAO.newInstance(mdActor.definesType());
     newActor1.apply();
 
-    mdDimension = TestFixtureFactory.createMdDimension();
-    mdDimension.apply();
+    mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
 
-    // Create an enumeration master class
-    enumMasterMdBusiness = TestFixtureFactory.createEnumClass1();
-    enumMasterMdBusiness.apply();
+    MdAttributeCharacterDAO mdAttributeCharacter1;
+    enumMasterMdBusiness = (MdBusinessDAO) SharedTestDataManager.getMdTypeIfExist(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + "Enum");
+    if (enumMasterMdBusiness == null)
+    {
+      enumMasterMdBusiness = SharedTestDataManager.getOrCreateMdBusiness(TEST_DATA_PREFIX + "Enum", mdBiz -> {
+        mdBiz.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Enumeration mdBusiness Test");
+        mdBiz.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.FALSE);
+        mdBiz.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
+      });
+      
+      mdAttributeCharacter1 = TestFixtureFactory.addCharacterAttribute(enumMasterMdBusiness);
+      mdAttributeCharacter1.apply();
+    }
+    else
+    {
+      mdAttributeCharacter1 = (MdAttributeCharacterDAO) enumMasterMdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
+    }
+    
+    structMdEnumeration = SharedTestDataManager.getOrCreateMdEnumeration(TEST_DATA_PREFIX + "MdEnumStruct", enumMasterMdBusiness.getOid());
 
-    MdAttributeCharacterDAO mdAttributeCharacter1 = TestFixtureFactory.addCharacterAttribute(enumMasterMdBusiness);
-    mdAttributeCharacter1.apply();
+    mdStruct = SharedTestDataManager.getMdStructIfExist(TEST_DATA_PREFIX + "MdStruct");
+    if (mdStruct == null)
+    {
+      mdStruct = SharedTestDataManager.getOrCreateMdStruct(TEST_DATA_PREFIX + "MdStruct");
 
-    structMdEnumeration = TestFixtureFactory.createMdEnumeation1(enumMasterMdBusiness);
-    structMdEnumeration.apply();
+      mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdStruct);
+      mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+      mdAttributeCharacter.apply();
 
-    // Create a new MdStruct
-    mdStruct = TestFixtureFactory.createMdStruct1();
-    mdStruct.apply();
+      mdAttributeBlob = TestFixtureFactory.addBlobAttribute(mdStruct);
+      mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+      mdAttributeBlob.apply();
+    }
+    else
+    {
+      mdAttributeCharacter = (MdAttributeConcreteDAO) mdStruct.definesAttribute(TestFixConst.ATTRIBUTE_CHARACTER);
+      mdAttributeBlob = (MdAttributeBlobDAO) mdStruct.definesAttribute(TestFixConst.ATTRIBUTE_BLOB);
+    }
 
-    // Crate a new MdAttribute for the MdStruct
-    mdAttributeCharacter = TestFixtureFactory.addCharacterAttribute(mdStruct);
-    mdAttributeCharacter.setValue(MdAttributeCharacterInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
-    mdAttributeCharacter.apply();
+    mdBusiness = (MdBusinessDAO) SharedTestDataManager.getMdTypeIfExist(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + "MdBusiness");
+    if (mdBusiness == null)
+    {
+      mdBusiness = SharedTestDataManager.getOrCreateMdBusiness(TEST_DATA_PREFIX + "MdBusiness");
+      
+      mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
+      mdAttribute.apply();
+      
+      mdAttributeStruct = TestFixtureFactory.addStructAttribute(mdBusiness, mdStruct);
+      mdAttributeStruct.apply();
 
-    mdAttributeBlob = TestFixtureFactory.addBlobAttribute(mdStruct);
-    mdAttributeBlob.setValue(MdAttributeBlobInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
-    mdAttributeBlob.apply();
+      mdAttributeEnumeration = TestFixtureFactory.addEnumerationAttribute(mdStruct, structMdEnumeration);
+      mdAttributeEnumeration.apply();
+    }
+    else
+    {
+      mdAttribute = (MdAttributeConcreteDAO) mdBusiness.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+      mdAttributeStruct = (MdAttributeConcreteDAO) mdBusiness.definesAttribute("testStruct");
+      mdAttributeEnumeration =  (MdAttributeEnumerationDAO) mdStruct.definesAttribute("testEnumeration");
+    }
 
-    // Create a new MdBusiness
-    mdBusiness = TestFixtureFactory.createMdBusiness1();
-    mdBusiness.apply();
+    mdBusinessChild = SharedTestDataManager.getOrCreateMdBusiness(TEST_DATA_PREFIX + "MdBusinessChild", mdBiz -> {
+      mdBiz.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, mdBusiness.getOid());
+    });
 
-    mdBusinessChild = TestFixtureFactory.createMdBusiness2(mdBusiness);
-    mdBusinessChild.apply();
-
-    // Create an MdAttribute on the MdBusiness
-    mdAttribute = TestFixtureFactory.addBooleanAttribute(mdBusiness);
-    mdAttribute.apply();
-
-    mdAttributeStruct = TestFixtureFactory.addStructAttribute(mdBusiness, mdStruct);
-    mdAttributeStruct.apply();
-
-    mdAttributeEnumeration = TestFixtureFactory.addEnumerationAttribute(mdStruct, structMdEnumeration);
-    mdAttributeEnumeration.apply();
-
-    // Create a new relationship
-    mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness, mdBusiness);
-    mdRelationship.apply();
-
-    relMdAttribute = TestFixtureFactory.addBooleanAttribute(mdRelationship);
-    relMdAttribute.apply();
+    mdRelationship = (MdRelationshipDAO) SharedTestDataManager.getMdTypeIfExist(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + "MdRelationship");
+    if (mdRelationship == null)
+    {
+      mdRelationship = SharedTestDataManager.getOrCreateMdRelationship(TEST_DATA_PREFIX + "MdRelationship", mdBusiness, mdBusiness);
+      
+      relMdAttribute = TestFixtureFactory.addBooleanAttribute(mdRelationship);
+      relMdAttribute.apply();
+    }
+    else
+    {
+      relMdAttribute = (MdAttributeConcreteDAO) mdRelationship.definesAttribute(TestFixConst.ATTRIBUTE_BOOLEAN);
+    }
 
     structDAO = (StructDAO) StructDAO.newInstance(mdStruct.definesType());
     structDAO.apply();
@@ -412,14 +444,20 @@ public class IntegratedSessionTest
   @AfterClass
   public static void classTearDown()
   {
-    TestFixtureFactory.delete(enumMasterMdBusiness);
-    TestFixtureFactory.delete(mdRelationship);
-    TestFixtureFactory.delete(mdBusinessChild);
-    TestFixtureFactory.delete(mdBusiness);
-    TestFixtureFactory.delete(mdStruct);
-    TestFixtureFactory.delete(mdDimension);
-    TestFixtureFactory.delete(newUser1);
-    TestFixtureFactory.delete(newUser2);
+    SharedTestDataManager.deleteAllRelationshipObjects(TestFixConst.TEST_PACKAGE, mdRelationship.getTypeName());
+    SharedTestDataManager.deleteAllStructObjects(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + "MdStruct");
+    SharedTestDataManager.deleteAllBusinessObjects(TestFixConst.TEST_PACKAGE, mdBusiness.getTypeName());
+    SharedTestDataManager.deleteAllBusinessObjects(TestFixConst.TEST_PACKAGE, mdBusinessChild.getTypeName());
+    SharedTestDataManager.deleteAllBusinessObjects(TestFixConst.TEST_PACKAGE, enumMasterMdBusiness.getTypeName());
+    
+//    TestFixtureFactory.delete(enumMasterMdBusiness);
+//    TestFixtureFactory.delete(mdRelationship);
+//    TestFixtureFactory.delete(mdBusinessChild);
+//    TestFixtureFactory.delete(mdBusiness);
+//    TestFixtureFactory.delete(mdStruct);
+//    TestFixtureFactory.delete(mdDimension);
+//    TestFixtureFactory.delete(newUser1);
+//    TestFixtureFactory.delete(newUser2);
 
     TestFixtureFactory.delete(newActor1);
     TestFixtureFactory.delete(mdActor);

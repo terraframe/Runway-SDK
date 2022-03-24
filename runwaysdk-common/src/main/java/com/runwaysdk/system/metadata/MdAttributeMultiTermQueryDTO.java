@@ -28,6 +28,7 @@ package com.runwaysdk.system.metadata;
  */
 public class MdAttributeMultiTermQueryDTO extends com.runwaysdk.system.metadata.MdAttributeMultiReferenceQueryDTO
 {
+@SuppressWarnings("unused")
 private static final long serialVersionUID = 1541227887;
 
   protected MdAttributeMultiTermQueryDTO(String type)

@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 669967982)
+@com.runwaysdk.business.ClassSignature(hash = -1814541037)
 public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDTO
 {
   public final static String CLASS = "com.runwaysdk.system.Transaction";
-  private static final long serialVersionUID = 669967982;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1814541037;
   
   protected TransactionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -47,8 +48,8 @@ public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDT
   
   public static java.lang.String ACTION = "action";
   public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRANSACTIONID = "transactionID";
   public String getAction()

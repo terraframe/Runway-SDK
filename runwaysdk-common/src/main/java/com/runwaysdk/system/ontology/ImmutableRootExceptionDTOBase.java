@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = -1410772848)
+@com.runwaysdk.business.ClassSignature(hash = 1903459229)
 public abstract class ImmutableRootExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.ImmutableRootException";
-  private static final long serialVersionUID = -1410772848;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1903459229;
   
   public ImmutableRootExceptionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequestIF)
   {

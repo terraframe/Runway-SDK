@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.ontology;
 
-@com.runwaysdk.business.ClassSignature(hash = 265798160)
+@com.runwaysdk.business.ClassSignature(hash = -984109795)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,7 +31,8 @@ public abstract class ImmutableRootExceptionBase extends com.runwaysdk.business.
   public final static String CLASS = "com.runwaysdk.system.ontology.ImmutableRootException";
   public static java.lang.String OID = "oid";
   public static java.lang.String ROOTNAME = "rootName";
-  private static final long serialVersionUID = 265798160;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -984109795;
   
   public ImmutableRootExceptionBase()
   {
@@ -58,15 +59,15 @@ public abstract class ImmutableRootExceptionBase extends com.runwaysdk.business.
     return getValue(OID);
   }
   
-  public void validateId()
+  public void validateOid()
   {
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.ImmutableRootException.CLASS);
-    return mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   public String getRootName()
@@ -79,10 +80,10 @@ public abstract class ImmutableRootExceptionBase extends com.runwaysdk.business.
     this.validateAttribute(ROOTNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getRootNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getRootNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.ontology.ImmutableRootException.CLASS);
-    return mdClassIF.definesAttribute(ROOTNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ROOTNAME);
   }
   
   public void setRootName(String value)

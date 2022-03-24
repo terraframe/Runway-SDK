@@ -689,8 +689,11 @@ public class TransientDAO extends ComponentDAO implements TransactionItem, Seria
    * @return oid of the object.
    */
   private String save()
-  {
-    List<? extends MdAttributeDAOIF> mdAttributeList = this.getMdClassDAO().definesAttributes();
+  {  
+    // Heads up: TEST
+//    List<? extends MdAttributeDAOIF> mdAttributeList = this.getMdClassDAO().definesAttributes();
+    List<? extends MdAttributeDAOIF> mdAttributeList = this.getMdClassDAO().getAllDefinedMdAttributes();
+     
 
     for (MdAttributeDAOIF mdAttribute : mdAttributeList)
     {

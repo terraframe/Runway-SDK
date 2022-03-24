@@ -37,8 +37,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -113,9 +111,7 @@ import com.runwaysdk.util.Base64;
  * @since
  **/
 public class XMLImporter
-{
-  private static final Logger logger = LoggerFactory.getLogger(XMLImporter.class);
-  
+{  
   private Document[]                 metadataDocuments;
 
   private HashMap<String, EnityInfo> inheritanceMap;

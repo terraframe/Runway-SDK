@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1626481309)
+@com.runwaysdk.business.ClassSignature(hash = 1749612162)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,7 +29,8 @@ package com.runwaysdk.system;
 public abstract class PostalCodeBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.PostalCode";
-  private static final long serialVersionUID = -1626481309;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1749612162;
   
   public PostalCodeBase()
   {

@@ -278,7 +278,7 @@ public class DatabaseBuilder
       this.path = path;
     }
 
-    if (extensions != null && !extensions.equals(""))
+    if (extensions != null && !extensions.get(0).equals(""))
     {
       this.extensions = extensions;
     }
@@ -306,11 +306,11 @@ public class DatabaseBuilder
       
       if (getTimestamp(cpr).equals(ts))
       {
-        throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getAbsolutePath() + "] has the same timestamp as another resource already on the classpath at [" + cpr.getAbsolutePath() + "].");
+        throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getURL() + "] has the same timestamp as another resource already on the classpath at [" + cpr.getURL() + "].");
       }
     }
     
-    throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getAbsolutePath() + "] has the same timestamp as another resource already on the classpath.");
+    throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getURL() + "] has the same timestamp as another resource already on the classpath.");
   }
 
   private void initialize()

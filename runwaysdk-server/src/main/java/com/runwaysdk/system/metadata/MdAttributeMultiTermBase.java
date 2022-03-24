@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 2067633401)
+@com.runwaysdk.business.ClassSignature(hash = 817352664)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.metadata.MdAttributeMultiReference
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeMultiTerm";
-  private static final long serialVersionUID = 2067633401;
+  private static final long serialVersionUID = 817352664;
   
   public MdAttributeMultiTermBase()
   {
@@ -40,6 +40,7 @@ public abstract class MdAttributeMultiTermBase extends com.runwaysdk.system.meta
   {
     return CLASS;
   }
+
   
   public static MdAttributeMultiTerm get(String oid)
   {

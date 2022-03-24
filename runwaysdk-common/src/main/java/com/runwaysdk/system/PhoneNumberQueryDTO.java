@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -472349208)
+@com.runwaysdk.business.ClassSignature(hash = -1506009971)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system;
  */
 public class PhoneNumberQueryDTO extends com.runwaysdk.business.StructQueryDTO
 {
-private static final long serialVersionUID = -472349208;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = -1506009971;
 
   protected PhoneNumberQueryDTO(String type)
   {

@@ -46,7 +46,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
   private static final long serialVersionUID = -8176997715088266656L;
 
   /**
-   * Inherited constrcutor, sets <code>name</code> and
+   * Inherited constructor, sets <code>name</code> and
    * <code>definingEntityType</code>.
    * 
    * @param name
@@ -171,14 +171,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public void setValue(boolean value)
   {
-    if (value)
-    {
-      this.setValue(MdAttributeBooleanInfo.TRUE);
-    }
-    else
-    {
-      this.setValue(MdAttributeBooleanInfo.FALSE);
-    }
+    this.setValue(MdAttributeBooleanUtil.getStringValue(value));
   }
 
   /**

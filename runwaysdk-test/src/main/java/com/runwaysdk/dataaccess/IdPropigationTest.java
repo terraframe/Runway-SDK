@@ -97,7 +97,7 @@ public class IdPropigationTest
     item.setValue(mdEnumAttribute.definesAttribute(), "CO");
     item.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
@@ -164,7 +164,7 @@ public class IdPropigationTest
     texas.setValue(mdEnumAttribute.definesAttribute(), "TX");
     texas.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
@@ -234,7 +234,7 @@ public class IdPropigationTest
     colorado.setValue(mdEnumAttribute.definesAttribute(), "CO");
     colorado.apply();
 
-    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum);
+    MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum);
     mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
     mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdEnumeration.apply();
@@ -287,7 +287,7 @@ public class IdPropigationTest
       colorado.setValue(mdEnumAttribute.definesAttribute(), "CO");
       colorado.apply();
 
-      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeation1(mdBusinessEnum);
+      MdEnumerationDAO mdEnumeration = TestFixtureFactory.createMdEnumeration1(mdBusinessEnum);
       mdEnumeration.setValue(MdEnumerationInfo.INCLUDE_ALL, MdAttributeBooleanInfo.TRUE);
       mdEnumeration.setValue(MdEnumerationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
       mdEnumeration.apply();

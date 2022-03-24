@@ -65,6 +65,11 @@ public class RunwayProperties
     return instance().getString("runway.server.resources");
   }
   
+  public static Boolean allowLoginAsSystem()
+  {
+    return instance().getBoolean("runway.session.allowSystemLogin", false);
+  }
+  
   /**
    * Gets the runway bin directory
    */

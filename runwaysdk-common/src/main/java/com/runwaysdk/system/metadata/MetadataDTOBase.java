@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1308463478)
+@com.runwaysdk.business.ClassSignature(hash = 1340330005)
 public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.Metadata";
-  private static final long serialVersionUID = -1308463478;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1340330005;
   
   protected MetadataDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {
@@ -49,11 +50,11 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
   public static java.lang.String CREATEDBY = "createdBy";
   public static java.lang.String DESCRIPTION = "description";
   public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
   public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
   public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
   public static java.lang.String LOCKEDBY = "lockedBy";
+  public static java.lang.String OID = "oid";
   public static java.lang.String OWNER = "owner";
   public static java.lang.String REMOVE = "remove";
   public static java.lang.String SEQ = "seq";
@@ -96,7 +97,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getCreatedById()
+  public String getCreatedByOid()
   {
     return getValue(CREATEDBY);
   }
@@ -158,7 +159,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getEntityDomainId()
+  public String getEntityDomainOid()
   {
     return getValue(ENTITYDOMAIN);
   }
@@ -269,7 +270,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getLastUpdatedById()
+  public String getLastUpdatedByOid()
   {
     return getValue(LASTUPDATEDBY);
   }
@@ -306,7 +307,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getLockedById()
+  public String getLockedByOid()
   {
     return getValue(LOCKEDBY);
   }
@@ -343,7 +344,7 @@ public abstract class MetadataDTOBase extends com.runwaysdk.business.BusinessDTO
     }
   }
   
-  public String getOwnerId()
+  public String getOwnerOid()
   {
     return getValue(OWNER);
   }

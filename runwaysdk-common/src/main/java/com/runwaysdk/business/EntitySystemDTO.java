@@ -20,6 +20,7 @@ package com.runwaysdk.business;
 
 public abstract class EntitySystemDTO extends EntitySystemDTOBase
 {
+  @SuppressWarnings("unused")
   private static final long serialVersionUID = 1279574502;
   
   public EntitySystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)

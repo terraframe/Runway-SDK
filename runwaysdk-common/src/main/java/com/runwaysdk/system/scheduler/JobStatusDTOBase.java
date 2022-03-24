@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.scheduler;
 
-@com.runwaysdk.business.ClassSignature(hash = 1682310257)
+@com.runwaysdk.business.ClassSignature(hash = -355540815)
 public abstract class JobStatusDTOBase extends com.runwaysdk.system.EnumerationMasterDTO
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobStatus";
-  private static final long serialVersionUID = 1682310257;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -355540815;
   
   protected JobStatusDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

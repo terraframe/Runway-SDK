@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -1811695634)
+@com.runwaysdk.business.ClassSignature(hash = -1039016301)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,11 +31,12 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
   public final static String CLASS = "com.runwaysdk.system.Transaction";
   public static java.lang.String ACTION = "action";
   public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String TRANSACTIONID = "transactionID";
-  private static final long serialVersionUID = -1811695634;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1039016301;
   
   public TransactionBase()
   {
@@ -67,10 +68,10 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(ACTION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getActionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getActionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(ACTION);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(ACTION);
   }
   
   public void setAction(String value)
@@ -95,10 +96,10 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(DATAOBJECTID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getDataObjectIDMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getDataObjectIDMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(DATAOBJECTID);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(DATAOBJECTID);
   }
   
   public void setDataObjectID(String value)
@@ -113,22 +114,6 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(OID);
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -139,10 +124,10 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -157,6 +142,22 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     }
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public String getSiteMaster()
   {
     return getValue(SITEMASTER);
@@ -167,10 +168,10 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public Integer getTransactionID()
@@ -183,10 +184,10 @@ public abstract class TransactionBase extends com.runwaysdk.business.Struct
     this.validateAttribute(TRANSACTIONID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getTransactionIDMd()
+  public static com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF getTransactionIDMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.Transaction.CLASS);
-    return mdClassIF.definesAttribute(TRANSACTIONID);
+    return (com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF)mdClassIF.definesAttribute(TRANSACTIONID);
   }
   
   public void setTransactionID(Integer value)

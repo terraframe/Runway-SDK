@@ -59,8 +59,6 @@ public class DelegatingServletTest
 
   private static MdRelationshipDAO mdRelationship;
 
-  private static String            mdRelationshipType;
-
   private static String            mdBusinessType;
 
   @Request
@@ -76,8 +74,6 @@ public class DelegatingServletTest
 
     mdRelationship = TestFixtureFactory.createMdRelationship1(mdBusiness, mdBusiness);
     mdRelationship.apply();
-
-    mdRelationshipType = mdRelationship.definesType();
 
     session = ClientSession.createUserSession(ServerConstants.SYSTEM_USER_NAME, ServerConstants.SYSTEM_DEFAULT_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
   }

@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class RelationshipSystem extends RelationshipSystemBase
 {
-  private static final long serialVersionUID = 863035662;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1191165235;
   
   public RelationshipSystem(String parentOid, String childOid)
   {

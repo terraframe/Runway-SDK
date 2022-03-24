@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = 1296475423)
+@com.runwaysdk.business.ClassSignature(hash = -1945079996)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,12 +31,13 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
   public final static String CLASS = "com.runwaysdk.system.PhoneNumber";
   public static java.lang.String AREACODE = "areaCode";
   public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String OID = "oid";
   public static java.lang.String KEYNAME = "keyName";
+  public static java.lang.String OID = "oid";
   public static java.lang.String PREFIX = "prefix";
   public static java.lang.String SITEMASTER = "siteMaster";
   public static java.lang.String SUFFIX = "suffix";
-  private static final long serialVersionUID = 1296475423;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1945079996;
   
   public PhoneNumberBase()
   {
@@ -68,10 +69,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(AREACODE);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getAreaCodeMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getAreaCodeMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(AREACODE);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(AREACODE);
   }
   
   public void setAreaCode(String value)
@@ -96,10 +97,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(EXTENSION);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getExtensionMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getExtensionMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(EXTENSION);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(EXTENSION);
   }
   
   public void setExtension(String value)
@@ -114,22 +115,6 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     }
   }
   
-  public String getOid()
-  {
-    return getValue(OID);
-  }
-  
-  public void validateId()
-  {
-    this.validateAttribute(OID);
-  }
-  
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getOidMd()
-  {
-    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(OID);
-  }
-  
   public String getKeyName()
   {
     return getValue(KEYNAME);
@@ -140,10 +125,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(KEYNAME);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getKeyNameMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getKeyNameMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(KEYNAME);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(KEYNAME);
   }
   
   public void setKeyName(String value)
@@ -158,6 +143,22 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     }
   }
   
+  public String getOid()
+  {
+    return getValue(OID);
+  }
+  
+  public void validateOid()
+  {
+    this.validateAttribute(OID);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
+  }
+  
   public String getPrefix()
   {
     return getValue(PREFIX);
@@ -168,10 +169,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(PREFIX);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getPrefixMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getPrefixMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(PREFIX);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(PREFIX);
   }
   
   public void setPrefix(String value)
@@ -196,10 +197,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SITEMASTER);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSiteMasterMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSiteMasterMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(SITEMASTER);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SITEMASTER);
   }
   
   public String getSuffix()
@@ -212,10 +213,10 @@ public abstract class PhoneNumberBase extends com.runwaysdk.business.Struct
     this.validateAttribute(SUFFIX);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSuffixMd()
+  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getSuffixMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.PhoneNumber.CLASS);
-    return mdClassIF.definesAttribute(SUFFIX);
+    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(SUFFIX);
   }
   
   public void setSuffix(String value)

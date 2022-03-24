@@ -20,7 +20,6 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import org.xml.sax.Attributes;
 
-import com.runwaysdk.constants.MdElementInfo;
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdClassificationInfo;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;

@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.runwaysdk.business.BusinessFacade;
-import com.runwaysdk.business.LocalStruct;
 import com.runwaysdk.constants.StructInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
@@ -121,7 +119,6 @@ public abstract class AttributeLocal extends AttributeStruct implements Attribut
    * @return map where the key is the locale and the value is the localized
    *         String value.
    */
-  @SuppressWarnings("unchecked")
   public static Map<String, String> getLocalValues(StructDAO structDAO)
   {
     //return (Map<String, String>) ((Object)(structDAO).getAsMap());

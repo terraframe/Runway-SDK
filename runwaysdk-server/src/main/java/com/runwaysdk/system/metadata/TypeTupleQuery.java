@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -574566453)
+@com.runwaysdk.business.ClassSignature(hash = -714978893)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -280,7 +280,7 @@ public  class TypeTupleQuery extends com.runwaysdk.system.metadata.MetadataQuery
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata();
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias);
     public com.runwaysdk.system.metadata.MetadataQuery.MetadataQueryReferenceIF getMetadata(String alias, String displayLabel);
-    
+
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);
     public com.runwaysdk.query.Condition containsAll(com.runwaysdk.system.metadata.TypeTuple ... typeTuple);

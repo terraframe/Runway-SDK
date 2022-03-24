@@ -20,7 +20,6 @@ package com.runwaysdk.gis;
 
 import java.util.Locale;
 
-import com.runwaysdk.gis.GISCommonExceptionMessageLocalizer;
 import com.runwaysdk.business.ComponentDTO;
 import com.runwaysdk.controller.ParseProblemDTO;
 import com.runwaysdk.transport.metadata.AttributeMdDTO;

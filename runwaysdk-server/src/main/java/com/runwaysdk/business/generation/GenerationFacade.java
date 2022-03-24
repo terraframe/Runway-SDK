@@ -26,14 +26,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
+import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.MdViewDAOIF;
 import com.runwaysdk.dataaccess.io.FileReadException;
 import com.runwaysdk.generation.CommonGenerationUtil;
+import com.runwaysdk.query.BusinessDAOQuery;
+import com.runwaysdk.query.OIterator;
+import com.runwaysdk.query.QueryFactory;
 import com.runwaysdk.util.FileIO;
 
 public class GenerationFacade
@@ -275,6 +280,47 @@ public class GenerationFacade
     new DelegateCompiler().compile(typesToCompile);
   }
 
+  /**
+   * Force regeneration of the system types.
+   */
+  public static void regenerateSystemBaseClasses()
+  {
+    Collection<MdTypeDAOIF> mdTypes = new LinkedList<MdTypeDAOIF>();
+
+    QueryFactory qFactory = new QueryFactory();
+    BusinessDAOQuery mdTypeQ = qFactory.businessDAOQuery(MdTypeInfo.CLASS);
+    OIterator<BusinessDAOIF> it = mdTypeQ.getIterator();
+
+    while (it.hasNext())
+    {
+      MdTypeDAOIF mdTypeDAOIF = (MdTypeDAOIF)it.next();
+      
+      if (mdTypeDAOIF.isSystemPackage())
+      {
+        mdTypes.add(mdTypeDAOIF);
+        
+System.out.println("Heads up: will regenerate "+mdTypeDAOIF.getTypeName());
+      }
+    }
+    
+    regenerateAndCompile(mdTypes);
+  }
+  
+  public static void regenerateAndCompile(Collection<MdTypeDAOIF> mdTypes)
+  {
+    for (MdTypeDAOIF type : mdTypes)
+    {
+      if (!GenerationUtil.isSkipCompileAndCodeGeneration(type))
+      {
+        GenerationManager.generate(type);
+      }
+    }
+    
+System.out.println("\nHeads up: Finished code generation. Starting to compile. \n");
+
+    new DelegateCompiler().compile(mdTypes);
+  }
+  
   public static void forceRegenerateAndCompile(Collection<MdTypeDAOIF> mdTypes)
   {
     for (MdTypeDAOIF type : mdTypes)
@@ -287,7 +333,7 @@ public class GenerationFacade
     
     new DelegateCompiler().compile(mdTypes);
   }
-
+  
   /**
    * Compiles all classes (without aspect weaving!), but produces no .class files. This
    * serves to check for references to dropped attributes or classes.

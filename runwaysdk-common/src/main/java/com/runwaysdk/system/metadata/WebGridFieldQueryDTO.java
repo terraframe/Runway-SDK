@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1089591936)
+@com.runwaysdk.business.ClassSignature(hash = -852253803)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system.metadata;
  */
 public class WebGridFieldQueryDTO extends com.runwaysdk.business.RelationshipQueryDTO
 {
-private static final long serialVersionUID = -1089591936;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = -852253803;
 
   protected WebGridFieldQueryDTO(String type)
   {

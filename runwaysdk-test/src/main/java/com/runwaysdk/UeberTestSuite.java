@@ -32,7 +32,7 @@ import com.runwaysdk.vault.VaultTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-  DataAccessTestSuite.class, 
+  DataAccessTestSuite.class,
   BusinessTestSuite.class,
   FacadeTestSuite.class,
   VaultTestSuite.class,

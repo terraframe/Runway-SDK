@@ -20,7 +20,8 @@ package com.runwaysdk.business;
 
 public abstract class ElementSystemDTO extends ElementSystemDTOBase
 {
-  private static final long serialVersionUID = 1950829748;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 1938954489;
   
   public ElementSystemDTO(com.runwaysdk.constants.ClientRequestIF clientRequest)
   {

@@ -18,11 +18,12 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 589589924)
+@com.runwaysdk.business.ClassSignature(hash = 899248235)
 public abstract class BackupReadExceptionDTOBase extends com.runwaysdk.business.SmartExceptionDTO
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.BackupReadException";
-  private static final long serialVersionUID = 589589924;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 899248235;
   
   public BackupReadExceptionDTOBase(com.runwaysdk.constants.ClientRequestIF clientRequestIF)
   {
@@ -69,8 +70,8 @@ public abstract class BackupReadExceptionDTOBase extends com.runwaysdk.business.
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
   public static java.lang.String LOCATION = "location";
+  public static java.lang.String OID = "oid";
   public String getLocation()
   {
     return getValue(LOCATION);
@@ -116,8 +117,8 @@ public abstract class BackupReadExceptionDTOBase extends com.runwaysdk.business.
   {
     java.lang.String template = super.getMessage();
     
-    template = template.replace("{oid}", this.getOid().toString());
     template = template.replace("{location}", this.getLocation().toString());
+    template = template.replace("{oid}", this.getOid().toString());
     
     return template;
   }

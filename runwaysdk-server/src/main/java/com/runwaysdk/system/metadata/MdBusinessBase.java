@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1597990885)
+@com.runwaysdk.business.ClassSignature(hash = -347211403)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,7 +31,8 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
   public final static String CLASS = "com.runwaysdk.system.metadata.MdBusiness";
   public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
   public static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
-  private static final long serialVersionUID = -1597990885;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -347211403;
   
   public MdBusinessBase()
   {
@@ -70,10 +71,10 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     this.validateAttribute(CACHEALGORITHM);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getCacheAlgorithmMd()
+  public static com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF getCacheAlgorithmMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdBusiness.CLASS);
-    return mdClassIF.definesAttribute(CACHEALGORITHM);
+    return (com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF)mdClassIF.definesAttribute(CACHEALGORITHM);
   }
   
   public com.runwaysdk.system.metadata.MdBusiness getSuperMdBusiness()
@@ -88,7 +89,7 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     }
   }
   
-  public String getSuperMdBusinessId()
+  public String getSuperMdBusinessOid()
   {
     return getValue(SUPERMDBUSINESS);
   }
@@ -98,10 +99,10 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     this.validateAttribute(SUPERMDBUSINESS);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeDAOIF getSuperMdBusinessMd()
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getSuperMdBusinessMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdBusiness.CLASS);
-    return mdClassIF.definesAttribute(SUPERMDBUSINESS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(SUPERMDBUSINESS);
   }
   
   public void setSuperMdBusiness(com.runwaysdk.system.metadata.MdBusiness value)
@@ -113,6 +114,18 @@ public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdEle
     else
     {
       setValue(SUPERMDBUSINESS, value.getOid());
+    }
+  }
+  
+  public void setSuperMdBusinessId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(SUPERMDBUSINESS, "");
+    }
+    else
+    {
+      setValue(SUPERMDBUSINESS, oid);
     }
   }
   

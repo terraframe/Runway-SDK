@@ -29,6 +29,7 @@ package com.runwaysdk.business;
 public abstract class BusinessSystemBase extends com.runwaysdk.business.ElementSystem
 {
   public final static String CLASS = "com.runwaysdk.business.Business";
+  @SuppressWarnings("unused")
   private static final long serialVersionUID = -1944827653;
   
   public BusinessSystemBase()

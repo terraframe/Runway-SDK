@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system;
 
-@com.runwaysdk.business.ClassSignature(hash = -872437038)
+@com.runwaysdk.business.ClassSignature(hash = -1550276067)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -28,7 +28,8 @@ package com.runwaysdk.system;
  */
 public class EnumerationMasterQueryDTO extends com.runwaysdk.business.BusinessQueryDTO
 {
-private static final long serialVersionUID = -872437038;
+@SuppressWarnings("unused")
+private static final long serialVersionUID = -1550276067;
 
   protected EnumerationMasterQueryDTO(String type)
   {

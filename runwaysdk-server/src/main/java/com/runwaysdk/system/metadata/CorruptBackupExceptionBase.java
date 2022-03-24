@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = 2102208607)
+@com.runwaysdk.business.ClassSignature(hash = -805731982)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,7 +31,8 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
   public final static String CLASS = "com.runwaysdk.system.metadata.CorruptBackupException";
   public static java.lang.String BACKUPNAME = "backupName";
   public static java.lang.String OID = "oid";
-  private static final long serialVersionUID = 2102208607;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -805731982;
   
   public CorruptBackupExceptionBase()
   {
@@ -86,15 +87,15 @@ public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.
     return getValue(OID);
   }
   
-  public void validateId()
+  public void validateOid()
   {
     this.validateAttribute(OID);
   }
   
-  public static com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF getOidMd()
+  public static com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF getOidMd()
   {
     com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.CorruptBackupException.CLASS);
-    return (com.runwaysdk.dataaccess.MdAttributeCharacterDAOIF)mdClassIF.definesAttribute(OID);
+    return (com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF)mdClassIF.definesAttribute(OID);
   }
   
   protected String getDeclaredType()
