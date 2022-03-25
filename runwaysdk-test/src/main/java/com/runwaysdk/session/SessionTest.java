@@ -345,56 +345,6 @@ public class SessionTest
     Assert.assertEquals(false, SessionFacade.checkAccess(sessionId, Operation.WRITE, business1));
   }
 
-
-  
-  /**
-   * Test the automatic clean up of expired sessions
-   * @throws InterruptedException 
-   */
-  // TODO : This test is failing and I don't know why. Also it would be better off not inside the SessionTest (if possible) since it doesn't
-  // need to be run a million times for every different cache type
-//  @Request
-//  @Test
-//  public void testCleanUp() throws InterruptedException
-//  {
-//    // Create a new session
-//    String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
-//
-//    // Convert the session time(sec) to milliseconds and
-//    // add enough time to ensure that the a session will expire
-//    long sessionTime = ( Session.getSessionTime() + 15 ) * 1000;
-//    long waitTime = System.currentTimeMillis() + sessionTime;
-//
-//    // Get the public session
-//    SessionIF publicSession = SessionFacade.getPublicSession();
-//    Assert.assertNotNull(publicSession);
-//
-//    // Ensure the session is active
-//    Assert.assertEquals(true, SessionFacade.containsSession(sessionId));
-//
-//    // Wait until the session is expired
-//    while (System.currentTimeMillis() < waitTime)
-//    {
-//      Thread.sleep(100);
-//    }
-//
-//    // Ensure that the public session has not been cleaned up
-//    Assert.assertTrue(SessionFacade.containsSession(publicSession.getOid()));
-//    Assert.assertEquals(publicSession.getOid(), SessionFacade.getPublicSession().getOid());
-//
-//    try
-//    {
-//      SessionFacade.getSession(sessionId);
-//
-//      Assert.fail("Expired sessions was not cleaned up");
-//    }
-//    catch (InvalidSessionException e)
-//    {
-//      // This is expected
-//    }
-//  }
-  
- 
   /**
    * Test closing a session
    */

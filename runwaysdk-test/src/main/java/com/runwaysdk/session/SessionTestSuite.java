@@ -39,7 +39,8 @@ import com.runwaysdk.dataaccess.metadata.MdDimensionDAO;
   IntegratedMethodTest.class,
   LocaleManagerTest.class,
   IntegratedSessionTest.class,
-  SessionTest.class
+  SessionTest.class,
+  SessionCleanupTest.class
 })
 public class SessionTestSuite
 {
