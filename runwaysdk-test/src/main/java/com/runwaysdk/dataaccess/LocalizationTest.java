@@ -546,6 +546,8 @@ public class LocalizationTest
   @Test
   public void testLocalizeDefaultDimensionQuery()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
     mdDimensionDAO.getAttribute(MdDimensionInfo.NAME).setValue("TestDimension");
     mdDimensionDAO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Dimension");
@@ -610,6 +612,8 @@ public class LocalizationTest
   @Test
   public void testLocalizeDefaultDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
     mdDimensionDAO.getAttribute(MdDimensionInfo.NAME).setValue("TestDimension");
     mdDimensionDAO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Dimension");
@@ -660,6 +664,8 @@ public class LocalizationTest
   @Test
   public void testLocalizedLocaleWithDimensionDefault()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     this.addLocale(Locale.GERMAN);
 
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -743,6 +749,8 @@ public class LocalizationTest
   @Test
   public void testLocalizedLocaleWithDimensionDefaultQuery()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     this.addLocale(Locale.GERMAN);
 
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
@@ -876,6 +884,8 @@ public class LocalizationTest
   @Test
   public void testAddDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
     int oldNumAttributes = mdLocalStructDAOIF.definesAttributes().size();
 
@@ -901,6 +911,8 @@ public class LocalizationTest
   @Test
   public void testAddDimensionToLocales()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     this.addLocale(Locale.ITALY);
 
     MdLocalStructDAOIF mdLocalStructDAOIF = MdLocalStructDAO.getMdLocalStructDAO(EntityTypes.METADATADISPLAYLABEL.getType());
@@ -930,6 +942,8 @@ public class LocalizationTest
   @Test
   public void testAddLocaleToDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdDimensionDAO mdDimensionDAO = MdDimensionDAO.newInstance();
     mdDimensionDAO.getAttribute(MdDimensionInfo.NAME).setValue("TestDimension");
     mdDimensionDAO.setStructValue(MdBusinessInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Dimension");
