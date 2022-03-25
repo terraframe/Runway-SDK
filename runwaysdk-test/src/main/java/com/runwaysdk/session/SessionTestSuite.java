@@ -51,11 +51,14 @@ public class SessionTestSuite
   @AfterClass
   public static void classTearDown()
   {
-    MdDimensionDAO dimension = SharedTestDataManager.getMdDimensionIfExist(MD_DIMENSION_NAME);
-    
-    if (dimension != null)
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
     {
-      dimension.delete();
+      MdDimensionDAO dimension = SharedTestDataManager.getMdDimensionIfExist(MD_DIMENSION_NAME);
+      
+      if (dimension != null)
+      {
+        dimension.delete();
+      }
     }
   }
 }
