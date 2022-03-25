@@ -166,7 +166,10 @@ public class SessionTest
 
     inactiveUser = SharedTestDataManager.getOrCreateUserDAO(TEST_DATA_PREFIX + "InactiveUser", password, sessionLimit, true);
 
-    mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
+    {
+      mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    }
 
     mdBusiness = (MdBusinessDAO) SharedTestDataManager.getMdTypeIfExist(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + TestFixConst.TEST_CLASS1);
     if (mdBusiness == null)
@@ -312,6 +315,8 @@ public class SessionTest
   @Test
   public void testSessionDimension()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     String sessionId = SessionFacade.logIn(UserInfo.PUBLIC_USER_NAME, ServerConstants.PUBLIC_USER_PASSWORD, new Locale[] { CommonProperties.getDefaultLocale() });
 
     SessionFacade.setDimension(mdDimension.getKey(), sessionId);
@@ -1020,6 +1025,8 @@ public class SessionTest
   @Test
   public void testAttributeDimensionPermission()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttributeCharacter.getMdAttributeDimension(mdDimension);
 
     newUser.grantPermission(Operation.READ, mdAttributeDimension.getOid());
@@ -1051,6 +1058,8 @@ public class SessionTest
   @Test
   public void testClassDimensionPermission()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdClassDimensionDAOIF mdClassDimension = mdDimension.getMdClassDimension(mdBusiness);
 
     newUser.grantPermission(Operation.READ, mdClassDimension.getOid());

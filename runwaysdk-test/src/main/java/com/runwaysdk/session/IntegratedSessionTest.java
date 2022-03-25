@@ -286,7 +286,10 @@ public class IntegratedSessionTest
     newActor1 = (SingleActorDAO) BusinessDAO.newInstance(mdActor.definesType());
     newActor1.apply();
 
-    mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
+    {
+      mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    }
 
     MdAttributeCharacterDAO mdAttributeCharacter1;
     enumMasterMdBusiness = (MdBusinessDAO) SharedTestDataManager.getMdTypeIfExist(TestFixConst.TEST_PACKAGE, TEST_DATA_PREFIX + "Enum");
@@ -3693,6 +3696,8 @@ public class IntegratedSessionTest
   @Test
   public void testAttributeDimensionPermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute.getMdAttributeDimension(mdDimension);
 
     newUser1.grantPermission(Operation.WRITE, mdBusiness.getOid());
@@ -3715,6 +3720,8 @@ public class IntegratedSessionTest
   @Request(RequestType.SESSION)
   public static void attributeDimensionPermissions(String sessionId)
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     Business test = Business.get(businessDAO4.getOid());
 
     try
@@ -3735,6 +3742,8 @@ public class IntegratedSessionTest
   @Test
   public void testClassDimensionPermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdClassDimensionDAOIF mdClassDimension = mdDimension.getMdClassDimension(mdBusiness);
 
     newUser1.grantPermission(Operation.WRITE, mdClassDimension.getOid());
@@ -3775,6 +3784,8 @@ public class IntegratedSessionTest
   @Test
   public void testDenyCreatePermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     RoleDAO superRole = TestFixtureFactory.createRole1();
     superRole.apply();
 
@@ -3818,6 +3829,8 @@ public class IntegratedSessionTest
   @Test
   public void testOverwriteDenyCreatePermissions()
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     RoleDAO superRole = TestFixtureFactory.createRole1();
     superRole.apply();
 

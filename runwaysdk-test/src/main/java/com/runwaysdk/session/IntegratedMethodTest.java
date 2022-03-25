@@ -281,7 +281,10 @@ public class IntegratedMethodTest
     newUser.setValue(UserInfo.SESSION_LIMIT, Integer.toString(sessionLimit));
     newUser.apply();
 
-    mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    if (! "true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")))
+    {
+      mdDimension = SharedTestDataManager.getOrCreateMdDimension(SessionTestSuite.MD_DIMENSION_NAME);
+    }
 
     // Create an enumeration master class
     enumMasterMdBusiness = MdBusinessDAO.newInstance();
@@ -1608,6 +1611,8 @@ public class IntegratedMethodTest
   @Test
   public void testAttributeDimensionPermissions() throws Exception
   {
+    org.junit.Assume.assumeFalse("true".equals(System.getenv("RUNWAY_TEST_IGNORE_DIMENSION_TESTS")));
+    
     MdAttributeDimensionDAOIF mdAttributeDimension = mdAttribute1.getMdAttributeDimension(mdDimension);
 
     RoleDAO owner = RoleDAO.findRole(RoleDAOIF.OWNER_ROLE).getBusinessDAO();
