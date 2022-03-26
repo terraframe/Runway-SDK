@@ -105,7 +105,7 @@ public class GeneratedLoader extends URLClassLoader
         common.toURI().toURL(),
         client.toURI().toURL(),
         server.toURI().toURL()
-    });
+    }, GeneratedLoader.class.getClassLoader());
   }
   
   public void setName(String name)
