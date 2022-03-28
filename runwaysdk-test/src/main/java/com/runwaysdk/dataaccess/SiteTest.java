@@ -94,45 +94,45 @@ public class SiteTest
    * Test to ensure that an EntityDAO cannot be updated from a different domain
    * if a non-system attribute is modified.
    */
-  @Request
-  @Test
-  public void testInvalidSiteNonSystemAttributes()
-  {
-    MdElementDAO mdEntity = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS).getBusinessDAO();
-
-    String originalDomain = CommonProperties.getDomain();
-
-    String originalCacheSize = mdEntity.getValue(MdEntityInfo.CACHE_SIZE);
-
-    boolean fail = false;
-    try
-    {
-      CommonProperties.setDomain("some_other_domain");
-      // If a non-system attribute is modified, then this should fail. It is OK
-      // for runway itself
-      // to modify and maintain system attributes.
-      mdEntity.setValue(MdEntityInfo.CACHE_SIZE, "100");
-      mdEntity.apply();
-
-      fail = true;
-      Assert.fail("Able to update an entity from a different site");
-    }
-    catch (SiteException e)
-    {
-      // Ensure this does not blow up
-      e.getLocalizedMessage();
-      // Expect to be here
-    }
-    finally
-    {
-      CommonProperties.setDomain(originalDomain);
-      if (fail)
-      {
-        mdEntity.setValue(MdEntityInfo.CACHE_SIZE, originalCacheSize);
-        mdEntity.apply();
-      }
-    }
-  }
+//  @Request
+//  @Test
+//  public void testInvalidSiteNonSystemAttributes()
+//  {
+//    MdElementDAO mdEntity = MdBusinessDAO.getMdBusinessDAO(UserInfo.CLASS).getBusinessDAO();
+//
+//    String originalDomain = CommonProperties.getDomain();
+//
+//    String originalCacheSize = mdEntity.getValue(MdEntityInfo.CACHE_SIZE);
+//
+//    boolean fail = false;
+//    try
+//    {
+//      CommonProperties.setDomain("some_other_domain");
+//      // If a non-system attribute is modified, then this should fail. It is OK
+//      // for runway itself
+//      // to modify and maintain system attributes.
+//      mdEntity.setValue(MdEntityInfo.CACHE_SIZE, "100");
+//      mdEntity.apply();
+//
+//      fail = true;
+//      Assert.fail("Able to update an entity from a different site");
+//    }
+//    catch (SiteException e)
+//    {
+//      // Ensure this does not blow up
+//      e.getLocalizedMessage();
+//      // Expect to be here
+//    }
+//    finally
+//    {
+//      CommonProperties.setDomain(originalDomain);
+//      if (fail)
+//      {
+//        mdEntity.setValue(MdEntityInfo.CACHE_SIZE, originalCacheSize);
+//        mdEntity.apply();
+//      }
+//    }
+//  }
 
   /**
    * Test to ensure that an EntityDAO can be updated from a different domain if
