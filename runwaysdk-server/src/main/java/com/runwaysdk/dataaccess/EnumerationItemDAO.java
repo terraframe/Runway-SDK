@@ -202,7 +202,8 @@ public class EnumerationItemDAO extends BusinessDAO implements EnumerationItemDA
    * layer instead of the data access layer.
    *
    */
-  public void delete(boolean businessContext, DeleteContext context)
+  @Override
+  public void delete(DeleteContext context)
   {
     super.delete(context);
 

@@ -125,7 +125,7 @@ public class SupportedLocaleDAO extends EnumerationItemDAO implements SupportedL
   }
 
   @Override
-  public void delete(boolean businessContext, DeleteContext context)
+  public void delete(DeleteContext context)
   {
     String enumName = this.getAttribute(EnumerationMasterInfo.NAME).getValue();
 
