@@ -134,7 +134,10 @@ public abstract class ExecutableJob extends ExecutableJobBase
   }
 
   /**
-   * Defines what the job should actually do when executed (or started). Must be overridden with actual behavior.
+   * This method should only be invoked via Quartz. Do not invoke this method directly.
+   * 
+   * Subclasses should override this method to provide execution logic.
+   * 
    * @throws Throwable 
    */
   abstract public void execute(ExecutionContext executionContext) throws Throwable;
@@ -145,11 +148,100 @@ public abstract class ExecutableJob extends ExecutableJobBase
   }
 
   /**
-   * Attempts to schedule the job for immediate running.
+   * Schedules the job for immediate running. The job will be invoked as part of a separate
+   * worker thread when the system has availability, and may be queued if the system does not
+   * have availability.
    */
   public synchronized JobHistory start()
   {
     return executableJobStart();
+  }
+  
+  /**
+   * Executes the job immediately, on the current thread. Any sort of queueing logic will be ignored.
+   * 
+   * @param job
+   * @return
+   * @throws Throwable
+   */
+  public ExecutionContext startSynchronously() throws Throwable
+  {
+    JobHistory history = this.createNewHistory();
+    
+    return this.startSynchronously(history);
+  }
+  
+  /**
+   * Executes the job immediately, on the current thread. Any sort of queueing logic will be ignored.
+   * 
+   * @param job
+   * @return
+   * @throws Throwable
+   */
+  public ExecutionContext startSynchronously(JobHistory history) throws Throwable
+  {
+    ExecutionContext context = new ExecutionContext();
+    
+    history.appLock();
+    history.clearStatus();
+    history.addStatus(AllJobStatus.RUNNING);
+    history.apply();
+    
+    JobHistoryRecord record = new JobHistoryRecord(this, history);
+    record.apply();
+    
+    context.setHistory(history);
+    context.setJob(this);
+    context.setHistory(history);
+    context.setJobHistoryRecord(record);
+    context.setRunAsUser(this.getRunAsUser());
+    context.setRunAsDimension(this.getRunAsDimension());
+    context.setExecutableJobToString(this.toString());
+    
+    Throwable error = null;
+    
+    try
+    {
+      this.execute(context);
+    }
+    catch (Throwable t)
+    {
+      error = t;
+      
+      throw t;
+    }
+    finally
+    {
+      JobHistory jh = JobHistory.get(history.getOid());
+
+      jh.appLock();
+      jh.setEndTime(new Date());
+      jh.clearStatus();
+      
+      if (error != null)
+      {
+        jh.addStatus(AllJobStatus.FAILURE);
+        
+        jh.setError(error);
+      }
+      else
+      {
+        if(context.getStatus() != null)
+        {
+          jh.addStatus(context.getStatus());
+        }
+        else
+        {
+          jh.addStatus(AllJobStatus.SUCCESS);
+        }
+      }
+      jh.apply();
+      
+      context.setStatus(jh.getStatus().get(0));
+      context.setHistory(jh);
+    }
+    
+    return context;
   }
   
   private JobHistory executableJobStart()
