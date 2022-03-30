@@ -173,5 +173,11 @@ public class VaultFile extends VaultFileBase implements ApplicationResource
   {
     
   }
+
+  @Override
+  public boolean exists()
+  {
+    return this.getFile().exists();
+  }
   
 }

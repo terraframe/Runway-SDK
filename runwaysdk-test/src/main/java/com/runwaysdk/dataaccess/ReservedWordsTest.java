@@ -68,13 +68,13 @@ public class ReservedWordsTest
   public void testSQL() throws Exception
   {
     // Words in lists
-    Assert.assertTrue(ReservedWords.sqlContains("add"));
-    Assert.assertTrue(ReservedWords.sqlContains("float4"));
-    Assert.assertTrue(ReservedWords.sqlContains("blob"));
+    Assert.assertTrue(ReservedWords.sqlContains("group"));
+    Assert.assertTrue(ReservedWords.sqlContains("or"));
+    Assert.assertTrue(ReservedWords.sqlContains("to"));
     Assert.assertTrue(ReservedWords.sqlContains("as"));
 
     // Words not in lists
-    Assert.assertTrue(!ReservedWords.sqlContains("person"));
+    Assert.assertTrue(!ReservedWords.sqlContains("version"));
     Assert.assertTrue(!ReservedWords.sqlContains("tree"));
     Assert.assertTrue(!ReservedWords.sqlContains("apple"));
     Assert.assertTrue(!ReservedWords.sqlContains("purple"));
@@ -101,10 +101,12 @@ public class ReservedWordsTest
   @Test
   public void testBadTablename() throws Exception
   {
+    final String badWord = "true";
+    
     try
     {
       MdBusinessDAO mdBusiness = MdBusinessDAO.newInstance();
-      mdBusiness.setValue(MdBusinessInfo.TABLE_NAME, "blob");
+      mdBusiness.setValue(MdBusinessInfo.TABLE_NAME, badWord);
       mdBusiness.setValue(MdBusinessInfo.NAME, "CollectionSub");
       mdBusiness.setValue(MdBusinessInfo.PACKAGE, "test.words");
       mdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
@@ -115,7 +117,7 @@ public class ReservedWordsTest
 
       // If we get this far, it didn't throw the exception
       mdBusiness.delete();
-      Assert.fail("Reserved word allowed for table name in new type");
+      Assert.fail("Reserved word [" + badWord + "] allowed for table name in new type");
     }
     catch (ReservedWordException e)
     {
@@ -303,10 +305,12 @@ public class ReservedWordsTest
   @Test
   public void testInvalidCopiedColumnName() throws Exception
   {
+    final String badWord = "join";
+    
     try
     {
       MdAttributeBooleanDAO mdAttributeBoolean = MdAttributeBooleanDAO.newInstance();
-      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, "Access");
+      mdAttributeBoolean.setValue(MdAttributeBooleanInfo.NAME, badWord);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.POSITIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.TRUE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.NEGATIVE_DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, MdAttributeBooleanInfo.FALSE);
       mdAttributeBoolean.setStructValue(MdAttributeBooleanInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Boolean");
@@ -314,7 +318,7 @@ public class ReservedWordsTest
       mdAttributeBoolean.apply();
 
       // If we get this far, it didn't throw the exception, the test failed
-      Assert.fail("Reserved SQL attribute name 'Access' was copied to the missing column name and was accepted by the system.");
+      Assert.fail("Reserved SQL attribute name " + badWord + " was copied to the missing column name and was accepted by the system.");
     }
     catch (ReservedWordException e)
     {

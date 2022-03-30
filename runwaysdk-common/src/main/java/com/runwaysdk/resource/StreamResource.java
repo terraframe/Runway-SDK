@@ -118,5 +118,11 @@ public class StreamResource implements ApplicationResource
   {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public boolean exists()
+  {
+    return this.stream == null;
+  }
   
 }
