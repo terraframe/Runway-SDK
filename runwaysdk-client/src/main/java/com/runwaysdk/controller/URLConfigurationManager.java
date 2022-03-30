@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.controller;
 
@@ -103,6 +103,21 @@ public class URLConfigurationManager
     }
   }
 
+  public void addMapping(UriMapping mapping)
+  {
+    synchronized (initializeLock)
+    {
+      if (mappings != null)
+      {
+        return;
+      }
+
+      mappings = new ArrayList<UriMapping>();
+    }
+
+    mappings.add(mapping);
+  }
+
   /**
    * Returns the UriMapping associated with the given uri. This URI is assumed
    * to NOT include the application context path (if there is one).
@@ -123,23 +138,16 @@ public class URLConfigurationManager
       uri = uri.replaceFirst("/", "");
     }
 
-    // If this is a ControllerMapping, calculate what action it would be
-    // referencing.
-    ArrayList<String> uris = new ArrayList<String>(Arrays.asList(uri.split("/")));
-    String actionUri = "";
-    if (uris.size() > 1)
-    {
-      uris.remove(0);
-      actionUri = StringUtils.join(uris, "/");
-    }
-
     for (UriMapping mapping : mappings)
     {
       if (mapping.handlesUri(uri))
       {
         if (mapping instanceof ControllerMapping)
         {
-          ActionMapping action = ( (ControllerMapping) mapping ).getActionAtUri(actionUri);
+          ControllerMapping controllerMapping = (ControllerMapping) mapping;
+          String actionUri = controllerMapping.parseActionUri(uri);
+
+          ActionMapping action = controllerMapping.getActionAtUri(actionUri);
           if (action != null)
           {
             return action;
@@ -151,7 +159,7 @@ public class URLConfigurationManager
         }
       }
     }
- 
+
     return null;
   }
 
@@ -165,6 +173,14 @@ public class URLConfigurationManager
     InputStream stream = ConfigurationManager.getResourceAsStream(ConfigGroup.CLIENT, fileName);
 
     readMappings(stream);
+  }
+  
+  public void clear()
+  {
+    synchronized (initializeLock)
+    {
+      mappings = null;
+    }
   }
 
   public void readMappings(InputStream stream) throws ParserConfigurationException, SAXException, IOException
@@ -209,8 +225,9 @@ public class URLConfigurationManager
         }
       }
 
-//      String info = "URL mappings successfully read from " + fileName + ":\n" + this.toString();
-//      log.info(info);
+      // String info = "URL mappings successfully read from " + fileName + ":\n"
+      // + this.toString();
+      // log.info(info);
     }
   }
 
@@ -224,11 +241,11 @@ public class URLConfigurationManager
 
     for (Class<?> type : types)
     {
-      Controller[] urlMapping = type.getAnnotationsByType(Controller.class);
+      Controller[] controllers = type.getAnnotationsByType(Controller.class);
 
-      String uri = urlMapping[0].url();
+      ControllerWrapper controller = new ControllerWrapper(controllers[0]);
 
-      ControllerMapping mapping = new ControllerMapping(uri, type.getName(), ControllerVersion.V2);
+      ControllerMapping mapping = new ControllerMapping(controller, type.getName(), ControllerVersion.V2);
 
       Method[] methods = type.getMethods();
 
@@ -294,7 +311,7 @@ public class URLConfigurationManager
 
   private void readController(String uri, String controllerClassName, Element el)
   {
-    ControllerMapping controllerMapping = new ControllerMapping(uri, controllerClassName, ControllerVersion.V1);
+    ControllerMapping controllerMapping = new ControllerMapping(new ControllerWrapper(uri), controllerClassName, ControllerVersion.V1);
 
     ArrayList<Method> methods = null;
     try
@@ -367,7 +384,7 @@ public class URLConfigurationManager
   /**
    * ABSTRACT URI MAPPING
    */
-  public abstract class UriMapping
+  public static abstract class UriMapping
   {
     private String            uri;
 
@@ -406,12 +423,7 @@ public class URLConfigurationManager
 
     public boolean handlesUri(String uri)
     {
-      if (uri.matches(this.getUri()))
-      {
-        return true;
-      }
-
-      return false;
+      return uri.matches(this.getUri());
     }
 
     public abstract void performRequest(DispatcherIF dispatcher, RequestManager manager) throws IOException;
@@ -420,7 +432,7 @@ public class URLConfigurationManager
   /**
    * URI FORWARD MAPPING
    */
-  public class UriForwardMapping extends UriMapping
+  public static class UriForwardMapping extends UriMapping
   {
     private String uriEnd;
 
@@ -474,7 +486,7 @@ public class URLConfigurationManager
   /**
    * URI REDIRECT MAPPING
    */
-  public class UriRedirectMapping extends UriForwardMapping
+  public static class UriRedirectMapping extends UriForwardMapping
   {
     public UriRedirectMapping(String uriStart, String uriEnd, ControllerVersion version)
     {
@@ -503,21 +515,114 @@ public class URLConfigurationManager
     }
   }
 
+  public static class ControllerWrapper
+  {
+    private String url;
+
+    private String base;
+
+    private String version;
+
+    public ControllerWrapper(Controller controller)
+    {
+      this.url = controller.url();
+      this.base = controller.base();
+      this.version = controller.version();
+    }
+
+    public ControllerWrapper(String url)
+    {
+      this.url = url;
+      this.base = "";
+      this.version = "";
+    }
+
+    public ControllerWrapper(String base, String version, String url)
+    {
+      this.url = url;
+      this.base = base != null ? base : "";
+      this.version = version != null ? version : "";
+    }
+
+    public String toURI()
+    {
+      StringBuilder uri = new StringBuilder();
+
+      if (base.length() > 0)
+      {
+        uri.append(base + "/");
+      }
+
+      if (version.length() > 0)
+      {
+        uri.append(version + "/");
+      }
+
+      uri.append(url);
+
+      return uri.toString();
+    }
+
+    public boolean handlesUri(String uri)
+    {
+      String[] contPath = uri.split("/");
+
+      int index = 0;
+
+      if (this.base.length() > 0)
+      {
+        if (contPath.length <= index || !this.base.matches(contPath[index]))
+        {
+          return false;
+        }
+
+        index++;
+      }
+
+      if (this.version.length() > 0)
+      {
+        if (contPath.length <= index || !this.version.matches(contPath[index]))
+        {
+          return false;
+        }
+
+        index++;
+      }
+
+      if (contPath.length <= index)
+      {
+        return false;
+      }
+
+      return this.url.matches(contPath[index]);
+    }
+
+  }
+
   /**
    * CONTROLLER MAPPING
    */
-  public class ControllerMapping extends UriMapping
+  public static class ControllerMapping extends UriMapping
   {
+    private ControllerWrapper        controller;
+
     private String                   className;
 
     private ArrayList<ActionMapping> actions;
 
-    public ControllerMapping(String controllerUri, String className, ControllerVersion version)
+    public ControllerMapping(ControllerWrapper controller, String className, ControllerVersion version)
     {
-      super(controllerUri, version);
+      super(controller.toURI(), version);
 
+      this.controller = controller;
       this.className = className;
-      actions = new ArrayList<ActionMapping>();
+      this.actions = new ArrayList<ActionMapping>();
+    }
+
+    public String parseActionUri(String uri)
+    {
+      // The action uri is everything after the controller uri
+      return uri.replaceFirst(this.getUri() + "/", "");
     }
 
     public String getControllerClassName()
@@ -528,8 +633,7 @@ public class URLConfigurationManager
     @Override
     public boolean handlesUri(String uri)
     {
-      String[] contPath = uri.split("/");
-      return super.handlesUri(contPath[0]);
+      return this.controller.handlesUri(uri);
     }
 
     public ActionMapping getActionAtUri(String uri)
@@ -661,5 +765,6 @@ public class URLConfigurationManager
     {
       throw new UnsupportedOperationException("You can't perform a request on a ControllerMapping, only an ActionMapping.");
     }
+
   }
 }
