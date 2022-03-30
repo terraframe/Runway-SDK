@@ -27,4 +27,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Controller {
   public String url();
+  
+  public String base() default "";
+  
+  public String version() default "";  
 }
