@@ -130,6 +130,7 @@ public class DispatcherServletTest
     try
     {
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       MockServletRequest req = new MockServletRequest();
@@ -169,6 +170,7 @@ public class DispatcherServletTest
     try
     {
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       MockServletRequest req = new MockServletRequest();
@@ -217,6 +219,7 @@ public class DispatcherServletTest
       try
       {
         URLConfigurationManager manager = new URLConfigurationManager();
+        manager.clear();
         manager.readMappings(istream);
 
         MockServletRequest req = new MockServletRequest();
@@ -272,6 +275,7 @@ public class DispatcherServletTest
       try
       {
         URLConfigurationManager manager = new URLConfigurationManager();
+        manager.clear();
         manager.readMappings(istream);
 
         MockServletRequest req = new MockServletRequest();
@@ -327,6 +331,7 @@ public class DispatcherServletTest
       RequestManager request = new RequestManager(req, resp, ServletMethod.POST, null, null);
 
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       try
@@ -365,6 +370,7 @@ public class DispatcherServletTest
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       try
@@ -403,6 +409,7 @@ public class DispatcherServletTest
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       try
@@ -444,6 +451,7 @@ public class DispatcherServletTest
       RequestManager request = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
       URLConfigurationManager manager = new URLConfigurationManager();
+      manager.clear();
       manager.readMappings(istream);
 
       DispatcherServlet dispatcher = new DispatcherServlet(manager);
