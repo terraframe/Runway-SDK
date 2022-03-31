@@ -84,6 +84,7 @@ public class ClasspathResource implements ApplicationTreeResource
   /**
    * Returns true if the resource actually exists on the classpath with the given class loader and is resolvable as a URL.
    */
+  @Override
   public boolean exists()
   {
     return (resolveURL() != null);
@@ -373,5 +374,11 @@ public class ClasspathResource implements ApplicationTreeResource
   public ApplicationTreeResource getParent()
   {
     return new ClasspathResource(this.getPackage());
+  }
+
+  @Override
+  public ApplicationTreeResource getChild(String path)
+  {
+    return new ClasspathResource(this.getAbsolutePath() + "/" + path);
   }
 }

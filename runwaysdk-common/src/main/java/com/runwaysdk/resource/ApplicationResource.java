@@ -79,6 +79,11 @@ public interface ApplicationResource extends AutoCloseable
   public boolean isRemote();
   
   /**
+   * Returns true if the resource exists.
+   */
+  public boolean exists();
+  
+  /**
    * Closes the underlying resource, freeing any OS resources. Depending on the underlying implementation of this resource,
    * some methods on this interface may no longer function properly after invoking this method.
    */

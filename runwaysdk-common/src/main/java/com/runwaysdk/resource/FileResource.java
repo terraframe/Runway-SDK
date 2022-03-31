@@ -132,4 +132,16 @@ public class FileResource implements ApplicationTreeResource
   {
     return new FileResource(this.file.getParentFile());
   }
+
+  @Override
+  public boolean exists()
+  {
+    return this.file.exists();
+  }
+
+  @Override
+  public ApplicationTreeResource getChild(String path)
+  {
+    return new FileResource(new File(this.file.getAbsolutePath() + File.pathSeparator + path));
+  }
 }

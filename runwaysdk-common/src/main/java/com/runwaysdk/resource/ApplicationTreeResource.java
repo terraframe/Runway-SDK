@@ -41,6 +41,14 @@ public interface ApplicationTreeResource extends ApplicationResource
   public Iterator<ApplicationTreeResource> getChildren();
   
   /**
+   * Returns a new reference of a specific child of this tree resource by path. There is no guarantee that the child actually exists, for that you may call the 'exists'
+   * method. Some implementations may support navigating multiple layers deep depending on how the pathing structure is specified.
+   * 
+   * @return
+   */
+  public ApplicationTreeResource getChild(String path);
+  
+  /**
    * Gets the parent of this resource. If this resource does not have a parent this method will return null.
    */
   public ApplicationTreeResource getParent();
