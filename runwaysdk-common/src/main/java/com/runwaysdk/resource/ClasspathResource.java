@@ -310,6 +310,81 @@ public class ClasspathResource implements ApplicationTreeResource
     }
   }
   
+  /**
+   * This is useful in rare scenarios where a single path on the classpath may resolve to more than one URL.
+   */
+  public static List<URL> getUrlsInPackage(String packageName)
+  {
+    try
+    {
+      ClassLoader classLoader = ClasspathResource.class.getClassLoader();
+      Enumeration<URL> packageURLs;
+      ArrayList<URL> resources = new ArrayList<URL>();
+  
+      packageName = packageName.replace(".", "/");
+      packageURLs = classLoader.getResources(packageName);
+  
+      while (packageURLs.hasMoreElements())
+      {
+        URL packageURL = packageURLs.nextElement();
+  
+        if (packageURL.getProtocol().equals("jar"))
+        {
+          String jarFileName;
+          JarFile jf;
+          Enumeration<JarEntry> jarEntries;
+          String entryName;
+          
+          // build jar file name, then loop through zipped entries
+          jarFileName = URLDecoder.decode(packageURL.getFile(), "UTF-8");
+          jarFileName = jarFileName.substring(5, jarFileName.indexOf("!"));
+          jf = new JarFile(jarFileName);
+          try
+          {
+            jarEntries = jf.entries();
+            while (jarEntries.hasMoreElements())
+            {
+              JarEntry jarEntry = jarEntries.nextElement();
+              
+              entryName = jarEntry.getName();
+              if (entryName.startsWith(packageName) && entryName.length() > packageName.length() + 5 && !entryName.endsWith("/"))
+              {
+                URL resource = new URL("jar:file:" + jarFileName + "!/" + entryName);
+                resources.add(resource);
+              }
+            }
+          }
+          finally
+          {
+            jf.close();
+          }
+        }
+        else
+        {
+          File folder = new File(packageURL.getFile());
+          File[] contenuti = folder.listFiles();
+          
+          String packagePath = packageName;
+          if (packagePath.endsWith("/"))
+          {
+            packagePath = packagePath.substring(0, packagePath.length()-1);
+          }
+          
+          for (File actual : contenuti)
+          {
+            resources.add(actual.toURI().toURL());
+          }
+        }
+      }
+      
+      return resources;
+    }
+    catch(IOException ex)
+    {
+      throw new RuntimeException(ex);
+    }
+  }
+  
   public static void main(String[] args)
   {
     List<ClasspathResource> list = ClasspathResource.getResourcesInPackage("com/runwaysdk/");

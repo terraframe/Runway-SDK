@@ -55,7 +55,10 @@ public class RemoteURLResource implements ApplicationResource
       
       try(FileOutputStream fos = new FileOutputStream(tempFile))
       {
-        IOUtils.copy(this.openNewStream(), fos);
+        try (InputStream is = this.openNewStream())
+        {
+          IOUtils.copy(is, fos);
+        }
       }
       
       tempFile.deleteOnExit();

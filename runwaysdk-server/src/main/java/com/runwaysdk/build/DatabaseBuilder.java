@@ -21,17 +21,18 @@ package com.runwaysdk.build;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -39,6 +40,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -296,21 +298,18 @@ public class DatabaseBuilder
   
   private void throwDuplicateTimestamp(ClasspathResource resource)
   {
-    Long ts = getTimestamp(resource);
+    List<URL> urls = ClasspathResource.getUrlsInPackage(resource.getPackage());
     
-    Iterator<ClasspathResource> it = ordered.iterator();
+    urls = urls.stream().filter(url -> resource.getName().equals(FilenameUtils.getName(url.getPath()))).collect(Collectors.toList());
     
-    while (it.hasNext())
+    if (urls.size() > 1)
     {
-      ClasspathResource cpr = it.next();
-      
-      if (getTimestamp(cpr).equals(ts))
-      {
-        throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getURL() + "] has the same timestamp as another resource already on the classpath at [" + cpr.getURL() + "].");
-      }
+      throw new CoreException("Duplicate timestamp detected. The resource [" + urls.get(0) + "] has the same timestamp as another resource already on the classpath at [" + urls.get(1) + "].");
     }
-    
-    throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getURL() + "] has the same timestamp as another resource already on the classpath.");
+    else
+    {
+      throw new CoreException("Duplicate timestamp detected. The resource [" + resource.getAbsolutePath() + "] has the same timestamp as another resource already on the classpath.");
+    }
   }
 
   private void initialize()
