@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -48,6 +48,10 @@ public class AbstractClassificationTest
 
   private static VertexObjectDAO              child;
 
+  private static VertexObjectDAO              other;
+
+  private static VertexObjectDAO              grandchild;
+
   private static String                       CODE = "TT";
 
   @Request
@@ -75,6 +79,18 @@ public class AbstractClassificationTest
     child.apply();
 
     child.addParent(root, mdClassificationDAO.getReferenceMdEdgeDAO()).apply();
+
+    other = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
+    other.setValue(AbstractClassification.CODE, "OTHER");
+    other.apply();
+
+    other.addParent(root, mdClassificationDAO.getReferenceMdEdgeDAO()).apply();
+
+    grandchild = VertexObjectDAO.newInstance(mdClassificationDAO.getReferenceMdVertexDAO());
+    grandchild.setValue(AbstractClassification.CODE, "GRANDCHILD");
+    grandchild.apply();
+
+    grandchild.addParent(child, mdClassificationDAO.getReferenceMdEdgeDAO()).apply();
 
     mdClassificationDAO.setValue(MdClassificationInfo.ROOT, root.getOid());
     mdClassificationDAO.apply();
@@ -121,6 +137,16 @@ public class AbstractClassificationTest
 
     Assert.assertNotNull(result);
     Assert.assertEquals(CODE, result.getObjectValue(AbstractClassification.CODE));
+  }
+
+  @Request
+  @Test
+  public void testIsChild()
+  {
+    Assert.assertTrue(VertexObjectDAO.isChild(root.getRID(), child.getRID(), mdClassificationDAO.getReferenceMdEdgeDAO()));
+    Assert.assertFalse(VertexObjectDAO.isChild(other.getRID(), child.getRID(), mdClassificationDAO.getReferenceMdEdgeDAO()));
+    Assert.assertTrue(VertexObjectDAO.isChild(root.getRID(), grandchild.getRID(), mdClassificationDAO.getReferenceMdEdgeDAO()));
+    Assert.assertTrue(VertexObjectDAO.isChild(child.getRID(), grandchild.getRID(), mdClassificationDAO.getReferenceMdEdgeDAO()));
   }
 
 }

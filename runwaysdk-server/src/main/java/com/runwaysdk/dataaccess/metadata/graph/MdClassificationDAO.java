@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata.graph;
 
@@ -53,6 +53,8 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
    * 
    */
   private static final long serialVersionUID = -5015373068741693970L;
+
+  private VertexObjectDAOIF rootVertex;
 
   /**
    * The default constructor, does not set any attributes
@@ -284,7 +286,14 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     {
       AttributeGraphRef attributeReference = (AttributeGraphRef) this.getAttributeIF(MdClassificationInfo.ROOT);
 
-      return attributeReference.dereference(attributeReference.getValue());
+      String oid = attributeReference.getValue();
+
+      if (this.rootVertex == null || !this.rootVertex.getOid().equals(oid))
+      {
+        this.rootVertex = attributeReference.dereference(oid);
+      }
+
+      return this.rootVertex;
     }
 
     return null;
@@ -297,6 +306,7 @@ public class MdClassificationDAO extends MetadataDAO implements MdClassification
     mdClassification.setStructValue(MdEdgeInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, classificationLabel);
     mdClassification.setValue(MdClassificationInfo.TYPE_NAME, typeName);
     mdClassification.setValue(MdClassificationInfo.PACKAGE, packageName);
+    mdClassification.setValue(MdClassificationInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
     mdClassification.apply();
 
     return mdClassification;
