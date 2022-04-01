@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -206,7 +206,7 @@ public class OrientDBImpl implements GraphDB
       try (OResultSet rs = rootSession.command(deleteWriter))
       {
       }
-      
+
       String appUser = OrientDBProperties.getAppUserName();
       String appPass = OrientDBProperties.getAppUserPassword();
 
@@ -214,7 +214,7 @@ public class OrientDBImpl implements GraphDB
       try (OResultSet rs = rootSession.command(sqlAdminUser))
       {
       }
-      
+
       logger.info("Created app user with name [" + appUser + "].");
     }
     finally
@@ -1786,9 +1786,18 @@ public class OrientDBImpl implements GraphDB
         }
         else
         {
-          VertexObjectDAOIF v = attribute.dereference((String) value);
+          String oid = (String) value;
 
-          document.setProperty(OrientDBConstant.VALUE, v.getRID());
+          if (attribute.getId() != null && attribute.getValue().equals(oid))
+          {
+            document.setProperty(OrientDBConstant.VALUE, attribute.getId().getRid());
+          }
+          else
+          {
+            VertexObjectDAOIF v = attribute.dereference((String) value);
+
+            document.setProperty(OrientDBConstant.VALUE, v.getRID());
+          }
         }
 
         documents.add(document);

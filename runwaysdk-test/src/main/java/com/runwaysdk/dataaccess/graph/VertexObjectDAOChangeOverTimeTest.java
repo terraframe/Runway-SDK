@@ -1110,7 +1110,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
   @Request
   @Test
-  public void testLinkAttribute()
+  public void testGraphRefAttribute()
   {
     VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdClassificationDAO.definesType());
 
@@ -1153,4 +1153,49 @@ public class VertexObjectDAOChangeOverTimeTest
     }
   }
 
+  @Request
+  @Test
+  public void testGraphRefAttribute_NULL()
+  {
+    VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdClassificationDAO.definesType());
+    
+    try
+    {
+      classifierDAO.apply();
+      
+      String attributeName = mdGraphReferenceAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+      
+      Assert.assertFalse(vertexDAO.getAttributeIF(attributeName).isModified());
+      
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+      
+      vertexDAO.setValue(attributeName, null, startDate(), endDate());
+      
+      // Assert.assertTrue(vertexDAO.getAttributeIF(attributeName).isModified());
+      
+      try
+      {
+        // Test create
+        vertexDAO.apply();
+        
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+        
+        Assert.assertNotNull(test);
+        
+        Assert.assertNull(test.getObjectValue(attributeName, date()));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+      
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      classifierDAO.delete();
+    }
+  }
+  
 }

@@ -1467,6 +1467,47 @@ public class VertexObjectDAOTest
 
   @Request
   @Test
+  public void testGraphReferenceAttribute_Null()
+  {
+    VertexObjectDAO classifierDAO = VertexObjectDAO.newInstance(mdReferenceDAO.definesType());
+    
+    try
+    {
+      classifierDAO.apply();
+      
+      String attributeName = mdGraphReferenceAttribute.definesAttribute();
+      VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
+      
+      Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
+      
+      Assert.assertNull(vertexDAO.getObjectValue(attributeName));
+      
+      try
+      {
+        // Test create
+        vertexDAO.apply();
+        
+        VertexObjectDAOIF test = VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid());
+        
+        Assert.assertNotNull(test);
+        
+        Assert.assertNull(test.getObjectValue(attributeName));
+      }
+      finally
+      {
+        vertexDAO.delete();
+      }
+      
+      Assert.assertNull(VertexObjectDAO.get(mdVertexDAO, vertexDAO.getOid()));
+    }
+    finally
+    {
+      classifierDAO.delete();
+    }
+  }
+  
+  @Request
+  @Test
   public void testClassificationAttribute()
   {
     String attributeName = mdClassificationAttribute.definesAttribute();
