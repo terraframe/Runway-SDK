@@ -155,14 +155,15 @@ public class QueueingQuartzJob extends QuartzRunwayJob
    * invoked by the individual 'situation specific' listener which may be quartz or runway event specific. It is critical
    * that this method gets invoked at the end of a job's execution because otherwise it will sit in the queue and prevent
    * all other jobs from running.
+   * 
+   * We don't want this method to run in a request, because there are situations that can occur where we get here and for some
+   * reason the app cannot connect to the database (this happens frequently in test frameworks). If you need to do logic in
+   * here which requires a request annotation, put that into a different method, after we've removed ourselves from the queue.
    */
-  @Request
   protected void finalizeJob(JobExecutionContext context)
   {
     String nextHistoryId = null;
     String historyId = (String) context.get(HISTORY_RECORD_ID);
-    
-    
     
     // !Important! We are now entering LOCK DEPENDENT code. If your code does not require the lock, then you should either run it
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
@@ -196,15 +197,19 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     }
     // End lock dependent code //
     
-    
-    
     if (nextHistoryId != null)
     {
-      JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
-      ExecutableJob execJob = history.getParent();
-      
-      execJob.getQuartzJob().start(history);
+      finalizeJobInReq(nextHistoryId);
     }
+  }
+
+  @Request
+  private void finalizeJobInReq(String nextHistoryId)
+  {
+    JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
+    ExecutableJob execJob = history.getParent();
+    
+    execJob.getQuartzJob().start(history);
   }
   
   @Override

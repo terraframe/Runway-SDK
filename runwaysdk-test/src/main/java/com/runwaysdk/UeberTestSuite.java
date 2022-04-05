@@ -28,6 +28,7 @@ import com.runwaysdk.dataaccess.DataAccessTestSuite;
 import com.runwaysdk.facade.FacadeTestSuite;
 import com.runwaysdk.query.QueryTestSuite;
 import com.runwaysdk.session.SessionTestSuite;
+import com.runwaysdk.system.scheduler.SchedulerTest;
 import com.runwaysdk.vault.VaultTestSuite;
 
 @RunWith(Suite.class)
