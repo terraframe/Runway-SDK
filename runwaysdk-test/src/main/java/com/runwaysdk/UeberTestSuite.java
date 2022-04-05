@@ -40,7 +40,8 @@ import com.runwaysdk.vault.VaultTestSuite;
   MultiThreadTestSuite.class,
   OntologyTestSuite.class,
   SessionTestSuite.class,
-  GraphTestSuite.class
+  GraphTestSuite.class,
+  SchedulerTest.class
 })
 public class UeberTestSuite
 {
