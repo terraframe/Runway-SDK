@@ -20,10 +20,11 @@ package com.runwaysdk.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.quartz.Scheduler;
+
+import com.runwaysdk.system.scheduler.SchedulerTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ Scheduler.class })
+@Suite.SuiteClasses({ SchedulerTest.class })
 public class SchedulerTS
 {
 }
