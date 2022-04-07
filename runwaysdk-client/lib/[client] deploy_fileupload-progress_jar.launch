@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2e.Maven2LaunchConfigurationType">
-<booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
-<stringAttribute key="M2_GOALS" value="deploy:deploy-file"/>
-<booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
-<booleanAttribute key="M2_OFFLINE" value="false"/>
-<stringAttribute key="M2_PROFILES" value=""/>
-<listAttribute key="M2_PROPERTIES">
-<listEntry value="file=${workspace_loc:runwaysdk-client}/lib/fileupload-progress.jar"/>
-<listEntry value="groupId=com.scand.fileupload"/>
-<listEntry value="artifactId=fileupload-progress"/>
-<listEntry value="version=1.0"/>
-<listEntry value="packaging=jar"/>
-<listEntry value="repositoryId=terraframe-releases"/>
-<listEntry value="url=http://terraframe.com:8081/nexus/content/repositories/releases"/>
-</listAttribute>
-<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
-<booleanAttribute key="M2_SKIP_TESTS" value="false"/>
-<intAttribute key="M2_THREADS" value="1"/>
-<booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
-<booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/runwaysdk-client}"/>
+    <booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
+    <stringAttribute key="M2_GOALS" value="deploy:deploy-file"/>
+    <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
+    <booleanAttribute key="M2_OFFLINE" value="false"/>
+    <stringAttribute key="M2_PROFILES" value=""/>
+    <listAttribute key="M2_PROPERTIES">
+        <listEntry value="file=${workspace_loc:runwaysdk-client}/lib/fileupload-progress.jar"/>
+        <listEntry value="groupId=com.scand.fileupload"/>
+        <listEntry value="artifactId=fileupload-progress"/>
+        <listEntry value="version=1.0"/>
+        <listEntry value="packaging=jar"/>
+        <listEntry value="repositoryId=terraframe-releases"/>
+        <listEntry value="url=http://terraframe.com:8081/nexus/content/repositories/releases"/>
+    </listAttribute>
+    <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
+    <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
+    <intAttribute key="M2_THREADS" value="1"/>
+    <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
+    <stringAttribute key="M2_USER_SETTINGS" value=""/>
+    <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/runwaysdk-client}"/>
 </launchConfiguration>
