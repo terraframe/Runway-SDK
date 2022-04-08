@@ -106,7 +106,7 @@ public class DatabaseBuilder
 
   public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = com.runwaysdk.dataaccess.database.Database.VERSION_TIMESTAMP_PROPERTY;
 
-  private static final String      DATE_PATTEN                                = "\\d{4,}(?:-ALWAYS)?(?:-NOTRANS)?";
+  private static final String      DATE_PATTEN                                = "\\d{4,}(?:-NOTRANS)?(?:-ALWAYS)?(?:-NOTRANS)?";
 
   private static final String      NAME_PATTERN                               = "^([A-Za-z_\\-\\d\\.]*)\\((" + DATE_PATTEN + ")\\)([A-Za-z_\\-\\d\\.]*).(?:" + StringUtils.join(supportedExtensions, "|") + ")$";
 
@@ -631,7 +631,7 @@ public class DatabaseBuilder
     {
       String timeGroup = nameMatcher.group(2);
       
-      if (timeGroup.endsWith("-ALWAYS"))
+      if (timeGroup.contains("-ALWAYS"))
       {
         return true;
       }
@@ -649,7 +649,7 @@ public class DatabaseBuilder
     {
       String timeGroup = nameMatcher.group(2);
       
-      if (timeGroup.endsWith("-NOTRANS"))
+      if (timeGroup.contains("-NOTRANS"))
       {
         return true;
       }
@@ -667,12 +667,12 @@ public class DatabaseBuilder
     {
       String timeGroup = nameMatcher.group(2);
       
-      if (timeGroup.endsWith("-ALWAYS"))
+      if (timeGroup.contains("-ALWAYS"))
       {
         timeGroup = timeGroup.replace("-ALWAYS", "");
       }
       
-      if (timeGroup.endsWith("-NOTRANS"))
+      if (timeGroup.contains("-NOTRANS"))
       {
         timeGroup = timeGroup.replace("-NOTRANS", "");
       }
