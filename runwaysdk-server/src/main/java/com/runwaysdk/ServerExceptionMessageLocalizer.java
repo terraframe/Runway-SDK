@@ -487,6 +487,11 @@ public class ServerExceptionMessageLocalizer
 
     return LocalizationFacade.getMessage(locale, "AttributeLengthException", "[{0}] many not exceed a length of {1} {2}.", attribute.getDisplayLabel(locale), maxLength.toString(), unitString);
   }
+  
+  public static String attributeClassificationValidationException(Locale locale)
+  {
+    return LocalizationFacade.getMessage(locale, "AttributeClassificationValidationException", "Value must be a child of the attribute root");
+  }
 
   /**
    * Gets the localized {@link AttributeLengthProblem} message, which indicates

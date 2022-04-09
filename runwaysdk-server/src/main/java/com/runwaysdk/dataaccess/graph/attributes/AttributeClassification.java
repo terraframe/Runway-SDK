@@ -18,14 +18,11 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
-import java.util.Date;
-
 import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.dataaccess.MdAttributeClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdClassificationDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
 
@@ -35,6 +32,8 @@ public class AttributeClassification extends AttributeGraphRef
    * 
    */
   private static final long serialVersionUID = 1L;
+  
+  private boolean isSkipValidation = false;
 
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
@@ -68,42 +67,61 @@ public class AttributeClassification extends AttributeGraphRef
   @Override
   public void setValue(Object value)
   {
-    if (value instanceof VertexObjectDAOIF)
+    this.setValue(value, isSkipValidation);
+  }
+  
+  public void setValue(Object value, boolean skipValidation)
+  {
+    if (!skipValidation)
     {
-      this.validateRid( ( (VertexObjectDAOIF) value ).getRID());
-    }
-    else if (value instanceof VertexObject)
-    {
-      this.validateRid( ( (VertexObject) value ).getRID());
-    }
-    else if (value instanceof ID)
-    {
-      this.validateRid( ( (ID) value ).getRid());
+      if (value instanceof VertexObjectDAOIF)
+      {
+        this.validateRid( ( (VertexObjectDAOIF) value ).getRID(), true);
+      }
+      else if (value instanceof VertexObject)
+      {
+        this.validateRid( ( (VertexObject) value ).getRID(), true);
+      }
+      else if (value instanceof ID)
+      {
+        this.validateRid( ( (ID) value ).getRid(), true);
+      }
     }
 
     super.setValue(value);
   }
-
-  @Override
-  public void setValue(Object value, Date startDate, Date endDate)
+  
+  public void setSkipValidation(boolean skip)
   {
-    if (value instanceof VertexObjectDAOIF)
-    {
-      this.validateRid( ( (VertexObjectDAOIF) value ).getRID());
-    }
-    else if (value instanceof VertexObject)
-    {
-      this.validateRid( ( (VertexObject) value ).getRID());
-    }
-    else if (value instanceof ID)
-    {
-      this.validateRid( ( (ID) value ).getRid());
-    }
-
-    super.setValue(value, startDate, endDate);
+    this.isSkipValidation = skip;
   }
+  
+  public boolean getSkipValidation()
+  {
+    return this.isSkipValidation;
+  }
+  
+  // Our super will end up invoking the setValue method above, which ends up validating for us. No need to validate twice.
+//  @Override
+//  public void setValue(Object value, Date startDate, Date endDate)
+//  {
+//    if (value instanceof VertexObjectDAOIF)
+//    {
+//      this.validateRid( ( (VertexObjectDAOIF) value ).getRID(), true);
+//    }
+//    else if (value instanceof VertexObject)
+//    {
+//      this.validateRid( ( (VertexObject) value ).getRID(), true);
+//    }
+//    else if (value instanceof ID)
+//    {
+//      this.validateRid( ( (ID) value ).getRid(), true);
+//    }
+//    
+//    super.setValue(value, startDate, endDate);
+//  }
 
-  private void validateRid(Object childRid)
+  public boolean validateRid(Object childRid, boolean throwException)
   {
     MdAttributeClassificationDAOIF mdAttributeConcrete = this.getMdAttributeConcrete();
 
@@ -121,11 +139,20 @@ public class AttributeClassification extends AttributeGraphRef
 
           if (!VertexObjectDAO.isChild(root.getRID(), childRid, mdEdge))
           {
-            throw new ProgrammingErrorException("Value must be a child of the attribute root");
+            if (throwException)
+            {
+              throw new ClassificationValidationException("Value must be a child of the attribute root");
+            }
+            else
+            {
+              return false;
+            }
           }
         }
       }
     }
+    
+    return true;
   }
 
 }
