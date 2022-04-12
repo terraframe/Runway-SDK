@@ -136,5 +136,11 @@ public class RemoteURLResource implements ApplicationResource
   {
     
   }
+
+  @Override
+  public String getAbsolutePath()
+  {
+    return this.url.toString();
+  }
   
 }

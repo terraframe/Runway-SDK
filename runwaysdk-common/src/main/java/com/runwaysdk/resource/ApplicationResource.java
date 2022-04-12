@@ -29,6 +29,11 @@ import java.io.InputStream;
 public interface ApplicationResource extends AutoCloseable
 {
   /**
+   * Returns the absolute path to the resource.
+   */
+  public String getAbsolutePath();
+  
+  /**
    * Opens a new stream to access the underlying resource. The returned resource should be cleaned up after you are done
    * using it by invoking 'close' on it.
    */

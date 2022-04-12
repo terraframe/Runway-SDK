@@ -124,5 +124,11 @@ public class StreamResource implements ApplicationResource
   {
     return this.stream == null;
   }
+
+  @Override
+  public String getAbsolutePath()
+  {
+    return this.stream.toString();
+  }
   
 }

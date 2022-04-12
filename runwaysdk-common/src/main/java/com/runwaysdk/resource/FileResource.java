@@ -36,6 +36,12 @@ public class FileResource implements ApplicationTreeResource
   {
     this.file = file;
   }
+  
+  @Override
+  public String getAbsolutePath()
+  {
+    return this.file.getAbsolutePath();
+  }
 
   @Override
   public InputStream openNewStream()
@@ -142,6 +148,6 @@ public class FileResource implements ApplicationTreeResource
   @Override
   public ApplicationTreeResource getChild(String path)
   {
-    return new FileResource(new File(this.file.getAbsolutePath() + File.pathSeparator + path));
+    return new FileResource(new File(this.file.getAbsolutePath() + File.separator + path));
   }
 }
