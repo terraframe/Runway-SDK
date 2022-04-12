@@ -69,6 +69,7 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
   public EnvironmentConfigurationResolver()
   {
     cconfig = new CompositeConfiguration();
+    cconfig.setDelimiterParsingDisabled(true);
     cconfig.addConfiguration(CommonsConfigurationResolver.getInMemoryConfigurator().getImpl());
 
     if (CommonsConfigurationResolver.getIncludeRuntimeProperties())
@@ -206,6 +207,7 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
       if (fEnvCfgProps.exists())
       {
         this.pEnvCfg = new PropertiesConfiguration(fEnvCfgProps);
+        this.pEnvCfg.setDelimiterParsingDisabled(true);
         
         String sPropAppCfg = pEnvCfg.getString("appcfg");
         if (sPropAppCfg != null && sPropAppCfg.length() > 0)

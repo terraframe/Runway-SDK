@@ -55,8 +55,16 @@ public class InMemoryConfigurator implements ConfigurationReaderIF
   
   public InMemoryConfigurator() {
     config = new CompositeConfiguration();
-    config.addConfiguration(new BaseConfiguration());
-    config.addConfiguration(new SystemConfiguration());
+    config.setDelimiterParsingDisabled(true);
+    
+    BaseConfiguration baseConfig = new BaseConfiguration();
+    baseConfig.setDelimiterParsingDisabled(true);
+    config.addConfiguration(baseConfig);
+    
+    SystemConfiguration sysConfig = new SystemConfiguration();
+    sysConfig.setDelimiterParsingDisabled(true);
+    config.addConfiguration(sysConfig);
+    
     interpolate();
   }
   

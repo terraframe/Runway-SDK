@@ -37,7 +37,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   /*
    * The in memory configurator reads properties from the environment variables.
    */
-  private static InMemoryConfigurator inMemoryCFG              = new InMemoryConfigurator();
+  private static InMemoryConfigurator inMemoryCFG = new InMemoryConfigurator();
 
   protected CompositeConfiguration      cconfig;
   
@@ -116,6 +116,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   protected BaseConfiguration getRuntimeProperties()
   {
     BaseConfiguration properties = new BaseConfiguration();
+    properties.setDelimiterParsingDisabled(true);
 
     // Calculate the value of deploy.path. The reason we do this at runtime is
     // because the value of this property may vary depending on the application
@@ -138,6 +139,7 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
   public ConfigurationReaderIF getReader(ConfigGroupIF configGroup, String config)
   {
     CompositeConfiguration _cconfig = new CompositeConfiguration();
+    _cconfig.setDelimiterParsingDisabled(true);
     _cconfig.addConfiguration(this.cconfig);
 
     return new CommonsConfigurationReader(configGroup, config, _cconfig);

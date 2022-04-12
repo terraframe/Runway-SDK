@@ -80,6 +80,12 @@ public class VaultFile extends VaultFileBase implements ApplicationResource
     return fileDAO.getFile();
   }
   
+  @Override
+  public String getAbsolutePath()
+  {
+    return this.getFile().getAbsolutePath();
+  }
+  
   /**
    * Returns a temporary file with the proper name and extension of the vault file (not scrambled). This new
    * temp file should be cleaned up after usage with the AutoCloseable Java paradigm.
