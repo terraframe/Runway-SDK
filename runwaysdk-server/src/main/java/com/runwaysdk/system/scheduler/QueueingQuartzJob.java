@@ -169,10 +169,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
     // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
     // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
-    if (!tryAcquireLock())
-    {
-      return;
-    }
+    boolean hasLock = acquireLock();
     
     try
     {
@@ -193,9 +190,17 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     }
     finally
     {
-      lock.release();
+      if (hasLock)
+      {
+        lock.release();
+      }
     }
     // End lock dependent code //
+    
+    if (!hasLock)
+    {
+      return;
+    }
     
     if (nextHistoryId != null)
     {
@@ -246,7 +251,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
     // consumed this valuable lock resource. If you are, for instance, invoking some downstream listener function in this then
     // that is an error! If you're pretty much doing anything other than interacting with the queue then you're probably doing it wrong.
-    if (!tryAcquireLock())
+    if (!acquireLock())
     {
       return true;
     }
@@ -303,7 +308,7 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     // Do nothing
   }
   
-  private boolean tryAcquireLock()
+  private boolean acquireLock()
   {
     try
     {
@@ -311,8 +316,10 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       
       if (!didLock)
       {
-        logger.error("Unable to acquire lock.");
-        return false;
+        // If we've waited this long and the lock is still not available, then somebody has leaked the lock. It's not ideal, but the best thing we can do in this scenario is to force acquire the lock.
+        lock.release();
+        logger.error("QueueingQuartzJob was unable to acquire the lock (somebody has leaked it!?). We will force acquire it to attempt to resolve the precarious predicament. This could mean that a previous thread was force quitted and the system was put into an unstable state.");
+        return acquireLock();
       }
       else
       {
