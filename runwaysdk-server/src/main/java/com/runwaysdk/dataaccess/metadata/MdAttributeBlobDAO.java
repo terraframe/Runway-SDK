@@ -43,7 +43,8 @@ public class MdAttributeBlobDAO extends MdAttributeConcreteDAO implements MdAttr
   /**
    *
    */
-  private static int maxLength = 1048576;
+//  private static int maxLength = 1048576;
+  private static int maxLength = 16777216;
 
   /**
    * The default constructor, does not set any attributes
