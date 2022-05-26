@@ -30,7 +30,6 @@ import org.quartz.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.session.Request;
 
 /**
@@ -331,6 +330,8 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       // If we get an InterruptedException it likely means that the server is dying for some reason. Maybe the OS sent us kill signal because
       // it ran out of memory or something. We just want to stop running as quick as we can in this scenario.
       logger.error("Was interrupted unexpectedly", e);
+      
+      Thread.currentThread().interrupt();
       
       return false;
     }
