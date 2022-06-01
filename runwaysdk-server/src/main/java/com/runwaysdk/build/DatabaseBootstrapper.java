@@ -101,6 +101,7 @@ public class DatabaseBootstrapper
 
     if (rootUser != null && rootUser.length() > 0 && rootPass != null && rootPass.length() > 0)
     {
+      // This is what actually drops the database and then creates it clean, along with the app user
       com.runwaysdk.dataaccess.database.Database.initialSetup(rootUser, rootPass, template);
     }
 

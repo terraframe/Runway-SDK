@@ -163,39 +163,18 @@ public class DatabaseBuilder
    */
   public static void main(String[] args)
   {
-    CommandLineParser parser = new DefaultParser();
-    
-    Options options = buildCliOptions();
-    
     try
     {
-      CommandLine line = parser.parse(options, args);
+      /*
+       * Read options from the command line
+       */
+      final CommandLineParser parser = new DefaultParser();
+      final Options options = buildCliOptions();
+      final CommandLine line = parser.parse(options, args);
       
-      Boolean install;
-      Boolean patch;
-
-      install = line.hasOption("install");
-      if (install && line.getOptionValue("install") != null && line.getOptionValue("install") != "")
-      {
-        install = Boolean.valueOf(line.getOptionValue("install"));
-        
-        if (!install)
-        {
-          patch = true;
-        }
-      }
-      
-      patch = line.hasOption("patch");
-      if (patch && line.getOptionValue("patch") != null && line.getOptionValue("patch") != "")
-      {
-        patch = Boolean.valueOf(line.getOptionValue("patch"));
-        
-        if (!patch)
-        {
-          install = true;
-        }
-      }
-      
+      Boolean install = (line.hasOption("install") && line.getOptionValue("install") != null && !line.getOptionValue("install").equals("")) ? Boolean.valueOf(line.getOptionValue("install")) : null;
+      Boolean patch = (line.hasOption("patch") && line.getOptionValue("patch") != null && !line.getOptionValue("patch").equals("")) ? Boolean.valueOf(line.getOptionValue("patch")) : null;
+      Boolean clean = (line.hasOption("clean") && line.getOptionValue("clean") != null && !line.getOptionValue("clean").equals("")) ? Boolean.valueOf(line.getOptionValue("clean")) : false;
       String user = line.getOptionValue("postgresRootUser") == null ? line.getOptionValue("rootUser") : line.getOptionValue("postgresRootUser");
       String pass = line.getOptionValue("postgresRootPass") == null ? line.getOptionValue("rootPass") : line.getOptionValue("postgresRootPass");
       String template = line.getOptionValue("templateDb");
@@ -203,8 +182,46 @@ public class DatabaseBuilder
       String sPlugins = line.getOptionValue("plugins");
       String path = line.getOptionValue("path");
       Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
-      Boolean clean = line.getOptionValue("clean") == null || line.getOptionValue("clean").equals("") ? false : Boolean.valueOf(line.getOptionValue("clean"));
 
+      /*
+       * Parse those options into values that make sense and provide some sensible defaults
+       */
+      
+      // There is an explicit difference here between null and false. Null means they did not specify a value.
+      if (Boolean.TRUE.equals(patch) && install == null)
+      {
+        install = Boolean.FALSE;
+      }
+      else if (Boolean.FALSE.equals(patch) && install == null)
+      {
+        install = Boolean.TRUE;
+      }
+      if (Boolean.TRUE.equals(install) && patch == null)
+      {
+        patch = Boolean.FALSE;
+      }
+      else if (Boolean.FALSE.equals(install) && patch == null)
+      {
+        patch = Boolean.TRUE;
+      }
+      
+      // Convert any null values to false at this point otherwise we get null pointers when autoboxing
+      if (install == null) { install = Boolean.FALSE; }
+      if (patch == null) { patch = Boolean.FALSE; }
+      
+      // Account for interactions between install / patch / clean
+      if (install && patch)
+      {
+        logger.error("'install' and 'patch' are both true. We will auto-detect an installation.");
+        install = false;
+        patch = false;
+      }
+      if (patch && clean)
+      {
+        logger.error("'clean' param does nothing when 'patch' is present.");
+        clean = false;
+      }
+      
       List<String> exts = supportedExtensions;
       if (extensions != null && extensions.length() > 0)
       {
@@ -217,14 +234,17 @@ public class DatabaseBuilder
         plugins = toList(sPlugins);
       }
       
-      if (patch && clean)
+      if (path == null || path.length() == 0)
       {
-        logger.warn("'clean' param does nothing when 'patch' is present.");
+        path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
       }
 
       try
       {
-        if ( (!install && !patch) || (install && patch) ) // auto-detect patch / install
+        /*
+         * Auto-detect patch / install
+         */
+        if ( (!install && !patch) || (install && patch) )
         {
           if (user == null || user.length() == 0)
           {
@@ -238,7 +258,10 @@ public class DatabaseBuilder
           
           if ( (user != null && user.length() > 0) && (pass != null && pass.length() > 0) )
           {
-            patch = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
+            boolean runwayInstalled = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
+            
+            patch = runwayInstalled;
+            install = !runwayInstalled;
           }
           else
           {
@@ -246,11 +269,9 @@ public class DatabaseBuilder
           }
         }
         
-        if (path == null || path.length() == 0)
-        {
-          path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
-        }
-
+        /*
+         * Run the program
+         */
         if (!patch)
         {
           DatabaseBootstrapper.bootstrap(user, pass, template, clean);
@@ -541,6 +562,57 @@ public class DatabaseBuilder
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
     this.performDoIt(list, true);
+    
+    // If we are doing a fresh install, we want to register all known patches as already imported.
+    if (!this.isPatch)
+    {
+      this.markAllPatchesAsImported();
+    }
+  }
+  
+  private void markAllPatchesAsImported()
+  {
+    Set<ClasspathResource> patches = new TreeSet<ClasspathResource>(new VersionComparator());
+    
+    for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
+    {
+      if (resource.getPackage().equals(this.path + "/patch"))
+      {
+        if (!patches.add(resource))
+        {
+          throwDuplicateTimestamp(resource);
+        }
+      }
+    }
+    
+    for (ClasspathResource resource : getTimestampedPostTransResources(this.path + "/patch"))
+    {
+      if (resource.getPackage().equals(this.path + "/patch"))
+      {
+        if (!patches.add(resource))
+        {
+          throwDuplicateTimestamp(resource);
+        }
+      }
+    }
+    
+    refreshTimestamps();
+    
+    for (ClasspathResource resource : patches)
+    {
+      Date timestamp = getDate(resource);
+      
+      if (!this.timestamps.contains(timestamp))
+      {
+        logger.info("Marking patch resource [" + resource.getAbsolutePath() + "] as already imported.");
+        com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+        this.timestamps.add(timestamp);
+      }
+      else
+      {
+        logger.info("Patch resource [" + resource.getAbsolutePath() + "] is already marked imported. Skipping.");
+      }
+    }
   }
   
   public void doPostNonTransaction()
