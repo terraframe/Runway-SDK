@@ -156,6 +156,24 @@ public class DatabaseBuilder
     return options;
   }
   
+  public static Boolean readCliBoolean(String name, CommandLine line)
+  {
+    if (!line.hasOption(name))
+    {
+      return null;
+    }
+    
+    String value = line.getOptionValue(name);
+    
+    // The end user is allow to provide a parameter without a value (for example: --patch). In which case we treat it as explicit set to true.
+    if (value == null || value.equals(""))
+    {
+      return Boolean.TRUE;
+    }
+    
+    return Boolean.valueOf(value);
+  }
+  
   /**
    * Builds your database such that it includes all the relevant metadata.
    * 
@@ -172,16 +190,16 @@ public class DatabaseBuilder
       final Options options = buildCliOptions();
       final CommandLine line = parser.parse(options, args);
       
-      Boolean install = (line.hasOption("install") && line.getOptionValue("install") != null && !line.getOptionValue("install").equals("")) ? Boolean.valueOf(line.getOptionValue("install")) : null;
-      Boolean patch = (line.hasOption("patch") && line.getOptionValue("patch") != null && !line.getOptionValue("patch").equals("")) ? Boolean.valueOf(line.getOptionValue("patch")) : null;
-      Boolean clean = (line.hasOption("clean") && line.getOptionValue("clean") != null && !line.getOptionValue("clean").equals("")) ? Boolean.valueOf(line.getOptionValue("clean")) : false;
+      Boolean install = readCliBoolean("install", line);
+      Boolean patch = readCliBoolean("patch", line);
+      Boolean clean = readCliBoolean("clean", line);
       String user = line.getOptionValue("postgresRootUser") == null ? line.getOptionValue("rootUser") : line.getOptionValue("postgresRootUser");
       String pass = line.getOptionValue("postgresRootPass") == null ? line.getOptionValue("rootPass") : line.getOptionValue("postgresRootPass");
       String template = line.getOptionValue("templateDb");
       String extensions = line.getOptionValue("extensions");
       String sPlugins = line.getOptionValue("plugins");
       String path = line.getOptionValue("path");
-      Boolean ignoreErrors = line.getOptionValue("ignoreErrors") == null || line.getOptionValue("ignoreErrors").equals("") ? false : Boolean.valueOf(line.getOptionValue("ignoreErrors"));
+      Boolean ignoreErrors = readCliBoolean("ignoreErrors", line);
 
       /*
        * Parse those options into values that make sense and provide some sensible defaults
@@ -208,6 +226,7 @@ public class DatabaseBuilder
       // Convert any null values to false at this point otherwise we get null pointers when autoboxing
       if (install == null) { install = Boolean.FALSE; }
       if (patch == null) { patch = Boolean.FALSE; }
+      if (ignoreErrors == null) { ignoreErrors = Boolean.FALSE; }
       
       // Account for interactions between install / patch / clean
       if (install && patch)
