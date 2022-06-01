@@ -23,7 +23,7 @@
   
   <groupId>com.runwaysdk</groupId>
   <artifactId>runwaysdk-root</artifactId>
-  <version>3.5.10</version>
+  <version>3.5.11-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>runwaysdk-root</name>
@@ -93,7 +93,7 @@
     <connection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</connection>
     <developerConnection>scm:git:ssh://git@github.com/terraframe/Runway-SDK</developerConnection>
     <url>scm:git:ssh://git@github.com/terraframe/Runway-SDK</url>
-    <tag>3.5.10</tag>
+    <tag>3.4.8</tag>
   </scm>
   
   <properties>
