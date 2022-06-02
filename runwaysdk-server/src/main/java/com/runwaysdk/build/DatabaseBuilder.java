@@ -193,19 +193,19 @@ public class DatabaseBuilder
       Boolean install = readCliBoolean("install", line);
       Boolean patch = readCliBoolean("patch", line);
       Boolean clean = readCliBoolean("clean", line);
+      Boolean ignoreErrors = readCliBoolean("ignoreErrors", line);
       String user = line.getOptionValue("postgresRootUser") == null ? line.getOptionValue("rootUser") : line.getOptionValue("postgresRootUser");
       String pass = line.getOptionValue("postgresRootPass") == null ? line.getOptionValue("rootPass") : line.getOptionValue("postgresRootPass");
       String template = line.getOptionValue("templateDb");
       String extensions = line.getOptionValue("extensions");
       String sPlugins = line.getOptionValue("plugins");
       String path = line.getOptionValue("path");
-      Boolean ignoreErrors = readCliBoolean("ignoreErrors", line);
 
       /*
        * Parse those options into values that make sense and provide some sensible defaults
        */
       
-      // There is an explicit difference here between null and false. Null means they did not specify a value.
+      // If they explicitly specified either install or patch, but not the other one, then the other one is implied as the opposite.
       if (Boolean.TRUE.equals(patch) && install == null)
       {
         install = Boolean.FALSE;
@@ -226,6 +226,7 @@ public class DatabaseBuilder
       // Convert any null values to false at this point otherwise we get null pointers when autoboxing
       if (install == null) { install = Boolean.FALSE; }
       if (patch == null) { patch = Boolean.FALSE; }
+      if (clean == null) { clean = Boolean.FALSE; }
       if (ignoreErrors == null) { ignoreErrors = Boolean.FALSE; }
       
       // Account for interactions between install / patch / clean
