@@ -232,7 +232,7 @@ public class DatabaseBuilder
       // Account for interactions between install / patch / clean
       if (install && patch)
       {
-        logger.error("'install' and 'patch' are both true. We will auto-detect an installation.");
+        logger.error("'install' and 'patch' are both true. We will attempt to auto-detect an installation.");
         install = false;
         patch = false;
       }
