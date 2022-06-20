@@ -23,6 +23,7 @@ package com.runwaysdk.system.scheduler;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
@@ -471,7 +472,7 @@ public class SchedulerTest
    */
   @Test
   @Request
-  public void testDeleteRunningQueuedJob() throws InterruptedException
+  public void testDeleteRunningQueueingJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
     
@@ -1405,6 +1406,89 @@ public class SchedulerTest
       Thread.sleep(1000);
       ExecutableJob.get(job.getOid()).delete();
       clearHistory();
+    }
+  }
+  
+  @Request
+  @Test
+  public void testDeleteQueuedHistory() throws InterruptedException
+  {
+    ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
+    job1.getDisplayLabel().setValue("testQueue1");
+    job1.apply();
+    TestRecord tr1 = TestRecord.newRecord(job1);
+
+    ExecutableJob job2 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
+    job2.getDisplayLabel().setValue("testQueue2");
+    job2.apply();
+    TestRecord tr2 = TestRecord.newRecord(job2);
+    String job2Oid = job2.getOid();
+    
+    ExecutableJob job3 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
+    job3.getDisplayLabel().setValue("testQueue3");
+    job3.apply();
+    TestRecord tr3 = TestRecord.newRecord(job3);
+
+    try
+    {
+      // Start the jobs
+      JobHistory hist1 = job1.start();
+      JobHistory hist2 = job2.start();
+      JobHistory hist3 = job3.start();
+      
+      // Wait for the first one to be running
+      waitUntilRunning(hist1);
+      
+      // Assert that hist1 is running and the rest are queued
+      hist1 = JobHistory.get(hist1.getOid());
+      hist2 = JobHistory.get(hist2.getOid());
+      hist3 = JobHistory.get(hist3.getOid());
+      Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist1.getStatus().get(0).getEnumName());
+      Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist2.getStatus().get(0).getEnumName());
+      Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist3.getStatus().get(0).getEnumName());
+      
+      // Delete the 2nd job
+      hist2.delete();
+      job2.delete();
+      
+      // Wait for the third one to be running
+      waitUntilRunning(hist3);
+      
+      // Assert job one is now finished, and job three is running
+      hist1 = JobHistory.get(hist1.getOid());
+      hist3 = JobHistory.get(hist3.getOid());
+      Assert.assertEquals(hist1.getStatus().get(0).getEnumName(), AllJobStatus.SUCCESS.getEnumName());
+      Assert.assertEquals(hist3.getStatus().get(0).getEnumName(), AllJobStatus.RUNNING.getEnumName());
+      
+      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last one to finish
+      
+      // Assert both jobs are now success
+      hist1 = JobHistory.get(hist1.getOid());
+      hist3 = JobHistory.get(hist3.getOid());
+      Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist1.getStatus().get(0).getEnumName());
+      Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist3.getStatus().get(0).getEnumName());
+      Assert.assertEquals(1, tr1.getCount());
+      Assert.assertEquals(0, tr2.getCount());
+      Assert.assertEquals(1, tr3.getCount());
+    }
+    catch (InterruptedException e)
+    {
+      throw new RuntimeException(e);
+    }
+    finally
+    {
+      Thread.sleep(500);
+      ExecutableJob.get(job1.getOid()).delete();
+      ExecutableJob.get(job3.getOid()).delete();
+      clearHistory();
+      
+      ExecutableJobQuery ejq = new ExecutableJobQuery(new QueryFactory());
+      ejq.WHERE(ejq.getOid().EQ(job2Oid));
+      List<? extends ExecutableJob> jobs = ejq.getIterator().getAll();
+      if (jobs.size() > 0)
+      {
+        jobs.get(0).delete();
+      }
     }
   }
 }

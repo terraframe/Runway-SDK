@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -161,8 +162,8 @@ public class QueueingQuartzJob extends QuartzRunwayJob
    */
   protected void finalizeJob(JobExecutionContext context)
   {
-    String nextHistoryId = null;
     String historyId = (String) context.get(HISTORY_RECORD_ID);
+    String nextHistoryId;
     
     // !Important! We are now entering LOCK DEPENDENT code. If your code does not require the lock, then you should either run it
     // before or after this try/finally block, the reason being that we want to reduce as much as possible the time that we have
@@ -181,11 +182,6 @@ public class QueueingQuartzJob extends QuartzRunwayJob
       }
       
       queue.poll(); // Remove us from the queue
-      
-      if (queue.size() > 0) // Kick off the next job in the queue (if one exists)
-      {
-        nextHistoryId = queue.peek();
-      }
     }
     finally
     {
@@ -196,21 +192,96 @@ public class QueueingQuartzJob extends QuartzRunwayJob
     }
     // End lock dependent code //
     
-    if (!hasLock)
-    {
-      return;
-    }
     
-    if (nextHistoryId != null)
+    // Kick off the next job in the queue (if one exists). If we get an error trying to start it, then we move to the next one
+    int iterations = 0;
+    while (iterations < 1000)
     {
-      finalizeJobInReq(nextHistoryId);
+      hasLock = acquireLock();
+      try
+      {
+        Queue<String> queue = getQueue();
+        
+        if (queue.size() <= 0)
+        {
+          break;
+        }
+        
+        nextHistoryId = queue.peek();
+      }
+      finally
+      {
+        if (hasLock)
+        {
+          lock.release();
+        }
+      }
+      
+      // Try to start the job
+      try
+      {
+        // This code is going to spawn a new thread which will add the job to the queue. So we can't own the lock at this point.
+        startJobWithRecordId(nextHistoryId);
+        
+        // If the job started, then we're done here.
+        break;
+      }
+      catch (Throwable t)
+      {
+        // The job can't start so we need to remove it from the queue and try to kick off the next one.
+        logger.error("Error encountered attempting to start next queued history.", t);
+        
+        
+        hasLock = acquireLock();
+        try
+        {
+          Queue<String> queue = getQueue();
+          
+          queue.poll(); // Remove the history from the queue since we can't start it (perhaps it was deleted?)
+        }
+        finally
+        {
+          if (hasLock)
+          {
+            lock.release();
+          }
+        }
+        
+        try
+        {
+          this.failHistory(t, nextHistoryId);
+        }
+        catch (Throwable t2)
+        {
+          logger.error("Error encountered attempting to fail history.", t2);
+        }
+      }
+      
+      iterations = iterations + 1;
     }
   }
-
+  
   @Request
-  private void finalizeJobInReq(String nextHistoryId)
+  private void failHistory(Throwable t, String nextHistoryId)
   {
-    JobHistoryRecord history = JobHistoryRecord.get(nextHistoryId);
+    JobHistoryRecord record = JobHistoryRecord.get(nextHistoryId);
+    JobHistory jh = record.getChild();
+    
+    jh.appLock();
+    jh.clearStatus();
+    jh.addStatus(AllJobStatus.FAILURE);
+    
+    jh.setEndTime(new Date());
+    
+    jh.setError(t);
+    
+    jh.apply();
+  }
+  
+  @Request
+  private void startJobWithRecordId(String historyRecordId)
+  {
+    JobHistoryRecord history = JobHistoryRecord.get(historyRecordId);
     ExecutableJob execJob = history.getParent();
     
     execJob.getQuartzJob().start(history);
