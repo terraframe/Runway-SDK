@@ -557,11 +557,15 @@ public class DatabaseBuilder
 
   public void performDoIt(List<ClasspathResource> resources, Boolean isTransaction)
   {
+    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+    
     for (ClasspathResource resource : resources)
     {
       Date date = getDate(resource);
 
       this.performDoIt(resource, date, isTransaction);
+      
+      Thread.yield();
     }
   }
 
