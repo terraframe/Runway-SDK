@@ -28,7 +28,7 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-public class FileResource implements ApplicationTreeResource
+public class FileResource implements ApplicationFileResource, ApplicationTreeResource
 {
   File file;
   
@@ -115,7 +115,7 @@ public class FileResource implements ApplicationTreeResource
   }
 
   @Override
-  public boolean hasDataStream()
+  public boolean isDirectory()
   {
     return this.file.isDirectory();
   }

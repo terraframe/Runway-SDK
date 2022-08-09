@@ -90,12 +90,6 @@ public class RemoteURLResource implements ApplicationResource
   }
 
   @Override
-  public File getUnderlyingFile()
-  {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public String getName()
   {
     return this.filename;

@@ -29,7 +29,7 @@ import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.VaultFileInfo;
-import com.runwaysdk.resource.ApplicationResource;
+import com.runwaysdk.resource.ApplicationFileResource;
 import com.runwaysdk.resource.CloseableFile;
 import com.runwaysdk.resource.ResourceException;
 import com.runwaysdk.session.CreatePermissionException;
@@ -38,7 +38,7 @@ import com.runwaysdk.session.SessionFacade;
 import com.runwaysdk.session.SessionIF;
 import com.runwaysdk.vault.VaultFileDAO;
 
-public class VaultFile extends VaultFileBase implements ApplicationResource
+public class VaultFile extends VaultFileBase implements ApplicationFileResource
 {
   private static final long serialVersionUID = 1229405886296L;
   
@@ -184,6 +184,12 @@ public class VaultFile extends VaultFileBase implements ApplicationResource
   public boolean exists()
   {
     return this.getFile().exists();
+  }
+
+  @Override
+  public boolean isDirectory()
+  {
+    return false;
   }
   
 }

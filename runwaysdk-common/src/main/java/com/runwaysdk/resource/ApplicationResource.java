@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.resource;
 
-import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -29,7 +28,8 @@ import java.io.InputStream;
 public interface ApplicationResource extends AutoCloseable
 {
   /**
-   * Returns the absolute path to the resource.
+   * Returns the absolute path to the resource. Depending upon the underlying implementation this path can vary wildly
+   * from a path to a file on a filesystem to the path to a file on S3.
    */
   public String getAbsolutePath();
   
@@ -46,14 +46,6 @@ public interface ApplicationResource extends AutoCloseable
    * ApplicationResource when you are done using the file returned by this method.
    */
   public CloseableFile openNewFile();
-  
-  /**
-   * If the underlying implementation supports direct file access (vault, or file) a direct reference to the underlying
-   * file will be returned. If this is not supported an UnsupportedOperationException will be thrown. In the case of vault
-   * files a file will be returned, however the filename will be a randomized string with no extension. This method promises
-   * to do no file copying or otherwise expensive operations, unlike 'openNewFile'.
-   */
-  public File getUnderlyingFile();
   
   /**
    * Returns the name of the resource, which is the base name plus the extension (if onee exists). This method will not return

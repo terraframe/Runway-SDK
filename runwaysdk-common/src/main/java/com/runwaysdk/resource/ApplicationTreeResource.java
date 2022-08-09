@@ -21,20 +21,12 @@ package com.runwaysdk.resource;
 import java.util.Iterator;
 
 /**
- * Interface denoting an abstract "file", which may in practice exist on the classpath, in the vault, as a file on the filesystem, or potentially even as a remote resource (like on S3).
- * These "files" are allowed to participate in tree structures and may or may not actually have a data stream which can be consumed, if for example they are a directory and not a file.
- * If you attempt to open a data stream on a purely pathing construct (i.e. a directory) a ResourceException will be thrown. You can invoke 'hasDataStream' to test whether or not this is the case.
+ * An application resource that has relationships with children and parents.
  * 
  * @author rrowlands
  */
 public interface ApplicationTreeResource extends ApplicationResource
 {
-  /**
-   * Can be thought of as similarly to the 'isDirectory' method on Java's File construct. This method will tell you whether or not you can open an input stream
-   * on this resource and start reading data from it.
-   */
-  public boolean hasDataStream();
-  
   /**
    * Gets all children of this tree resource. If this resource does not have any children this method will return an iterator whereby 'hasNext' will return false.
    */

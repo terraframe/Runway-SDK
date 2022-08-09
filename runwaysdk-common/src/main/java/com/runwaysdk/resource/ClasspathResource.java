@@ -426,18 +426,6 @@ public class ClasspathResource implements ApplicationTreeResource
     }
   }
 
-  @Override
-  public File getUnderlyingFile()
-  {
-    return this.openNewFile();
-  }
-
-  @Override
-  public boolean hasDataStream()
-  {
-    return this.exists() && !this.isPackage();
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public Iterator<ApplicationTreeResource> getChildren()

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.resource;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,12 +110,6 @@ public class StreamResource implements ApplicationResource
     {
       throw new ResourceException(e);
     }
-  }
-  
-  @Override
-  public File getUnderlyingFile()
-  {
-    throw new UnsupportedOperationException();
   }
 
   @Override
