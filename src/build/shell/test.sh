@@ -14,8 +14,9 @@ sudo docker build -t runwaysdk-test .
 set +e
 sudo -E docker run --name runwaysdk-test --rm --network=host \
 -v /docker-tmp/test-results:/runwaysdk/runwaysdk-test/target/surefire-reports \
--e DATA_ACCESS_TEST_SUITE -e BUSINESS_TEST_SUITE -e FACADE_TEST_SUITE -e VAULT_TEST_SUITE -e QUERY_TEST_SUITE \
--e ONTOLOGY_TEST_SUITE -e SESSION_TEST_SUITE -e GRAPH_TEST_SUITE \
+-e DATA_ACCESS_TEST_SUITE=true -e BUSINESS_TEST_SUITE=true -e FACADE_TEST_SUITE=true \
+-e VAULT_TEST_SUITE=true -e QUERY_TEST_SUITE=true -e MULTITHREADED_TEST_SUITE=false \
+-e ONTOLOGY_TEST_SUITE=true -e SESSION_TEST_SUITE=true -e GRAPH_TEST_SUITE=true \
 -e MAVEN_OPTS="-Xmx3500M -Xms256M -XX:+HeapDumpOnOutOfMemoryError" \
 runwaysdk-test
 ecode=$?
