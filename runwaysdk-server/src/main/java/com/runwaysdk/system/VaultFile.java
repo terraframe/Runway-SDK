@@ -98,7 +98,7 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
     {
       File scrambledVF = fileDAO.getFile();
       
-      CloseableFile tempFile = new CloseableFile(new File(scrambledVF.getParent(), this.getName()).toURI(), true);
+      CloseableFile tempFile = new CloseableFile(scrambledVF.getParent(), this.getName(), true);
       // TODO : And if this tempFile already exists?
       
       FileUtils.copyFile(scrambledVF, tempFile);
