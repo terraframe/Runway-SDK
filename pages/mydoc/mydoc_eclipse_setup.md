@@ -24,7 +24,7 @@ We typically recommend downloading the latest version of Eclipse, directly from 
 3. Install M2E connector, buildhelper
     * Our projects typically contain source code which has been generated via Runway SDK. This source code is separated in a different src directory than is standard and expected via Maven. To facilitate this, we must install a Maven plugin called "buildhelper".
     * In Eclipse go to ‘window -> Preferences -> Maven -> Discovery -> Open Catalog’.
-    * Search for buildhelper (by Sonatype) and install.
+    * Search for buildhelper (by Takari) and install.
 
 ## Configure code formatting in Eclipse preferences.
 
