@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20090211</version>
+      <version>20180130</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
