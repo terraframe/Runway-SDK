@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -30,30 +30,29 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 
 /**
- * An abstract {@link SessionCache} which tracks the number of sessions
- * a user has logged into.  The session count of each user is stored
- * in memory.
+ * An abstract {@link SessionCache} which tracks the number of sessions a user
+ * has logged into. The session count of each user is stored in memory.
  *
  * @author Justin Smethie
  */
 public abstract class ManagedUserSessionCache extends SessionCache
 {
   /**
-   * A mapping between a {@link SingleActorDAO} and the total number of {@link Session}s
-   * the {@link SingleActorDAO} is currently logged in to.
+   * A mapping between a {@link SingleActorDAO} and the total number of
+   * {@link Session}s the {@link SingleActorDAO} is currently logged in to.
    */
   private Map<String, Integer> userSessions;
 
   /**
-   * Limit on the number of unique {@link SingleActorDAO}s who can be logged into this
-   * {@link SessionCache} at a given time.
+   * Limit on the number of unique {@link SingleActorDAO}s who can be logged
+   * into this {@link SessionCache} at a given time.
    */
-  private int usersLimit;
+  private int                  usersLimit;
 
   /**
    * Constructs a new {@link ManagedUserSessionCache}. Upon construction the
-   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.  Additionally,
-   * the userLimit is set to 10,000.
+   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.
+   * Additionally, the userLimit is set to 10,000.
    */
   public ManagedUserSessionCache()
   {
@@ -62,11 +61,12 @@ public abstract class ManagedUserSessionCache extends SessionCache
 
   /**
    * Constructs a new {@link ManagedUserSessionCache}. Upon construction the
-   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.  Additionally,
-   * the userLimit is set to given value.
+   * mapping between {@link SingleActorDAO} and {@link Session} count is empty.
+   * Additionally, the userLimit is set to given value.
    *
-   * @param userLimit Limit on the number of unique {@link SingleActorDAO}s who can be logged into
-   *                  this {@link SessionCache} at any given time.
+   * @param userLimit
+   *          Limit on the number of unique {@link SingleActorDAO}s who can be
+   *          logged into this {@link SessionCache} at any given time.
    */
   public ManagedUserSessionCache(int usersLimit)
   {
@@ -77,104 +77,124 @@ public abstract class ManagedUserSessionCache extends SessionCache
   @Override
   protected String logIn(String username, String password, Locale[] locales)
   {
-    Session session = logInCommon(username, password, locales);
+    Session session = createSession(username, password, locales, null);
     return session.getOid();
   }
 
   @Override
   protected String logIn(String username, String password, String dimensionKey, Locale[] locales)
   {
-    Session session = logInCommon(username, password, locales);
-    session.setDimension(dimensionKey);
+    Session session = createSession(username, password, locales, dimensionKey);
     return session.getOid();
   }
-  
+
   @Override
   protected String logIn(SingleActorDAOIF user, Locale[] locales)
   {
-    Session session = this.logInCommon(user, locales);
+    Session session = this.createSession(user, locales, null);
     return session.getOid();
   }
-  
+
   @Override
   protected String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
   {
-    Session session = this.logInCommon(user, locales);
-    session.setDimension(dimensionKey);
-    
+    Session session = this.createSession(user, locales, dimensionKey);
+
     return session.getOid();
   }
 
-  private Session logInCommon(String username, String password, Locale[] locales)
+  private Session createSession(String username, String password, Locale[] locales, String dimensionKey)
   {
-    Session session = new Session(locales);
+    UserDAOIF user = null;
 
-    //Update the session on the cache with the user logged in
-    this.addSession(session);
+    // Get the user associated with the username
+    try
+    {
+      user = UserDAO.findUser(username);
+    }
+    catch (DataNotFoundException e)
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+
+    // Ensure the user is active
+    if (user.getInactive())
+    {
+      String devMessage = "The user [" + username + "] is inactive.";
+      throw new InactiveUserException(devMessage, user);
+    }
+
+    // Ensure the password is correct
+    if (!user.compareToPassword(password))
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+
+    return this.createSession(user, locales, dimensionKey);
+  }
+
+  private Session createSession(SingleActorDAOIF user, Locale[] locales, String dimensionKey)
+  {
+    sessionCacheLock.lock();
 
     try
     {
-      //Log the user into the session
-      this.changeLogIn(username, password, session);
+      String userId = user.getOid();
+
+      int sessionLimit = user.getSessionLimit();
+      int currentAmount = getUserSessionCount(userId);
+      UserDAOIF publicUser = UserDAO.getPublicUser();
+
+      if (!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
+      {
+        String msg = "Too many users are currently logged into the system.";
+        throw new ProgrammingErrorException(msg);
+      }
+
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.isLoginSupported())
+      {
+        String devMessage = "The class [" + user.getType() + "] does not support logging in";
+        throw new LoginNotSupportedException(devMessage, user);
+      }
+
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
+      {
+        String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
+        throw new MaximumSessionsException(devMessage, user);
+      }
+
+      Session session = new Session(locales, user, dimensionKey);
+
+      this.addSession(session);
+
+      return session;
     }
-    catch (InvalidLoginException e)
+    finally
     {
-      this.closeSession(session.getOid());
-      throw e;
+      sessionCacheLock.unlock();
     }
-    catch (InactiveUserException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (MaximumSessionsException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    return session;
   }
 
-  private Session logInCommon(SingleActorDAOIF user, Locale[] locales)
-  {
-    Session session = new Session(locales);
-    
-    //Update the session on the cache with the user logged in
-    this.addSession(session);
-    
-    try
-    {
-      //Log the user into the session
-      this.changeLogIn(user, session);
-    }
-    catch (InvalidLoginException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (InactiveUserException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (MaximumSessionsException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    return session;
-  }
-  
   /**
-   * Logs a {@link UserDAO} into an existing {@link Session} of this {@link SessionCache}.
-   * Additionally, the permissions of the {@link UserDAO} are loaded into the {@link Session}.
-   * During log in the session count for the previous {@link UserDAO} of the {@link Session} is
-   * decremented and the session count for the new {@link UserDAO} of the {@link Session} is
+   * Logs a {@link UserDAO} into an existing {@link Session} of this
+   * {@link SessionCache}. Additionally, the permissions of the {@link UserDAO}
+   * are loaded into the {@link Session}. During log in the session count for
+   * the previous {@link UserDAO} of the {@link Session} is decremented and the
+   * session count for the new {@link UserDAO} of the {@link Session} is
    * incremented.
    *
-   * @param username The name of the user
-   * @param password The password of the user
-   * @param session The {@link Session} to log into.
+   * @param username
+   *          The name of the user
+   * @param password
+   *          The password of the user
+   * @param session
+   *          The {@link Session} to log into.
    *
    * @return The oid of the {@link Session} which was logged into.
    */
@@ -217,7 +237,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       UserDAOIF publicUser = UserDAO.getPublicUser();
       SingleActorDAOIF userOld = session.getUser();
 
-      if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
+      if (!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
       {
         String msg = "Too many users are currently logged into the system.";
         throw new ProgrammingErrorException(msg);
@@ -236,13 +256,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
         this.decrementUserLoginCount(userOld);
       }
 
-      //Increment the users session count
-      if(!user.equals(publicUser))
-      {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
-      }
-
-      session.setUser(user);
+      this.addSession(new Session(session, user));
     }
     finally
     {
@@ -251,37 +265,41 @@ public abstract class ManagedUserSessionCache extends SessionCache
   }
 
   /**
-   * Logs a {@link UserDAO} into an existing {@link Session} of this {@link SessionCache}.
-   * Additionally, the permissions of the {@link UserDAO} are loaded into the {@link Session}.
-   * During log in the session count for the previous {@link UserDAO} of the {@link Session} is
-   * decremented and the session count for the new {@link UserDAO} of the {@link Session} is
+   * Logs a {@link UserDAO} into an existing {@link Session} of this
+   * {@link SessionCache}. Additionally, the permissions of the {@link UserDAO}
+   * are loaded into the {@link Session}. During log in the session count for
+   * the previous {@link UserDAO} of the {@link Session} is decremented and the
+   * session count for the new {@link UserDAO} of the {@link Session} is
    * incremented.
    *
-   * @param username The name of the user
-   * @param password The password of the user
-   * @param session The {@link Session} to log into.
+   * @param username
+   *          The name of the user
+   * @param password
+   *          The password of the user
+   * @param session
+   *          The {@link Session} to log into.
    *
    * @return The oid of the {@link Session} which was logged into.
    */
   protected void changeLogIn(SingleActorDAOIF user, Session session)
   {
     sessionCacheLock.lock();
-    
+
     try
-    {                  
+    {
       String userId = user.getOid();
-      
+
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
       UserDAOIF publicUser = UserDAO.getPublicUser();
       SingleActorDAOIF userOld = session.getUser();
-      
-      if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
+
+      if (!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
       {
         String msg = "Too many users are currently logged into the system.";
         throw new ProgrammingErrorException(msg);
       }
-      
+
       // If the session already has a user, we need to decrement the session
       // count.
       if (!user.isLoginSupported())
@@ -289,7 +307,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
         String devMessage = "The class [" + user.getType() + "] does not support logging in";
         throw new LoginNotSupportedException(devMessage, user);
       }
-      
+
       // If the session already has a user, we need to decrement the session
       // count.
       if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
@@ -297,26 +315,20 @@ public abstract class ManagedUserSessionCache extends SessionCache
         String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
       }
-      
+
       if (userOld != null && !userOld.equals(publicUser))
       {
         this.decrementUserLoginCount(userOld);
       }
-      
-      //Increment the users session count
-      if(!user.equals(publicUser))
-      {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
-      }
-      
-      session.setUser(user);
+
+      this.addSession(new Session(session, user));
     }
     finally
     {
       sessionCacheLock.unlock();
     }
   }
-  
+
   @Override
   protected void clearSessions()
   {
@@ -334,7 +346,8 @@ public abstract class ManagedUserSessionCache extends SessionCache
   /**
    * Decrements the session count by one for the given {@link UserDAOIF}.
    *
-   * @param user The {@link UserDAOIF} in which to decrement the session count.
+   * @param user
+   *          The {@link UserDAOIF} in which to decrement the session count.
    */
   private void decrementUserLoginCount(SingleActorDAOIF user)
   {
@@ -363,10 +376,11 @@ public abstract class ManagedUserSessionCache extends SessionCache
 
   /**
    * Decrements the session count by one for the {@link UserDAOIF} of the given
-   * {@link Session}.  If the {@link Session} does not have a {@link UserDAOIF},
+   * {@link Session}. If the {@link Session} does not have a {@link UserDAOIF},
    * or is the public user, then session count is not modified.
    *
-   * @param session A {@link Session}.
+   * @param session
+   *          A {@link Session}.
    */
   void decrementUserLoginCount(Session session)
   {
@@ -413,8 +427,8 @@ public abstract class ManagedUserSessionCache extends SessionCache
   @Override
   protected void addSession(Session session)
   {
-    //If a user is logged into the session then the session count
-    //of the user needs to be incremented.
+    // If a user is logged into the session then the session count
+    // of the user needs to be incremented.
 
     sessionCacheLock.lock();
     try
@@ -457,7 +471,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       Session session = this.getSession(sessionId);
       SingleActorDAOIF userOld = session.getUser();
 
-      if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
+      if (!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
       {
         String msg = "Too many users are currently logged into the system.";
         throw new ProgrammingErrorException(msg);
@@ -469,19 +483,14 @@ public abstract class ManagedUserSessionCache extends SessionCache
         throw new MaximumSessionsException(devMessage, user);
       }
 
-      // If the session already has a user, we need to decrement the session count.
+      // If the session already has a user, we need to decrement the session
+      // count.
       if (userOld != null && !userOld.equals(publicUser))
       {
         this.decrementUserLoginCount(userOld);
       }
 
-      //Increment the users session count
-      if(!user.equals(publicUser))
-      {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
-      }
-
-      session.setUser(user);
+      this.addSession(new Session(session, user));
     }
     finally
     {

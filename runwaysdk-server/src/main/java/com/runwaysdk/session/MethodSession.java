@@ -81,15 +81,11 @@ public class MethodSession extends PermissionEntity implements Serializable
   /**
    * Reloads all of the permissions of the method
    */
-  public void reloadPermissions()
+  private void reloadPermissions()
   {
     ConcurrentHashMap<String, Set<Operation>> temp = this.methodActorIF.getOperations().getPermissions();
 
-    permissionLock.lock();
-   
     this.permissions = temp;
-    
-    permissionLock.unlock();
   }
 
   @Override

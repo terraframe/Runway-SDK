@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -25,6 +25,7 @@ import java.util.Map;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
+import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.system.metadata.MdDimension;
 
@@ -82,7 +83,7 @@ public abstract class CompositeSessionCache extends SessionCache
   @Override
   protected String logIn(String username, String password, Locale[] locales)
   {
-    Session session = logInCommon(username, password, locales);
+    Session session = createSession(username, password, locales, null);
 
     return session.getOid();
   }
@@ -90,87 +91,99 @@ public abstract class CompositeSessionCache extends SessionCache
   @Override
   protected String logIn(String username, String password, String dimensionKey, Locale[] locales)
   {
-    Session session = logInCommon(username, password, locales);
-
-    session.setDimension(dimensionKey);
+    Session session = createSession(username, password, locales, dimensionKey);
 
     return session.getOid();
   }
-  
+
   @Override
   protected String logIn(SingleActorDAOIF user, Locale[] locales)
   {
-    Session session = logInCommon(user, locales);
+    Session session = createSession(user, locales, null);
 
     return session.getOid();
   }
-  
+
   @Override
   protected String logIn(SingleActorDAOIF user, String dimensionKey, Locale[] locales)
   {
-    Session session = logInCommon(user, locales);
-
-    session.setDimension(dimensionKey);
+    Session session = createSession(user, locales, dimensionKey);
 
     return session.getOid();
   }
 
-  private Session logInCommon(String username, String password, Locale[] locales)
+  private Session createSession(String username, String password, Locale[] locales, String dimensionKey)
   {
-    Session session = new Session(locales);
+    UserDAOIF user = null;
+
+    // Get the user associated with the username
+    try
+    {
+      user = UserDAO.findUser(username);
+    }
+    catch (DataNotFoundException e)
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+
+    // Ensure the user is active
+    if (user.getInactive())
+    {
+      String devMessage = "The user [" + username + "] is inactive.";
+      throw new InactiveUserException(devMessage, user);
+    }
+
+    // Ensure the password is correct
+    if (!user.compareToPassword(password))
+    {
+      String devMessage = "Invalid username/password combination.";
+      throw new InvalidLoginException(devMessage);
+    }
+
+    return this.createSession(user, locales, dimensionKey);
+  }
+
+  private Session createSession(SingleActorDAOIF user, Locale[] locales, String dimensionKey)
+  {
+    sessionCacheLock.lock();
 
     try
     {
+      String userId = user.getOid();
+
+      int sessionLimit = user.getSessionLimit();
+      int currentAmount = getUserSessionCount(userId);
+      UserDAOIF publicUser = UserDAO.getPublicUser();
+
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.isLoginSupported())
+      {
+        String devMessage = "The class [" + user.getType() + "] does not support logging in";
+        throw new LoginNotSupportedException(devMessage, user);
+      }
+
+      // If the session already has a user, we need to decrement the session
+      // count.
+      if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
+      {
+        String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
+        throw new MaximumSessionsException(devMessage, user);
+      }
+
+      Session session = new Session(locales, user, dimensionKey);
+
       this.addSession(session);
 
-      this.changeLogin(username, password, session.getOid());
+      return session;
     }
-    catch (InvalidLoginException e)
+    finally
     {
-      this.closeSession(session.getOid());
-      throw e;
+      sessionCacheLock.unlock();
     }
-    catch (InactiveUserException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (MaximumSessionsException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    return session;
   }
 
-  private Session logInCommon(SingleActorDAOIF user, Locale[] locales)
-  {
-    Session session = new Session(locales);
-    
-    try
-    {
-      this.addSession(session);
-      
-      this.changeLogin(user, session.getOid());
-    }
-    catch (InvalidLoginException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (InactiveUserException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    catch (MaximumSessionsException e)
-    {
-      this.closeSession(session.getOid());
-      throw e;
-    }
-    return session;
-  }
-  
   @Override
   protected void changeLogin(String username, String password, String sessionId)
   {
@@ -357,17 +370,17 @@ public abstract class CompositeSessionCache extends SessionCache
   public Map<String, SessionIF> getAllSessions()
   {
     sessionCacheLock.lock();
-    
+
     try
     {
       HashMap<String, SessionIF> exitMap = new HashMap<String, SessionIF>();
-      
+
       Map<String, SessionIF> firstMap = firstCache.getAllSessions();
       exitMap.putAll(firstMap);
-      
+
       Map<String, SessionIF> secondMap = secondCache.getAllSessions();
       exitMap.putAll(secondMap);
-      
+
       return exitMap;
     }
     finally

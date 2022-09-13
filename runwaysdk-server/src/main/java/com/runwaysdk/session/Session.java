@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -26,6 +26,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Element;
@@ -34,6 +35,7 @@ import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
+import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
@@ -138,19 +140,33 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   private volatile MdMethodDAOIF firstMethodInRequest;
 
-  public Session(Locale locale)
+  /**
+   * Guards to ensure that invariants between multiple state fields hold.
+   */
+  private final ReentrantLock    permissionLock    = new ReentrantLock();
+
+  /**
+   * Creates a new session object of an anonymous user
+   * 
+   * @param locales
+   *          Possible locales of the session.
+   */
+  public Session(Locale[] locales, SingleActorDAOIF user, String dimensionKey)
+  {
+    this(new LocaleManager(locales).getBestFitLocale(), user, dimensionKey);
+  }
+
+
+  public Session(Locale locale, SingleActorDAOIF user, String dimensionKey)
   {
     super();
 
-    UserDAOIF publicUser = UserDAO.getPublicUser();
-
     // Get a new session Id
     this.oid = ServerIDGenerator.nextID().replaceAll("-", "");
-    this.user = publicUser;
+    this.user = user;
     this.closeOnEndOfRequest = false;
     this.locale = locale;
-    this.dimensionKey = null;
-    this.permissions.putAll(PermissionCache.getPublicPermissions());
+    this.dimensionKey = dimensionKey;
     this.expirationTime = System.currentTimeMillis() + timeToLive;
     this.mutableMap = new ConcurrentHashMap<String, Object>();
     this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
@@ -162,122 +178,47 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
       throw new NoLocaleException(msg, this.user);
     }
+
+    this.reloadPermissions();
   }
 
-  /**
-   * Creates a new session object of an anonymous user
-   * 
-   * @param locales
-   *          Possible locales of the session.
-   */
-  public Session(Locale[] locales)
+  public Session(Session session, SingleActorDAOIF user)
   {
-    this(new LocaleManager(locales).getBestFitLocale());
+    super();
+
+    // Get a new session Id
+    this.oid = session.oid;
+    this.user = user;
+    this.closeOnEndOfRequest = session.closeOnEndOfRequest;
+    this.locale = session.locale;
+    this.dimensionKey = session.dimensionKey;
+    this.mutableMap = session.mutableMap;
+    this.firstMethodInRequest = session.firstMethodInRequest;
+
+    this.expirationTime = System.currentTimeMillis() + timeToLive;
+    this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
+
+    this.reloadPermissions();
   }
 
-  /**
-   * Returns the current session object.
-   * 
-   * @return current session object.
-   */
-  public static SessionIF getCurrentSession()
+  public Session(Session session, String dimensionKey)
   {
-    // AbstractRequestManagement will return the current session.
-    return null;
+    super();
+    
+    // Get a new session Id
+    this.oid = session.oid;
+    this.user = session.user;
+    this.closeOnEndOfRequest = session.closeOnEndOfRequest;
+    this.locale = session.locale;
+    this.mutableMap = session.mutableMap;
+    this.firstMethodInRequest = session.firstMethodInRequest;
+    this.authorizedRoleMap = session.authorizedRoleMap;
+    this.permissions = session.permissions;
+    this.dimensionKey = dimensionKey;
+    
+    this.expirationTime = System.currentTimeMillis() + timeToLive;
   }
-
-  /**
-   * Returns the locale for the current session.
-   * 
-   * @return locale for the current session.
-   */
-  public static Locale getCurrentLocale()
-  {
-    SessionIF sessionIF = getCurrentSession();
-
-    if (sessionIF != null)
-    {
-      return sessionIF.getLocale();
-    }
-    else
-    {
-      return CommonProperties.getDefaultLocale();
-    }
-  }
-
-  /**
-   * Returns the dimension for the current session, or null if no dimension has
-   * been set for this session.
-   * 
-   * @return dimension for the current session, or null if no dimension has been
-   *         set for this session.
-   */
-  public static MdDimensionDAOIF getCurrentDimension()
-  {
-    SessionIF sessionIF = getCurrentSession();
-
-    if (sessionIF != null)
-    {
-      return sessionIF.getDimension();
-    }
-    else
-    {
-      return null;
-    }
-  }
-
-  /**
-   * Sets the first {@link MdMethodDAOIF encountered in the request (if any).
-   *
-   * @param mdMethodDAOIF
-   *          first {@link MdMethodDAOIF encountered in the request (if any).
-   */
-  public void setFirstMdMethodDAOIF(MdMethodDAOIF mdMethodDAOIF)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      // Only set it once for the request
-      if (this.firstMethodInRequest == null || mdMethodDAOIF == null)
-      {
-        this.firstMethodInRequest = mdMethodDAOIF;
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * SingleActorDAOIF returns the first {@link MdMethodDAOIF encountered in the
-   * request (if any).
-   *
-   * @return the first {@link MdMethodDAOIF encountered in the request (if any).
-   */
-  public MdMethodDAOIF getFirstMdMethodDAOIF()
-  {
-    return this.firstMethodInRequest;
-  }
-
-  /**
-   * Get the time in milliseconds when the session expires
-   * 
-   * @return The time in milliseconds when the session expires
-   */
-  protected long getExpiration()
-  {
-    this.permissionLock.lock();
-    try
-    {
-      return expirationTime;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
+  
   /*
    * (non-Javadoc)
    * 
@@ -291,15 +232,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public SingleActorDAOIF getUser()
   {
-    this.permissionLock.lock();
-    try
-    {
-      return user;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return user;
   }
 
   /*
@@ -309,93 +242,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public Locale getLocale()
   {
-    this.permissionLock.lock();
-    try
-    {
-      return this.locale;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Set the locale used by this session.
-   * 
-   * @param locale
-   *          used by this session.
-   */
-  public void setLocale(Locale locale)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      this.locale = locale;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Set the dimension for this session.
-   * 
-   * @param dimension
-   *          for this session.
-   */
-  public void setDimension(MdDimensionDAOIF mdDimensionDAOIF)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (mdDimensionDAOIF == null)
-      {
-        this.dimensionKey = null;
-      }
-      else
-      {
-        this.dimensionKey = mdDimensionDAOIF.getKey();
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Set the dimension for this session.
-   * 
-   * @param dimension
-   *          key for this session.
-   * 
-   * @throws {@link
-   *           DataNotFoundException} if the key does not represent a valid
-   *           dimension if the given key is not null.
-   */
-  public void setDimension(String dimensionKey)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (dimensionKey == null)
-      {
-        this.dimensionKey = null;
-      }
-      else
-      {
-        // Make sure the key is valid. If not, then an exception will be
-        // thrown here.
-        BusinessDAO.get(MdDimensionInfo.CLASS, dimensionKey);
-        this.dimensionKey = dimensionKey;
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return this.locale;
   }
 
   /**
@@ -407,20 +254,12 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public MdDimensionDAOIF getDimension()
   {
-    this.permissionLock.lock();
-    try
+    if (this.dimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, this.dimensionKey))
     {
-      if (this.dimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, this.dimensionKey))
-      {
-        return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, this.dimensionKey);
-      }
+      return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, this.dimensionKey);
+    }
 
-      return null;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return null;
   }
 
   /**
@@ -429,67 +268,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean hasUser()
   {
-    this.permissionLock.lock();
-    try
-    {
-      UserDAOIF publicUser = UserDAO.getPublicUser();
+    UserDAOIF publicUser = UserDAO.getPublicUser();
 
-      return !user.equals(publicUser);
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Renews the time to live of the session
-   */
-  protected void renew()
-  {
-    this.permissionLock.lock();
-    try
-    {
-      expirationTime = System.currentTimeMillis() + timeToLive;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Sets the expiration time of this session to the current time.
-   */
-  protected void expire()
-  {
-    this.permissionLock.lock();
-    try
-    {
-      expirationTime = System.currentTimeMillis() - 1;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see com.runwaysdk.session.SessionIF#isExpired(long)
-   */
-  public boolean isExpired(long time)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      return ( ( expirationTime != -1 ) && ( expirationTime < time ) );
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return !user.equals(publicUser);
   }
 
   /*
@@ -500,25 +281,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, String type)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkTypeAccess(o, type))
-      {
-        return true;
-      }
-
-      return false;
+      return true;
     }
-    finally
+
+    if (super.checkTypeAccess(o, type))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    return false;
   }
 
   /*
@@ -529,25 +302,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, MdTypeDAOIF mdTypeIF)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkTypeAccess(o, mdTypeIF))
-      {
-        return true;
-      }
-
-      return false;
+      return true;
     }
-    finally
+
+    if (super.checkTypeAccess(o, mdTypeIF))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    return false;
   }
 
   /*
@@ -560,25 +325,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkAccess(Operation o, Mutable mutable)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkAccess(o, mutable))
-      {
-        return true;
-      }
-
-      return false;
+      return true;
     }
-    finally
+
+    if (super.checkAccess(o, mutable))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    return false;
   }
 
   @Override
@@ -586,42 +343,34 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   {
     Set<Operation> operations = super.getOperations(component, mdClassIF);
 
-    this.permissionLock.lock();
-    try
+    if (component instanceof Ownable && this.checkOwner(component))
     {
-      if (component instanceof Ownable && this.checkOwner(component))
+      ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
+
+      // Load owner type permissions
+      if (ownerPermissions.containsKey(mdClassIF.getOid()))
       {
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
+        operations.addAll(ownerPermissions.get(mdClassIF.getOid()));
+      }
 
-        // Load owner type permissions
-        if (ownerPermissions.containsKey(mdClassIF.getOid()))
+      // Load owner domain-type permissions
+      if (component instanceof Element)
+      {
+        String domainId = component.getValue(ElementInfo.DOMAIN);
+
+        if (!domainId.equals(""))
         {
-          operations.addAll(ownerPermissions.get(mdClassIF.getOid()));
-        }
+          String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
 
-        // Load owner domain-type permissions
-        if (component instanceof Element)
-        {
-          String domainId = component.getValue(ElementInfo.DOMAIN);
-
-          if (!domainId.equals(""))
+          if (ownerPermissions.containsKey(key))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
-
-            if (ownerPermissions.containsKey(key))
-            {
-              operations.addAll(ownerPermissions.get(key));
-            }
+            operations.addAll(ownerPermissions.get(key));
           }
         }
       }
+    }
 
-      return operations;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return operations;
   }
 
   /*
@@ -632,25 +381,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkAttributeTypeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkAttributeAccess(operation, mdAttribute))
-      {
-        return true;
-      }
-
-      return false;
+      return true;
     }
-    finally
+
+    if (super.checkAttributeAccess(operation, mdAttribute))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    return false;
   }
 
   /*
@@ -667,92 +408,75 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkAttributeAccess(Operation operation, Mutable mutable, MdAttributeDAOIF mdAttribute)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkAttributeAccess(operation, mutable, mdAttribute))
-      {
-        return true;
-      }
-
-      // if (mutable instanceof Ownable)
-      // {
-      // StateMasterIF state = Session.getState(mutable);
-      // String tupleReference = null;
-      //
-      // // If this businessDAO has a state then get it to use in the owner
-      // check
-      // if (state != null)
-      // {
-      // tupleReference = PermissionTuple.buildKey(mdAttribute.getOid(),
-      // state.getOid());
-      // }
-      //
-      // // Check if permissions exist on the State-MdAttribute pairing
-      // if (checkOwnerAttribute(operation, mutable, mdAttribute,
-      // tupleReference))
-      // {
-      // return true;
-      // }
-      // }
-      //
-      return false;
+      return true;
     }
-    finally
+
+    if (super.checkAttributeAccess(operation, mutable, mdAttribute))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    // if (mutable instanceof Ownable)
+    // {
+    // StateMasterIF state = Session.getState(mutable);
+    // String tupleReference = null;
+    //
+    // // If this businessDAO has a state then get it to use in the owner
+    // check
+    // if (state != null)
+    // {
+    // tupleReference = PermissionTuple.buildKey(mdAttribute.getOid(),
+    // state.getOid());
+    // }
+    //
+    // // Check if permissions exist on the State-MdAttribute pairing
+    // if (checkOwnerAttribute(operation, mutable, mdAttribute,
+    // tupleReference))
+    // {
+    // return true;
+    // }
+    // }
+    //
+    return false;
   }
 
   @Override
   protected Set<Operation> getAttributeOperations(Mutable component, MdAttributeDAOIF mdAttribute)
   {
-    this.permissionLock.lock();
+    Set<Operation> operations = super.getAttributeOperations(component, mdAttribute);
 
-    try
+    if (component instanceof Ownable && checkOwner(component))
     {
-      Set<Operation> operations = super.getAttributeOperations(component, mdAttribute);
+      // Check if permissions exist of the mdAttribute type
+      ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
 
-      if (component instanceof Ownable && checkOwner(component))
+      // Load owner mdAttribute permissions
+      if (ownerPermissions.containsKey(mdAttribute.getOid()))
       {
-        // Check if permissions exist of the mdAttribute type
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
+        operations.addAll(ownerPermissions.get(mdAttribute.getOid()));
+      }
 
-        // Load owner mdAttribute permissions
-        if (ownerPermissions.containsKey(mdAttribute.getOid()))
+      // Load owner domain-mdAttribute permissions
+      if (component instanceof Element)
+      {
+        String domainId = component.getValue(ElementInfo.DOMAIN);
+
+        // Load owner domain-attribute permissions
+        if (!domainId.equals(""))
         {
-          operations.addAll(ownerPermissions.get(mdAttribute.getOid()));
-        }
+          String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
-        // Load owner domain-mdAttribute permissions
-        if (component instanceof Element)
-        {
-          String domainId = component.getValue(ElementInfo.DOMAIN);
-
-          // Load owner domain-attribute permissions
-          if (!domainId.equals(""))
+          if (ownerPermissions.containsKey(key))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
-
-            if (ownerPermissions.containsKey(key))
-            {
-              operations.addAll(ownerPermissions.get(key));
-            }
+            operations.addAll(ownerPermissions.get(key));
           }
         }
       }
+    }
 
-      return operations;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return operations;
   }
 
   /*
@@ -765,26 +489,17 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkRelationshipAttributeAccess(Operation operation, Business business, MdAttributeDAOIF mdAttribute)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-
-      if (super.checkRelationshipAttributeAccess(operation, business, mdAttribute))
-      {
-        return true;
-      }
-
-      return false;
-
+      return true;
     }
-    finally
+
+    if (super.checkRelationshipAttributeAccess(operation, business, mdAttribute))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    return false;
   }
 
   /*
@@ -824,97 +539,72 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkRelationshipAccess(Operation o, Business business, String mdRelationshipId)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-      // ADD/DELETE/READ PARENT/CHILD permission.
-      if (super.checkRelationshipAccess(o, business, mdRelationshipId))
-      {
-        return true;
-      }
-
-      if (this.getOwnerRelationshipOperations(business, mdRelationshipId).contains(o))
-      {
-        return true;
-      }
-
-      return false;
+      return true;
     }
-    finally
+    // ADD/DELETE/READ PARENT/CHILD permission.
+    if (super.checkRelationshipAccess(o, business, mdRelationshipId))
     {
-      this.permissionLock.unlock();
+      return true;
     }
+
+    if (this.getOwnerRelationshipOperations(business, mdRelationshipId).contains(o))
+    {
+      return true;
+    }
+
+    return false;
   }
 
   public boolean checkEdgeAccess(Operation o, VertexObject vertex, String mdEdgeId)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-      // ADD/DELETE/READ PARENT/CHILD permission.
-      if (super.checkEdgeAccess(o, vertex, mdEdgeId))
-      {
-        return true;
-      }
+      return true;
+    }
+    // ADD/DELETE/READ PARENT/CHILD permission.
+    if (super.checkEdgeAccess(o, vertex, mdEdgeId))
+    {
+      return true;
+    }
 
-      return false;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    return false;
   }
 
   private Set<Operation> getOwnerRelationshipOperations(Business business, String mdRelationshipId)
   {
-    permissionLock.lock();
-
     Set<Operation> operations = new TreeSet<Operation>();
 
-    try
+    // Perform the owner check on the business object and not the
+    // relationship.
+    // If the current user owns the business object load directional
+    // permissions:
+    if (checkOwner(business))
     {
-      // Perform the owner check on the business object and not the
-      // relationship.
-      // If the current user owns the business object load directional
-      // permissions:
-      if (checkOwner(business))
+      ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
+
+      // load owner permissions
+      if (ownerPermissions.containsKey(mdRelationshipId))
       {
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
-
-        // load owner permissions
-        if (ownerPermissions.containsKey(mdRelationshipId))
-        {
-          operations.addAll(ownerPermissions.get(mdRelationshipId));
-        }
-
-        // Load owner domain permissions
-        String domainId = business.getValue(ElementInfo.DOMAIN);
-
-        if (!domainId.equals(""))
-        {
-          String key = DomainTupleDAO.buildKey(domainId, mdRelationshipId, null);
-
-          if (ownerPermissions.containsKey(key))
-          {
-            operations.addAll(ownerPermissions.get(key));
-          }
-        }
+        operations.addAll(ownerPermissions.get(mdRelationshipId));
       }
 
-      return operations;
+      // Load owner domain permissions
+      String domainId = business.getValue(ElementInfo.DOMAIN);
+
+      if (!domainId.equals(""))
+      {
+        String key = DomainTupleDAO.buildKey(domainId, mdRelationshipId, null);
+
+        if (ownerPermissions.containsKey(key))
+        {
+          operations.addAll(ownerPermissions.get(key));
+        }
+      }
     }
-    finally
-    {
-      permissionLock.unlock();
-    }
+
+    return operations;
   }
 
   /*
@@ -926,22 +616,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkMethodAccess(Operation operation, MdMethodDAOIF mdMethod)
   {
-    this.permissionLock.lock();
-    try
+    // Admin check
+    if (this.isAdmin)
     {
-      // Admin check
-      if (this.isAdmin)
-      {
-        return true;
-      }
+      return true;
+    }
 
-      // Check if the user has permissions
-      return super.checkMethodAccess(operation, mdMethod);
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+    // Check if the user has permissions
+    return super.checkMethodAccess(operation, mdMethod);
   }
 
   /*
@@ -953,60 +635,52 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkMethodAccess(Operation operation, Mutable mutable, MdMethodDAOIF mdMethod)
   {
-    this.permissionLock.lock();
-    try
+    // Admin check
+    if (this.isAdmin)
     {
-      // Admin check
-      if (this.isAdmin)
+      return true;
+    }
+
+    // Check if the user has permissions
+    if (super.checkMethodAccess(operation, mdMethod))
+    {
+      return true;
+    }
+
+    if (checkOwner(mutable))
+    {
+      ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
+      Set<Operation> operations = new TreeSet<Operation>();
+
+      // Load owner method
+      if (ownerPermissions.containsKey(mdMethod.getOid()))
       {
-        return true;
+        operations.addAll(ownerPermissions.get(mdMethod.getOid()));
       }
 
-      // Check if the user has permissions
-      if (super.checkMethodAccess(operation, mdMethod))
+      // Load owner domain-method
+      if (mutable instanceof Element)
       {
-        return true;
-      }
+        String domainId = mutable.getValue(ElementInfo.DOMAIN);
 
-      if (checkOwner(mutable))
-      {
-        ConcurrentHashMap<String, Set<Operation>> ownerPermissions = PermissionCache.getOwnerPermissions();
-        Set<Operation> operations = new TreeSet<Operation>();
-
-        // Load owner method
-        if (ownerPermissions.containsKey(mdMethod.getOid()))
+        if (!domainId.equals(""))
         {
-          operations.addAll(ownerPermissions.get(mdMethod.getOid()));
-        }
+          String key = DomainTupleDAO.buildKey(domainId, mdMethod.getOid(), null);
 
-        // Load owner domain-method
-        if (mutable instanceof Element)
-        {
-          String domainId = mutable.getValue(ElementInfo.DOMAIN);
-
-          if (!domainId.equals(""))
+          if (ownerPermissions.containsKey(key))
           {
-            String key = DomainTupleDAO.buildKey(domainId, mdMethod.getOid(), null);
-
-            if (ownerPermissions.containsKey(key))
-            {
-              operations.addAll(ownerPermissions.get(domainId));
-            }
+            operations.addAll(ownerPermissions.get(domainId));
           }
         }
-
-        if (operations.contains(operation))
-        {
-          return true;
-        }
       }
 
-      return false;
+      if (operations.contains(operation))
+      {
+        return true;
+      }
     }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+
+    return false;
   }
 
   /**
@@ -1021,88 +695,22 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   private boolean checkOwner(Mutable mutable)
   {
-    this.permissionLock.lock();
-    try
+    if (mutable instanceof Ownable)
     {
-      if (mutable instanceof Ownable)
-      {
-        String ownerId = ( (Ownable) mutable ).getOwnerId();
+      String ownerId = ( (Ownable) mutable ).getOwnerId();
 
-        if (ownerId != null && !ownerId.equals(""))
-        {
-          return ownerId.equals(user.getOid());
-        }
-        else
-        {
-          return true;
-        }
+      if (ownerId != null && !ownerId.equals(""))
+      {
+        return ownerId.equals(user.getOid());
       }
       else
       {
         return true;
       }
     }
-    finally
+    else
     {
-      this.permissionLock.unlock();
-    }
-  }
-
-  /**
-   * Forces an ordering on sessions where the item with the lowest expiration
-   * time Is the foremost session
-   * 
-   * @param arg0
-   *          The session to compare against
-   * @return The order of the two sessions
-   */
-  public int compareTo(Session s0)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      // IMPORTANT: This ordering works for the PriorityQueue implementation in
-      // Java 1.6 but it must be reversed to work with the PriorityQueue
-      // implementation in Java 1.5
-      if (expirationTime == -1 || s0.getExpiration() < expirationTime)
-      {
-        return -1 * comparatorOffset; // Java 1.5: return 1;
-      }
-      else if (s0.getExpiration() == -1 || s0.getExpiration() > expirationTime)
-      {
-        return 1 * comparatorOffset; // Java 1.5: return -1;
-      }
-
-      return this.getOid().compareTo(s0.getOid());
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  public boolean equals(Object s0)
-  {
-    this.permissionLock.lock();
-    try
-    {
-      if (! ( s0 instanceof Session ))
-      {
-        return false;
-      }
-
-      if (this.compareTo((Session) s0) == 0)
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
-    }
-    finally
-    {
-      this.permissionLock.unlock();
+      return true;
     }
   }
 
@@ -1111,73 +719,80 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     return this.oid.hashCode();
   }
 
-  /**
-   * Set the user of the session and caches the permissions of the user in the
-   * session
-   * 
-   * @param user
-   *          The user assign the session to
-   */
-  protected void setUser(SingleActorDAOIF user)
+  private void reloadPermissions()
   {
-    this.permissionLock.lock();
-
-    try
+    // Set the locale to the one configured for the user if no valid locale
+    // was set.
+    if (this.locale == null)
     {
-      this.isAdmin = false;
-
-      // load user permissions
-      this.user = user;
-
-      this.reloadPermissions();
-    }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
-  }
-
-  public void reloadPermissions()
-  {
-    this.permissionLock.lock();
-
-    try
-    {
-      // Set the locale to the one configured for the user if no valid locale
-      // was set.
-      if (this.locale == null)
+      if (this.user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
-        if (this.user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
-        {
-          this.setLocale(CommonProperties.getDefaultLocale());
-        }
-        else
-        {
-          this.setLocale(ConversionFacade.getLocale(this.user.getLocale()));
-        }
-      }
-
-      for (RoleDAOIF roleIF : this.user.authorizedRoles())
-      {
-        this.authorizedRoleMap.put(roleIF.getRoleName(), roleIF);
-      }
-
-      // If the user is an administrator there is no need to load permissions
-      if (this.user.isAdministrator())
-      {
-        this.isAdmin = true;
+        this.locale = CommonProperties.getDefaultLocale();
       }
       else
       {
-        PermissionMap map = this.user.getOperations();
-        map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
-
-        this.permissions = map.getPermissions();
+        this.locale = ConversionFacade.getLocale(this.user.getLocale());
       }
     }
-    finally
+
+    this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
+
+    for (RoleDAOIF roleIF : this.user.authorizedRoles())
     {
-      this.permissionLock.unlock();
+      this.authorizedRoleMap.put(roleIF.getRoleName(), roleIF);
+    }
+
+    // If the user is an administrator there is no need to load permissions
+    if (this.user.isAdministrator())
+    {
+      this.isAdmin = true;
+    }
+    else
+    {
+      PermissionMap map = this.user.getOperations();
+      map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
+
+      this.permissions = map.getPermissions();
+    }
+  }
+
+  /**
+   * Set the dimension for this session.
+   * 
+   * @param dimension
+   *          for this session.
+   */
+  private void setDimension(MdDimensionDAOIF mdDimensionDAOIF)
+  {
+    if (mdDimensionDAOIF == null)
+    {
+      this.dimensionKey = null;
+    }
+    else
+    {
+      this.dimensionKey = mdDimensionDAOIF.getKey();
+    }
+  }
+
+  /**
+   * Set the dimension for this session.
+   * 
+   * @param dimension
+   *          key for this session.
+   * 
+   * @throws {@link
+   *           DataNotFoundException} if the key does not represent a valid
+   *           dimension if the given key is not null.
+   */
+  private void setDimension(String dimensionKey)
+  {
+    if (dimensionKey == null)
+    {
+      this.dimensionKey = null;
+    }
+    else
+    {
+      this.setDimension((MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, dimensionKey));
     }
   }
 
@@ -1188,21 +803,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean userHasRole(String roleName)
   {
-    this.permissionLock.lock();
-    try
+    if (this.isAdmin)
     {
-      if (this.isAdmin)
-      {
-        return true;
-      }
-      else
-      {
-        return this.authorizedRoleMap.containsKey(roleName);
-      }
+      return true;
     }
-    finally
+    else
     {
-      this.permissionLock.unlock();
+      return this.authorizedRoleMap.containsKey(roleName);
     }
   }
 
@@ -1215,25 +822,28 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public Map<String, String> getUserRoles()
   {
-    this.permissionLock.lock();
-    try
+    Map<String, String> roleMap = new HashMap<String, String>();
+
+    for (String roleName : this.authorizedRoleMap.keySet())
     {
-      Map<String, String> roleMap = new HashMap<String, String>();
+      RoleDAOIF roleDAOIF = this.authorizedRoleMap.get(roleName);
 
-      for (String roleName : this.authorizedRoleMap.keySet())
-      {
-        RoleDAOIF roleDAOIF = this.authorizedRoleMap.get(roleName);
-
-        roleMap.put(roleName, roleDAOIF.getDisplayLabel(this.locale));
-      }
-
-      return roleMap;
+      roleMap.put(roleName, roleDAOIF.getDisplayLabel(this.locale));
     }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
+
+    return roleMap;
   }
+  
+  @Override
+  public void notify(PermissionEvent e)
+  {
+    // Balk:
+    // At this moment no action is required for
+    // PermissionEvents because Session permissions
+    // are only reloaded during a log in.
+  }
+  
+  // Mutable actions
 
   /**
    * Sets the time (represented as a long) in which this session expires.
@@ -1251,36 +861,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     {
       this.permissionLock.unlock();
     }
-  }
-
-  /**
-   * Sets the amount of time a session has before it expires
-   * 
-   * @param seconds
-   *          The amount of time in seconds
-   */
-  public static void setSessionTime(long seconds)
-  {
-    timeToLive = seconds * SECOND;
-  }
-
-  /**
-   * Returns the default amount of time a session has before it expires
-   * 
-   * @return The seconds of default time to live
-   */
-  public static long getSessionTime()
-  {
-    return timeToLive / SECOND;
-  }
-
-  @Override
-  public void notify(PermissionEvent e)
-  {
-    // Balk:
-    // At this moment no action is required for
-    // PermissionEvents because Session permissions
-    // are only reloaded during a log in.
   }
 
   /*
@@ -1372,6 +952,168 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       this.permissionLock.unlock();
     }
   }
+  
+  /**
+   * Sets the first {@link MdMethodDAOIF encountered in the request (if any).
+   *
+   * @param mdMethodDAOIF
+   *          first {@link MdMethodDAOIF encountered in the request (if any).
+   */
+  public void setFirstMdMethodDAOIF(MdMethodDAOIF mdMethodDAOIF)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      // Only set it once for the request
+      if (this.firstMethodInRequest == null || mdMethodDAOIF == null)
+      {
+        this.firstMethodInRequest = mdMethodDAOIF;
+      }
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /**
+   * SingleActorDAOIF returns the first {@link MdMethodDAOIF encountered in the
+   * request (if any).
+   *
+   * @return the first {@link MdMethodDAOIF encountered in the request (if any).
+   */
+  public MdMethodDAOIF getFirstMdMethodDAOIF()
+  {
+    return this.firstMethodInRequest;
+  }
+
+  /**
+   * Get the time in milliseconds when the session expires
+   * 
+   * @return The time in milliseconds when the session expires
+   */
+  protected long getExpiration()
+  {
+    this.permissionLock.lock();
+    try
+    {
+      return expirationTime;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /**
+   * Renews the time to live of the session
+   */
+  protected void renew()
+  {
+    this.permissionLock.lock();
+    try
+    {
+      expirationTime = System.currentTimeMillis() + timeToLive;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /**
+   * Sets the expiration time of this session to the current time.
+   */
+  protected void expire()
+  {
+    this.permissionLock.lock();
+    try
+    {
+      expirationTime = System.currentTimeMillis() - 1;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.session.SessionIF#isExpired(long)
+   */
+  public boolean isExpired(long time)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      return ( ( expirationTime != -1 ) && ( expirationTime < time ) );
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  /**
+   * Forces an ordering on sessions where the item with the lowest expiration
+   * time Is the foremost session
+   * 
+   * @param arg0
+   *          The session to compare against
+   * @return The order of the two sessions
+   */
+  public int compareTo(Session s0)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      // IMPORTANT: This ordering works for the PriorityQueue implementation in
+      // Java 1.6 but it must be reversed to work with the PriorityQueue
+      // implementation in Java 1.5
+      if (expirationTime == -1 || s0.getExpiration() < expirationTime)
+      {
+        return -1 * comparatorOffset; // Java 1.5: return 1;
+      }
+      else if (s0.getExpiration() == -1 || s0.getExpiration() > expirationTime)
+      {
+        return 1 * comparatorOffset; // Java 1.5: return -1;
+      }
+
+      return this.getOid().compareTo(s0.getOid());
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  public boolean equals(Object s0)
+  {
+    this.permissionLock.lock();
+    try
+    {
+      if (! ( s0 instanceof Session ))
+      {
+        return false;
+      }
+
+      if (this.compareTo((Session) s0) == 0)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+
 
   /**
    * Hook method for aspects. This is used to create a mapping between the oid
@@ -1386,4 +1128,76 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   public static void mapNewInstanceTempId(String oldTempId, String newId)
   {
   }
+
+  /**
+   * Returns the current session object.
+   * 
+   * @return current session object.
+   */
+  public static SessionIF getCurrentSession()
+  {
+    // AbstractRequestManagement will return the current session.
+    return null;
+  }
+
+  /**
+   * Sets the amount of time a session has before it expires
+   * 
+   * @param seconds
+   *          The amount of time in seconds
+   */
+  public static void setSessionTime(long seconds)
+  {
+    timeToLive = seconds * SECOND;
+  }
+
+  /**
+   * Returns the default amount of time a session has before it expires
+   * 
+   * @return The seconds of default time to live
+   */
+  public static long getSessionTime()
+  {
+    return timeToLive / SECOND;
+  }
+  
+  /**
+   * Returns the locale for the current session.
+   * 
+   * @return locale for the current session.
+   */
+  public static Locale getCurrentLocale()
+  {
+    SessionIF sessionIF = getCurrentSession();
+
+    if (sessionIF != null)
+    {
+      return sessionIF.getLocale();
+    }
+    else
+    {
+      return CommonProperties.getDefaultLocale();
+    }
+  }
+
+  /**
+   * Returns the dimension for the current session, or null if no dimension has
+   * been set for this session.
+   * 
+   * @return dimension for the current session, or null if no dimension has been
+   *         set for this session.
+   */
+  public static MdDimensionDAOIF getCurrentDimension()
+  {
+    SessionIF sessionIF = getCurrentSession();
+
+    if (sessionIF != null)
+    {
+      return sessionIF.getDimension();
+    }
+    else
+    {
+      return null;
+    }
+  }  
 }

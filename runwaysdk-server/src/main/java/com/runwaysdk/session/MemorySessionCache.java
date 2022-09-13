@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -44,7 +44,7 @@ public class MemorySessionCache extends ManagedUserSessionCache
   /**
    * The default number of sessions the cache is limited too.
    */
-  private static final int       DEFAULT_LIMIT  = 50000;
+  private static final int       DEFAULT_LIMIT = 50000;
 
   /**
    * A priority heap with the session closest to expiring on top
@@ -103,7 +103,7 @@ public class MemorySessionCache extends ManagedUserSessionCache
     this.sessions = new HashMap<String, Session>();
     this.expireHeap = new PriorityQueue<Session>();
 
-    this.publicSession = new Session(CommonProperties.getDefaultLocale());
+    this.publicSession = new Session(CommonProperties.getDefaultLocale(), UserDAO.getPublicUser(), null);
     this.publicSession.setExpirationTime(-1);
     this.sessions.put(this.publicSession.getOid(), this.publicSession);
     this.expireHeap.offer(this.publicSession);
@@ -132,7 +132,7 @@ public class MemorySessionCache extends ManagedUserSessionCache
       sessionCacheLock.unlock();
     }
   }
-  
+
   @Override
   protected void changeLogin(SingleActorDAOIF user, String sessionId)
   {
@@ -180,7 +180,8 @@ public class MemorySessionCache extends ManagedUserSessionCache
 
       // Get the session
       Session session = this.getSession(sessionId);
-      session.setDimension(dimensionKey);
+
+      this.addSession(new Session(session, dimensionKey));
     }
     finally
     {
@@ -350,10 +351,18 @@ public class MemorySessionCache extends ManagedUserSessionCache
       // Add the session to the Session Cache.
       if (!sessions.containsKey(session.getOid()))
       {
-        super.addSession(session);
         expireHeap.offer(session);
       }
+      else
+      {
+        // Remove the old session from the expire heap
+        expireHeap.remove(sessions.get(session.getOid()));
+        expireHeap.offer(session);
+      }
+
       sessions.put(session.getOid(), session);
+      
+      super.addSession(session);
     }
     finally
     {
@@ -390,21 +399,21 @@ public class MemorySessionCache extends ManagedUserSessionCache
   {
     return this.getSession(sessionId);
   }
-  
+
   @Override
   protected Map<String, SessionIF> getAllSessions()
   {
     sessionCacheLock.lock();
-    
+
     try
     {
       HashMap<String, SessionIF> map = new HashMap<String, SessionIF>();
-      
+
       for (Session ses : this.sessions.values())
       {
         map.put(ses.getOid(), ses);
       }
-      
+
       return map;
     }
     finally
