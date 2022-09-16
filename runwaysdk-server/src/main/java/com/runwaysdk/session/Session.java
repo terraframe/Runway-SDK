@@ -670,28 +670,26 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
   private void reloadPermissions(SingleActorDAOIF user, Locale locale, String dimensionKey)
   {
-    if (user != null && user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
+    if (locale == null)
     {
-      this.setHolder(new PermissionHolder(PermissionCache.getPublicPermissions(), user, CommonProperties.getDefaultLocale()));
-    }
-    else
-    {
-
-      if (locale == null)
+      if (user == null || user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
-        if (user == null || user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
-        {
-          locale = CommonProperties.getDefaultLocale();
-        }
-        else
-        {
-          locale = ConversionFacade.getLocale(user.getLocale());
-        }
+        locale = CommonProperties.getDefaultLocale();
       }
-
-      if (user != null)
+      else
       {
+        locale = ConversionFacade.getLocale(user.getLocale());
+      }
+    }
 
+    if (user != null)
+    {
+      if (user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
+      {
+        this.setHolder(new PermissionHolder(PermissionCache.getPublicPermissions(), user, locale));
+      }
+      else
+      {
         // Set the locale to the one configured for the user if no valid locale
         // was set.
         Map<String, RoleDAOIF> authorizedRoleMap = new HashMap<String, RoleDAOIF>();
