@@ -21,7 +21,7 @@ package com.runwaysdk.session;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Element;
@@ -57,25 +57,59 @@ public abstract class PermissionEntity implements Serializable
   /**
    *
    */
-  private static final long                           serialVersionUID = 347902374534234L;
+  private static final long   serialVersionUID = 347902374534234L;
 
   /**
-   * A hash map of the users metadata permissions
+   * Guards to ensure that invariants between multiple state fields hold.
    */
-  protected ConcurrentHashMap<String, Set<Operation>> permissions;
+  private final ReentrantLock permissionLock   = new ReentrantLock();
 
-  /**
-   * Flag denoting if the entity inherits the administrator role
-   */
-  protected volatile boolean                          isAdmin;
+  private PermissionHolder    holder;
 
   /**
    * Constructs an empty permissions mapping
    */
   public PermissionEntity()
   {
-    this.permissions = new ConcurrentHashMap<String, Set<Operation>>();
-    this.isAdmin = false;
+    this(new PermissionHolder());
+  }
+
+  public PermissionEntity(PermissionHolder holder)
+  {
+    this.holder = holder;
+  }
+
+  protected ReentrantLock getPermissionLock()
+  {
+    return permissionLock;
+  }
+
+  protected PermissionHolder getHolder()
+  {
+    this.permissionLock.lock();
+
+    try
+    {
+      return holder;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
+  }
+
+  protected void setHolder(PermissionHolder holder)
+  {
+    this.permissionLock.lock();
+
+    try
+    {
+      this.holder = holder;
+    }
+    finally
+    {
+      this.permissionLock.unlock();
+    }
   }
 
   /**
@@ -143,7 +177,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkTypeAccess(Operation o, ValueObject valueObject)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -171,7 +205,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkTypeAccess(Operation o, MdTypeDAOIF mdTypeIF)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -199,7 +233,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkAccess(Operation o, Mutable component)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -215,7 +249,7 @@ public abstract class PermissionEntity implements Serializable
 
     // Actor does not have permission to directly modify the relationship from
     // any direction.
-    // However, it may have directional permissions.
+    // However, it may have directional this.getHolder().getPermissions().
     if (component instanceof Relationship)
     {
       Relationship relationship = (Relationship) component;
@@ -304,6 +338,8 @@ public abstract class PermissionEntity implements Serializable
 
   protected Set<Operation> getOperations(Mutable component, MdClassDAOIF mdClassIF)
   {
+    PermissionHolder holder = this.getHolder();
+
     Set<Operation> operations = this.getTypeOperations(mdClassIF);
 
     if (component instanceof Element)
@@ -315,9 +351,9 @@ public abstract class PermissionEntity implements Serializable
       {
         String key = DomainTupleDAO.buildKey(domainId, mdClassIF.getOid(), null);
 
-        if (permissions.containsKey(key))
+        if (holder.getPermissions().containsKey(key))
         {
-          operations.addAll(permissions.get(key));
+          operations.addAll(holder.getPermissions().get(key));
         }
       }
     }
@@ -327,12 +363,14 @@ public abstract class PermissionEntity implements Serializable
 
   private Set<Operation> getTypeOperations(MdTypeDAOIF mdTypeIF)
   {
+    PermissionHolder holder = this.getHolder();
+
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Load type permissions
-    if (permissions.containsKey(mdTypeIF.getOid()))
+    if (holder.getPermissions().containsKey(mdTypeIF.getOid()))
     {
-      operations.addAll(permissions.get(mdTypeIF.getOid()));
+      operations.addAll(holder.getPermissions().get(mdTypeIF.getOid()));
     }
 
     if (mdTypeIF instanceof MdClassDAOIF)
@@ -344,9 +382,9 @@ public abstract class PermissionEntity implements Serializable
       {
         String key = MdClassDimensionDAO.getPermissionKey((MdClassDAOIF) mdTypeIF, dimension);
 
-        if (permissions.containsKey(key))
+        if (holder.getPermissions().containsKey(key))
         {
-          operations.addAll(permissions.get(key));
+          operations.addAll(holder.getPermissions().get(key));
         }
       }
     }
@@ -369,7 +407,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkRelationshipAccess(Operation o, Business business, String mdRelationshipId)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -399,12 +437,14 @@ public abstract class PermissionEntity implements Serializable
    */
   protected Set<Operation> getRelationshipOperations(Business business, String mdRelationshipId)
   {
+    PermissionHolder holder = this.getHolder();
+
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Load mdRelationshipId permissions
-    if (permissions.containsKey(mdRelationshipId))
+    if (holder.getPermissions().containsKey(mdRelationshipId))
     {
-      operations.addAll(permissions.get(mdRelationshipId));
+      operations.addAll(holder.getPermissions().get(mdRelationshipId));
     }
 
     // Load domain-MdRelationship
@@ -414,9 +454,9 @@ public abstract class PermissionEntity implements Serializable
     {
       String key = DomainTupleDAO.buildKey(domainId, mdRelationshipId, null);
 
-      if (permissions.containsKey(key))
+      if (holder.getPermissions().containsKey(key))
       {
-        operations.addAll(permissions.get(key));
+        operations.addAll(holder.getPermissions().get(key));
       }
     }
 
@@ -425,7 +465,7 @@ public abstract class PermissionEntity implements Serializable
 
   protected boolean checkEdgeAccess(Operation o, VertexObject vertex, String mdEdgeId)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -455,12 +495,14 @@ public abstract class PermissionEntity implements Serializable
    */
   protected Set<Operation> getEdgeOperations(VertexObject vertex, String mdEdgeId)
   {
+    PermissionHolder holder = this.getHolder();
+
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Load mdRelationshipId permissions
-    if (permissions.containsKey(mdEdgeId))
+    if (holder.getPermissions().containsKey(mdEdgeId))
     {
-      operations.addAll(permissions.get(mdEdgeId));
+      operations.addAll(holder.getPermissions().get(mdEdgeId));
     }
 
     return operations;
@@ -470,14 +512,14 @@ public abstract class PermissionEntity implements Serializable
    * Used internally to check if a by-directional permission has been defined.
    * For example: Returns true if the operation equals ADD_CHILD or ADD_PARENT
    * and the set of operations contains CREATE. Same for other directional
-   * permissions.
+   * this.getHolder().getPermissions().
    *
    * @param o
    * @param operations
    *
    * @return Returns true if the operation equals ADD_CHILD or ADD_PARENT and
    *         the set of operations contains CREATE. Same for other directional
-   *         permissions.
+   *         this.getHolder().getPermissions().
    */
   protected boolean checkRelationshipAccess(Operation o, Set<Operation> operations)
   {
@@ -526,15 +568,17 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkAttributeTypeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    PermissionHolder holder = this.getHolder();
+
+    if (holder.isAdmin())
     {
       return true;
     }
 
     // Check if permissions exist of the mdAttribute type
-    if (permissions.containsKey(mdAttribute.getOid()))
+    if (holder.getPermissions().containsKey(mdAttribute.getOid()))
     {
-      Set<Operation> operations = permissions.get(mdAttribute.getOid());
+      Set<Operation> operations = holder.getPermissions().get(mdAttribute.getOid());
 
       if (operations != null && operations.contains(operation))
       {
@@ -560,7 +604,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkAttributeAccess(Operation operation, Mutable component, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -644,9 +688,11 @@ public abstract class PermissionEntity implements Serializable
       {
         String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
-        if (permissions.containsKey(key))
+        PermissionHolder holder = this.getHolder();
+
+        if (holder.getPermissions().containsKey(key))
         {
-          operations.addAll(permissions.get(key));
+          operations.addAll(holder.getPermissions().get(key));
         }
       }
     }
@@ -655,12 +701,14 @@ public abstract class PermissionEntity implements Serializable
 
   protected Set<Operation> getAttributeOperations(MdAttributeDAOIF mdAttribute)
   {
+    PermissionHolder holder = this.getHolder();
+
     Set<Operation> operations = new TreeSet<Operation>();
 
     // Check if permissions exist of the mdAttribute type
-    if (permissions.containsKey(mdAttribute.getOid()))
+    if (holder.getPermissions().containsKey(mdAttribute.getOid()))
     {
-      operations.addAll(permissions.get(mdAttribute.getOid()));
+      operations.addAll(holder.getPermissions().get(mdAttribute.getOid()));
     }
 
     // Check for permissions of the MdAttributeDimension this permission entity
@@ -671,9 +719,9 @@ public abstract class PermissionEntity implements Serializable
     {
       String key = MdAttributeDimensionDAO.getPermissionKey(mdAttribute, dimension);
 
-      if (permissions.containsKey(key))
+      if (holder.getPermissions().containsKey(key))
       {
-        operations.addAll(permissions.get(key));
+        operations.addAll(holder.getPermissions().get(key));
       }
     }
 
@@ -700,7 +748,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkRelationshipAttributeAccess(Operation operation, Business business, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -758,7 +806,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkAttributeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -781,15 +829,17 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkMethodAccess(Operation operation, MdMethodDAOIF mdMethod)
   {
-    if (this.isAdmin)
+    PermissionHolder holder = this.getHolder();
+
+    if (holder.isAdmin())
     {
       return true;
     }
 
     // Check if permissions exist on the MdMethod
-    if (permissions.containsKey(mdMethod.getOid()))
+    if (holder.getPermissions().containsKey(mdMethod.getOid()))
     {
-      Set<Operation> operations = permissions.get(mdMethod.getOid());
+      Set<Operation> operations = holder.getPermissions().get(mdMethod.getOid());
 
       if (operations != null && operations.contains(operation))
       {

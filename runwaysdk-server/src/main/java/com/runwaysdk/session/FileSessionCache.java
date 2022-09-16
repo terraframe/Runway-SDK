@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -76,7 +77,7 @@ public class FileSessionCache extends ManagedUserSessionCache
   private String               publicSessionId;
 
   /**
-   * A cache of the sessions being used in an active request
+   * A cache of sessions, the mapping between the session oid and the Session
    */
   private Map<String, Session> sessions;
 
@@ -96,8 +97,7 @@ public class FileSessionCache extends ManagedUserSessionCache
    *          Fully qualified path of the root directory
    */
   @Inject
-  public FileSessionCache(@Named("rootDirectory")
-  String rootDirectory)
+  public FileSessionCache(@Named("rootDirectory") String rootDirectory)
   {
     super();
 
@@ -117,7 +117,7 @@ public class FileSessionCache extends ManagedUserSessionCache
     }
 
     // Make the public session
-    Session publicSession = new Session(CommonProperties.getDefaultLocale(), UserDAO.getPublicUser(), null);
+    Session publicSession = new Session(CommonProperties.getDefaultLocale());
     publicSession.setExpirationTime(-1);
 
     this.publicSessionId = publicSession.getOid();
@@ -130,10 +130,6 @@ public class FileSessionCache extends ManagedUserSessionCache
     if (!sessions.containsKey(session.getOid()))
     {
       putSessionOnFileSystem(session, true);
-    }
-    else
-    {
-      sessions.put(session.getOid(), session);
     }
   }
 
@@ -162,6 +158,7 @@ public class FileSessionCache extends ManagedUserSessionCache
       // Create the directory structure and get the session file
       new File(directory).mkdirs();
       File file = new File(directory + sessionId);
+      boolean exists = file.exists();
 
       try
       {
@@ -172,7 +169,7 @@ public class FileSessionCache extends ManagedUserSessionCache
 
         // Do not update the session count until the Session has been
         // serialized in case of errors writing to the file system.
-        if (updateUserCount)
+        if (updateUserCount && !exists)
         {
           super.addSession(session);
         }
@@ -325,6 +322,27 @@ public class FileSessionCache extends ManagedUserSessionCache
   }
 
   @Override
+  protected String logIn(String username, String password, Locale[] locales)
+  {
+    Session session = new Session(locales);
+    // Heads up: Smethie: why is this supering up to a different method that
+    // does not add
+    // the session to the session cache. Also, why are you adding it anyway
+    // below?
+    // See if you can remove this method entirely and just have polymorphism
+    // call the super method.
+    super.changeLogIn(username, password, session);
+
+    // Update the session on the cache with the user logged in
+    if (!sessions.containsKey(session.getOid()))
+    {
+      this.putSessionOnFileSystem(session, false);
+    }
+
+    return session.getOid();
+  }
+
+  @Override
   protected void changeLogin(String username, String password, String sessionId)
   {
     sessionCacheLock.lock();
@@ -340,6 +358,11 @@ public class FileSessionCache extends ManagedUserSessionCache
       Session session = this.getSession(sessionId);
 
       super.changeLogIn(username, password, session);
+
+      if (!sessions.containsKey(sessionId))
+      {
+        this.putSessionOnFileSystem(session, false);
+      }
     }
     finally
     {
@@ -363,6 +386,28 @@ public class FileSessionCache extends ManagedUserSessionCache
       Session session = this.getSession(sessionId);
 
       super.changeLogIn(user, session);
+
+      if (!sessions.containsKey(sessionId))
+      {
+        this.putSessionOnFileSystem(session, false);
+      }
+    }
+    finally
+    {
+      sessionCacheLock.unlock();
+    }
+  }
+
+  @Override
+  protected void changeLogIn(SingleActorDAOIF user, Session session)
+  {
+    sessionCacheLock.lock();
+
+    try
+    {
+      super.changeLogIn(user, session);
+
+      this.putSessionOnFileSystem(session, false);
     }
     finally
     {
@@ -391,10 +436,13 @@ public class FileSessionCache extends ManagedUserSessionCache
         throw new InvalidLoginException(msg);
       }
 
-      // Get the session
       Session session = this.getSession(sessionId);
+      session.setDimension(dimensionKey);
 
-      this.addSession(new Session(session, dimensionKey));
+      if (!sessions.containsKey(sessionId))
+      {
+        this.putSessionOnFileSystem(session, false);
+      }
     }
     finally
     {
@@ -681,18 +729,18 @@ public class FileSessionCache extends ManagedUserSessionCache
   public Map<String, SessionIF> getAllSessions()
   {
     sessionCacheLock.lock();
-
+    
     try
     {
       Collection<SessionIF> sessions = new FileSessionIterator().getAll();
-
+      
       HashMap<String, SessionIF> map = new HashMap<String, SessionIF>();
-
+      
       for (SessionIF ses : sessions)
       {
         map.put(ses.getOid(), ses);
       }
-
+      
       return map;
     }
     finally
@@ -785,15 +833,15 @@ public class FileSessionCache extends ManagedUserSessionCache
     /**
      * @see com.runwaysdk.session.SessionIterator#remove()
      */
-    // @Override
-    // public void remove()
-    // {
-    // this.initialize();
-    //
-    // this.iterator.remove();
-    //
-    // FileSessionCache.this.closeSession(this.sessionId);
-    // }
+//    @Override
+//    public void remove()
+//    {
+//      this.initialize();
+//
+//      this.iterator.remove();
+//
+//      FileSessionCache.this.closeSession(this.sessionId);
+//    }
 
     /**
      * @see com.runwaysdk.session.SessionIterator#hasNext()
@@ -827,7 +875,7 @@ public class FileSessionCache extends ManagedUserSessionCache
 
         sesses.add(session);
       }
-
+      
       this.close();
 
       return sesses;

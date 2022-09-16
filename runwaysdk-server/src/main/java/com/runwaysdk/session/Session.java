@@ -26,7 +26,6 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Element;
@@ -35,7 +34,6 @@ import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
-import com.runwaysdk.business.rbac.SingleActorDAO;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.business.rbac.UserDAO;
 import com.runwaysdk.business.rbac.UserDAOIF;
@@ -88,21 +86,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   private volatile String        oid;
 
   /**
-   * A reference to the user of the session
-   */
-  private SingleActorDAOIF       user;
-
-  /**
-   * Locale used by the session.
-   */
-  private Locale                 locale;
-
-  /**
-   * Key of the dimension that the user is logged into.
-   */
-  private String                 dimensionKey;
-
-  /**
    * The time in which the session expires. If set to 0 then the session never
    * expires.
    */
@@ -124,11 +107,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   private Map<String, Object>    mutableMap;
 
   /**
-   * All roles the user participates in either implicitly or explicitly.
-   */
-  private Map<String, RoleDAOIF> authorizedRoleMap;
-
-  /**
    * Flag indicating if the session should close at the end of it's first
    * transaction.
    */
@@ -141,9 +119,20 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   private volatile MdMethodDAOIF firstMethodInRequest;
 
   /**
-   * Guards to ensure that invariants between multiple state fields hold.
+   * Creates a new session object of an anonymous user
+   * 
+   * @param locales
+   *          Possible locales of the session.
    */
-  private final ReentrantLock    permissionLock    = new ReentrantLock();
+  public Session(Locale[] locales)
+  {
+    this(new LocaleManager(locales).getBestFitLocale());
+  }
+
+  public Session(Locale locale)
+  {
+    this(locale, UserDAO.getPublicUser(), null);
+  }
 
   /**
    * Creates a new session object of an anonymous user
@@ -156,69 +145,27 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     this(new LocaleManager(locales).getBestFitLocale(), user, dimensionKey);
   }
 
-
   public Session(Locale locale, SingleActorDAOIF user, String dimensionKey)
   {
     super();
 
     // Get a new session Id
     this.oid = ServerIDGenerator.nextID().replaceAll("-", "");
-    this.user = user;
     this.closeOnEndOfRequest = false;
-    this.locale = locale;
-    this.dimensionKey = dimensionKey;
     this.expirationTime = System.currentTimeMillis() + timeToLive;
     this.mutableMap = new ConcurrentHashMap<String, Object>();
-    this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
     this.firstMethodInRequest = null;
 
-    if (this.locale == null)
+    if (locale == null)
     {
       String msg = "Session must have a locale";
 
-      throw new NoLocaleException(msg, this.user);
+      throw new NoLocaleException(msg, user);
     }
 
-    this.reloadPermissions();
+    this.reloadPermissions(user, locale, dimensionKey);
   }
 
-  public Session(Session session, SingleActorDAOIF user)
-  {
-    super();
-
-    // Get a new session Id
-    this.oid = session.oid;
-    this.user = user;
-    this.closeOnEndOfRequest = session.closeOnEndOfRequest;
-    this.locale = session.locale;
-    this.dimensionKey = session.dimensionKey;
-    this.mutableMap = session.mutableMap;
-    this.firstMethodInRequest = session.firstMethodInRequest;
-
-    this.expirationTime = System.currentTimeMillis() + timeToLive;
-    this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
-
-    this.reloadPermissions();
-  }
-
-  public Session(Session session, String dimensionKey)
-  {
-    super();
-    
-    // Get a new session Id
-    this.oid = session.oid;
-    this.user = session.user;
-    this.closeOnEndOfRequest = session.closeOnEndOfRequest;
-    this.locale = session.locale;
-    this.mutableMap = session.mutableMap;
-    this.firstMethodInRequest = session.firstMethodInRequest;
-    this.authorizedRoleMap = session.authorizedRoleMap;
-    this.permissions = session.permissions;
-    this.dimensionKey = dimensionKey;
-    
-    this.expirationTime = System.currentTimeMillis() + timeToLive;
-  }
-  
   /*
    * (non-Javadoc)
    * 
@@ -232,7 +179,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public SingleActorDAOIF getUser()
   {
-    return user;
+    return this.getHolder().getUser();
   }
 
   /*
@@ -242,7 +189,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public Locale getLocale()
   {
-    return this.locale;
+    return this.getHolder().getLocale();
   }
 
   /**
@@ -254,9 +201,11 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public MdDimensionDAOIF getDimension()
   {
-    if (this.dimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, this.dimensionKey))
+    String dimensionKey = this.getHolder().getDimensionKey();
+
+    if (dimensionKey != null && ObjectCache.contains(MdDimensionInfo.CLASS, dimensionKey))
     {
-      return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, this.dimensionKey);
+      return (MdDimensionDAOIF) BusinessDAO.get(MdDimensionInfo.CLASS, dimensionKey);
     }
 
     return null;
@@ -270,7 +219,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   {
     UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    return !user.equals(publicUser);
+    return !this.getHolder().getUser().equals(publicUser);
   }
 
   /*
@@ -281,7 +230,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, String type)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -302,7 +251,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkTypeAccess(Operation o, MdTypeDAOIF mdTypeIF)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -325,7 +274,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkAccess(Operation o, Mutable mutable)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -381,7 +330,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkAttributeTypeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -408,7 +357,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkAttributeAccess(Operation operation, Mutable mutable, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -489,7 +438,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean checkRelationshipAttributeAccess(Operation operation, Business business, MdAttributeDAOIF mdAttribute)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -539,7 +488,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   @Override
   public boolean checkRelationshipAccess(Operation o, Business business, String mdRelationshipId)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -559,7 +508,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
   public boolean checkEdgeAccess(Operation o, VertexObject vertex, String mdEdgeId)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -617,7 +566,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   public boolean checkMethodAccess(Operation operation, MdMethodDAOIF mdMethod)
   {
     // Admin check
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -636,7 +585,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   public boolean checkMethodAccess(Operation operation, Mutable mutable, MdMethodDAOIF mdMethod)
   {
     // Admin check
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
@@ -701,7 +650,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
       if (ownerId != null && !ownerId.equals(""))
       {
-        return ownerId.equals(user.getOid());
+        return ownerId.equals(this.getHolder().getUser().getOid());
       }
       else
       {
@@ -719,41 +668,58 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     return this.oid.hashCode();
   }
 
-  private void reloadPermissions()
+  private void reloadPermissions(SingleActorDAOIF user, Locale locale, String dimensionKey)
   {
-    // Set the locale to the one configured for the user if no valid locale
-    // was set.
-    if (this.locale == null)
+    if (user != null && user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
     {
-      if (this.user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
-      {
-        this.locale = CommonProperties.getDefaultLocale();
-      }
-      else
-      {
-        this.locale = ConversionFacade.getLocale(this.user.getLocale());
-      }
-    }
-
-    this.authorizedRoleMap = new ConcurrentHashMap<String, RoleDAOIF>();
-
-    for (RoleDAOIF roleIF : this.user.authorizedRoles())
-    {
-      this.authorizedRoleMap.put(roleIF.getRoleName(), roleIF);
-    }
-
-    // If the user is an administrator there is no need to load permissions
-    if (this.user.isAdministrator())
-    {
-      this.isAdmin = true;
+      this.setHolder(new PermissionHolder(PermissionCache.getPublicPermissions(), user, CommonProperties.getDefaultLocale()));
     }
     else
     {
-      PermissionMap map = this.user.getOperations();
-      map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
 
-      this.permissions = map.getPermissions();
+      if (locale == null)
+      {
+        if (user == null || user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
+        {
+          locale = CommonProperties.getDefaultLocale();
+        }
+        else
+        {
+          locale = ConversionFacade.getLocale(user.getLocale());
+        }
+      }
+
+      if (user != null)
+      {
+
+        // Set the locale to the one configured for the user if no valid locale
+        // was set.
+        Map<String, RoleDAOIF> authorizedRoleMap = new HashMap<String, RoleDAOIF>();
+
+        for (RoleDAOIF roleIF : user.authorizedRoles())
+        {
+          authorizedRoleMap.put(roleIF.getRoleName(), roleIF);
+        }
+
+        // If the user is an administrator there is no need to load permissions
+        if (user.isAdministrator())
+        {
+          this.setHolder(new PermissionHolder(user, locale, dimensionKey, authorizedRoleMap));
+        }
+        else
+        {
+          PermissionMap map = user.getOperations();
+          map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
+
+          this.setHolder(new PermissionHolder(map.getPermissions(), user, locale, dimensionKey, authorizedRoleMap));
+        }
+      }
     }
+  }
+
+  public void setUser(SingleActorDAOIF user)
+  {
+    this.reloadPermissions(user, this.getLocale(), this.getHolder().getDimensionKey());
   }
 
   /**
@@ -762,15 +728,15 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * @param dimension
    *          for this session.
    */
-  private void setDimension(MdDimensionDAOIF mdDimensionDAOIF)
+  public void setDimension(MdDimensionDAOIF mdDimensionDAOIF)
   {
     if (mdDimensionDAOIF == null)
     {
-      this.dimensionKey = null;
+      this.setHolder(this.getHolder().setDimensionKey(null));
     }
     else
     {
-      this.dimensionKey = mdDimensionDAOIF.getKey();
+      this.setHolder(this.getHolder().setDimensionKey(mdDimensionDAOIF.getKey()));
     }
   }
 
@@ -784,11 +750,11 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    *           DataNotFoundException} if the key does not represent a valid
    *           dimension if the given key is not null.
    */
-  private void setDimension(String dimensionKey)
+  public void setDimension(String dimensionKey)
   {
     if (dimensionKey == null)
     {
-      this.dimensionKey = null;
+      this.setDimension((MdDimensionDAOIF) null);
     }
     else
     {
@@ -803,13 +769,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean userHasRole(String roleName)
   {
-    if (this.isAdmin)
+    if (this.getHolder().isAdmin())
     {
       return true;
     }
     else
     {
-      return this.authorizedRoleMap.containsKey(roleName);
+      return this.getHolder().getAuthorizedRoleMap().containsKey(roleName);
     }
   }
 
@@ -824,16 +790,18 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   {
     Map<String, String> roleMap = new HashMap<String, String>();
 
-    for (String roleName : this.authorizedRoleMap.keySet())
-    {
-      RoleDAOIF roleDAOIF = this.authorizedRoleMap.get(roleName);
+    Map<String, RoleDAOIF> map = this.getHolder().getAuthorizedRoleMap();
 
-      roleMap.put(roleName, roleDAOIF.getDisplayLabel(this.locale));
+    for (String roleName : map.keySet())
+    {
+      RoleDAOIF roleDAOIF = map.get(roleName);
+
+      roleMap.put(roleName, roleDAOIF.getDisplayLabel(this.getLocale()));
     }
 
     return roleMap;
   }
-  
+
   @Override
   public void notify(PermissionEvent e)
   {
@@ -842,7 +810,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     // PermissionEvents because Session permissions
     // are only reloaded during a log in.
   }
-  
+
   // Mutable actions
 
   /**
@@ -852,14 +820,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   void setExpirationTime(long time)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       this.expirationTime = time;
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -922,7 +890,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setCloseOnEndOfRequest(boolean closeOnEndOfRequest)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
 
     try
     {
@@ -930,7 +898,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -941,7 +909,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean closeOnEndOfRequest()
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
 
     try
     {
@@ -949,10 +917,10 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
-  
+
   /**
    * Sets the first {@link MdMethodDAOIF encountered in the request (if any).
    *
@@ -961,7 +929,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setFirstMdMethodDAOIF(MdMethodDAOIF mdMethodDAOIF)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       // Only set it once for the request
@@ -972,7 +940,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -994,14 +962,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected long getExpiration()
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       return expirationTime;
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -1010,14 +978,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void renew()
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       expirationTime = System.currentTimeMillis() + timeToLive;
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -1026,14 +994,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void expire()
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       expirationTime = System.currentTimeMillis() - 1;
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -1044,14 +1012,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean isExpired(long time)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       return ( ( expirationTime != -1 ) && ( expirationTime < time ) );
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
@@ -1065,7 +1033,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public int compareTo(Session s0)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       // IMPORTANT: This ordering works for the PriorityQueue implementation in
@@ -1084,13 +1052,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
 
   public boolean equals(Object s0)
   {
-    this.permissionLock.lock();
+    this.getPermissionLock().lock();
     try
     {
       if (! ( s0 instanceof Session ))
@@ -1109,11 +1077,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
     finally
     {
-      this.permissionLock.unlock();
+      this.getPermissionLock().unlock();
     }
   }
-
-
 
   /**
    * Hook method for aspects. This is used to create a mapping between the oid
@@ -1160,7 +1126,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   {
     return timeToLive / SECOND;
   }
-  
+
   /**
    * Returns the locale for the current session.
    * 
@@ -1199,5 +1165,5 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     {
       return null;
     }
-  }  
+  }
 }

@@ -804,7 +804,7 @@ public class SessionTest
 
     try
     {
-      PermissionCache.instance();
+      PermissionCache.reload();
 
       newUser.grantPermission(Operation.WRITE, mdBusiness.getOid());
 
@@ -825,7 +825,7 @@ public class SessionTest
     finally
     {
       publicUser.revokeAllPermissions(mdBusiness.getOid());
-      PermissionCache.instance();
+      PermissionCache.reload();
     }
 
   }
