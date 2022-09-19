@@ -275,7 +275,7 @@ public class Struct extends Entity implements StructInfo
    *
    * @return the {@link StructDAO} this represents.
    */
-  StructDAO getStructDAO()
+  public StructDAO getStructDAO()
   {
     return (StructDAO) super.getEntityDAO();
   }

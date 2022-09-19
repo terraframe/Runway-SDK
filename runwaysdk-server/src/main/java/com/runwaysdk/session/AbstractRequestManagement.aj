@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -92,51 +92,15 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     }
   }
 
-  declare                                       precedence : AbstractTransactionManagement+;
+  declare                              precedence : AbstractTransactionManagement+;
 
-  protected RequestState                        requestState;
-
-  protected Set<String>                         setAppLocksSet              = new HashSet<String>();
-
-  private Stack<MdMethodDAOIF>                  mdMethodIFStack             = new Stack<MdMethodDAOIF>();
-
-  protected List<Message>                       messageList                 = new LinkedList<Message>();
-
-  protected Map<String, String>                 idMap                       = new HashMap<String, String>();
-
-  private Map<String, AttributeNotificationMap> attributeNotificationMapMap = new HashMap<String, AttributeNotificationMap>();
-
-  private List<ProblemIF>                       problemList                 = new LinkedList<ProblemIF>();
-
-  protected Logger                              log                         = LoggerFactory.getLogger(AbstractRequestManagement.class);
-
-  public RequestState getRequestState()
+  protected AbstractRequestAspectState state;
+  
+  public AbstractRequestAspectState getState()
   {
-    return this.requestState;
+    return this.state;
   }
 
-  public List<ProblemIF> getProblemList()
-  {
-    return this.problemList;
-  }
-
-  /**
-   * Some things, like permission checking, does not need to be done if the
-   * request does not occur in an initialized session.
-   *
-   * @return true if the session has been initialized, false otherwise;
-   */
-  protected boolean isSessionInitialized()
-  {
-    if (this.getRequestState().getSession() == null)
-    {
-      return false;
-    }
-    else
-    {
-      return true;
-    }
-  }
 
   public pointcut defaultRequest(Request request)
   : execution (@com.runwaysdk.session.Request * *.*(..))
@@ -275,7 +239,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   before(String oid) :  setAppLock(oid)
   {
-    setAppLocksSet.add(oid);
+    state.addAppLock(oid);
   }
 
   protected pointcut throwProblem(ProblemIF problemIF)
@@ -284,8 +248,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   before(ProblemIF problemIF) : throwProblem(problemIF)
   {
-    log.info(RunwayLogUtil.formatLoggableMessage(problemIF.getDeveloperMessage(), problemIF.getLocalizedMessage()));
-    problemList.add(problemIF);
+    state.throwProblem(problemIF);
   }
 
   protected pointcut getProblemsInCurrentRequest()
@@ -293,7 +256,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   Object around() : getProblemsInCurrentRequest()
   {
-    return problemList;
+    return state.getProblemList();
   }
 
   // Execute the create Commands now, but save the deletes for later.
@@ -303,7 +266,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   after(AttributeNotificationMap attributeNotificationMap)
     : attributeNotificationMap(attributeNotificationMap)
   {
-    this.attributeNotificationMapMap.put(attributeNotificationMap.getMapKey(), attributeNotificationMap);
+    state.addAttributeNotificationMap(attributeNotificationMap);
   }
 
   protected pointcut getConnection()
@@ -315,7 +278,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   Object around() : getConnection()
   {
-    return this.getRequestState().getDatabaseConnection();
+    return state.getConnection();
   }
 
   protected pointcut getGraphRequest()
@@ -326,7 +289,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   Object around() : getGraphRequest()
   {
-    return this.getRequestState().getGraphDBRequest();
+    return state.getGraphRequest();
   }
 
   protected pointcut closeGraphRequest()
@@ -374,7 +337,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   before(String oldTempId, String newId) : mapNewInstanceTempId(oldTempId, newId)
   {
-    this.idMap.put(newId, oldTempId);
+    state.mapNewInstanceTempId(oldTempId, newId);
   }
 
   // //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -383,7 +346,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   Object around() : getCurrentSession()
   {
-    return this.getRequestState().getSession();
+    return state.getCurrentSession();
   }
 
   pointcut getCurrentRequestState()
@@ -391,7 +354,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   Object around() : getCurrentRequestState()
   {
-    return this.getRequestState();
+    return state.getRequestState();
   }
 
   protected pointcut checkMethodExecutePermission(Mutable mutable)
@@ -405,39 +368,17 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     String type = signature.getDeclaringTypeName();
     String methodName = signature.getName();
 
-    MdClassDAOIF mdClassIF = MdClassDAO.getMdClassDAO(type);
+    state.checkMethodExecutePermission(type, methodName, mutable);
 
-    MdMethodDAOIF mdMethodToExecute = mdClassIF.getMdMethod(methodName);
-
-    // Check execute permission on this method
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      this.checkMethodExecutePermission_INSTANCE(mutable, mdMethodIF, mdMethodToExecute);
-    }
-    else
-    {
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-      this.checkMethodExecutePermission_INSTANCE(userIF, mutable, mdMethodToExecute);
-    }
-
-    this.mdMethodIFStack.push(mdMethodToExecute);
-
-    if (this.getRequestState().getSession() != null)
-    {
-      ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(mdMethodToExecute);
-    }
-
-    Object result;
     try
     {
-      result = proceed(mutable);
+      Object result = proceed(mutable);
+      return result;
     }
     finally
     {
-      this.mdMethodIFStack.pop();
+      state.removeMethodFromStack();
     }
-    return result;
   }
 
   protected pointcut checkStaticMethodExecutePermission()
@@ -450,86 +391,16 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
     String type = signature.getDeclaringTypeName();
     String methodName = signature.getName();
 
-    MdTypeDAOIF mdTypeIF = MdTypeDAO.getMdTypeDAO(type);
-    MdMethodDAOIF mdMethodToExecute = mdTypeIF.getMdMethod(methodName);
-    Session _session = (Session) this.getRequestState().getSession();
+    state.checkStaticMethodExecutePermission(type, methodName);
 
-    // Check execute permission on this method
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      this.checkMethodExecutePermission_STATIC(mdTypeIF, mdMethodIF, mdMethodToExecute);
-    }
-    else
-    {
-      if (this.isSessionInitialized())
-      {
-        SingleActorDAOIF userIF = _session.getUser();
-        this.checkMethodExecutePermission_STATIC(userIF, mdTypeIF, mdMethodToExecute);
-      }
-    }
-
-    this.mdMethodIFStack.push(mdMethodToExecute);
-
-    if (_session != null)
-    {
-      _session.setFirstMdMethodDAOIF(mdMethodToExecute);
-    }
-
-    Object result;
     try
     {
-      result = proceed();
+      Object result = proceed();
+      return result;
     }
     finally
     {
-      this.mdMethodIFStack.pop();
-    }
-
-    return result;
-  }
-
-  private void checkMethodExecutePermission_INSTANCE(Mutable mutable, MdMethodDAOIF mdMethodIF, MdMethodDAOIF mdMethodToExecute)
-  {
-    boolean access = MethodFacade.checkExecuteAccess(mdMethodIF, mdMethodToExecute);
-
-    if (!access)
-    {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
-      throw new DomainErrorException(errorMsg);
-    }
-  }
-
-  private void checkMethodExecutePermission_STATIC(MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodIF, MdMethodDAOIF mdMethodToExecute)
-  {
-    boolean access = MethodFacade.checkExecuteAccess(mdMethodIF, mdMethodToExecute);
-
-    if (!access)
-    {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have execute permission for the method [" + mdMethodToExecute.getName() + "] on [" + mdTypeIF.definesType() + "]";
-      throw new DomainErrorException(errorMsg);
-    }
-  }
-
-  private void checkMethodExecutePermission_INSTANCE(SingleActorDAOIF userIF, Mutable mutable, MdMethodDAOIF mdMethodToExecute)
-  {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mutable, mdMethodToExecute);
-
-    if (!access)
-    {
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on entity [" + mutable.getOid() + "]";
-      throw new ExecuteInstancePermissionException(errorMsg, mutable, mdMethodToExecute, userIF);
-    }
-  }
-
-  private void checkMethodExecutePermission_STATIC(SingleActorDAOIF userIF, MdTypeDAOIF mdTypeIF, MdMethodDAOIF mdMethodToExecute)
-  {
-    boolean access = SessionFacade.checkMethodAccess(this.getRequestState().getSession().getOid(), Operation.EXECUTE, mdMethodToExecute);
-
-    if (!access)
-    {
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the execute permission for the method [" + mdMethodToExecute.getName() + "] on [" + mdTypeIF.definesType() + "]";
-      throw new ExecuteStaticPermissionException(errorMsg, mdTypeIF, mdMethodToExecute, userIF);
+      state.removeMethodFromStack();
     }
   }
 
@@ -566,19 +437,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     Business business = (Business) proceed(type);
 
-    if (this.isSessionInitialized())
-    {
-      // Check execute permission on this method
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        checkEntityCreatePermission(mdMethodIF, business);
-      }
-      else
-      {
-        this.checkEntityCreatePermission(business);
-      }
-    }
+    this.state.checkEntityCreatePermission(business);
 
     return business;
   }
@@ -591,19 +450,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     Entity business = (Entity) proceed(type);
 
-    if (this.isSessionInitialized())
-    {
-      // Check execute permission on this method
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        checkEntityReadPermission(mdMethodIF, business);
-      }
-      else
-      {
-        this.checkEntityReadPermission(business);
-      }
-    }
+    this.state.getNewDisconnectedEntityFromFacade(business);
 
     return business;
   }
@@ -616,77 +463,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Entity entity)
   : applyEntity(entity)
   {
-    if (this.isSessionInitialized())
-    {
-      EntityDAO entityDAO = entity.entityDAO;
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-      // Check if userIF has a lock on the object.
-      if (entity instanceof Element)
-      {
-        checkLock((Element) entity);
-      }
-
-      if (entityDAO.isNew())
-      {
-        // If the entityDAOIF is new and no owner has been defined, then set the
-        // owner to the userIF currently performing the action
-
-        // Do not overwrite the owner if we are importing the object.
-        if (!entityDAO.isImport() && entityDAO.hasAttribute(ElementInfo.OWNER) && ( entityDAO.getAttributeIF(ElementInfo.OWNER).getValue().trim().equals("") ))
-        {
-          entityDAO.getAttribute(ElementInfo.OWNER).setValue(userIF.getOid());
-        }
-
-        if (this.mdMethodIFStack.size() > 0)
-        {
-          MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-          checkEntityCreatePermission(mdMethodIF, entity);
-        }
-        else
-        {
-          this.checkEntityCreatePermission(entity);
-        }
-      }
-      else
-      {
-        if (this.mdMethodIFStack.size() > 0)
-        {
-          MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-          checkEntityWritePermission(mdMethodIF, entity);
-        }
-        else
-        {
-          this.checkEntityWritePermission(entity);
-        }
-      }
-
-      if (entityDAO.hasAttribute(ElementInfo.LAST_UPDATED_BY))
-      {
-
-        if (this.mdMethodIFStack.size() > 0 && entity.hasAttribute(ElementInfo.LOCKED_BY) && !entity.getValue(ElementInfo.LOCKED_BY).equals(userIF.getOid()))
-        {
-          MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-          MethodActorDAOIF methodActorIF = MethodFacade.getMethodActorIF(mdMethodIF);
-          // I don't think this will ever be null, as the above
-          // checkEntityWritePermission method would have thrown an exception.
-          if (methodActorIF != null)
-          {
-            if (!entityDAO.isImport() && ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
-            {
-              entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(methodActorIF.getOid());
-            }
-          }
-        }
-        else
-        {
-          if (!entityDAO.isImport() && ( !entityDAO.isImportResolution() || ( entityDAO.isImportResolution() && entityDAO.isMasteredHere() ) ))
-          {
-            entityDAO.getAttribute(ElementInfo.LAST_UPDATED_BY).setValue(userIF.getOid());
-          }
-        }
-      }
-    }
+    this.state.applyEntity(entity);
   }
 
   // Check write permission on an object. Check on userLock().
@@ -697,18 +474,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Element element)
   : elementLockedByCheck(element)
   {
-    if (this.isSessionInitialized())
-    {
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        checkEntityWritePermission(mdMethodIF, element);
-      }
-      else
-      {
-        this.checkEntityWritePermission(element);
-      }
-    }
+    this.state.checkEntityWritePermission(element);
   }
 
   // Check write permission on an object attribute
@@ -725,17 +491,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Entity entity, String attributeName) :
       modifyEntityAttribute(entity, attributeName)
   {
-    if (this.isSessionInitialized())
-    {
-      if (entity instanceof Struct)
-      {
-        checkAttributePermissions((Struct) entity, attributeName);
-      }
-      else
-      {
-        checkAttributePermissions((Element) entity, attributeName);
-      }
-    }
+    this.state.checkAttributePermissions(entity, attributeName);
   }
 
   // Check write permission on an object attribute
@@ -753,10 +509,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Element element, String attributeName) :
     modifyElementAttribute(element, attributeName)
   {
-    if (this.isSessionInitialized())
-    {
-      checkAttributePermissions(element, attributeName);
-    }
+    this.state.checkAttributePermissions(element, attributeName);
   }
 
   // Check write permission on an object attribute
@@ -801,161 +554,13 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // checkAttributePermissions(sessionComponent, attributeName);
   // }
 
-  private void checkAttributePermissions(Mutable mutable, String attributeName)
-  {
-    SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-    // Write permissions are not checked when the containing object is new.
-    if (mutable.isNew())
-    {
-      return;
-    }
-
-    // check to make sure the object is locked before setting a value on an
-    // attribute
-    if (mutable instanceof Element)
-    {
-      checkLock((Element) mutable);
-    }
-
-    MdAttributeDAOIF mdAttribute = mutable.getMdAttributeDAO(attributeName);
-
-    // boolean hasLock = mutable.hasAttribute(ElementInfo.LOCKED_BY);
-    // String lockById = mutable.getValue(ElementInfo.LOCKED_BY);
-
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-
-      boolean access = MethodFacade.checkAttributeAccess(mdMethodIF, Operation.WRITE, mutable, mdAttribute);
-
-      // IMPORTANT: If the method does not have access check if the user has
-      // permissions.
-      if (!access)
-      {
-        access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
-      }
-
-      if (!access)
-      {
-        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "] with oid [" + mutable.getOid() + "]";
-        throw new DomainErrorException(errorMsg);
-      }
-    }
-    else
-    {
-      boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, mutable, mdAttribute);
-
-      if (!access)
-      {
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + mutable.getType() + "]";
-        throw new AttributeWritePermissionException(errorMsg, mutable, mdAttribute, userIF);
-      }
-    }
-  }
-
-  private void checkAttributePermissions(Struct struct, String attributeName)
-  {
-    // Check permissions on Struct objects when they are instantiated directly
-    // and not
-    // through a containing Entity
-    if (struct.parent == null)
-    {
-      // Write permissions are not checked when the containing object is new.
-      if (struct.isNew())
-      {
-        return;
-      }
-
-      StructDAO structDAO = struct.getStructDAO();
-
-      MdAttributeConcreteDAOIF mdAttribute = structDAO.getMdAttributeDAO(attributeName);
-
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        boolean access = MethodFacade.checkAttributeAccess(mdMethodIF, Operation.WRITE, struct, mdAttribute);
-
-        if (!access)
-        {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "] with oid [" + struct.getOid() + "]";
-          throw new DomainErrorException(errorMsg);
-        }
-      }
-      else
-      {
-        boolean access = SessionFacade.checkAttributeAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, struct, mdAttribute);
-
-        if (!access)
-        {
-          SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-          String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the write permission for attribute [" + mdAttribute.definesAttribute() + "] on type [" + struct.getType() + "]";
-          throw new AttributeWritePermissionException(errorMsg, struct, mdAttribute, userIF);
-        }
-      }
-    }
-  }
-
   // Check delete permission on an object
   pointcut deleteMutable(Mutable mutable)
     : execution (* com.runwaysdk.business.Mutable.delete()) && this(mutable);
 
   before(Mutable mutable) : deleteMutable(mutable)
   {
-    if (this.isSessionInitialized())
-    {
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-      if (this.mdMethodIFStack.size() > 0)
-      {
-        MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-        boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.DELETE, mutable);
-
-        if (!access && !checkUserDeletePermissions(mutable, userIF))
-        {
-          String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to delete [" + mutable.getType() + "] instance with oid [" + mutable.getOid() + "].";
-          throw new DomainErrorException(errorMsg);
-        }
-      }
-      else
-      {
-        boolean access = checkUserDeletePermissions(mutable, userIF);
-
-        if (!access)
-        {
-          String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have permission to delete [" + mutable.getType() + "] instances.";
-          throw new DeletePermissionException(errorMsg, mutable, userIF);
-        }
-      }
-    }
-  }
-
-  private boolean checkUserDeletePermissions(Mutable mutable, SingleActorDAOIF userIF)
-  {
-    // Check if userIF has a lock on the object.
-    if (mutable.hasAttribute(ElementInfo.LOCKED_BY))
-    {
-      Element element = (Element) mutable;
-
-      ( LockObject.getLockObject() ).appLock(mutable.getOid());
-
-      element.setDataEntity( ( EntityDAO.get(element.getOid()).getEntityDAO() ));
-
-      String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
-
-      // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
-      {
-        // Release the lock on this object
-        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
-
-        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object in order to delete it.";
-        throw new LockException(err, element, "ExistingLockException");
-      }
-    }
-
-    return SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.DELETE, mutable);
+    this.state.checkDeletePermissions(mutable);
   }
 
   // Check permission for adding a child to an object
@@ -966,10 +571,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : addChildObject(parentBusiness, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
-    }
+    this.state.checkAddChildObject(parentBusiness, childBusiness, relationshipType);
   }
 
   // Check permission for adding a child to an object
@@ -980,54 +582,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, String childOid, String relationshipType)
     : addChildOid(parentBusiness, childOid, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddChildObject(parentBusiness, childOid, relationshipType);
-    }
-  }
-
-  /**
-   * Checks if session userIF has permission to add the given child object to
-   * the given parent object.
-   *
-   * @param parentBusiness
-   *          object that the child object is added to.
-   * @param childOid
-   *          reference to the child object.
-   * @param relationship
-   *          type of involved.
-   */
-  private void checkAddChildObject(Business parentBusiness, String childOid, String relationshipType)
-  {
-    BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
-
-    MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-
-        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the add_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
-        throw new DomainErrorException(errorMsg);
-      }
-    }
-    else
-    {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, parentBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        Business childBusiness = Business.get(childOid);
-        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
-        throw new AddChildPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
-      }
-    }
+    this.state.checkAddChildObject(parentBusiness, childOid, relationshipType);
   }
 
   // Check permission for removing a child from an object
@@ -1038,10 +593,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, Relationship relationship)
     : removeChildObject(parentBusiness, relationship)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), relationship.getType());
-    }
+    this.state.removeChildObject(parentBusiness, relationship);
   }
 
   pointcut removeChildOid(Business parentBusiness, String relationshipId)
@@ -1051,12 +603,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, String relationshipId)
     : removeChildOid(parentBusiness, relationshipId)
   {
-    if (this.isSessionInitialized())
-    {
-      MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
-      Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveChildObject(parentBusiness, relationship.getChildOid(), mdClassIF.definesType());
-    }
+    this.state.removeChildOid(parentBusiness, relationshipId);
   }
 
   pointcut removeAllChildObjects(Business parentBusiness, Business childBusiness, String relationshipType)
@@ -1066,10 +613,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : removeAllChildObjects(parentBusiness, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
-    }
+    this.state.removeAllChildObjects(parentBusiness, childBusiness, relationshipType);
   }
 
   pointcut removeAllChildOid(Business parentBusiness, String childOid, String relationshipType)
@@ -1079,59 +623,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, String childOid, String relationshipType)
     : removeAllChildOid(parentBusiness, childOid, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveChildObject(parentBusiness, childOid, relationshipType);
-    }
-  }
-
-  /**
-   * Checks if session userIF has permission to remove the given child object
-   * from the given parent object. Either childOid or relationshipId is null,
-   * but not both.
-   *
-   *
-   * @param parentBusiness
-   *          object that the child object is removed from.
-   * @param childOid
-   *          oid to the child object.
-   * @param relationshipType
-   *          name of the relationship type.
-   * @param relationshipId
-   *          oid to the relationship.
-   */
-  private void checkRemoveChildObject(Business parentBusiness, String childOid, String relationshipType)
-  {
-    BusinessDAO parentBusinessDAO = parentBusiness.businessDAO();
-
-    MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-        String errorMsg = "Method [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
-        throw new DomainErrorException(errorMsg);
-      }
-    }
-    else
-    {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, parentBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        Business childBusiness = Business.get(childOid);
-        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_child permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + parentBusinessDAO.getType() + "]";
-        throw new DeleteChildPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
-      }
-    }
+    this.state.removeAllChildOid(parentBusiness, childOid, relationshipType);
   }
 
   // Check permission for adding a parent to an object
@@ -1142,10 +634,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : addParentObject(parentBusiness, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
-    }
+    this.state.addParentObject(parentBusiness, childBusiness, relationshipType);
   }
 
   // Check permission for adding a parent to an object
@@ -1156,53 +645,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(String parentOid, Business childBusiness, String relationshipType)
     : addParentOid(parentOid, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddParentObject(childBusiness, parentOid, relationshipType);
-    }
-  }
-
-  /**
-   * Checks if session userIF has permission to add the given parent object to
-   * the given child object.
-   *
-   * @param childBusiness
-   *          object that the parent object is added to.
-   * @param parentOid
-   *          oid to the child object.
-   * @param relationship
-   *          type of relationship involved.
-   */
-  private void checkAddParentObject(Business childBusiness, String parentOid, String relationshipType)
-  {
-    BusinessDAO childBusinessDAO = childBusiness.businessDAO();
-
-    MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the add_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
-        throw new DomainErrorException(errorMsg);
-      }
-    }
-    else
-    {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.ADD_PARENT, childBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        Business parentBusiness = Business.get(parentOid);
-        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
-        throw new AddParentPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
-      }
-    }
+    this.state.addParentOid(parentOid, childBusiness, relationshipType);
   }
 
   // Check permission for adding a parent to an object
@@ -1213,10 +656,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business childBusiness, Relationship relationship)
     : removeParentObject(childBusiness, relationship)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), relationship.getType());
-    }
+    this.state.removeParentObject(childBusiness, relationship);
   }
 
   pointcut removeParentOid(Business childBusiness, String relationshipId)
@@ -1226,12 +666,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business childBusiness, String relationshipId)
     : removeParentOid(childBusiness, relationshipId)
   {
-    if (this.isSessionInitialized())
-    {
-      MdClassDAOIF mdClassIF = MdClassDAO.getMdClassByRootId(IdParser.parseMdTypeRootIdFromId(relationshipId));
-      Relationship relationship = Relationship.get(relationshipId);
-      this.checkRemoveParentObject(childBusiness, relationship.getParentOid(), mdClassIF.definesType());
-    }
+    this.state.removeParentOid(childBusiness, relationshipId);
   }
 
   pointcut removeAllParentObjects(Business parentBusiness, Business childBusiness, String relationshipType)
@@ -1241,10 +676,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Business parentBusiness, Business childBusiness, String relationshipType)
     : removeAllParentObjects(parentBusiness, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      checkRemoveParentObject(childBusiness, parentBusiness.getOid(), relationshipType);
-    }
+    this.state.removeAllParentObjects(parentBusiness, childBusiness, relationshipType);
   }
 
   // Check permission for adding a parent to an object
@@ -1255,218 +687,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(String parentOid, Business childBusiness, String relationshipType)
     : removeAllParentOids(parentOid, childBusiness, relationshipType)
   {
-    if (this.isSessionInitialized())
-    {
-      checkRemoveParentObject(childBusiness, parentOid, relationshipType);
-    }
-  }
-
-  /**
-   * Checks if session userIF has permission to remove the given parent object
-   * from the given child object.
-   *
-   * @param childBusiness
-   *          object that the parent object is removed from.
-   * @param parentOid
-   *          reference to the child object.
-   * @param relationshipType
-   *          name of the relationship type.
-   * @param relationshipId
-   *          reference to the relationship.
-   */
-  private void checkRemoveParentObject(Business childBusiness, String parentOid, String relationshipType)
-  {
-    BusinessDAO childBusinessDAO = childBusiness.businessDAO();
-
-    MdRelationshipDAOIF mdRelationshipIF = MdRelationshipDAO.getMdRelationshipDAO(relationshipType);
-
-    if (this.mdMethodIFStack.size() > 0)
-    {
-      MdMethodDAOIF mdMethodIF = this.mdMethodIFStack.peek();
-      boolean access = MethodFacade.checkRelationshipAccess(mdMethodIF, Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have the delete_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
-        throw new DomainErrorException(errorMsg);
-      }
-    }
-    else
-    {
-      boolean access = SessionFacade.checkRelationshipAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_PARENT, childBusiness, mdRelationshipIF.getOid());
-
-      if (!access)
-      {
-        Business parentBusiness = Business.get(parentOid);
-        SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-        String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the delete_parent permission for relationship [" + mdRelationshipIF.definesType() + "] on type [" + childBusinessDAO.getType() + "]";
-        throw new DeleteParentPermissionException(errorMsg, parentBusiness, childBusiness, mdRelationshipIF, userIF);
-      }
-    }
-  }
-
-  /**
-   * Throws a business exception if the userIF bound to the given session does
-   * not have a lock on the given element.
-   *
-   * @param element
-   */
-  private void checkLock(Element element)
-  {
-    if (element.isNew())
-    {
-      return;
-    }
-
-    // If a thread has a lock on it, it could be an application or a user lock.
-    Thread threadThatLocksObject = ( LockObject.getLockObject() ).getThreadForAppLock(element.getOid());
-
-    if (threadThatLocksObject != null)
-    {
-      // User has an app lock
-      if (LockObject.getCurrentThread() == threadThatLocksObject)
-      {
-        return;
-      }
-      else
-      {
-        String err = "You must obtain an application lock before modifying an object. " + "Another thread has a lock on the object with oid [" + element.getOid() + "].";
-        throw new LockException(err);
-      }
-    }
-    ( LockObject.getLockObject() ).appLock(element.getOid());
-
-    SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-    // Check if the object is locked by another user.
-    if (element.hasAttribute(ElementInfo.LOCKED_BY))
-    {
-      String lockedBy = element.getValue(ElementInfo.LOCKED_BY);
-      // we do not perform the lockedby check on new BusinessDAOs
-      if (!lockedBy.equals(userIF.getOid()) && !lockedBy.trim().equals(""))
-      {
-        ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
-
-        String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. " + "It is currently locked by someone else.";
-        throw new LockException(err, element, "ExistingLockException");
-      }
-      // User has a user lock
-      else if (lockedBy.equals(userIF.getOid()))
-      {
-        return;
-      }
-    }
-
-    ( LockObject.getLockObject() ).releaseAppLock(element.getOid());
-
-    String err = "User [" + userIF.getSingleActorName() + "] must have a lock on the object with oid [" + element.getOid() + "] in order to modify it. ";
-    throw new LockException(err, element, "NeedLockException");
-  }
-
-  /**
-   * Checks if the session userIF has create permissions on the given Entity.
-   *
-   * @param entity
-   */
-  private void checkEntityCreatePermission(Mutable mutable)
-  {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.CREATE, mutable);
-
-    if (!access)
-    {
-      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
-      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to create [" + mutable.getType() + "] instances.";
-      throw new CreatePermissionException(errorMsg, mutable, sessionUserIF);
-    }
-  }
-
-  /**
-   * Checks if the currently executing method has create permissions on the
-   * given Entity.
-   *
-   * @param mdMethodIF
-   * @param entity
-   */
-  private void checkEntityCreatePermission(MdMethodDAOIF mdMethodIF, Entity entity)
-  {
-    boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.CREATE, entity);
-
-    if (!access)
-    {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to create [" + entity.getType() + "] instances.";
-      throw new DomainErrorException(errorMsg);
-    }
-  }
-
-  /**
-   * Checks if the session userIF has create permissions on the given Entity.
-   *
-   * @param entity
-   */
-  private void checkEntityReadPermission(Entity entity)
-  {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.READ, entity);
-
-    if (!access)
-    {
-      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
-      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to read [" + entity.getType() + "] instances.";
-      throw new ReadPermissionException(errorMsg, entity, sessionUserIF);
-    }
-  }
-
-  /**
-   * Checks if the currently executing method has read permissions on the given
-   * Entity.
-   *
-   * @param mdMethodIF
-   * @param entity
-   */
-  private void checkEntityReadPermission(MdMethodDAOIF mdMethodIF, Entity entity)
-  {
-    boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.READ, entity);
-
-    if (!access)
-    {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to read [" + entity.getType() + "] instances.";
-      throw new DomainErrorException(errorMsg);
-    }
-  }
-
-  /**
-   * Checks if the session userIF has write permissions on the given Entity.
-   *
-   * @param entity
-   */
-  private void checkEntityWritePermission(Mutable entity)
-  {
-    boolean access = SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity);
-
-    if (!access)
-    {
-      SingleActorDAOIF sessionUserIF = this.getRequestState().getSession().getUser();
-      String errorMsg = "User [" + sessionUserIF.getSingleActorName() + "] does not have permission to write to [" + entity.getType() + "] instances.";
-      throw new WritePermissionException(errorMsg, entity, sessionUserIF);
-    }
-  }
-
-  /**
-   * Checks if the currently executing method has write permissions on the given
-   * Entity.
-   *
-   * @param mdMethodIF
-   * @param entity
-   */
-  private void checkEntityWritePermission(MdMethodDAOIF mdMethodIF, Entity entity)
-  {
-    boolean access = MethodFacade.checkAccess(mdMethodIF, Operation.WRITE, entity);
-
-    if (!access && !SessionFacade.checkAccess(this.getRequestState().getSession().getOid(), Operation.WRITE, entity))
-    {
-      String errorMsg = "Method [" + mdMethodIF.getName() + "] does not have permission to write to [" + entity.getType() + "] instance with oid [" + entity.getOid() + "].";
-      throw new DomainErrorException(errorMsg);
-    }
+    this.state.removeAllParentOids(parentOid, childBusiness, relationshipType);
   }
 
   protected pointcut throwMessage(Message message)
@@ -1475,16 +696,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   before(Message message) : throwMessage(message)
   {
-    if (message instanceof Warning)
-    {
-      log.info(RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()));
-    }
-    else if (message instanceof Information)
-    {
-      log.info(RunwayLogUtil.formatLoggableMessage(message.getDeveloperMessage(), message.getLocalizedMessage()));
-    }
-
-    messageList.add(message);
+    this.state.throwMessage(message);
   }
 
   protected pointcut throwAttributeNotification(AttributeNotification attributeNotification)
@@ -1493,13 +705,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
 
   before(AttributeNotification attributeNotification) : throwAttributeNotification(attributeNotification)
   {
-    String mapKey = AttributeNotificationMap.getMapKey(attributeNotification.getComponentId(), attributeNotification.getAttributeName());
-    AttributeNotificationMap attributeNotificationMap = this.attributeNotificationMapMap.get(mapKey);
-
-    if (attributeNotificationMap != null)
-    {
-      attributeNotificationMap.convertAttributeNotification(attributeNotification);
-    }
+    this.state.throwAttributeNotification(attributeNotification);
   }
 
   // //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1514,17 +720,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(GraphObject graph)
   : applyGraphObject(graph)
   {
-    if (this.isSessionInitialized())
-    {
-      if (graph.isNew())
-      {
-        this.checkEntityCreatePermission(graph);
-      }
-      else
-      {
-        this.checkEntityWritePermission(graph);
-      }
-    }
+    this.state.applyGraphObject(graph);
   }
 
   // Check permission for adding a child to an object
@@ -1535,38 +731,8 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
     : addChildVertex(parent, child, mdEdge)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddChildObject(parent, child.getOid(), mdEdge);
-    }
+    this.state.addChildVertex(parent, child, mdEdge);
   }
-
-  /**
-   * Checks if session userIF has permission to add the given child object to
-   * the given parent object.
-   *
-   * @param parentBusiness
-   *          object that the child object is added to.
-   * @param childOid
-   *          reference to the child object.
-   * @param relationship
-   *          type of involved.
-   */
-  private void checkAddChildObject(VertexObject parent, String childOid, MdEdgeDAOIF mdEdge)
-  {
-    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, parent, mdEdge.getOid());
-
-    if (!access)
-    {
-      VertexObject child = VertexObject.get(mdEdge.getChildMdVertex(), childOid);
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdEdge.definesType() + "] on type [" + parent.getType() + "]";
-      throw new AddChildPermissionException(errorMsg, parent, child, mdEdge, userIF);
-    }
-  }
-
-  
 
   // Check permission for removing a child from an object
   pointcut removeChildVertex(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
@@ -1576,125 +742,30 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
     : removeChildVertex(parent, child, mdEdge)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveChildObject(parent, child.getOid(), mdEdge);
-    }
+    this.state.removeChildVertex(parent, child, mdEdge);
   }
 
-  /**
-   * Checks if session userIF has permission to remove the given child object
-   * from the given parent object. Either childOid or relationshipId is null,
-   * but not both.
-   *
-   *
-   * @param parent
-   *          object that the child object is removed from.
-   * @param childOid
-   *          oid to the child object.
-   * @param relationshipType
-   *          name of the relationship type.
-   * @param relationshipId
-   *          oid to the relationship.
-   */
-  private void checkRemoveChildObject(VertexObject parent, String childOid, MdEdgeDAOIF mdEdge)
-  {
-    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, parent, mdEdge.getOid());
-
-    if (!access)
-    {
-      VertexObject child = VertexObject.get(mdEdge.getChildMdVertex(), childOid);
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_child permission for relationship [" + mdEdge.definesType() + "] on type [" + parent.getType() + "]";
-      throw new DeleteChildPermissionException(errorMsg, parent, child, mdEdge, userIF);
-    }
-  }
-  
   // Check permission for adding a parent to an object
   pointcut addParentVertex(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
   : execution (* com.runwaysdk.business.graph.VertexObject.addParent(VertexObject, MdEdgeDAOIF))
   && args(parent, mdEdge) && this(child);
-  
+
   before(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
   : addParentVertex(child, parent, mdEdge)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkAddParentObject(child, parent.getOid(), mdEdge);
-    }
+    this.state.addParentVertex(child, parent, mdEdge);
   }
-  
-  /**
-   * Checks if session userIF has permission to add the given parent object to
-   * the given child object.
-   *
-   * @param childBusiness
-   *          object that the parent object is added to.
-   * @param parentOid
-   *          reference to the parent object.
-   * @param relationship
-   *          type of involved.
-   */
-  private void checkAddParentObject(VertexObject child, String parentOid, MdEdgeDAOIF mdEdge)
-  {
-    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.ADD_CHILD, child, mdEdge.getOid());
-    
-    if (!access)
-    {
-      VertexObject parent = VertexObject.get(mdEdge.getParentMdVertex(), parentOid);
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-      
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdEdge.definesType() + "] on type [" + child.getType() + "]";
-      throw new AddParentPermissionException(errorMsg, child, parent, mdEdge, userIF);
-    }
-  }
-  
-  
-  
+
   // Check permission for removing a parent from an object
   pointcut removeParentVertex(VertexObject parent, VertexObject child, MdEdgeDAOIF mdEdge)
   : execution (* com.runwaysdk.business.graph.VertexObject.removeParent(VertexObject, MdEdgeDAOIF))
   && args(parent, mdEdge) && this(child);
-  
+
   before(VertexObject child, VertexObject parent, MdEdgeDAOIF mdEdge)
   : removeParentVertex(child, parent, mdEdge)
   {
-    if (this.isSessionInitialized())
-    {
-      this.checkRemoveParentObject(child, parent.getOid(), mdEdge);
-    }
+    this.state.removeParentVertex(child, parent, mdEdge);
   }
-  
-  /**
-   * Checks if session userIF has permission to remove the given parent object
-   * from the given child object. Either parentOid or relationshipId is null,
-   * but not both.
-   *
-   *
-   * @param child
-   *          object that the parent object is removed from.
-   * @param parentOid
-   *          oid to the parent object.
-   * @param relationshipType
-   *          name of the relationship type.
-   * @param relationshipId
-   *          oid to the relationship.
-   */
-  private void checkRemoveParentObject(VertexObject child, String parentOid, MdEdgeDAOIF mdEdge)
-  {
-    boolean access = SessionFacade.checkEdgeAccess(this.getRequestState().getSession().getOid(), Operation.DELETE_CHILD, child, mdEdge.getOid());
-    
-    if (!access)
-    {
-      VertexObject parent = VertexObject.get(mdEdge.getParentMdVertex(), parentOid);
-      SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
-      
-      String errorMsg = "User [" + userIF.getSingleActorName() + "] does not have the add_parent permission for relationship [" + mdEdge.definesType() + "] on type [" + child.getType() + "]";
-      throw new DeleteParentPermissionException(errorMsg, child, parent, mdEdge, userIF);
-    }
-  }
-
 
   // Check write permission on an object attribute
   pointcut modifyGraphAttribute(GraphObject entity, String attributeName)
@@ -1709,11 +780,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(GraphObject entity, String attributeName) :
     modifyGraphAttribute(entity, attributeName)
   {
-    if (this.isSessionInitialized())
-    {
-      checkAttributePermissions((GraphObject) entity, attributeName);
-    }
+    this.state.modifyGraphAttribute(entity, attributeName);
   }
-  
-  
+
 }

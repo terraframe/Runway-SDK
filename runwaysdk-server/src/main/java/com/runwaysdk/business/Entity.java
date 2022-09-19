@@ -114,7 +114,7 @@ public abstract class Entity implements Mutable, Serializable
    * 
    * @param entityDAO
    */
-  void setDataEntity(EntityDAO entityDAO)
+  public void setDataEntity(EntityDAO entityDAO)
   {
     this.entityDAO = entityDAO;
   }

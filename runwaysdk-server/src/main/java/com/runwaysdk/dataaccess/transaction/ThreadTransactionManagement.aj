@@ -207,7 +207,7 @@ public privileged aspect ThreadTransactionManagement extends AbstractTransaction
   @Override
   protected List<ProblemIF> getRequestProblemList()
   {
-    return ThreadRequestManagement.aspectOf().getProblemList();
+    return ThreadRequestManagement.aspectOf().getState().getProblemList();
   }
 
 }

@@ -495,7 +495,7 @@ public class LockObject
    * 
    * @return current Thread.
    */
-  protected static Thread getCurrentThread()
+  public static Thread getCurrentThread()
   {
     RequestState currentRequestState = RequestState.getCurrentRequestState();
 

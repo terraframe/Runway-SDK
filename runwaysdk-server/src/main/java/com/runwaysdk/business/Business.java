@@ -256,7 +256,7 @@ public class Business extends Element
    * 
    * @return the BusinessDAO this Business represents
    */
-  BusinessDAO businessDAO()
+  public BusinessDAO businessDAO()
   {
     return (BusinessDAO) entityDAO;
   }

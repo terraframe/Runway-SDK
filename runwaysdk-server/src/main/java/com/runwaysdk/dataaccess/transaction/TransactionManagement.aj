@@ -70,7 +70,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
 
   protected List<ProblemIF> getRequestProblemList()
   {
-    return RequestManagement.aspectOf().getProblemList();
+    return RequestManagement.aspectOf().getState().getProblemList();
   }
 
   /**
