@@ -437,7 +437,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   {
     Business business = (Business) proceed(type);
 
-    this.state.checkEntityCreatePermission(business);
+    this.state.getNewBusinessFromFacade(business);
 
     return business;
   }
@@ -474,7 +474,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Element element)
   : elementLockedByCheck(element)
   {
-    this.state.checkEntityWritePermission(element);
+    this.state.elementLockedByCheck(element);
   }
 
   // Check write permission on an object attribute
@@ -491,7 +491,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Entity entity, String attributeName) :
       modifyEntityAttribute(entity, attributeName)
   {
-    this.state.checkAttributePermissions(entity, attributeName);
+    this.state.modifyEntityAttribute(entity, attributeName);
   }
 
   // Check write permission on an object attribute
@@ -509,7 +509,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   before(Element element, String attributeName) :
     modifyElementAttribute(element, attributeName)
   {
-    this.state.checkAttributePermissions(element, attributeName);
+    this.state.modifyEntityAttribute(element, attributeName);
   }
 
   // Check write permission on an object attribute

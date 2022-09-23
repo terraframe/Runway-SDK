@@ -200,7 +200,7 @@ public class AbstractRequestAspectState
     }
   }
 
-  public void checkEntityCreatePermission(Entity business)
+  public void getNewBusinessFromFacade(Entity business)
   {
     if (this.isSessionInitialized())
     {
@@ -310,7 +310,7 @@ public class AbstractRequestAspectState
   }
 
   // Check write permission on an object. Check on userLock().
-  public void checkEntityWritePermission(Element element)
+  public void elementLockedByCheck(Element element)
   {
     if (this.isSessionInitialized())
     {
@@ -327,7 +327,7 @@ public class AbstractRequestAspectState
   }
 
   // Check write permission on an object attribute
-  public void checkAttributePermissions(Entity entity, String attributeName)
+  public void modifyEntityAttribute(Entity entity, String attributeName)
   {
     if (this.isSessionInitialized())
     {
@@ -473,9 +473,6 @@ public class AbstractRequestAspectState
   public void checkAddChildObject(Business parentBusiness, Business childBusiness, String relationshipType)
   {
     this.checkAddChildObject(parentBusiness, childBusiness.getOid(), relationshipType);
-    if (this.isSessionInitialized())
-    {
-    }
   }
 
   /**
@@ -489,7 +486,7 @@ public class AbstractRequestAspectState
    * @param relationship
    *          type of involved.
    */
-  private void checkAddChildObject(Business parentBusiness, String childOid, String relationshipType)
+  public void checkAddChildObject(Business parentBusiness, String childOid, String relationshipType)
   {
     if (this.isSessionInitialized())
     {
