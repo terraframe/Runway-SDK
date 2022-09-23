@@ -21,10 +21,12 @@ package com.runwaysdk.dataaccess.metadata.graph;
 import java.util.List;
 import java.util.Map;
 
+import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.constants.BusinessInfo;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
+import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -36,11 +38,16 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeLocalDAO;
 import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.MetadataDAO;
+import com.runwaysdk.system.metadata.MdAttributeConcrete;
+import com.runwaysdk.system.metadata.MdAttributeIndices;
+import com.runwaysdk.system.metadata.MdAttributeLocal;
+import com.runwaysdk.system.metadata.MdAttributeLocalCharacterEmbedded;
 
 public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClassDAOIF
 {
@@ -269,7 +276,16 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
   @Override
   public void copyAttribute(MdAttributeDAOIF mdAttributeIFOriginal)
   {
-    MdAttributeDAO newMdAttribute = (MdAttributeDAO) mdAttributeIFOriginal.copy();
+    MdAttributeDAO newMdAttribute;
+    
+    if (mdAttributeIFOriginal instanceof MdAttributeLocalDAO)
+    {
+      newMdAttribute = (MdAttributeDAO) createNewFromLocal((MdAttributeLocalDAO) mdAttributeIFOriginal);
+    }
+    else
+    {
+      newMdAttribute = (MdAttributeDAO) mdAttributeIFOriginal.copy();
+    }
 
     if (mdAttributeIFOriginal instanceof MdAttributeConcreteDAOIF)
     {
@@ -290,6 +306,33 @@ public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClass
     }
 
     newMdAttribute.apply();
+  }
+
+  private MdAttributeDAO createNewFromLocal(MdAttributeLocalDAO mdAttributeIFOriginalDAO)
+  {
+    MdAttributeLocal mdAttributeIFOriginal = MdAttributeLocal.get(mdAttributeIFOriginalDAO.getOid());
+    MdAttributeLocalCharacterEmbedded embedded = new MdAttributeLocalCharacterEmbedded();
+    
+    String[] copyAttrs = new String[] { MdAttributeConcrete.ATTRIBUTENAME, MdAttributeConcreteInfo.REQUIRED };
+    
+    for (String attr : copyAttrs)
+    {
+      embedded.setValue(attr, mdAttributeIFOriginal.getValue(attr));
+    }
+    
+    List<MdAttributeIndices> indexes = mdAttributeIFOriginal.getIndexType();
+    if (indexes.size() > 0 && indexes.get(0).equals(MdAttributeIndices.UNIQUE_INDEX))
+    {
+      embedded.addIndexType(MdAttributeIndices.UNIQUE_INDEX);
+    }
+    
+    embedded.getDisplayLabel().setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, mdAttributeIFOriginal.getDisplayLabel().getDefaultValue());
+    embedded.getDisplayLabel().setLocaleMap(mdAttributeIFOriginal.getDisplayLabel().getLocaleMap());
+    
+    embedded.getDescription().setValue(MdAttributeLocalInfo.DEFAULT_LOCALE, mdAttributeIFOriginal.getDescription().getDefaultValue());
+    embedded.getDescription().setLocaleMap(mdAttributeIFOriginal.getDescription().getLocaleMap());
+    
+    return (MdAttributeDAO) BusinessFacade.getEntityDAO(embedded);
   }
 
   /**
