@@ -26,7 +26,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.5.14-SNAPSHOT</version>
+    <version>3.5.15-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-test</artifactId>
@@ -128,7 +128,7 @@
                   <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
                   <arguments>
                     <argument>${project.basedir}/src/main/domain</argument>
-                    <argument/>
+                    <argument />
                     <argument>false</argument>
                   </arguments>
                 </configuration>
@@ -163,7 +163,7 @@
                   <mainClass>com.runwaysdk.dataaccess.io.UndoAll</mainClass>
                   <arguments>
                     <argument>${project.basedir}/src/main/domain</argument>
-                    <argument/>
+                    <argument />
                     <argument>false</argument>
                   </arguments>
                 </configuration>
@@ -352,7 +352,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <execute/>
+                    <execute />
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -365,7 +365,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
