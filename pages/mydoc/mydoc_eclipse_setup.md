@@ -20,6 +20,7 @@ The Java version you use to run Eclipse will likely be different than that which
 Once SDKMan is installed, you can use `sdk java list` to list all the available Java verisons. We recommend installing:
 1. Java 8 Open for Runway apps (from Java.net provider)
 2. Java 11 Oracle for Eclipse [(The Eclipse foundation recommends only usng Sun or IBM based Java verisons, especially on Linux)](https://wiki.eclipse.org/IRC_FAQ#I_just_installed_Eclipse_on_Linux.2C_but_it_does_not_start._What_is_the_problem.3F)
+3. Maven 3. For use in command-line applications.
 
 When SDKMan asks if you want to set your newly Java as default, make sure to set the Java 11 Oracle as default. This will be used later when we configure Eclipse.
 
