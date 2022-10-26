@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeNumberBase extends com.runwaysdk.system.metadata.MdAttributePrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeNumber";
-  public static java.lang.String REJECTNEGATIVE = "rejectNegative";
-  public static java.lang.String REJECTPOSITIVE = "rejectPositive";
-  public static java.lang.String REJECTZERO = "rejectZero";
+  public final static java.lang.String REJECTNEGATIVE = "rejectNegative";
+  public final static java.lang.String REJECTPOSITIVE = "rejectPositive";
+  public final static java.lang.String REJECTZERO = "rejectZero";
   private static final long serialVersionUID = 2030087577;
   
   public MdAttributeNumberBase()

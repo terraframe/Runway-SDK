@@ -79,9 +79,9 @@ public abstract class EntityDTO extends MutableDTO
   /** Generated accessor methods **/
   /**********************************************************************************/
 
-  public static java.lang.String KEYNAME    = "keyName";
+  public final static java.lang.String KEYNAME    = "keyName";
 
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String SITEMASTER = "siteMaster";
 
   public String getKeyName()
   {

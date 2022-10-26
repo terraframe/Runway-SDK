@@ -118,7 +118,7 @@ public class AttributeMultiTerm extends AttributeMultiReference implements Attri
   {
     Set<String> cloneSet = new TreeSet<String>(this.getCachedItemIdSet());
 
-    return new AttributeMultiTerm(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()), cloneSet);
+    return new AttributeMultiTerm(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue(), cloneSet);
   }
 
   /**

@@ -34,11 +34,11 @@ public abstract class GeoEntityProblemViewDTOBase extends com.runwaysdk.business
     return CLASS;
   }
   
-  public static java.lang.String CONCRETEID = "concreteId";
-  public static java.lang.String GEOID = "geoId";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PROBLEM = "problem";
-  public static java.lang.String PROBLEMNAME = "problemName";
+  public final static java.lang.String CONCRETEID = "concreteId";
+  public final static java.lang.String GEOID = "geoId";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PROBLEM = "problem";
+  public final static java.lang.String PROBLEMNAME = "problemName";
   public String getConcreteId()
   {
     return getValue(CONCRETEID);

@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebTextBase extends com.runwaysdk.system.metadata.MdWebPrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebText";
-  public static java.lang.String HEIGHT = "height";
-  public static java.lang.String WIDTH = "width";
+  public final static java.lang.String HEIGHT = "height";
+  public final static java.lang.String WIDTH = "width";
   private static final long serialVersionUID = -319901258;
   
   public MdWebTextBase()

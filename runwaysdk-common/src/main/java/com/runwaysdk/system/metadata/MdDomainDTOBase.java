@@ -45,8 +45,8 @@ public abstract class MdDomainDTOBase extends com.runwaysdk.system.metadata.Meta
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String DOMAINNAME = "domainName";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DOMAINNAME = "domainName";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

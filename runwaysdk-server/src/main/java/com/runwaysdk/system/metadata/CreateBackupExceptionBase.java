@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class CreateBackupExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CreateBackupException";
-  public static java.lang.String LOCATION = "location";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String LOCATION = "location";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -1720639023;
   

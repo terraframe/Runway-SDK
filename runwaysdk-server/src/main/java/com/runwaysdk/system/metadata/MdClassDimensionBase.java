@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdClassDimensionBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdClassDimension";
-  public static java.lang.String DEFININGMDCLASS = "definingMdClass";
-  public static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
+  public final static java.lang.String DEFININGMDCLASS = "definingMdClass";
+  public final static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
   private static final long serialVersionUID = 1017625751;
   
   public MdClassDimensionBase()

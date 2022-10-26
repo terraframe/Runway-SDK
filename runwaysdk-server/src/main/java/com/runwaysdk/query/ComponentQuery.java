@@ -598,7 +598,7 @@ public abstract class ComponentQuery
     {
       resultSet.next();
       String result = resultSet.getString("ct");
-      count = new Long(result.toString());
+      count = Long.valueOf(result.toString());
     }
     catch (SQLException sqlEx1)
     {

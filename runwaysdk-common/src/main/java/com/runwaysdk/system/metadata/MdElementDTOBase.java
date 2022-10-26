@@ -45,8 +45,8 @@ public abstract class MdElementDTOBase extends com.runwaysdk.system.metadata.MdE
     return CLASS;
   }
   
-  public static java.lang.String EXTENDABLE = "extendable";
-  public static java.lang.String ISABSTRACT = "isAbstract";
+  public final static java.lang.String EXTENDABLE = "extendable";
+  public final static java.lang.String ISABSTRACT = "isAbstract";
   public Boolean getExtendable()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(EXTENDABLE));

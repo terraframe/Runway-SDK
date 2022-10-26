@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class IndicatorCompositeBase extends com.runwaysdk.system.metadata.IndicatorElement
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.IndicatorComposite";
-  public static java.lang.String LEFTOPERAND = "leftOperand";
-  public static java.lang.String OPERATOR = "operator";
-  public static java.lang.String PERCENTAGE = "percentage";
-  public static java.lang.String RIGHTOPERAND = "rightOperand";
+  public final static java.lang.String LEFTOPERAND = "leftOperand";
+  public final static java.lang.String OPERATOR = "operator";
+  public final static java.lang.String PERCENTAGE = "percentage";
+  public final static java.lang.String RIGHTOPERAND = "rightOperand";
   private static final long serialVersionUID = -221700250;
   
   public IndicatorCompositeBase()

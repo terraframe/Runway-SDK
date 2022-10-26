@@ -48,7 +48,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected Integer getIntegerObject()
   {
-    return new Integer(4500);
+    return Integer.valueOf(4500);
   }
 
   /*
@@ -70,7 +70,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected Long getLongObject()
   {
-    return new Long(989999000);
+    return Long.valueOf(989999000);
   }
 
   /*
@@ -114,7 +114,7 @@ public class LocalizedFormatTest extends AbstractFormatTest
   @Override
   protected Double getDoubleObject()
   {
-    return new Double("714104.008");
+    return Double.valueOf("714104.008");
   }
 
   /*

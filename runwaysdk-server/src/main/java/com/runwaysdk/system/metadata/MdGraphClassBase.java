@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdGraphClassBase extends com.runwaysdk.system.metadata.MdClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdGraphClass";
-  public static java.lang.String DBCLASSNAME = "dbClassName";
-  public static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
+  public final static java.lang.String DBCLASSNAME = "dbClassName";
+  public final static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
   private static final long serialVersionUID = 1293346322;
   
   public MdGraphClassBase()

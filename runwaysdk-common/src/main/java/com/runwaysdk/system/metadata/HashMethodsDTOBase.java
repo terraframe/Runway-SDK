@@ -45,7 +45,7 @@ public abstract class HashMethodsDTOBase extends com.runwaysdk.system.Enumeratio
     return CLASS;
   }
   
-  public static java.lang.String MESSAGEDIGEST = "messageDigest";
+  public final static java.lang.String MESSAGEDIGEST = "messageDigest";
   public String getMessageDigest()
   {
     return getValue(MESSAGEDIGEST);

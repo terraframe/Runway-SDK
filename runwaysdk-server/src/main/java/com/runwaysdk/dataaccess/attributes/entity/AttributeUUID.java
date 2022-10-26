@@ -87,7 +87,7 @@ public class AttributeUUID extends Attribute implements AttributeUUIDIF
    */
   public AttributeUUID attributeClone()
   {
-    return new AttributeUUID(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeUUID(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 
 //  @Override

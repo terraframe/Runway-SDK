@@ -45,9 +45,9 @@ public abstract class DateConditionDTOBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDFIELD = "definingMdField";
-  public static java.lang.String OPERATION = "operation";
-  public static java.lang.String VALUE = "value";
+  public final static java.lang.String DEFININGMDFIELD = "definingMdField";
+  public final static java.lang.String OPERATION = "operation";
+  public final static java.lang.String VALUE = "value";
   public com.runwaysdk.system.metadata.MdFieldDTO getDefiningMdField()
   {
     if(getValue(DEFININGMDFIELD) == null || getValue(DEFININGMDFIELD).trim().equals(""))

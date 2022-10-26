@@ -29,11 +29,11 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeBooleanBase extends com.runwaysdk.system.metadata.MdAttributePrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeBoolean";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String NEGATIVEDISPLAYLABEL = "negativeDisplayLabel";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String NEGATIVEDISPLAYLABEL = "negativeDisplayLabel";
   private com.runwaysdk.business.Struct negativeDisplayLabel = null;
   
-  public static java.lang.String POSITIVEDISPLAYLABEL = "positiveDisplayLabel";
+  public final static java.lang.String POSITIVEDISPLAYLABEL = "positiveDisplayLabel";
   private com.runwaysdk.business.Struct positiveDisplayLabel = null;
   
   private static final long serialVersionUID = 767464347;

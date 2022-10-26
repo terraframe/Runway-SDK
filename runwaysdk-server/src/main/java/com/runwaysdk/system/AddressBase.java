@@ -29,14 +29,14 @@ package com.runwaysdk.system;
 public abstract class AddressBase extends com.runwaysdk.business.Struct
 {
   public final static String CLASS = "com.runwaysdk.system.Address";
-  public static java.lang.String CITY = "city";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String POSTALCODE = "postalCode";
-  public static java.lang.String PRIMARYADDRESS = "primaryAddress";
-  public static java.lang.String SECONDARYADDRESS = "secondaryAddress";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String ZIPCODE = "zipCode";
+  public final static java.lang.String CITY = "city";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String POSTALCODE = "postalCode";
+  public final static java.lang.String PRIMARYADDRESS = "primaryAddress";
+  public final static java.lang.String SECONDARYADDRESS = "secondaryAddress";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String ZIPCODE = "zipCode";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -1843053901;
   

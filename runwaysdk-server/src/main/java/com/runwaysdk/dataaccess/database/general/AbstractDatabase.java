@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jun 23, 2005
@@ -22,6 +22,7 @@
 package com.runwaysdk.dataaccess.database.general;
 
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -144,7 +145,7 @@ public abstract class AbstractDatabase
 {
   public static final String  UNIQUE_ATTRIBUTE_GROUP_INDEX_PREFIX = "_group_unique";
 
-  public static int           MAX_LENGTH                          = 65535;
+  public static final int     MAX_LENGTH                          = 65535;
 
   protected DataSource        dataSource;
 
@@ -334,7 +335,6 @@ public abstract class AbstractDatabase
     try
     {
       Connection conn = null;
-      PreparedStatement statement = null;
 
       try
       {
@@ -345,8 +345,10 @@ public abstract class AbstractDatabase
         conn.setAutoCommit(false);
         conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-        statement = conn.prepareStatement("SET CLIENT_ENCODING TO 'UTF8'");
-        statement.execute();
+        try (PreparedStatement statement = conn.prepareStatement("SET CLIENT_ENCODING TO 'UTF8'"))
+        {
+          statement.execute();
+        }
         /*
          * java.util.Date endTime = new java.util.Date(); long totalTime =
          * endTime.getTime() - startTime.getTime(); System.out.
@@ -434,7 +436,6 @@ public abstract class AbstractDatabase
     try
     {
       Connection conn = null;
-      PreparedStatement statement = null;
       try
       {
         conn = this.dataSource.getConnection();
@@ -442,8 +443,10 @@ public abstract class AbstractDatabase
 
         conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-        statement = conn.prepareStatement("SET CLIENT_ENCODING TO 'UTF8'");
-        statement.execute();
+        try (PreparedStatement statement = conn.prepareStatement("SET CLIENT_ENCODING TO 'UTF8'"))
+        {
+          statement.execute();
+        }
       }
       catch (SQLException ex)
       {
@@ -2632,16 +2635,12 @@ public abstract class AbstractDatabase
    */
   public int[] executeStatementBatch(List<PreparedStatement> preparedStmts)
   {
-    int[] batchResults = new int[0];
     if (preparedStmts.size() == 0)
     {
-      batchResults = new int[0];
-      return batchResults;
+      return new int[0];
     }
-    else
-    {
-      batchResults = new int[preparedStmts.size()];
-    }
+
+    int[] batchResults = new int[preparedStmts.size()];
 
     try
     {
@@ -2690,56 +2689,55 @@ public abstract class AbstractDatabase
     Connection conn = Database.getConnection();
 
     String returnString = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-
-      boolean hasNext = resultSet.next();
-
-      if (!hasNext)
+      try (ResultSet resultSet = statement.executeQuery(query))
       {
-        return "";
-      }
 
-      Object returnObject = resultSet.getObject(columnName);
+        boolean hasNext = resultSet.next();
 
-      if (returnObject == null)
-      {
-        return "";
-      }
-      else if (returnObject instanceof Clob)
-      {
-        Clob clob = resultSet.getClob(columnName);
-
-        // null check
-        if (clob == null)
+        if (!hasNext)
         {
           return "";
         }
 
-        returnString = clob.getSubString(1, (int) clob.length());
-      }
-      else if (returnObject instanceof String)
-      {
-        String clobString = (String) resultSet.getObject(columnName);
+        Object returnObject = resultSet.getObject(columnName);
 
-        // null check
-        if (clobString == null)
+        if (returnObject == null)
         {
           return "";
         }
+        else if (returnObject instanceof Clob)
+        {
+          Clob clob = resultSet.getClob(columnName);
 
-        returnString = clobString;
-      }
-      else
-      {
-        String errMsg = "Database [" + ResultSet.class.getName() + "] object did not return " + "a String or a Clob for a [" + MdAttributeClobInfo.CLASS + "] attribute.";
-        throw new ProgrammingErrorException(errMsg);
+          // null check
+          if (clob == null)
+          {
+            return "";
+          }
+
+          returnString = clob.getSubString(1, (int) clob.length());
+        }
+        else if (returnObject instanceof String)
+        {
+          String clobString = (String) resultSet.getObject(columnName);
+
+          // null check
+          if (clobString == null)
+          {
+            return "";
+          }
+
+          returnString = clobString;
+        }
+        else
+        {
+          String errMsg = "Database [" + ResultSet.class.getName() + "] object did not return " + "a String or a Clob for a [" + MdAttributeClobInfo.CLASS + "] attribute.";
+          throw new ProgrammingErrorException(errMsg);
+        }
       }
     }
     catch (SQLException e)
@@ -2750,10 +2748,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2776,89 +2770,97 @@ public abstract class AbstractDatabase
   public void setClob(String table, String columnName, String oid, String clobString)
   {
     Connection conn = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      boolean resultSetFound = resultSet.next();
-      if (!resultSetFound)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        return;
-      }
 
-      boolean setNull = false;
-      if (clobString.equals(""))
-      {
-        setNull = true;
-      }
-
-      Object returnObject = resultSet.getObject(columnName);
-
-      if (returnObject instanceof Clob)
-      {
-        Clob clob = resultSet.getClob(columnName);
-
-        // null check
-        if (clob == null)
+        boolean resultSetFound = resultSet.next();
+        if (!resultSetFound)
         {
-          // add the bytes directly
-          PreparedStatement prepared = conn.prepareStatement(update);
-          if (setNull)
-          {
-            prepared.setNull(1, java.sql.Types.CLOB);
-          }
-          else
-          {
-            prepared.setString(1, clobString);
-          }
-          prepared.executeUpdate();
+          return;
         }
-        else
+
+        boolean setNull = false;
+        if (clobString.equals(""))
         {
-          // modify the CLOB
-          if (setNull)
+          setNull = true;
+        }
+
+        Object returnObject = resultSet.getObject(columnName);
+
+        if (returnObject instanceof Clob)
+        {
+          Clob clob = resultSet.getClob(columnName);
+
+          // null check
+          if (clob == null)
           {
-            clob.setString(1, null);
+            // add the bytes directly
+            try (PreparedStatement prepared = conn.prepareStatement(update))
+            {
+
+              if (setNull)
+              {
+                prepared.setNull(1, java.sql.Types.CLOB);
+              }
+              else
+              {
+                prepared.setString(1, clobString);
+              }
+              prepared.executeUpdate();
+            }
           }
           else
           {
-            clob.setString(1, clobString);
-          }
+            // modify the CLOB
+            if (setNull)
+            {
+              clob.setString(1, null);
+            }
+            else
+            {
+              clob.setString(1, clobString);
+            }
 
-          if (conn.getMetaData().locatorsUpdateCopy())
+            if (conn.getMetaData().locatorsUpdateCopy())
+            {
+              // The current database needs to be manually updated (it doesn't
+              // support auto blob updates)
+              try (PreparedStatement prepared = conn.prepareStatement(update))
+              {
+                prepared.setClob(1, clob);
+                prepared.executeUpdate();
+              }
+            }
+          }
+        }
+        else if (returnObject == null || returnObject instanceof String)
+        {
+          // The current database needs to be manually updated (it doesn't
+          // support
+          // auto blob updates)
+          try (PreparedStatement prepared = conn.prepareStatement(update))
           {
-            // The current database needs to be manually updated (it doesn't
-            // support auto blob updates)
-            PreparedStatement prepared = conn.prepareStatement(update);
-            prepared.setClob(1, clob);
+            if (setNull)
+            {
+              prepared.setNull(1, java.sql.Types.CLOB);
+            }
+            else
+            {
+              prepared.setString(1, clobString);
+            }
             prepared.executeUpdate();
           }
         }
-      }
-      else if (returnObject == null || returnObject instanceof String)
-      {
-        // The current database needs to be manually updated (it doesn't support
-        // auto blob updates)
-        PreparedStatement prepared = conn.prepareStatement(update);
-        if (setNull)
-        {
-          prepared.setNull(1, java.sql.Types.CLOB);
-        }
         else
         {
-          prepared.setString(1, clobString);
+          String errMsg = "Database [" + ResultSet.class.getName() + "] object did not return " + "a String or a Clob for a [" + MdAttributeClobInfo.CLASS + "] attribute.";
+          throw new ProgrammingErrorException(errMsg);
         }
-        prepared.executeUpdate();
-      }
-      else
-      {
-        String errMsg = "Database [" + ResultSet.class.getName() + "] object did not return " + "a String or a Clob for a [" + MdAttributeClobInfo.CLASS + "] attribute.";
-        throw new ProgrammingErrorException(errMsg);
       }
     }
     catch (SQLException e)
@@ -2869,10 +2871,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2920,41 +2918,27 @@ public abstract class AbstractDatabase
   public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
     byte[] returnBytes = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-      resultSet.next();
-      Blob blob = resultSet.getBlob(columnName);
+      try (ResultSet resultSet = statement.executeQuery(query))
+      {
+        resultSet.next();
+        Blob blob = resultSet.getBlob(columnName);
 
-      // null check
-      if (blob == null)
-        return new byte[0];
+        // null check
+        if (blob == null)
+          return new byte[0];
 
-      returnBytes = blob.getBytes(1, (int) blob.length());
+        returnBytes = blob.getBytes(1, (int) blob.length());
+      }
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
     }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
-    }
+
     return returnBytes;
   }
 
@@ -2975,22 +2959,21 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     byte[] returnBytes = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-      resultSet.next();
-      Blob blob = resultSet.getBlob(columnName);
+      try (ResultSet resultSet = statement.executeQuery(query))
+      {
+        resultSet.next();
+        Blob blob = resultSet.getBlob(columnName);
 
-      // null check
-      if (blob == null)
-        return new byte[0];
+        // null check
+        if (blob == null)
+          return new byte[0];
 
-      returnBytes = blob.getBytes(pos, length);
+        returnBytes = blob.getBytes(pos, length);
+      }
     }
     catch (SQLException e)
     {
@@ -3000,10 +2983,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -3034,40 +3013,40 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     int written = 0;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      resultSet.next();
-      Blob blob = resultSet.getBlob(columnName);
+      try (ResultSet resultSet = statement.executeQuery(select))
+      {
+        resultSet.next();
+        Blob blob = resultSet.getBlob(columnName);
 
-      // null check
-      if (blob == null)
-      {
-        // because this method is used to place byte in specific positions, it
-        // wouldn't
-        // make sense to insert the bytes into a null field as it defeats the
-        // purpose of
-        // this method. Just return a write count of 0 and don't do anything
-        // else.
-        return written;
-      }
-      else
-      {
-        // modify the blob
-        written = blob.setBytes(pos, bytes, offset, length);
-        if (conn.getMetaData().locatorsUpdateCopy())
+        // null check
+        if (blob == null)
         {
-          // The current database needs to be manually updated (it doesn't
-          // support auto blob updates)
-          PreparedStatement prepared = conn.prepareStatement(update);
-          prepared.setBlob(1, blob);
-          prepared.executeUpdate();
+          // because this method is used to place byte in specific positions, it
+          // wouldn't make sense to insert the bytes into a null field as it
+          // defeats the purpose of this method. Just return a write count of 0
+          // and don't do anything else.
+          return written;
+        }
+        else
+        {
+          // modify the blob
+          written = blob.setBytes(pos, bytes, offset, length);
+          if (conn.getMetaData().locatorsUpdateCopy())
+          {
+            // The current database needs to be manually updated (it doesn't
+            // support auto blob updates)
+            try (PreparedStatement prepared = conn.prepareStatement(update))
+            {
+              prepared.setBlob(1, blob);
+              prepared.executeUpdate();
+            }
+          }
         }
       }
     }
@@ -3079,10 +3058,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -3106,42 +3081,46 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     int written = 0;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement();)
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      boolean resultSetFound = resultSet.next();
-      if (!resultSetFound)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        return 0;
-      }
-      Blob blob = resultSet.getBlob(columnName);
 
-      // null check
-      if (blob == null)
-      {
-        // add the bytes directly
-        PreparedStatement prepared = conn.prepareStatement(update);
-        prepared.setBytes(1, bytes);
-        prepared.executeUpdate();
-        written = bytes.length;
-      }
-      else
-      {
-        // modify the blob
-        written = blob.setBytes(1, bytes);
-        if (conn.getMetaData().locatorsUpdateCopy())
+        boolean resultSetFound = resultSet.next();
+        if (!resultSetFound)
         {
-          // The current database needs to be manually updated (it doesn't
-          // support auto blob updates)
-          PreparedStatement prepared = conn.prepareStatement(update);
-          prepared.setBlob(1, blob);
-          prepared.executeUpdate();
+          return 0;
+        }
+        Blob blob = resultSet.getBlob(columnName);
+
+        // null check
+        if (blob == null)
+        {
+          // add the bytes directly
+          try (PreparedStatement prepared = conn.prepareStatement(update))
+          {
+            prepared.setBytes(1, bytes);
+            prepared.executeUpdate();
+          }
+          written = bytes.length;
+        }
+        else
+        {
+          // modify the blob
+          written = blob.setBytes(1, bytes);
+          if (conn.getMetaData().locatorsUpdateCopy())
+          {
+            // The current database needs to be manually updated (it doesn't
+            // support auto blob updates)
+            try (PreparedStatement prepared = conn.prepareStatement(update))
+            {
+              prepared.setBlob(1, blob);
+              prepared.executeUpdate();
+            }
+          }
         }
       }
     }
@@ -3153,10 +3132,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -3179,22 +3154,21 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     long size = 0;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement();)
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-      resultSet.next();
-      Blob blob = resultSet.getBlob(columnName);
+      try (ResultSet resultSet = statement.executeQuery(query))
+      {
+        resultSet.next();
+        Blob blob = resultSet.getBlob(columnName);
 
-      // check for a null blob value
-      if (blob == null)
-        return 0; // the blob is null, hence it has no size.
+        // check for a null blob value
+        if (blob == null)
+          return 0; // the blob is null, hence it has no size.
 
-      size = blob.length();
+        size = blob.length();
+      }
     }
     catch (SQLException e)
     {
@@ -3204,10 +3178,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -3228,50 +3198,38 @@ public abstract class AbstractDatabase
    */
   public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement();)
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      resultSet.next();
-      Blob blob = resultSet.getBlob(columnName);
-
-      if (blob != null)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        blob.truncate(length);
-        // modify the blob
-        if (conn.getMetaData().locatorsUpdateCopy())
+
+        resultSet.next();
+        Blob blob = resultSet.getBlob(columnName);
+
+        if (blob != null)
         {
-          // The current database needs to be manually updated (it doesn't
-          // support auto blob updates)
-          PreparedStatement prepared = conn.prepareStatement(update);
-          prepared.setBlob(1, blob);
-          prepared.executeUpdate();
+          blob.truncate(length);
+          // modify the blob
+          if (conn.getMetaData().locatorsUpdateCopy())
+          {
+            // The current database needs to be manually updated (it doesn't
+            // support auto blob updates)
+            try (PreparedStatement prepared = conn.prepareStatement(update))
+            {
+              prepared.setBlob(1, blob);
+              prepared.executeUpdate();
+            }
+          }
         }
+        // else do nothing because there is nothing to truncate
       }
-      // else do nothing because there is nothing to truncate
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
     }
   }
 
@@ -3284,7 +3242,7 @@ public abstract class AbstractDatabase
    */
   public void throwDatabaseException(SQLException ex)
   {
-    this.throwDatabaseException(ex, new String(""));
+    this.throwDatabaseException(ex, "");
   }
 
   /**
@@ -3366,12 +3324,10 @@ public abstract class AbstractDatabase
     Connection conx = Database.getConnection();
     String selectStatement = sqlStmt;
 
-    Statement statement = null;
     ResultSet resultSet = null;
 
-    try
+    try (Statement statement = conx.createStatement())
     {
-      statement = conx.createStatement();
 
       boolean isResultSet = statement.execute(selectStatement);
 
@@ -4082,49 +4038,37 @@ public abstract class AbstractDatabase
   public int updateClassAndSource(String mdTypeId, String table, String classColumnName, byte[] classBytes, String sourceColumnName, String source, Connection conn)
   {
     int written = 0;
-    Statement statement = null;
-    ResultSet resultSet = null;
 
-    try
+    try (Statement statement = conn.createStatement())
     {
       // clear the blobs
       this.truncateBlob(table, classColumnName, mdTypeId, 0, conn);
 
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + classColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
       String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ?  WHERE " + EntityInfo.OID + " = '" + mdTypeId + "'";
-      resultSet = statement.executeQuery(select);
-      boolean resultSetFound = resultSet.next();
-      if (!resultSetFound)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        return 0;
+
+        boolean resultSetFound = resultSet.next();
+        if (!resultSetFound)
+        {
+          return 0;
+        }
+
+        Blob classBlob = resultSet.getBlob(classColumnName);
+
+        try (PreparedStatement prepared = conn.prepareStatement(update))
+        {
+          written = addBlobToStatement(prepared, 1, classBlob, classBytes);
+          prepared.setString(2, source);
+          prepared.executeUpdate();
+        }
       }
-
-      Blob classBlob = resultSet.getBlob(classColumnName);
-
-      PreparedStatement prepared = conn.prepareStatement(update);
-      written = addBlobToStatement(prepared, 1, classBlob, classBytes);
-      prepared.setString(2, source);
-      prepared.executeUpdate();
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
     }
     return written;
   }
@@ -4148,8 +4092,6 @@ public abstract class AbstractDatabase
   public int updateMdFacadeGeneratedClasses(String mdFacadeId, String table, String serverClassesColumnName, byte[] serverClassesBytes, String commonClassesColumnName, byte[] commonClassesBytes, String clientClassesColumnName, byte[] clientClassesBytes, Connection conn)
   {
     int written = 0;
-    Statement statement = null;
-    ResultSet resultSet = null;
 
     try
     {
@@ -4159,43 +4101,37 @@ public abstract class AbstractDatabase
       this.truncateBlob(table, clientClassesColumnName, mdFacadeId, 0, conn);
 
       // get the blob
-      statement = conn.createStatement();
-      String select = "SELECT " + serverClassesColumnName + ", " + commonClassesColumnName + ", " + clientClassesColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
-      String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
-      resultSet = statement.executeQuery(select);
-      boolean resultSetFound = resultSet.next();
-      if (!resultSetFound)
+      try (Statement statement = conn.createStatement())
       {
-        return 0;
+
+        String select = "SELECT " + serverClassesColumnName + ", " + commonClassesColumnName + ", " + clientClassesColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
+        String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
+        try (ResultSet resultSet = statement.executeQuery(select))
+        {
+
+          boolean resultSetFound = resultSet.next();
+          if (!resultSetFound)
+          {
+            return 0;
+          }
+
+          Blob serverClassesBlob = resultSet.getBlob(serverClassesColumnName);
+          Blob commonClassesBlob = resultSet.getBlob(commonClassesColumnName);
+          Blob clientClassesBlob = resultSet.getBlob(clientClassesColumnName);
+
+          try (PreparedStatement prepared = conn.prepareStatement(update))
+          {
+            written += addBlobToStatement(prepared, 1, serverClassesBlob, serverClassesBytes);
+            written += addBlobToStatement(prepared, 2, commonClassesBlob, commonClassesBytes);
+            written += addBlobToStatement(prepared, 3, clientClassesBlob, clientClassesBytes);
+            prepared.executeUpdate();
+          }
+        }
       }
-
-      Blob serverClassesBlob = resultSet.getBlob(serverClassesColumnName);
-      Blob commonClassesBlob = resultSet.getBlob(commonClassesColumnName);
-      Blob clientClassesBlob = resultSet.getBlob(clientClassesColumnName);
-
-      PreparedStatement prepared = conn.prepareStatement(update);
-      written += addBlobToStatement(prepared, 1, serverClassesBlob, serverClassesBytes);
-      written += addBlobToStatement(prepared, 2, commonClassesBlob, commonClassesBytes);
-      written += addBlobToStatement(prepared, 3, clientClassesBlob, clientClassesBytes);
-      prepared.executeUpdate();
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
     }
     return written;
   }
@@ -4614,43 +4550,27 @@ public abstract class AbstractDatabase
   public String getSourceField(String mdTypeId, Connection conn, String table, String columnName)
   {
     String stubSource = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
 
-    try
+    try (Statement statement = conn.createStatement())
     {
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
-      resultSet = statement.executeQuery(select);
-
-      if (resultSet.next())
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        stubSource = resultSet.getString(columnName);
+        if (resultSet.next())
+        {
+          stubSource = resultSet.getString(columnName);
+        }
+        else
+        {
+          stubSource = "";
+        }
       }
-      else
-      {
-        stubSource = "";
-      }
-
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
     }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
-    }
+
     return stubSource;
   }
 
@@ -4670,28 +4590,26 @@ public abstract class AbstractDatabase
   public String getEnumCacheFieldInTable(String tableName, String columnName, String entityId)
   {
     Connection conn = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + entityId + "'";
-      resultSet = statement.executeQuery(query);
-
-      String databaseCachedEnumIds = "";
-
-      while (resultSet.next())
+      try (ResultSet resultSet = statement.executeQuery(query))
       {
-        databaseCachedEnumIds = resultSet.getString(1);
 
-        if (databaseCachedEnumIds == null)
+        String databaseCachedEnumIds = "";
+
+        while (resultSet.next())
         {
-          databaseCachedEnumIds = "";
+          databaseCachedEnumIds = resultSet.getString(1);
+
+          if (databaseCachedEnumIds == null)
+          {
+            databaseCachedEnumIds = "";
+          }
+
+          return databaseCachedEnumIds;
         }
-
-        return databaseCachedEnumIds;
-
       }
     }
     catch (SQLException e)
@@ -4702,10 +4620,6 @@ public abstract class AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -5377,9 +5291,16 @@ public abstract class AbstractDatabase
 
   public String generateRootId(MdTypeDAO mdTypeDAO)
   {
-    UUID uuid = UUID.nameUUIDFromBytes( ( CommonProperties.getDomain() + "." + mdTypeDAO.getKey() ).getBytes());
+    try
+    {
+      UUID uuid = UUID.nameUUIDFromBytes( ( CommonProperties.getDomain() + "." + mdTypeDAO.getKey() ).getBytes("UTF-8"));
+      return uuid.toString().substring(30, 36);
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      throw new RuntimeException(e);
+    }
 
-    return uuid.toString().substring(30, 36);
   }
 
 }

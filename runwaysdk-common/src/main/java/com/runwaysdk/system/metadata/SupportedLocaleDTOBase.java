@@ -45,7 +45,7 @@ public abstract class SupportedLocaleDTOBase extends com.runwaysdk.system.Enumer
     return CLASS;
   }
   
-  public static java.lang.String LOCALELABEL = "localeLabel";
+  public final static java.lang.String LOCALELABEL = "localeLabel";
   public String getLocaleLabel()
   {
     return getValue(LOCALELABEL);

@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdTermRelationshipBase extends com.runwaysdk.system.metadata.MdRelationship
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdTermRelationship";
-  public static java.lang.String ASSOCIATIONTYPE = "associationType";
+  public final static java.lang.String ASSOCIATIONTYPE = "associationType";
   private static final long serialVersionUID = -519827508;
   
   public MdTermRelationshipBase()

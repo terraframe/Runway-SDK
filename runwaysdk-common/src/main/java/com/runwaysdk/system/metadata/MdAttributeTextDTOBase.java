@@ -45,7 +45,7 @@ public abstract class MdAttributeTextDTOBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   public String getDefaultValue()
   {
     return getValue(DEFAULTVALUE);

@@ -39,7 +39,7 @@ public class IntegerFormat extends NumberFormat<Integer>
   @Override
   protected Integer convert(Number number)
   {
-    return new Integer(number.intValue());
+    return Integer.valueOf(number.intValue());
   }
   
   /* (non-Javadoc)

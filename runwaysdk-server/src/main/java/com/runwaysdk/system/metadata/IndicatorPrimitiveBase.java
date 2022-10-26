@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class IndicatorPrimitiveBase extends com.runwaysdk.system.metadata.IndicatorElement
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.IndicatorPrimitive";
-  public static java.lang.String INDICATORFUNCTION = "indicatorFunction";
-  public static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
+  public final static java.lang.String INDICATORFUNCTION = "indicatorFunction";
+  public final static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
   private static final long serialVersionUID = 1128223183;
   
   public IndicatorPrimitiveBase()

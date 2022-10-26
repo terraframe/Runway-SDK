@@ -46,25 +46,25 @@ public abstract class TransactionItemDTOBase extends com.runwaysdk.business.Busi
     return CLASS;
   }
   
-  public static java.lang.String COMPONENTID = "componentId";
-  public static java.lang.String COMPONENTSEQ = "componentSeq";
-  public static java.lang.String COMPONENTSITEMASTER = "componentSiteMaster";
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
-  public static java.lang.String ITEMACTION = "itemAction";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
-  public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
-  public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String OWNER = "owner";
-  public static java.lang.String SEQ = "seq";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TRANSACTIONRECORD = "transactionRecord";
-  public static java.lang.String TYPE = "type";
-  public static java.lang.String XMLRECORD = "xmlRecord";
+  public final static java.lang.String COMPONENTID = "componentId";
+  public final static java.lang.String COMPONENTSEQ = "componentSeq";
+  public final static java.lang.String COMPONENTSITEMASTER = "componentSiteMaster";
+  public final static java.lang.String CREATEDATE = "createDate";
+  public final static java.lang.String CREATEDBY = "createdBy";
+  public final static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public final static java.lang.String IGNORESEQUENCENUMBER = "ignoreSequenceNumber";
+  public final static java.lang.String ITEMACTION = "itemAction";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
+  public final static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
+  public final static java.lang.String LOCKEDBY = "lockedBy";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String OWNER = "owner";
+  public final static java.lang.String SEQ = "seq";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String TRANSACTIONRECORD = "transactionRecord";
+  public final static java.lang.String TYPE = "type";
+  public final static java.lang.String XMLRECORD = "xmlRecord";
   public String getComponentId()
   {
     return getValue(COMPONENTID);

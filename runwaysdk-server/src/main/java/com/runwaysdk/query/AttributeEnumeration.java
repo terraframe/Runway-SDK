@@ -1511,7 +1511,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
       new EnumerationCountSubSelect(this.columnName, this.definingTableAlias, this.mdEnumerationTableName);
 
     StatementSubSelectCondition basicConditionSubSelect =
-      new StatementSubSelectCondition(new StatementPrimitive(new Integer(enumIds.length).toString()), subSelectStatement, false);
+      new StatementSubSelectCondition(new StatementPrimitive(Integer.valueOf(enumIds.length).toString()), subSelectStatement, false);
 
     return new AND(previousCondition, basicConditionSubSelect);
   }

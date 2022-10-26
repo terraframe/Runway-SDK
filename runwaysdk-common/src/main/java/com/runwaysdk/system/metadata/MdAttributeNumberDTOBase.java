@@ -45,9 +45,9 @@ public abstract class MdAttributeNumberDTOBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static java.lang.String REJECTNEGATIVE = "rejectNegative";
-  public static java.lang.String REJECTPOSITIVE = "rejectPositive";
-  public static java.lang.String REJECTZERO = "rejectZero";
+  public final static java.lang.String REJECTNEGATIVE = "rejectNegative";
+  public final static java.lang.String REJECTPOSITIVE = "rejectPositive";
+  public final static java.lang.String REJECTZERO = "rejectZero";
   public Boolean getRejectNegative()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(REJECTNEGATIVE));

@@ -45,7 +45,7 @@ public abstract class MdWebFieldDTOBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDFORM = "definingMdForm";
+  public final static java.lang.String DEFININGMDFORM = "definingMdForm";
   public com.runwaysdk.system.metadata.MdWebFormDTO getDefiningMdForm()
   {
     if(getValue(DEFININGMDFORM) == null || getValue(DEFININGMDFORM).trim().equals(""))

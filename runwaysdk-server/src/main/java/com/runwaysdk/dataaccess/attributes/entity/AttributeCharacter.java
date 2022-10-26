@@ -135,6 +135,6 @@ public class AttributeCharacter extends Attribute
    */
   public AttributeCharacter attributeClone()
   {
-    return new AttributeCharacter(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeCharacter(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

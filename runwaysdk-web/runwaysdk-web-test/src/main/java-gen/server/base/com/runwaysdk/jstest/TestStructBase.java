@@ -29,10 +29,10 @@ package com.runwaysdk.jstest;
 public abstract class TestStructBase extends com.runwaysdk.business.Struct implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestStruct";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String STRUCTCHAR = "structChar";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String STRUCTCHAR = "structChar";
   private static final long serialVersionUID = -822656778;
   
   public TestStructBase()

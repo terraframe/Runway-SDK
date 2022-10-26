@@ -29,9 +29,9 @@ package com.runwaysdk.business;
 public abstract class RelationshipSystemBase extends com.runwaysdk.business.Relationship
 {
   public final static String CLASS = "com.runwaysdk.business.Relationship";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -776132880;
   

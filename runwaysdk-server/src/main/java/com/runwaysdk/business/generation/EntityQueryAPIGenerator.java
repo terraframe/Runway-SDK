@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -127,9 +128,9 @@ public abstract class EntityQueryAPIGenerator extends ComponentQueryAPIGenerator
     File srcFile = new File(TypeGenerator.getQueryAPIsourceFilePath(this.getMdClassIF()));
     try
     {
-      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(srcFile)));
+      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(srcFile), "UTF-8"));
     }
-    catch (FileNotFoundException e)
+    catch (FileNotFoundException | UnsupportedEncodingException e)
     {
       throw new FileWriteException(srcFile, e);
     }

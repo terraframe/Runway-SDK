@@ -45,9 +45,9 @@ public abstract class MdWebAttributeDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
-  public static java.lang.String SHOWONSEARCH = "showOnSearch";
-  public static java.lang.String SHOWONVIEWALL = "showOnViewAll";
+  public final static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public final static java.lang.String SHOWONSEARCH = "showOnSearch";
+  public final static java.lang.String SHOWONVIEWALL = "showOnViewAll";
   public com.runwaysdk.system.metadata.MdAttributeDTO getDefiningMdAttribute()
   {
     if(getValue(DEFININGMDATTRIBUTE) == null || getValue(DEFININGMDATTRIBUTE).trim().equals(""))

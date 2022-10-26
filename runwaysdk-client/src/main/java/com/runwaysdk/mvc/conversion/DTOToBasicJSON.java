@@ -250,14 +250,14 @@ public abstract class DTOToBasicJSON
         {
           long valueL = Long.parseLong(attributeDTO.getValue());
 
-          return new Long(valueL);
+          return Long.valueOf(valueL);
         }
 
         // decimal, double, and float must be converted into a double
         if (attributeDTO instanceof AttributeDecDTO)
         {
           double valueD = Double.parseDouble(attributeDTO.getValue());
-          return new Double(valueD);
+          return Double.valueOf(valueD);
         }
       }
 

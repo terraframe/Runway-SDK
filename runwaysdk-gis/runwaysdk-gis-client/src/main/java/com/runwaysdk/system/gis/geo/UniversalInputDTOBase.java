@@ -34,12 +34,12 @@ public abstract class UniversalInputDTOBase extends com.runwaysdk.business.ViewD
     return CLASS;
   }
   
-  public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String MOVEOPERATION = "moveOperation";
-  public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
-  public static java.lang.String UNIVERSAL = "universal";
+  public final static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String MOVEOPERATION = "moveOperation";
+  public final static java.lang.String PARENTUNIVERSAL = "parentUniversal";
+  public final static java.lang.String UNIVERSAL = "universal";
   public String getDescription()
   {
     return getValue(DESCRIPTION);

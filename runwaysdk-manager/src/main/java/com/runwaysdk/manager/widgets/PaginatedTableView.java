@@ -259,7 +259,7 @@ public class PaginatedTableView extends ViewPart
 
   private void setPageNumber(int pageNumber)
   {
-    String text = new Integer(pageNumber).toString();
+    String text = Integer.valueOf(pageNumber).toString();
 
     currentPage.setText(text);
 

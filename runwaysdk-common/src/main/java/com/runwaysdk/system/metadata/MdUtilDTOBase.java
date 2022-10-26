@@ -45,7 +45,7 @@ public abstract class MdUtilDTOBase extends com.runwaysdk.system.metadata.MdSess
     return CLASS;
   }
   
-  public static java.lang.String SUPERMDUTIL = "superMdUtil";
+  public final static java.lang.String SUPERMDUTIL = "superMdUtil";
   public com.runwaysdk.system.metadata.MdUtilDTO getSuperMdUtil()
   {
     if(getValue(SUPERMDUTIL) == null || getValue(SUPERMDUTIL).trim().equals(""))

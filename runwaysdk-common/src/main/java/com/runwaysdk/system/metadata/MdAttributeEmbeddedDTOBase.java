@@ -45,7 +45,7 @@ public abstract class MdAttributeEmbeddedDTOBase extends com.runwaysdk.system.me
     return CLASS;
   }
   
-  public static java.lang.String EMBEDDEDMDCLASS = "embeddedMdClass";
+  public final static java.lang.String EMBEDDEDMDCLASS = "embeddedMdClass";
   public com.runwaysdk.system.metadata.MdClassDTO getEmbeddedMdClass()
   {
     if(getValue(EMBEDDEDMDCLASS) == null || getValue(EMBEDDEDMDCLASS).trim().equals(""))

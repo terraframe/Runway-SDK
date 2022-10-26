@@ -45,7 +45,7 @@ public abstract class MdWebBooleanDTOBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   public Boolean getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

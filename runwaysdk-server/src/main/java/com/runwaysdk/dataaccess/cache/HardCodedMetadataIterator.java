@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.runwaysdk.constants.ElementInfo;
 import com.runwaysdk.constants.EntityInfo;
@@ -85,8 +86,10 @@ public class HardCodedMetadataIterator
       Map<String, Map<String, String>> mdAttributeInfoMap = DefaultMdEntityInfo.getAttributeMapForType(this.type);
 
       // Iterate over the fields
-      for (String columnName : mdAttributeInfoMap.keySet())
+      for (Entry<String, Map<String, String>> entry : mdAttributeInfoMap.entrySet())
       {
+        String columnName = entry.getKey();
+        
         if ( ( !columnName.equals(EntityDAOIF.ID_COLUMN) || type.equals(ElementInfo.CLASS) || this.rootClass ))
         {
           String attributeName = DefaultMdEntityInfo.getAttributeName(type, columnName);
@@ -95,7 +98,7 @@ public class HardCodedMetadataIterator
 
           Object value = AttributeFactory.getColumnValueFromRow(this.resultSet, columnName, attributeType, false);
 
-          Map<String, String> attributePropertyMap = mdAttributeInfoMap.get(columnName);
+          Map<String, String> attributePropertyMap = entry.getValue();
           String attributeTypeName = attributePropertyMap.get(EntityInfo.TYPE);
           String mdAttributeKey = attributePropertyMap.get(EntityInfo.KEY);
           Attribute attribute = AttributeFactory.createAttribute(mdAttributeKey, attributeTypeName,

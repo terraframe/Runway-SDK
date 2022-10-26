@@ -45,11 +45,11 @@ public abstract class MdParameterDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String METADATA = "metadata";
-  public static java.lang.String PARAMETERNAME = "parameterName";
-  public static java.lang.String PARAMETERORDER = "parameterOrder";
-  public static java.lang.String PARAMETERTYPE = "parameterType";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String METADATA = "metadata";
+  public final static java.lang.String PARAMETERNAME = "parameterName";
+  public final static java.lang.String PARAMETERORDER = "parameterOrder";
+  public final static java.lang.String PARAMETERTYPE = "parameterType";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

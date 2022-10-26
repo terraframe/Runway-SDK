@@ -45,11 +45,11 @@ public abstract class MdMethodDTOBase extends com.runwaysdk.system.metadata.Meta
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ISSTATIC = "isStatic";
-  public static java.lang.String MDTYPE = "mdType";
-  public static java.lang.String METHODNAME = "methodName";
-  public static java.lang.String RETURNTYPE = "returnType";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String ISSTATIC = "isStatic";
+  public final static java.lang.String MDTYPE = "mdType";
+  public final static java.lang.String METHODNAME = "methodName";
+  public final static java.lang.String RETURNTYPE = "returnType";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

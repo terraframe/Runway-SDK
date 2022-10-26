@@ -34,9 +34,9 @@ public abstract class LocalizedRowIgnoredWarningDTOBase extends com.runwaysdk.bu
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
-  public static java.lang.String ROW = "row";
-  public static java.lang.String SHEET = "sheet";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String ROW = "row";
+  public final static java.lang.String SHEET = "sheet";
   public Integer getRow()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(ROW));

@@ -55,7 +55,7 @@ public class QueryLabelProvider implements ITableLabelProvider
   {
     ComponentIF component = (ComponentIF) element;
     
-    MdAttributeDAOIF mdAttribute = map.get(new Integer(index));
+    MdAttributeDAOIF mdAttribute = map.get(Integer.valueOf(index));
     
     ComponentLabelVisitor visitor = new ComponentLabelVisitor(component);
     

@@ -45,11 +45,11 @@ public abstract class GeoNodeGeometryDTOBase extends com.runwaysdk.system.gis.ge
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABELATTRIBUTE = "displayLabelAttribute";
-  public static java.lang.String GEOMETRYATTRIBUTE = "geometryAttribute";
-  public static java.lang.String IDENTIFIERATTRIBUTE = "identifierAttribute";
-  public static java.lang.String MULTIPOLYGONATTRIBUTE = "multiPolygonAttribute";
-  public static java.lang.String POINTATTRIBUTE = "pointAttribute";
+  public final static java.lang.String DISPLAYLABELATTRIBUTE = "displayLabelAttribute";
+  public final static java.lang.String GEOMETRYATTRIBUTE = "geometryAttribute";
+  public final static java.lang.String IDENTIFIERATTRIBUTE = "identifierAttribute";
+  public final static java.lang.String MULTIPOLYGONATTRIBUTE = "multiPolygonAttribute";
+  public final static java.lang.String POINTATTRIBUTE = "pointAttribute";
   public com.runwaysdk.system.metadata.MdAttributeDTO getDisplayLabelAttribute()
   {
     if(getValue(DISPLAYLABELATTRIBUTE) == null || getValue(DISPLAYLABELATTRIBUTE).trim().equals(""))

@@ -477,7 +477,7 @@ public class VertexObjectDAOTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Integer value = new Integer(5);
+    Integer value = Integer.valueOf(5);
     vertexDAO.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
@@ -494,7 +494,7 @@ public class VertexObjectDAOTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Integer(10);
+      value = Integer.valueOf(10);
 
       vertexDAO.setValue(attributeName, value);
       vertexDAO.apply();
@@ -520,7 +520,7 @@ public class VertexObjectDAOTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Long value = new Long(5);
+    Long value = Long.valueOf(5);
     vertexDAO.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
@@ -536,7 +536,7 @@ public class VertexObjectDAOTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Long(10);
+      value = Long.valueOf(10);
 
       vertexDAO.setValue(attributeName, value);
       vertexDAO.apply();
@@ -604,7 +604,7 @@ public class VertexObjectDAOTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Double value = new Double(5D);
+    Double value = Double.valueOf(5D);
     vertexDAO.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName));
@@ -620,7 +620,7 @@ public class VertexObjectDAOTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Double(10D);
+      value = Double.valueOf(10D);
 
       vertexDAO.setValue(attributeName, value);
       vertexDAO.apply();
@@ -1293,7 +1293,7 @@ public class VertexObjectDAOTest
   {
     VertexObjectDAO vertexDAO = VertexObjectDAO.newInstance(mdVertexDAO.definesType());
 
-    vertexDAO.setValue(mdCharacterAttribute.definesAttribute(), new Integer(4));
+    vertexDAO.setValue(mdCharacterAttribute.definesAttribute(), Integer.valueOf(4));
   }
 
   @Request

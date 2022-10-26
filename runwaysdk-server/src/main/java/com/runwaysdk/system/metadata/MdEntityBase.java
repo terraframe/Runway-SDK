@@ -29,14 +29,14 @@ package com.runwaysdk.system.metadata;
 public abstract class MdEntityBase extends com.runwaysdk.system.metadata.MdClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEntity";
-  public static java.lang.String CACHESIZE = "cacheSize";
-  public static java.lang.String ENFORCESITEMASTER = "enforceSiteMaster";
-  public static java.lang.String HASDETERMINISTICIDS = "hasDeterministicIds";
-  public static java.lang.String QUERYCLASS = "queryClass";
-  public static java.lang.String QUERYDTOCLASS = "queryDTOclass";
-  public static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
-  public static java.lang.String QUERYSOURCE = "querySource";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String CACHESIZE = "cacheSize";
+  public final static java.lang.String ENFORCESITEMASTER = "enforceSiteMaster";
+  public final static java.lang.String HASDETERMINISTICIDS = "hasDeterministicIds";
+  public final static java.lang.String QUERYCLASS = "queryClass";
+  public final static java.lang.String QUERYDTOCLASS = "queryDTOclass";
+  public final static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
+  public final static java.lang.String QUERYSOURCE = "querySource";
+  public final static java.lang.String TABLENAME = "tableName";
   private static final long serialVersionUID = -1858355606;
   
   public MdEntityBase()

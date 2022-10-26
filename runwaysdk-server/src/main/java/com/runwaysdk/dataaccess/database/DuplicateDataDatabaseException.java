@@ -247,27 +247,27 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     }
 
 
-    String attributeNames = "";
-    String displayLabels = "";
+    StringBuilder attributeNames = new StringBuilder();
+    StringBuilder displayLabels = new StringBuilder();
 
     boolean firstIteration = true;
     for (MdAttributeConcreteDAOIF mdAttributeIF : mdAttributeIFList)
     {
       if (!firstIteration)
       {
-        attributeNames += ", ";
-        displayLabels += ", ";
+        attributeNames.append(", ");
+        displayLabels.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      attributeNames += "["+mdAttributeIF.definesAttribute()+"]";
-      displayLabels += "["+mdAttributeIF.getDisplayLabel(this.getLocale())+"]";
+      attributeNames.append("["+mdAttributeIF.definesAttribute()+"]");
+      displayLabels.append("["+mdAttributeIF.getDisplayLabel(this.getLocale())+"]");
     }
 
-    this.attributeNames = attributeNames;
-    this.attributeDisplayLabels = displayLabels;
+    this.attributeNames = attributeNames.toString();
+    this.attributeDisplayLabels = displayLabels.toString();
 
   }
 

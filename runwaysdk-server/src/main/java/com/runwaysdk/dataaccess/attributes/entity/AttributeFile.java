@@ -179,7 +179,7 @@ public class AttributeFile extends Attribute implements AttributeFileIF
    */
   public AttributeFile attributeClone()
   {
-    return new AttributeFile(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeFile(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 
 }

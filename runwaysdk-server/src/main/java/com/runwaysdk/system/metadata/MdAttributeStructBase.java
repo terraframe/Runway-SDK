@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeStructBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeStruct";
-  public static java.lang.String MDSTRUCT = "mdStruct";
+  public final static java.lang.String MDSTRUCT = "mdStruct";
   private static final long serialVersionUID = -1227958354;
   
   public MdAttributeStructBase()

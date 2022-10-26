@@ -34,9 +34,9 @@ public abstract class TestWarningDTOBase extends com.runwaysdk.business.WarningD
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
-  public static java.lang.String WARNINGCHAR = "warningChar";
-  public static java.lang.String WARNINGINT = "warningInt";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String WARNINGCHAR = "warningChar";
+  public final static java.lang.String WARNINGINT = "warningInt";
   public String getWarningChar()
   {
     return getValue(WARNINGCHAR);

@@ -40,12 +40,12 @@ public abstract class AttributeNotificationProblemDTOBase extends com.runwaysdk.
     return CLASS;
   }
   
-  public static java.lang.String ATTRIBUTEDISPLAYLABEL = "attributeDisplayLabel";
-  public static java.lang.String ATTRIBUTENAME = "attributeName";
-  public static java.lang.String COMPONENTID = "componentId";
-  public static java.lang.String DEFININGTYPE = "definingType";
-  public static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String ATTRIBUTEDISPLAYLABEL = "attributeDisplayLabel";
+  public final static java.lang.String ATTRIBUTENAME = "attributeName";
+  public final static java.lang.String COMPONENTID = "componentId";
+  public final static java.lang.String DEFININGTYPE = "definingType";
+  public final static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
+  public final static java.lang.String OID = "oid";
   public String getAttributeDisplayLabel()
   {
     return getValue(ATTRIBUTEDISPLAYLABEL);

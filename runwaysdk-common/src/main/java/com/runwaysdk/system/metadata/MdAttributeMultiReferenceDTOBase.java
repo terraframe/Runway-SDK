@@ -45,9 +45,9 @@ public abstract class MdAttributeMultiReferenceDTOBase extends com.runwaysdk.sys
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDBUSINESS = "mdBusiness";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDBUSINESS = "mdBusiness";
+  public final static java.lang.String TABLENAME = "tableName";
   public String getDefaultValue()
   {
     return getValue(DEFAULTVALUE);

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -26,11 +26,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.runwaysdk.SystemException;
 import com.runwaysdk.business.generation.dto.ComponentQueryDTOGenerator;
-import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -69,19 +69,7 @@ public class ClassManager
     ClassFilter classFilter = new ClassFilter(generator.getFileName());
     File dir = new File(generator.getClassDirectory());
 
-    try
-    {
-      return readClasses(dir, classFilter);
-    }
-    catch (NullPointerException e)
-    {
-      if (!LocalProperties.isDevelopEnvironment())
-      {
-        throw new SystemException("Error occured trying to read the classes for [" + generator.getClassDirectory() + "] and [" + generator.getFileName() + "]", e);
-      }
-    }
-
-    return null;
+    return readClasses(dir, classFilter);
   }
 
   /**
@@ -212,32 +200,40 @@ public class ClassManager
   private static byte[] readClasses(File dir, FilenameFilter filenameFilter)
   {
     Map<String, byte[]> map = new TreeMap<String, byte[]>();
-    for (String fileName : dir.list(filenameFilter))
+    String[] fileNames = dir.list(filenameFilter);
+
+    if (fileNames != null)
     {
-      File file = new File(dir, fileName);
+
+      for (String fileName : fileNames)
+      {
+        File file = new File(dir, fileName);
+        try
+        {
+          byte[] bytes = FileIO.readBytes(file);
+          map.put(fileName, bytes);
+        }
+        catch (IOException e)
+        {
+          throw new FileReadException(file, e);
+        }
+      }
+
       try
       {
-        byte[] bytes = FileIO.readBytes(file);
-        map.put(fileName, bytes);
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream objectOut = new ObjectOutputStream(byteOut);
+        objectOut.writeObject(map);
+        objectOut.close();
+        return byteOut.toByteArray();
       }
       catch (IOException e)
       {
-        throw new FileReadException(file, e);
+        throw new SystemException(e);
       }
     }
 
-    try
-    {
-      ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-      ObjectOutputStream objectOut = new ObjectOutputStream(byteOut);
-      objectOut.writeObject(map);
-      objectOut.close();
-      return byteOut.toByteArray();
-    }
-    catch (IOException e)
-    {
-      throw new SystemException(e);
-    }
+    return null;
   }
 
   /**
@@ -268,12 +264,12 @@ public class ClassManager
       throw new SystemException(e);
     }
 
-    for (String key : map.keySet())
+    for (Entry<String, byte[]> entry : map.entrySet())
     {
-      File file = new File(directory, key);
+      File file = new File(directory, entry.getKey());
       try
       {
-        FileIO.write(file, map.get(key));
+        FileIO.write(file, entry.getValue());
       }
       catch (IOException e)
       {
@@ -296,7 +292,7 @@ public class ClassManager
     File[] listFiles = directory.listFiles(filter);
     deleteFiles(listFiles);
   }
-  
+
   private static void deleteFiles(File[] listFiles)
   {
     if (listFiles == null)

@@ -45,7 +45,7 @@ public abstract class MdLocalizableDTOBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static java.lang.String MESSAGE = "message";
+  public final static java.lang.String MESSAGE = "message";
   public com.runwaysdk.system.metadata.MdLocalizableMessageDTO getMessage()
   {
     return (com.runwaysdk.system.metadata.MdLocalizableMessageDTO) this.getAttributeStructDTO(MESSAGE).getStructDTO();

@@ -70,9 +70,9 @@ public abstract class RestoreAppnameExceptionDTOBase extends com.runwaysdk.busin
     return CLASS;
   }
   
-  public static java.lang.String CURRENTAPPNAME = "currentAppname";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String RESTOREAPPNAME = "restoreAppname";
+  public final static java.lang.String CURRENTAPPNAME = "currentAppname";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String RESTOREAPPNAME = "restoreAppname";
   public String getCurrentAppname()
   {
     return getValue(CURRENTAPPNAME);

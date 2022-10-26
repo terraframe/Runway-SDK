@@ -45,8 +45,8 @@ public abstract class IndicatorPrimitiveDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String INDICATORFUNCTION = "indicatorFunction";
-  public static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
+  public final static java.lang.String INDICATORFUNCTION = "indicatorFunction";
+  public final static java.lang.String MDATTRIBUTEPRIMITIVE = "mdAttributePrimitive";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.IndicatorAggregateFunctionDTO> getIndicatorFunction()
   {

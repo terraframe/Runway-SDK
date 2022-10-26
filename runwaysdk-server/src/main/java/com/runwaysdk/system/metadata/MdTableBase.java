@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdTableBase extends com.runwaysdk.system.metadata.MdClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdTable";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String TABLENAME = "tableName";
   private static final long serialVersionUID = -625700517;
   
   public MdTableBase()

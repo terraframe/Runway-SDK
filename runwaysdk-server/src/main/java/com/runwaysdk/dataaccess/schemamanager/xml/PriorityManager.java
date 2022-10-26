@@ -36,7 +36,7 @@ public class PriorityManager
   {
     if (!priorityMap.containsKey(string))
     {
-      priorityMap.put(string, new Integer(currentPriority++));
+      priorityMap.put(string, Integer.valueOf(currentPriority++));
     }
   }
 

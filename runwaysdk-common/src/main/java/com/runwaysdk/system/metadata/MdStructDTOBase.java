@@ -45,7 +45,7 @@ public abstract class MdStructDTOBase extends com.runwaysdk.system.metadata.MdEn
     return CLASS;
   }
   
-  public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
+  public final static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.StructCacheDTO> getCacheAlgorithm()
   {

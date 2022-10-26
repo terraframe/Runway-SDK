@@ -120,6 +120,6 @@ public class AttributeText extends Attribute
    */
   public AttributeText attributeClone()
   {
-    return new AttributeText(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeText(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

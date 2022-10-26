@@ -255,7 +255,7 @@ public class Diskstore implements ObjectStore
   /**
    * Shuts down the cache and flushes memory contents to a persistent store.
    */
-  public void shutdown()
+  public synchronized void shutdown()
   {
     System.out.println("Shutting down object cache");
 

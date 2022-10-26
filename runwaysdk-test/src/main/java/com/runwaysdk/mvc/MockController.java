@@ -36,13 +36,13 @@ public class MockController
 
   public RestBodyResponse testMethod()
   {
-    return new RestBodyResponse(new Integer(15));
+    return new RestBodyResponse(Integer.valueOf(15));
   }
 
   @Endpoint(url = "generate", method = ServletMethod.POST)
   public RestBodyResponse generateInteger()
   {
-    return new RestBodyResponse(new Integer(this.random.nextInt()));
+    return new RestBodyResponse(Integer.valueOf(this.random.nextInt()));
   }
 
   public RestBodyResponse number(@RequestParamter(name = "value") Integer value)

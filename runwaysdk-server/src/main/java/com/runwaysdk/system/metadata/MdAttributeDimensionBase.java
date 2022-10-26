@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeDimensionBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeDimension";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
-  public static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
-  public static java.lang.String REQUIRED = "required";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public final static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
+  public final static java.lang.String REQUIRED = "required";
   private static final long serialVersionUID = -2042228184;
   
   public MdAttributeDimensionBase()

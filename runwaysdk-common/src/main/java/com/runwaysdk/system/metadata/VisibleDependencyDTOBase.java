@@ -46,7 +46,7 @@ public abstract class VisibleDependencyDTOBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static java.lang.String CONDITION = "condition";
+  public final static java.lang.String CONDITION = "condition";
   public com.runwaysdk.system.metadata.FieldConditionDTO getCondition()
   {
     if(getValue(CONDITION) == null || getValue(CONDITION).trim().equals(""))

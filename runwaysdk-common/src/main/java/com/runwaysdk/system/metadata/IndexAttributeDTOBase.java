@@ -46,7 +46,7 @@ public abstract class IndexAttributeDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String INDEXORDER = "indexOrder";
+  public final static java.lang.String INDEXORDER = "indexOrder";
   public Integer getIndexOrder()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(INDEXORDER));

@@ -45,8 +45,8 @@ public abstract class MdAttributeSymmetricDTOBase extends com.runwaysdk.system.m
     return CLASS;
   }
   
-  public static java.lang.String SECRETKEYSIZE = "secretKeySize";
-  public static java.lang.String SYMMETRICMETHOD = "symmetricMethod";
+  public final static java.lang.String SECRETKEYSIZE = "secretKeySize";
+  public final static java.lang.String SYMMETRICMETHOD = "symmetricMethod";
   public Integer getSecretKeySize()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(SECRETKEYSIZE));

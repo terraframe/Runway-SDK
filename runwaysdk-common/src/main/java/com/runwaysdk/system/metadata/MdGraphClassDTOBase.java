@@ -45,8 +45,8 @@ public abstract class MdGraphClassDTOBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static java.lang.String DBCLASSNAME = "dbClassName";
-  public static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
+  public final static java.lang.String DBCLASSNAME = "dbClassName";
+  public final static java.lang.String ENABLECHANGEOVERTIME = "enableChangeOverTime";
   public String getDbClassName()
   {
     return getValue(DBCLASSNAME);

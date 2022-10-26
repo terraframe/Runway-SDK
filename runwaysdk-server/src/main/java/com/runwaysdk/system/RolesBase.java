@@ -29,10 +29,10 @@ package com.runwaysdk.system;
 public abstract class RolesBase extends com.runwaysdk.system.Actor
 {
   public final static String CLASS = "com.runwaysdk.system.Roles";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String ROLENAME = "roleName";
+  public final static java.lang.String ROLENAME = "roleName";
   private static final long serialVersionUID = -1883304567;
   
   public RolesBase()

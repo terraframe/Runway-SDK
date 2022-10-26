@@ -45,7 +45,7 @@ public abstract class UniversalSQLBuilderDTOBase extends com.runwaysdk.system.gi
     return CLASS;
   }
   
-  public static java.lang.String UNIVERSAL = "universal";
+  public final static java.lang.String UNIVERSAL = "universal";
   public com.runwaysdk.system.gis.geo.UniversalDTO getUniversal()
   {
     if(getValue(UNIVERSAL) == null || getValue(UNIVERSAL).trim().equals(""))

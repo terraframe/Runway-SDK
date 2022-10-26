@@ -100,7 +100,7 @@ public class AttributeSymmetric extends AttributeEncryption implements Attribute
    */
   public Attribute attributeClone()
   {
-    return new AttributeSymmetric(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeSymmetric(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 
   public String getValue()

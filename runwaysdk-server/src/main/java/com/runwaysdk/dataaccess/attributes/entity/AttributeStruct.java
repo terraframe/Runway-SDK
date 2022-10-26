@@ -437,7 +437,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
    */
   public Attribute attributeClone()
   {
-    return new AttributeStruct(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getValue()), (StructDAO) this.getStructDAO().clone());
+    return new AttributeStruct(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getValue(), (StructDAO) this.getStructDAO().clone());
   }
 
   /**
@@ -445,7 +445,7 @@ public class AttributeStruct extends Attribute implements AttributeStructIF
    */
   public Attribute attributeCopy()
   {
-    return new AttributeStruct(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getValue()), (StructDAO) this.getStructDAO().copy());
+    return new AttributeStruct(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getValue(), (StructDAO) this.getStructDAO().copy());
   }
 
   /*

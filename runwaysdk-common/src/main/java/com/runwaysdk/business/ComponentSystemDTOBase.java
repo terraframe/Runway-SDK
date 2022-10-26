@@ -46,7 +46,7 @@ public abstract class ComponentSystemDTOBase extends com.runwaysdk.business.Busi
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   public static com.runwaysdk.business.ComponentSystemDTO get(com.runwaysdk.constants.ClientRequestIF clientRequest, String oid)
   {
     com.runwaysdk.business.EntityDTO dto = (com.runwaysdk.business.EntityDTO)clientRequest.get(oid);

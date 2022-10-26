@@ -1288,7 +1288,7 @@ public abstract class AbstractMultiReferenceQueryTest
   {
     BusinessDAO term = this.createTerm();
     BusinessDAO business = this.createBusiness(term);
-    Double value = new Double(term.getValue(mdAttributeDouble.definesAttribute()));
+    Double value = Double.valueOf(term.getValue(mdAttributeDouble.definesAttribute()));
 
     String queryType = EntityQueryAPIGenerator.getQueryClass(mdBusiness.definesType());
     Class<?> queryClass = LoaderDecorator.load(queryType);
@@ -1314,7 +1314,7 @@ public abstract class AbstractMultiReferenceQueryTest
     /*
      * Test a failure case
      */
-    value = new Double("65.1");
+    value = Double.valueOf("65.1");
     factory = new QueryFactory();
     query = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
     attributeMultiReference = (SelectableMultiReference) queryClass.getMethod("getTestMultiReference").invoke(query);
@@ -1380,7 +1380,7 @@ public abstract class AbstractMultiReferenceQueryTest
   {
     BusinessDAO term = this.createTerm();
     BusinessDAO business = this.createBusiness(term);
-    Integer value = new Integer(term.getValue(mdAttributeInteger.definesAttribute()));
+    Integer value = Integer.valueOf(term.getValue(mdAttributeInteger.definesAttribute()));
 
     String queryType = EntityQueryAPIGenerator.getQueryClass(mdBusiness.definesType());
     Class<?> queryClass = LoaderDecorator.load(queryType);
@@ -1406,7 +1406,7 @@ public abstract class AbstractMultiReferenceQueryTest
     /*
      * Test a failure case
      */
-    value = new Integer("65");
+    value = Integer.valueOf("65");
     factory = new QueryFactory();
     query = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
     attributeMultiReference = (SelectableMultiReference) queryClass.getMethod("getTestMultiReference").invoke(query);
@@ -1426,7 +1426,7 @@ public abstract class AbstractMultiReferenceQueryTest
   {
     BusinessDAO term = this.createTerm();
     BusinessDAO business = this.createBusiness(term);
-    Long value = new Long(term.getValue(mdAttributeLong.definesAttribute()));
+    Long value = Long.valueOf(term.getValue(mdAttributeLong.definesAttribute()));
 
     String queryType = EntityQueryAPIGenerator.getQueryClass(mdBusiness.definesType());
     Class<?> queryClass = LoaderDecorator.load(queryType);
@@ -1452,7 +1452,7 @@ public abstract class AbstractMultiReferenceQueryTest
     /*
      * Test a failure case
      */
-    value = new Long("65");
+    value = Long.valueOf("65");
     factory = new QueryFactory();
     query = queryClass.getConstructor(QueryFactory.class).newInstance(factory);
     attributeMultiReference = (SelectableMultiReference) queryClass.getMethod("getTestMultiReference").invoke(query);

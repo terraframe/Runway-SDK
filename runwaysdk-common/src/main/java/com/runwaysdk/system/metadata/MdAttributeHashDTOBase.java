@@ -45,7 +45,7 @@ public abstract class MdAttributeHashDTOBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static java.lang.String HASHMETHOD = "hashMethod";
+  public final static java.lang.String HASHMETHOD = "hashMethod";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.HashOptionsDTO> getHashMethod()
   {

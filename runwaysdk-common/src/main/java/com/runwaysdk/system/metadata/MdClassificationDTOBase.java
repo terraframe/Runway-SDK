@@ -45,13 +45,13 @@ public abstract class MdClassificationDTOBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String GENERATESOURCE = "generateSource";
-  public static java.lang.String MDEDGE = "mdEdge";
-  public static java.lang.String MDVERTEX = "mdVertex";
-  public static java.lang.String PACKAGENAME = "packageName";
-  public static java.lang.String ROOT = "root";
-  public static java.lang.String TYPENAME = "typeName";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String GENERATESOURCE = "generateSource";
+  public final static java.lang.String MDEDGE = "mdEdge";
+  public final static java.lang.String MDVERTEX = "mdVertex";
+  public final static java.lang.String PACKAGENAME = "packageName";
+  public final static java.lang.String ROOT = "root";
+  public final static java.lang.String TYPENAME = "typeName";
   public com.runwaysdk.system.metadata.MdClassificationDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MdClassificationDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

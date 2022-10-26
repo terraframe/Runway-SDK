@@ -69,9 +69,9 @@ public abstract class TestExceptionDTOBase extends com.runwaysdk.business.SmartE
     return CLASS;
   }
   
-  public static java.lang.String EXCHAR = "exChar";
-  public static java.lang.String EXINT = "exInt";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String EXCHAR = "exChar";
+  public final static java.lang.String EXINT = "exInt";
+  public final static java.lang.String OID = "oid";
   public String getExChar()
   {
     return getValue(EXCHAR);

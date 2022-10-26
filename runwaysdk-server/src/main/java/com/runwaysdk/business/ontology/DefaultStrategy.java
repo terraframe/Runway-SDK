@@ -30,13 +30,13 @@ import com.runwaysdk.query.OIterator;
 
 public class DefaultStrategy implements OntologyStrategyIF
 {
-  protected String termClass;
+//  protected String termClass;
 
   // private String relationshipType;
 
   public static class Singleton
   {
-    public static DefaultStrategy INSTANCE = new DefaultStrategy();
+    public static final DefaultStrategy INSTANCE = new DefaultStrategy();
   }
 
   /**
@@ -210,10 +210,9 @@ public class DefaultStrategy implements OntologyStrategyIF
   @Override
   public void configure(String termClass)
   {
-    this.termClass = termClass;
   }
 
-  private class InMemoryObjectIterator<T> implements OIterator<T>
+  private static class InMemoryObjectIterator<T> implements OIterator<T>
   {
     List<T>     list;
 

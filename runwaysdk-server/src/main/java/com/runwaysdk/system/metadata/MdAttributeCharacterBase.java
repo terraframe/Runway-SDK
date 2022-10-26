@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeCharacterBase extends com.runwaysdk.system.metadata.MdAttributeChar
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeCharacter";
-  public static java.lang.String DATABASESIZE = "databaseSize";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DATABASESIZE = "databaseSize";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   private static final long serialVersionUID = 280277322;
   
   public MdAttributeCharacterBase()

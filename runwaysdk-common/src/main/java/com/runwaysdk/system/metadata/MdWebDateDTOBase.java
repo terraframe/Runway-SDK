@@ -45,12 +45,12 @@ public abstract class MdWebDateDTOBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static java.lang.String AFTERTODAYEXCLUSIVE = "afterTodayExclusive";
-  public static java.lang.String AFTERTODAYINCLUSIVE = "afterTodayInclusive";
-  public static java.lang.String BEFORETODAYEXCLUSIVE = "beforeTodayExclusive";
-  public static java.lang.String BEFORETODAYINCLUSIVE = "beforeTodayInclusive";
-  public static java.lang.String ENDDATE = "endDate";
-  public static java.lang.String STARTDATE = "startDate";
+  public final static java.lang.String AFTERTODAYEXCLUSIVE = "afterTodayExclusive";
+  public final static java.lang.String AFTERTODAYINCLUSIVE = "afterTodayInclusive";
+  public final static java.lang.String BEFORETODAYEXCLUSIVE = "beforeTodayExclusive";
+  public final static java.lang.String BEFORETODAYINCLUSIVE = "beforeTodayInclusive";
+  public final static java.lang.String ENDDATE = "endDate";
+  public final static java.lang.String STARTDATE = "startDate";
   public Boolean getAfterTodayExclusive()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(AFTERTODAYEXCLUSIVE));

@@ -45,10 +45,10 @@ public abstract class IndicatorCompositeDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String LEFTOPERAND = "leftOperand";
-  public static java.lang.String OPERATOR = "operator";
-  public static java.lang.String PERCENTAGE = "percentage";
-  public static java.lang.String RIGHTOPERAND = "rightOperand";
+  public final static java.lang.String LEFTOPERAND = "leftOperand";
+  public final static java.lang.String OPERATOR = "operator";
+  public final static java.lang.String PERCENTAGE = "percentage";
+  public final static java.lang.String RIGHTOPERAND = "rightOperand";
   public com.runwaysdk.system.metadata.IndicatorElementDTO getLeftOperand()
   {
     if(getValue(LEFTOPERAND) == null || getValue(LEFTOPERAND).trim().equals(""))

@@ -29,11 +29,11 @@ package com.runwaysdk.system.scheduler;
 public abstract class JobViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobView";
-  public static java.lang.String DOWNSTREAMJOB = "downstreamJob";
-  public static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
-  public static java.lang.String JOB = "job";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
+  public final static java.lang.String DOWNSTREAMJOB = "downstreamJob";
+  public final static java.lang.String DOWNSTREAMJOBDISPLAYLABEL = "downstreamJobDisplayLabel";
+  public final static java.lang.String JOB = "job";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String TRIGGERONFAILURE = "triggerOnFailure";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 627835557;
   

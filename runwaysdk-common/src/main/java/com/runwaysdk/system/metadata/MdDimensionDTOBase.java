@@ -45,8 +45,8 @@ public abstract class MdDimensionDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String NAME = "name";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String NAME = "name";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

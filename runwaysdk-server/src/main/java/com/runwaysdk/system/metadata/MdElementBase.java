@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdElementBase extends com.runwaysdk.system.metadata.MdEntity
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdElement";
-  public static java.lang.String EXTENDABLE = "extendable";
-  public static java.lang.String ISABSTRACT = "isAbstract";
+  public final static java.lang.String EXTENDABLE = "extendable";
+  public final static java.lang.String ISABSTRACT = "isAbstract";
   private static final long serialVersionUID = -961803656;
   
   public MdElementBase()

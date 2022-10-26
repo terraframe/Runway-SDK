@@ -45,7 +45,7 @@ public abstract class MdMobileFieldDTOBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDFORM = "definingMdForm";
+  public final static java.lang.String DEFININGMDFORM = "definingMdForm";
   public com.runwaysdk.system.metadata.MdMobileFormDTO getDefiningMdForm()
   {
     if(getValue(DEFININGMDFORM) == null || getValue(DEFININGMDFORM).trim().equals(""))

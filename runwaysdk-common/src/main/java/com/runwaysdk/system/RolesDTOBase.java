@@ -45,8 +45,8 @@ public abstract class RolesDTOBase extends com.runwaysdk.system.ActorDTO
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ROLENAME = "roleName";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String ROLENAME = "roleName";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

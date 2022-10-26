@@ -29,22 +29,22 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.GeneratedMap";
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
-  public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
-  public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String MAPDATE = "mapDate";
-  public static java.lang.String MAPNAME = "mapName";
+  public final static java.lang.String CREATEDATE = "createDate";
+  public final static java.lang.String CREATEDBY = "createdBy";
+  public final static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
+  public final static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
+  public final static java.lang.String LOCKEDBY = "lockedBy";
+  public final static java.lang.String MAPDATE = "mapDate";
+  public final static java.lang.String MAPNAME = "mapName";
   private com.runwaysdk.business.Struct mapName = null;
   
-  public static java.lang.String OWNER = "owner";
-  public static java.lang.String SEQ = "seq";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TYPE = "type";
+  public final static java.lang.String OWNER = "owner";
+  public final static java.lang.String SEQ = "seq";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -1119289093;
   
   public GeneratedMapBase()
@@ -428,7 +428,7 @@ public abstract class GeneratedMapBase extends com.runwaysdk.business.Business
     return (GeneratedMap) com.runwaysdk.business.Business.get(CLASS, key);
   }
   
-  public static java.lang.String getInitialMaps()
+  public final static java.lang.String getInitialMaps()
   {
     String msg = "This method should never be invoked.  It should be overwritten in com.runwaysdk.system.gis.mapping.GeneratedMap.java";
     throw new com.runwaysdk.dataaccess.metadata.ForbiddenMethodException(msg);

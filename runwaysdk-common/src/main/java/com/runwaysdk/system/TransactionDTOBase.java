@@ -46,12 +46,12 @@ public abstract class TransactionDTOBase extends com.runwaysdk.business.StructDT
     return CLASS;
   }
   
-  public static java.lang.String ACTION = "action";
-  public static java.lang.String DATAOBJECTID = "dataObjectID";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TRANSACTIONID = "transactionID";
+  public final static java.lang.String ACTION = "action";
+  public final static java.lang.String DATAOBJECTID = "dataObjectID";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String TRANSACTIONID = "transactionID";
   public String getAction()
   {
     return getValue(ACTION);

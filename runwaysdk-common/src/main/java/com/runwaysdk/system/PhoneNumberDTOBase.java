@@ -46,13 +46,13 @@ public abstract class PhoneNumberDTOBase extends com.runwaysdk.business.StructDT
     return CLASS;
   }
   
-  public static java.lang.String AREACODE = "areaCode";
-  public static java.lang.String EXTENSION = "extension";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PREFIX = "prefix";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String SUFFIX = "suffix";
+  public final static java.lang.String AREACODE = "areaCode";
+  public final static java.lang.String EXTENSION = "extension";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PREFIX = "prefix";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String SUFFIX = "suffix";
   public String getAreaCode()
   {
     return getValue(AREACODE);

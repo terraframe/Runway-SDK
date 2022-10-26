@@ -29,13 +29,13 @@ package com.runwaysdk.system.metadata;
 public abstract class MdMethodBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMethod";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String ISSTATIC = "isStatic";
-  public static java.lang.String MDTYPE = "mdType";
-  public static java.lang.String METHODNAME = "methodName";
-  public static java.lang.String RETURNTYPE = "returnType";
+  public final static java.lang.String ISSTATIC = "isStatic";
+  public final static java.lang.String MDTYPE = "mdType";
+  public final static java.lang.String METHODNAME = "methodName";
+  public final static java.lang.String RETURNTYPE = "returnType";
   private static final long serialVersionUID = 580415374;
   
   public MdMethodBase()

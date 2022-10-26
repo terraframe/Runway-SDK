@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class GeoserverFacadeBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.GeoserverFacade";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   private static final long serialVersionUID = -1489645697;
   
   public GeoserverFacadeBase()

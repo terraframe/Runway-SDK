@@ -35,7 +35,7 @@ public abstract class TermUtilDTOBase extends com.runwaysdk.business.UtilDTO
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   public static final com.runwaysdk.business.RelationshipDTO addAndRemoveLink(com.runwaysdk.constants.ClientRequestIF clientRequest, java.lang.String childOid, java.lang.String oldparentOid, java.lang.String oldRelType, java.lang.String newparentOid, java.lang.String newRelType)
   {
     String[] _declaredTypes = new String[]{"java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String", "java.lang.String"};

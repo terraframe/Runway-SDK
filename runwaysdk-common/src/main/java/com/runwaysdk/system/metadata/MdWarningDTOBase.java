@@ -45,7 +45,7 @@ public abstract class MdWarningDTOBase extends com.runwaysdk.system.metadata.MdM
     return CLASS;
   }
   
-  public static java.lang.String SUPERMDWARNING = "superMdWarning";
+  public final static java.lang.String SUPERMDWARNING = "superMdWarning";
   public com.runwaysdk.system.metadata.MdMessageDTO getSuperMdWarning()
   {
     if(getValue(SUPERMDWARNING) == null || getValue(SUPERMDWARNING).trim().equals(""))

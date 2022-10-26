@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeClassificationBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeClassification";
-  public static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
-  public static java.lang.String ROOT = "root";
+  public final static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
+  public final static java.lang.String ROOT = "root";
   private static final long serialVersionUID = -820646828;
   
   public MdAttributeClassificationBase()

@@ -153,15 +153,15 @@ public class AttributeColumn extends ExcelColumn
     }
     else if (type.equals(Long.class.getName()))
     {
-      return new Long(new Double(cell.getNumericCellValue()).longValue());
+      return Long.valueOf(Double.valueOf(cell.getNumericCellValue()).longValue());
     }
     else if (type.equals(Float.class.getName()))
     {
-      return new Float(new Double(cell.getNumericCellValue()).floatValue());
+      return new Float(Double.valueOf(cell.getNumericCellValue()).floatValue());
     }
     else if (type.equals(Double.class.getName()))
     {
-      return new Double(cell.getNumericCellValue());
+      return Double.valueOf(cell.getNumericCellValue());
     }
     else if (type.equals(BigDecimal.class.getName()))
     {
@@ -170,7 +170,7 @@ public class AttributeColumn extends ExcelColumn
     else if (type.equals(Integer.class.getName()))
     {
       return ExcelUtil.getInteger(cell);
-      // return new Integer(new Double(cell.getNumericCellValue()).intValue());
+      // return Integer.valueOf(Double.valueOf(cell.getNumericCellValue()).intValue());
     }
     else if (type.equals(Boolean.class.getName()))
     {

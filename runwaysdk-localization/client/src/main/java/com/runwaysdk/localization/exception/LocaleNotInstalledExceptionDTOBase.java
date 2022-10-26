@@ -69,8 +69,8 @@ public abstract class LocaleNotInstalledExceptionDTOBase extends com.runwaysdk.b
     return CLASS;
   }
   
-  public static java.lang.String LOCALESTRING = "localeString";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String LOCALESTRING = "localeString";
+  public final static java.lang.String OID = "oid";
   public String getLocaleString()
   {
     return getValue(LOCALESTRING);

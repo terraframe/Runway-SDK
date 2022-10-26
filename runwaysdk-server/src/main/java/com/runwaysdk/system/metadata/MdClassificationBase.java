@@ -29,15 +29,15 @@ package com.runwaysdk.system.metadata;
 public abstract class MdClassificationBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdClassification";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String GENERATESOURCE = "generateSource";
-  public static java.lang.String MDEDGE = "mdEdge";
-  public static java.lang.String MDVERTEX = "mdVertex";
-  public static java.lang.String PACKAGENAME = "packageName";
-  public static java.lang.String ROOT = "root";
-  public static java.lang.String TYPENAME = "typeName";
+  public final static java.lang.String GENERATESOURCE = "generateSource";
+  public final static java.lang.String MDEDGE = "mdEdge";
+  public final static java.lang.String MDVERTEX = "mdVertex";
+  public final static java.lang.String PACKAGENAME = "packageName";
+  public final static java.lang.String ROOT = "root";
+  public final static java.lang.String TYPENAME = "typeName";
   private static final long serialVersionUID = -829074161;
   
   public MdClassificationBase()

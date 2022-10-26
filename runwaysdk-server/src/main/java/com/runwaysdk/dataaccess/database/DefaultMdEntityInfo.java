@@ -182,16 +182,16 @@ public class DefaultMdEntityInfo
 
         // Parse the defining type from the attribute key
         String[] typeTokens = mdAttributeKey.split("\\.");
-        String type = "";
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < typeTokens.length - 1; i++)
         {
           if (i != 0)
           {
-            type += ".";
+            builder.append(".");
           }
-          type += typeTokens[i];
+          builder.append(typeTokens[i]);
         }
-        type = type.trim();
+        String type = builder.toString().trim();
 
         Map<String, Map<String, String>> attributeMap = entityAttributeMap.get(type);
         if (attributeMap == null)

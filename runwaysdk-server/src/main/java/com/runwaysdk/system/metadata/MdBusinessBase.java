@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdBusinessBase extends com.runwaysdk.system.metadata.MdElement
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdBusiness";
-  public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
-  public static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
+  public final static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
+  public final static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -347211403;
   

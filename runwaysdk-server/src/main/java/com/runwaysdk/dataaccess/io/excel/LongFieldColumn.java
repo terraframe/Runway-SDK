@@ -33,7 +33,7 @@ public class LongFieldColumn extends FieldColumn
 
   public Object getCellValue(Cell cell) throws Exception
   {
-    return new Long(new Double(cell.getNumericCellValue()).intValue());
+    return Long.valueOf(Double.valueOf(cell.getNumericCellValue()).intValue());
   }
 
   @Override

@@ -314,7 +314,7 @@ public class VertexObjectTest
     String attributeName = mdIntegerAttribute.definesAttribute();
     VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
-    Integer value = new Integer(5);
+    Integer value = Integer.valueOf(5);
     vertex.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertex.getObjectValue(attributeName));
@@ -331,7 +331,7 @@ public class VertexObjectTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Integer(10);
+      value = Integer.valueOf(10);
 
       vertex.setValue(attributeName, value);
       vertex.apply();
@@ -355,7 +355,7 @@ public class VertexObjectTest
     String attributeName = mdLongAttribute.definesAttribute();
     VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
-    Long value = new Long(5);
+    Long value = Long.valueOf(5);
     vertex.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertex.getObjectValue(attributeName));
@@ -371,7 +371,7 @@ public class VertexObjectTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Long(10);
+      value = Long.valueOf(10);
 
       vertex.setValue(attributeName, value);
       vertex.apply();
@@ -435,7 +435,7 @@ public class VertexObjectTest
     String attributeName = mdDoubleAttribute.definesAttribute();
     VertexObject vertex = new VertexObject(mdVertexDAO.definesType());
 
-    Double value = new Double(5D);
+    Double value = Double.valueOf(5D);
     vertex.setValue(attributeName, value);
 
     Assert.assertEquals(value, vertex.getObjectValue(attributeName));
@@ -451,7 +451,7 @@ public class VertexObjectTest
       Assert.assertEquals(value, test.getObjectValue(attributeName));
 
       // Test update
-      value = new Double(10D);
+      value = Double.valueOf(10D);
 
       vertex.setValue(attributeName, value);
       vertex.apply();
@@ -932,7 +932,7 @@ public class VertexObjectTest
 
       Long result = query.getSingleResult();
 
-      Assert.assertEquals(new Long(1), result);
+      Assert.assertEquals(Long.valueOf(1), result);
     }
     finally
     {

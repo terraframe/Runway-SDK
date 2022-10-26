@@ -45,9 +45,9 @@ public abstract class MdEnumerationDTOBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static java.lang.String INCLUDEALL = "includeAll";
-  public static java.lang.String MASTERMDBUSINESS = "masterMdBusiness";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String INCLUDEALL = "includeAll";
+  public final static java.lang.String MASTERMDBUSINESS = "masterMdBusiness";
+  public final static java.lang.String TABLENAME = "tableName";
   public Boolean getIncludeAll()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(INCLUDEALL));

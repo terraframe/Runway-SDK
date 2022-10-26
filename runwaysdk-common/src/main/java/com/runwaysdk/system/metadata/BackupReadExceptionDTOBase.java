@@ -70,8 +70,8 @@ public abstract class BackupReadExceptionDTOBase extends com.runwaysdk.business.
     return CLASS;
   }
   
-  public static java.lang.String LOCATION = "location";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String LOCATION = "location";
+  public final static java.lang.String OID = "oid";
   public String getLocation()
   {
     return getValue(LOCATION);

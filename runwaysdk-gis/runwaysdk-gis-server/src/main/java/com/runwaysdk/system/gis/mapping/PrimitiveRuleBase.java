@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class PrimitiveRuleBase extends com.runwaysdk.system.gis.mapping.ThematicRule
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.PrimitiveRule";
-  public static java.lang.String ATTRIBUTEVALUE = "attributeValue";
+  public final static java.lang.String ATTRIBUTEVALUE = "attributeValue";
   private static final long serialVersionUID = -2059291305;
   
   public PrimitiveRuleBase()

@@ -45,7 +45,7 @@ public abstract class MdTableDTOBase extends com.runwaysdk.system.metadata.MdCla
     return CLASS;
   }
   
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String TABLENAME = "tableName";
   public String getTableName()
   {
     return getValue(TABLENAME);

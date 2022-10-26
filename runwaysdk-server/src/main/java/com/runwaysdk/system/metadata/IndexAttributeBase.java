@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class IndexAttributeBase extends com.runwaysdk.system.metadata.MetadataRelationship
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.IndexAttribute";
-  public static java.lang.String INDEXORDER = "indexOrder";
+  public final static java.lang.String INDEXORDER = "indexOrder";
   private static final long serialVersionUID = 315679883;
   
   public IndexAttributeBase(String parentOid, String childOid)

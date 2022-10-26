@@ -29,13 +29,13 @@ package com.runwaysdk.system.metadata;
 public abstract class MdParameterBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdParameter";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String METADATA = "metadata";
-  public static java.lang.String PARAMETERNAME = "parameterName";
-  public static java.lang.String PARAMETERORDER = "parameterOrder";
-  public static java.lang.String PARAMETERTYPE = "parameterType";
+  public final static java.lang.String METADATA = "metadata";
+  public final static java.lang.String PARAMETERNAME = "parameterName";
+  public final static java.lang.String PARAMETERORDER = "parameterOrder";
+  public final static java.lang.String PARAMETERTYPE = "parameterType";
   private static final long serialVersionUID = 1094546547;
   
   public MdParameterBase()

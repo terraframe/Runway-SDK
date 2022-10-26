@@ -45,7 +45,7 @@ public abstract class QualifiedTypeJobDTOBase extends com.runwaysdk.system.sched
     return CLASS;
   }
   
-  public static java.lang.String CLASSNAME = "className";
+  public final static java.lang.String CLASSNAME = "className";
   public String getClassName()
   {
     return getValue(CLASSNAME);

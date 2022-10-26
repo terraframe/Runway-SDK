@@ -29,9 +29,9 @@ package com.runwaysdk.jstest;
 public abstract class TestInformationBase extends com.runwaysdk.business.Information implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestInformation";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String INFOCHAR = "infoChar";
-  public static java.lang.String INFOINT = "infoInt";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String INFOCHAR = "infoChar";
+  public final static java.lang.String INFOINT = "infoInt";
   private static final long serialVersionUID = 1801282653;
   
   public TestInformationBase()

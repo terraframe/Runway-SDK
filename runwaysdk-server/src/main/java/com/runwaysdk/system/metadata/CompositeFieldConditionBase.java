@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class CompositeFieldConditionBase extends com.runwaysdk.system.metadata.FieldCondition
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CompositeFieldCondition";
-  public static java.lang.String FIRSTCONDITION = "firstCondition";
-  public static java.lang.String SECONDCONDITION = "secondCondition";
+  public final static java.lang.String FIRSTCONDITION = "firstCondition";
+  public final static java.lang.String SECONDCONDITION = "secondCondition";
   private static final long serialVersionUID = 150937595;
   
   public CompositeFieldConditionBase()

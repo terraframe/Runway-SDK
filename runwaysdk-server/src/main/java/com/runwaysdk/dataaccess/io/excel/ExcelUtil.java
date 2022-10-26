@@ -146,9 +146,9 @@ public class ExcelUtil
     }
     else if (cellType.equals(CellType.NUMERIC))
     {
-      Double value = new Double(cell.getNumericCellValue());
+      Double value = Double.valueOf(cell.getNumericCellValue());
 
-      return value.equals(new Double(1));
+      return value.equals(Double.valueOf(1));
     }
     else
     {

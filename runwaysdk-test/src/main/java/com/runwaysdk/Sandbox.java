@@ -51,7 +51,15 @@ public class Sandbox
 {
   public static void main(String[] args) throws Throwable
   {
-    mainInRequest();
+    String test = "ABC";
+    String de = test;
+    
+    test = "DEF";
+    
+    System.out.println(test);
+    System.out.println(de);
+    
+//    mainInRequest();
   }
   
   @Request

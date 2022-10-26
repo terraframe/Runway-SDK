@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdMobileAttributeBase extends com.runwaysdk.system.metadata.MdMobileField
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileAttribute";
-  public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public final static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
   private static final long serialVersionUID = -1146751901;
   
   public MdMobileAttributeBase()

@@ -2119,7 +2119,7 @@ public class ServerExceptionMessageLocalizer
     return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidSSDConstraint", "Role [{0}] invalidates existing constraints on SSD [{1}].", roleName, ssdName);
   }
 
-  public static String rBACExceptionInvalidSSDCardinality(Locale locale, int cardinality, String ssdName)
+  public static String rBACExceptionInvalidSSDCardinality(Locale locale, Integer cardinality, String ssdName)
   {
     return LocalizationFacade.getMessage(locale, "RBACExceptionInvalidSSDCardinality", "The new cardinality of [{0}] is invalid for SSD [{1}] due to existing user-role assignments.", Integer.toString(cardinality), ssdName);
   }
@@ -2548,7 +2548,7 @@ public class ServerExceptionMessageLocalizer
    * @param localeString
    * @return
    */
-  public static String InvalidLocaleFormatException(Locale locale, String localeString)
+  public static String invalidLocaleFormatException(Locale locale, String localeString)
   {
     return LocalizationFacade.getMessage(locale, "InvalidLocaleFormatException", "The locale [{0}] does not have the proper format - please notify your technical support team.", localeString);
   }
@@ -2622,14 +2622,14 @@ public class ServerExceptionMessageLocalizer
     return LocalizationFacade.getMessage(locale, "AndCondition", "[{0}] and [{1}].", firstCondition, secondCondition);
   }
 
-  public static String attributeDefinitionLengthException(Locale locale, MdAttributeDAOIF mdAttribute, int length)
+  public static String attributeDefinitionLengthException(Locale locale, MdAttributeDAOIF mdAttribute, Integer length)
   {
-    return LocalizationFacade.getMessage(locale, "AttributeDefinitionLengthException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be an integer greater than 1.", mdAttribute.getDisplayLabel(locale), new Integer(length).toString());
+    return LocalizationFacade.getMessage(locale, "AttributeDefinitionLengthException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be an integer greater than 1.", mdAttribute.getDisplayLabel(locale), length.toString());
   }
 
-  public static String attributeDefinitionDecimalException(Locale locale, MdAttributeDAOIF mdAttribute, int length, int decimal)
+  public static String attributeDefinitionDecimalException(Locale locale, MdAttributeDAOIF mdAttribute, Integer length, Integer decimal)
   {
-    return LocalizationFacade.getMessage(locale, "AttributeDefinitionDecimalException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be between [1] and [{2}].", mdAttribute.getDisplayLabel(locale), new Integer(length).toString(), new Integer(decimal).toString());
+    return LocalizationFacade.getMessage(locale, "AttributeDefinitionDecimalException", "The value [{1}] on attribute definition [{0}] is invalid.  It must be between [1] and [{2}].", mdAttribute.getDisplayLabel(locale), length.toString(), decimal.toString());
   }
 
   public static String numericFieldOverflowException(Locale locale)

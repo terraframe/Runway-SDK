@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeEnumerationBase extends com.runwaysdk.system.metadata.MdAttributeRef
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeEnumeration";
-  public static java.lang.String CACHECOLUMNNAME = "cacheColumnName";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDENUMERATION = "mdEnumeration";
-  public static java.lang.String SELECTMULTIPLE = "selectMultiple";
+  public final static java.lang.String CACHECOLUMNNAME = "cacheColumnName";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDENUMERATION = "mdEnumeration";
+  public final static java.lang.String SELECTMULTIPLE = "selectMultiple";
   private static final long serialVersionUID = -631791968;
   
   public MdAttributeEnumerationBase()

@@ -41,8 +41,6 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
 
   private File              queryDTOclassDirectory;
 
-  private ContentProviderIF provider = null;
-
   public JavaArtifactMdEntityCommand(MdClassDAOIF mdCompopnentIF, Operation operation, Connection conn)
   {
     super(mdCompopnentIF, operation, conn);
@@ -144,10 +142,6 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
   @Override
   public void doFinally()
   {
-    if (this.provider != null)
-    {
-      provider.deleteBackup();
-    }
   }
 
   /**
@@ -220,10 +214,6 @@ public class JavaArtifactMdEntityCommand extends JavaArtifactMdClassCommand
 
   private void restoreToFileSystem_ViewFiles()
   {
-    if (this.provider != null)
-    {
-      provider.reloadContent();
-    }
   }
 
   /**

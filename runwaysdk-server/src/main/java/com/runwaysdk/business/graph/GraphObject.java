@@ -583,4 +583,10 @@ public abstract class GraphObject implements Mutable
   {
     throw new UnsupportedOperationException();
   }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getOid().hashCode();
+  }
 }

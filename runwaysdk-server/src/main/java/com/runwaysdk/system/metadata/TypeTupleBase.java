@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class TypeTupleBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.TypeTuple";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String METADATA = "metadata";
+  public final static java.lang.String METADATA = "metadata";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 1815577532;
   

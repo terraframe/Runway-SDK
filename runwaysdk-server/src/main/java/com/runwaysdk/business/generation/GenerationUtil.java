@@ -69,15 +69,17 @@ public class GenerationUtil
    */
   public static String buildBusinessParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
-    String parameters = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String type = mdParameter.getParameterType().getType();
       String name = mdParameter.getParameterName();
 
-      parameters = parameters.concat(", " + type + " " + name);
+      builder.append(", " + type + " " + name);
     }
+    
+    String parameters = builder.toString();
 
     if (isStart)
     {
@@ -97,12 +99,12 @@ public class GenerationUtil
   public static String buildJSONParameters(List<MdParameterDAOIF> list)
   {
     // build the parameters list
-    String parameters = "clientRequest ";
+    StringBuilder builder = new StringBuilder("clientRequest ");
     for (MdParameterDAOIF mdParameterIF : list)
     {
-      parameters += mdParameterIF.getParameterName() + " ";
+      builder.append(mdParameterIF.getParameterName() + " ");
     }
-    parameters = parameters.trim();
+    String parameters = builder.toString().trim();
     parameters = parameters.replaceAll(" ", ", ");
 
     return parameters;
@@ -151,15 +153,17 @@ public class GenerationUtil
    */
   public static String buildGenericDTOParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
-    String parameters = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String type = mdParameter.getParameterType().getGenericDTOType();
       String name = mdParameter.getParameterName();
 
-      parameters = parameters.concat(", " + type + " " + name);
+      builder.append(", " + type + " " + name);
     }
+    
+    String parameters = builder.toString();
 
     if (isStart)
     {
@@ -171,13 +175,15 @@ public class GenerationUtil
 
   public static String buildDocumentParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
-    String parameters = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
-      parameters = parameters.concat(", " + Document.class.getName() + " " + name);
+      builder.append(", " + Document.class.getName() + " " + name);
     }
+    
+    String parameters = builder.toString();
 
     if (isStart)
     {
@@ -189,13 +195,15 @@ public class GenerationUtil
 
   public static String buildJSONParameters(List<MdParameterDAOIF> list, boolean isStart)
   {
-    String parameters = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
-      parameters = parameters.concat(", " + String.class.getName() + " " + name);
+      builder.append(", " + String.class.getName() + " " + name);
     }
+    
+    String parameters = builder.toString();
 
     if (isStart)
     {
@@ -216,13 +224,15 @@ public class GenerationUtil
    */
   public static String buildMethodArray(List<MdParameterDAOIF> list)
   {
-    String methodTypes = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String methodType = mdParameter.getParameterType().getJavaClass();
-      methodTypes = methodTypes.concat(", \"" + methodType + "\"");
+      builder.append(", \"" + methodType + "\"");
     }
+    
+    String methodTypes = builder.toString();
 
     methodTypes = methodTypes.replaceFirst(", ", "");
 
@@ -254,13 +264,15 @@ public class GenerationUtil
    */
   public static String buildParameterArray(List<MdParameterDAOIF> list)
   {
-    String parameter = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
-      parameter = parameter.concat(", " + name);
+      builder.append(", " + name);
     }
+    
+    String parameter = builder.toString();
 
     parameter = parameter.replaceFirst(", ", "");
 
@@ -269,13 +281,15 @@ public class GenerationUtil
 
   public static String buildCallParameter(List<MdParameterDAOIF> list, String prefix, boolean isStart)
   {
-    String callString = new String();
+    StringBuilder builder = new StringBuilder();
 
     for (MdParameterDAOIF mdParameter : list)
     {
       String name = mdParameter.getParameterName();
-      callString = callString.concat(", " + prefix + name);
+      builder.append(", " + prefix + name);
     }
+    
+    String callString = builder.toString();
 
     if (isStart)
     {

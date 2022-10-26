@@ -200,6 +200,6 @@ public class AttributeTime extends AttributeMoment
    */
   public AttributeTime attributeClone()
   {
-    return new AttributeTime(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeTime(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

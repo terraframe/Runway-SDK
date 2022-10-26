@@ -112,7 +112,7 @@ public class CustomFormatTest
   @Test
   public void testDelegateFormat()
   {
-    String output = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class).format(new Integer(123));
+    String output = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class).format(Integer.valueOf(123));
 
     Assert.assertEquals("123", output);
   }
@@ -125,7 +125,7 @@ public class CustomFormatTest
   @Test
   public void testDelegateDisplay()
   {
-    String output = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class).format(new Integer(123));
+    String output = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class).format(Integer.valueOf(123));
 
     Assert.assertEquals("123", output);
   }
@@ -140,7 +140,7 @@ public class CustomFormatTest
   {
     Integer output = AbstractFormatFactory.getFormatFactory().getFormat(Integer.class).parse("123");
 
-    Assert.assertEquals(new Integer(123), output);
+    Assert.assertEquals(Integer.valueOf(123), output);
   }
 
   /**

@@ -45,9 +45,9 @@ public abstract class ExecutableJobDTOBase extends com.runwaysdk.system.schedule
     return CLASS;
   }
   
-  public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String RUNASDIMENSION = "runAsDimension";
-  public static java.lang.String RUNASUSER = "runAsUser";
+  public final static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String RUNASDIMENSION = "runAsDimension";
+  public final static java.lang.String RUNASUSER = "runAsUser";
   public com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO getDescription()
   {
     return (com.runwaysdk.system.scheduler.ExecutableJobDescriptionDTO) this.getAttributeStructDTO(DESCRIPTION).getStructDTO();

@@ -18,7 +18,6 @@
  */
 package com.runwaysdk.business.generation;
 
-import java.io.BufferedWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,6 @@ public class BusinessQueryAPIGenerator extends EntityQueryAPIGenerator
 
   public static final String SUBSELECT_RELATIONSHIP_PREFIX   = "SUBSELECT_";
 
-  protected BufferedWriter   refSrcBuffer;
 
   protected Set<String>      refImportSet;
 

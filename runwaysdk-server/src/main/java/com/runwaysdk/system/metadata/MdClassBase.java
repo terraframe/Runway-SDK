@@ -29,11 +29,11 @@ package com.runwaysdk.system.metadata;
 public abstract class MdClassBase extends com.runwaysdk.system.metadata.MdType
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdClass";
-  public static java.lang.String PUBLISH = "publish";
-  public static java.lang.String STUBCLASS = "stubClass";
-  public static java.lang.String STUBDTOCLASS = "stubDTOclass";
-  public static java.lang.String STUBDTOSOURCE = "stubDTOsource";
-  public static java.lang.String STUBSOURCE = "stubSource";
+  public final static java.lang.String PUBLISH = "publish";
+  public final static java.lang.String STUBCLASS = "stubClass";
+  public final static java.lang.String STUBDTOCLASS = "stubDTOclass";
+  public final static java.lang.String STUBDTOSOURCE = "stubDTOsource";
+  public final static java.lang.String STUBSOURCE = "stubSource";
   private static final long serialVersionUID = -111523699;
   
   public MdClassBase()

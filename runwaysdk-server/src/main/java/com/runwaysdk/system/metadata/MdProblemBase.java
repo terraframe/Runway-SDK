@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdProblemBase extends com.runwaysdk.system.metadata.MdNotification
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdProblem";
-  public static java.lang.String SUPERMDPROBLEM = "superMdProblem";
+  public final static java.lang.String SUPERMDPROBLEM = "superMdProblem";
   private static final long serialVersionUID = 407821386;
   
   public MdProblemBase()

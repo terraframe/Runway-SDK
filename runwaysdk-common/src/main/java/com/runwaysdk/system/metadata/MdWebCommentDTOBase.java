@@ -45,7 +45,7 @@ public abstract class MdWebCommentDTOBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static java.lang.String COMMENTTEXT = "commentText";
+  public final static java.lang.String COMMENTTEXT = "commentText";
   public com.runwaysdk.system.metadata.MdWebCommentCommentTextDTO getCommentText()
   {
     return (com.runwaysdk.system.metadata.MdWebCommentCommentTextDTO) this.getAttributeStructDTO(COMMENTTEXT).getStructDTO();

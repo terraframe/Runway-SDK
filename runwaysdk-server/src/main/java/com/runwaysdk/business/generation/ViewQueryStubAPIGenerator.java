@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.MdViewInfo;
@@ -121,9 +122,9 @@ public class ViewQueryStubAPIGenerator extends ComponentQueryAPIGenerator
     File stubSrcFile = new File(TypeGenerator.getStubQueryAPIsourceFilePath(this.getMdClassIF()));
     try
     {
-      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(stubSrcFile)));
+      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(stubSrcFile), "UTF-8"));
     }
-    catch (FileNotFoundException e)
+    catch (FileNotFoundException | UnsupportedEncodingException e)
     {
       throw new FileWriteException(stubSrcFile, e);
     }

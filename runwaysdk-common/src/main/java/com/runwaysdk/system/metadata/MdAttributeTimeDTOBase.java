@@ -45,7 +45,7 @@ public abstract class MdAttributeTimeDTOBase extends com.runwaysdk.system.metada
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   public java.util.Date getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeTimeUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

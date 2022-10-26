@@ -29,10 +29,10 @@ package com.runwaysdk.system;
 public abstract class AbstractClassificationBase extends com.runwaysdk.business.graph.VertexObject
 {
   public final static String CLASS = "com.runwaysdk.system.AbstractClassification";
-  public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SEQ = "seq";
+  public final static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SEQ = "seq";
   
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 1145753720;

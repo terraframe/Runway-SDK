@@ -45,9 +45,9 @@ public abstract class MdAttributeBooleanDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String NEGATIVEDISPLAYLABEL = "negativeDisplayLabel";
-  public static java.lang.String POSITIVEDISPLAYLABEL = "positiveDisplayLabel";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String NEGATIVEDISPLAYLABEL = "negativeDisplayLabel";
+  public final static java.lang.String POSITIVEDISPLAYLABEL = "positiveDisplayLabel";
   public Boolean getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

@@ -46,14 +46,14 @@ public abstract class AddressDTOBase extends com.runwaysdk.business.StructDTO
     return CLASS;
   }
   
-  public static java.lang.String CITY = "city";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String POSTALCODE = "postalCode";
-  public static java.lang.String PRIMARYADDRESS = "primaryAddress";
-  public static java.lang.String SECONDARYADDRESS = "secondaryAddress";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String ZIPCODE = "zipCode";
+  public final static java.lang.String CITY = "city";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String POSTALCODE = "postalCode";
+  public final static java.lang.String PRIMARYADDRESS = "primaryAddress";
+  public final static java.lang.String SECONDARYADDRESS = "secondaryAddress";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String ZIPCODE = "zipCode";
   public String getCity()
   {
     return getValue(CITY);

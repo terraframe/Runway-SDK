@@ -35,7 +35,7 @@ public class LongFormat extends NumberFormat<Long>
   @Override
   protected Long convert(Number number)
   {
-    return new Long(number.longValue());
+    return Long.valueOf(number.longValue());
   }
 
   /* (non-Javadoc)

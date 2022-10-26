@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class VisibilityModifierMasterBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.VisibilityModifierMaster";
-  public static java.lang.String JAVAVALUE = "javaValue";
+  public final static java.lang.String JAVAVALUE = "javaValue";
   private static final long serialVersionUID = -1491830806;
   
   public VisibilityModifierMasterBase()

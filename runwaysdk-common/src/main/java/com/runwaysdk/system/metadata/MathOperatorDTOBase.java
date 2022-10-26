@@ -45,7 +45,7 @@ public abstract class MathOperatorDTOBase extends com.runwaysdk.system.Enumerati
     return CLASS;
   }
   
-  public static java.lang.String OPERATORSYMBOL = "operatorSymbol";
+  public final static java.lang.String OPERATORSYMBOL = "operatorSymbol";
   public String getOperatorSymbol()
   {
     return getValue(OPERATORSYMBOL);

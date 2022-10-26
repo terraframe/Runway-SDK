@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdStructBase extends com.runwaysdk.system.metadata.MdEntity
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdStruct";
-  public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
+  public final static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
   private static final long serialVersionUID = 1049319841;
   
   public MdStructBase()

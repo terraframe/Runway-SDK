@@ -516,7 +516,7 @@ public class AttributeMultiReference extends Attribute implements AttributeMulti
   {
     Set<String> cloneSet = new TreeSet<String>(this.itemIdSet);
 
-    return new AttributeMultiReference(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()), cloneSet);
+    return new AttributeMultiReference(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue(), cloneSet);
   }
 
   /**

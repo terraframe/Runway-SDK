@@ -29,8 +29,8 @@ package com.runwaysdk.system.ontology;
 public abstract class ImmutableRootExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.ImmutableRootException";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String ROOTNAME = "rootName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String ROOTNAME = "rootName";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -984109795;
   

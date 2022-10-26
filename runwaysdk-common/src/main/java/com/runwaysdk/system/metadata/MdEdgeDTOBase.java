@@ -45,8 +45,8 @@ public abstract class MdEdgeDTOBase extends com.runwaysdk.system.metadata.MdGrap
     return CLASS;
   }
   
-  public static java.lang.String CHILDMDVERTEX = "childMdVertex";
-  public static java.lang.String PARENTMDVERTEX = "parentMdVertex";
+  public final static java.lang.String CHILDMDVERTEX = "childMdVertex";
+  public final static java.lang.String PARENTMDVERTEX = "parentMdVertex";
   public com.runwaysdk.system.metadata.MdVertexDTO getChildMdVertex()
   {
     if(getValue(CHILDMDVERTEX) == null || getValue(CHILDMDVERTEX).trim().equals(""))

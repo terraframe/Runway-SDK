@@ -173,6 +173,6 @@ public class AttributeFloat extends AttributeNumber
    */
   public AttributeFloat attributeClone()
   {
-    return new AttributeFloat(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeFloat(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

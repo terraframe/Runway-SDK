@@ -46,8 +46,8 @@ public abstract class TypeTupleDTOBase extends com.runwaysdk.system.metadata.Met
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String METADATA = "metadata";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String METADATA = "metadata";
   public com.runwaysdk.system.metadata.MetadataDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MetadataDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

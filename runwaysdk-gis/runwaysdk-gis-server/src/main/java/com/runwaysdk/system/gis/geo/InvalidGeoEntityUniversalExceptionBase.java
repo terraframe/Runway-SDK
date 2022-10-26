@@ -29,9 +29,9 @@ package com.runwaysdk.system.gis.geo;
 public abstract class InvalidGeoEntityUniversalExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.InvalidGeoEntityUniversalException";
-  public static java.lang.String CHILDUNIVERSAL = "childUniversal";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
+  public final static java.lang.String CHILDUNIVERSAL = "childUniversal";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PARENTUNIVERSAL = "parentUniversal";
   private static final long serialVersionUID = 1113355236;
   
   public InvalidGeoEntityUniversalExceptionBase()

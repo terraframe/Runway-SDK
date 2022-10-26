@@ -45,11 +45,11 @@ public abstract class MdIndexDTOBase extends com.runwaysdk.system.metadata.Metad
     return CLASS;
   }
   
-  public static java.lang.String ACTIVE = "active";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String INDEXNAME = "indexName";
-  public static java.lang.String MDENTITY = "mdEntity";
-  public static java.lang.String UNIQUEVALUE = "uniqueValue";
+  public final static java.lang.String ACTIVE = "active";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String INDEXNAME = "indexName";
+  public final static java.lang.String MDENTITY = "mdEntity";
+  public final static java.lang.String UNIQUEVALUE = "uniqueValue";
   public Boolean getActive()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ACTIVE));

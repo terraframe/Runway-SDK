@@ -29,10 +29,10 @@ package com.runwaysdk.system.scheduler;
 public abstract class AbstractJobDisplayLabelBase extends com.runwaysdk.business.LocalStruct
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.AbstractJobDisplayLabel";
-  public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String DEFAULTLOCALE = "defaultLocale";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -1590740584;
   
   public AbstractJobDisplayLabelBase()

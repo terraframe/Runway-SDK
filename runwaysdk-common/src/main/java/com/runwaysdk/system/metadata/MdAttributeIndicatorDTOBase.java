@@ -45,7 +45,7 @@ public abstract class MdAttributeIndicatorDTOBase extends com.runwaysdk.system.m
     return CLASS;
   }
   
-  public static java.lang.String INDICATORELEMENT = "indicatorElement";
+  public final static java.lang.String INDICATORELEMENT = "indicatorElement";
   public com.runwaysdk.system.metadata.IndicatorElementDTO getIndicatorElement()
   {
     if(getValue(INDICATORELEMENT) == null || getValue(INDICATORELEMENT).trim().equals(""))

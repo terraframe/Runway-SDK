@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebBooleanBase extends com.runwaysdk.system.metadata.MdWebPrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebBoolean";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   private static final long serialVersionUID = -1957479759;
   
   public MdWebBooleanBase()

@@ -604,7 +604,7 @@ public class FileSessionCache extends ManagedUserSessionCache
       sessions.put(sessionId, session);
 
       // Intialize the request count to 1
-      requestCount.put(sessionId, new Integer(1));
+      requestCount.put(sessionId, Integer.valueOf(1));
 
       return session;
     }

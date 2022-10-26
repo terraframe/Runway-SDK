@@ -45,9 +45,9 @@ public abstract class MdFormDTOBase extends com.runwaysdk.system.metadata.MdType
     return CLASS;
   }
   
-  public static java.lang.String DIMENSION = "dimension";
-  public static java.lang.String FORMMDCLASS = "formMdClass";
-  public static java.lang.String FORMNAME = "formName";
+  public final static java.lang.String DIMENSION = "dimension";
+  public final static java.lang.String FORMMDCLASS = "formMdClass";
+  public final static java.lang.String FORMNAME = "formName";
   public com.runwaysdk.system.metadata.MdDimensionDTO getDimension()
   {
     if(getValue(DIMENSION) == null || getValue(DIMENSION).trim().equals(""))

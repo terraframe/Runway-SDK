@@ -200,6 +200,6 @@ public class AttributeReference extends Attribute implements AttributeReferenceI
   @Override
   public Attribute attributeClone()
   {
-    return new AttributeReference(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeReference(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

@@ -1919,7 +1919,7 @@ public class MySQL extends AbstractDatabase
    */
   public void throwDatabaseException(SQLException ex, String debugMsg)
   {
-    String errorCode = new String(new Integer(ex.getErrorCode()).toString());
+    String errorCode = new String(Integer.valueOf(ex.getErrorCode()).toString());
     String errorMessage = ex.getMessage();
 
     errorCode = errorCode.trim();

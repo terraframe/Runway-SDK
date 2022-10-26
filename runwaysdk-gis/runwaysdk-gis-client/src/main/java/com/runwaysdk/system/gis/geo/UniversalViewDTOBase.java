@@ -34,10 +34,10 @@ public abstract class UniversalViewDTOBase extends com.runwaysdk.business.ViewDT
     return CLASS;
   }
   
-  public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String UNIVERSAL = "universal";
+  public final static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String UNIVERSAL = "universal";
   public String getDescription()
   {
     return getValue(DESCRIPTION);

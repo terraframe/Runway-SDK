@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MathOperatorBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MathOperator";
-  public static java.lang.String OPERATORSYMBOL = "operatorSymbol";
+  public final static java.lang.String OPERATORSYMBOL = "operatorSymbol";
   private static final long serialVersionUID = 536000029;
   
   public MathOperatorBase()

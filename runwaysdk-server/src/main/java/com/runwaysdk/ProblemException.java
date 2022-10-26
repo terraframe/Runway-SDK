@@ -51,13 +51,14 @@ public class ProblemException extends RunwayException
 
   public static void throwProblemException(List<ProblemIF> problemList)
   {
-    String errMsg = "Problems occured during the transaction:\n";
+    StringBuilder errMsg = new StringBuilder("Problems occured during the transaction:\n");
     for (ProblemIF problemIF : problemList)
     {
-      errMsg += problemIF.getDeveloperMessage()+"\n";
+      errMsg.append(problemIF.getDeveloperMessage());
+      errMsg.append("\n");
     }
     
-    throw new ProblemException(errMsg, problemList);
+    throw new ProblemException(errMsg.toString(), problemList);
   }
     
 
@@ -118,13 +119,14 @@ public class ProblemException extends RunwayException
    */
   public String getLocalizedMessage()
   {
-    String msg = ServerExceptionMessageLocalizer.problemCollectionException(this.getLocale());
+    StringBuilder msg = new StringBuilder(ServerExceptionMessageLocalizer.problemCollectionException(this.getLocale()));
     
     for(ProblemIF problem : this.getProblems())
     {
-      msg += "\n" + problem.getLocalizedMessage();
+      msg.append("\n");
+      msg.append(problem.getLocalizedMessage());
     }
     
-    return msg;
+    return msg.toString();
   }
 }

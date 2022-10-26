@@ -45,11 +45,11 @@ public abstract class MdActionDTOBase extends com.runwaysdk.system.metadata.Meta
     return CLASS;
   }
   
-  public static java.lang.String ACTIONNAME = "actionName";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String ENCLOSINGMDCONTROLLER = "enclosingMdController";
-  public static java.lang.String ISPOST = "isPost";
-  public static java.lang.String ISQUERY = "isQuery";
+  public final static java.lang.String ACTIONNAME = "actionName";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String ENCLOSINGMDCONTROLLER = "enclosingMdController";
+  public final static java.lang.String ISPOST = "isPost";
+  public final static java.lang.String ISQUERY = "isQuery";
   public String getActionName()
   {
     return getValue(ACTIONNAME);

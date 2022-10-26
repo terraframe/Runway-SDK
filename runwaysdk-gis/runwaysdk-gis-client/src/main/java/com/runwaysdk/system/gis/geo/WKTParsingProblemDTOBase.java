@@ -39,7 +39,7 @@ public abstract class WKTParsingProblemDTOBase extends com.runwaysdk.system.web.
     return CLASS;
   }
   
-  public static java.lang.String REASON = "reason";
+  public final static java.lang.String REASON = "reason";
   public String getReason()
   {
     return getValue(REASON);

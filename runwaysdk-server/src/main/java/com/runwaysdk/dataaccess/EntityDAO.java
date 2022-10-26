@@ -1545,19 +1545,19 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
 
       if (entityQuery.getCount() > 0)
       {
-        String error = "Duplicate item violation.  Instance [" + this.getOid() + "] contains the same values for certain fields: ";
+        StringBuilder error = new StringBuilder("Duplicate item violation.  Instance [" + this.getOid() + "] contains the same values for certain fields: ");
 
         for (int i = 0; i < uniqueMdAttributeIFList.size(); i++)
         {
           if (i != 0)
           {
-            error += ", ";
+            error.append(", ");
           }
           MdAttributeConcreteDAOIF mdAttribute = uniqueMdAttributeIFList.get(i);
-          error += "[" + mdAttribute.definesAttribute() + "]";
+          error.append("[" + mdAttribute.definesAttribute() + "]");
         }
 
-        throw new DuplicateDataException(error, mdEntity, attributeIFList, valuesList);
+        throw new DuplicateDataException(error.toString(), mdEntity, attributeIFList, valuesList);
       }
     }
   }

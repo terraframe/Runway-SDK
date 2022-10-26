@@ -45,8 +45,8 @@ public abstract class MdAttributeReferenceDTOBase extends com.runwaysdk.system.m
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDBUSINESS = "mdBusiness";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDBUSINESS = "mdBusiness";
   public String getDefaultValue()
   {
     return getValue(DEFAULTVALUE);

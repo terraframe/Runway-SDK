@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeSymmetricBase extends com.runwaysdk.system.metadata.MdAttributeEncryption
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeSymmetric";
-  public static java.lang.String SECRETKEYSIZE = "secretKeySize";
-  public static java.lang.String SYMMETRICMETHOD = "symmetricMethod";
+  public final static java.lang.String SECRETKEYSIZE = "secretKeySize";
+  public final static java.lang.String SYMMETRICMETHOD = "symmetricMethod";
   private static final long serialVersionUID = -77506889;
   
   public MdAttributeSymmetricBase()

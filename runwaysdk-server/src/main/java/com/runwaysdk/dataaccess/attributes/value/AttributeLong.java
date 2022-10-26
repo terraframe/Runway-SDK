@@ -74,7 +74,7 @@ public class AttributeLong extends AttributeNumber
     }
     else
     {
-      return new Long(this.getValue());
+      return Long.valueOf(this.getValue());
     }
   }
 }

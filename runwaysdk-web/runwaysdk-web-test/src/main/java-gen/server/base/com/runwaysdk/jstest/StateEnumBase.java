@@ -29,10 +29,10 @@ package com.runwaysdk.jstest;
 public abstract class StateEnumBase extends com.runwaysdk.system.EnumerationMaster implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.StateEnum";
-  public static java.lang.String ENUMINT = "enumInt";
-  public static java.lang.String STATECODE = "stateCode";
-  public static java.lang.String STATENAME = "stateName";
-  public static java.lang.String STATEPHONE = "statePhone";
+  public final static java.lang.String ENUMINT = "enumInt";
+  public final static java.lang.String STATECODE = "stateCode";
+  public final static java.lang.String STATENAME = "stateName";
+  public final static java.lang.String STATEPHONE = "statePhone";
   private com.runwaysdk.business.Struct statePhone = null;
   
   private static final long serialVersionUID = 1237406671;

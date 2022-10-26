@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class CorruptBackupExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CorruptBackupException";
-  public static java.lang.String BACKUPNAME = "backupName";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String BACKUPNAME = "backupName";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -805731982;
   

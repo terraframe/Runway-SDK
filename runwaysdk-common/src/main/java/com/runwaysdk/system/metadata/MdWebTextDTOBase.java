@@ -45,8 +45,8 @@ public abstract class MdWebTextDTOBase extends com.runwaysdk.system.metadata.MdW
     return CLASS;
   }
   
-  public static java.lang.String HEIGHT = "height";
-  public static java.lang.String WIDTH = "width";
+  public final static java.lang.String HEIGHT = "height";
+  public final static java.lang.String WIDTH = "width";
   public Integer getHeight()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(HEIGHT));

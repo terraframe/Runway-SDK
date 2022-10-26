@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis;
 public abstract class ConnectionExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.ConnectionException";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   private static final long serialVersionUID = -1113289073;
   
   public ConnectionExceptionBase()

@@ -45,11 +45,11 @@ public abstract class MdAttributeVirtualDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String ATTRIBUTENAME = "attributeName";
-  public static java.lang.String DEFININGMDVIEW = "definingMdView";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
-  public static java.lang.String REQUIRED = "required";
+  public final static java.lang.String ATTRIBUTENAME = "attributeName";
+  public final static java.lang.String DEFININGMDVIEW = "definingMdView";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
+  public final static java.lang.String REQUIRED = "required";
   public String getAttributeName()
   {
     return getValue(ATTRIBUTENAME);

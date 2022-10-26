@@ -45,18 +45,18 @@ public abstract class MdAttributeConcreteDTOBase extends com.runwaysdk.system.me
     return CLASS;
   }
   
-  public static java.lang.String ATTRIBUTENAME = "attributeName";
-  public static java.lang.String COLUMNNAME = "columnName";
-  public static java.lang.String DEFININGMDCLASS = "definingMdClass";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String GENERATEACCESSOR = "generateAccessor";
-  public static java.lang.String GETTERVISIBILITY = "getterVisibility";
-  public static java.lang.String IMMUTABLE = "immutable";
-  public static java.lang.String INDEXNAME = "indexName";
-  public static java.lang.String INDEXTYPE = "indexType";
-  public static java.lang.String REQUIRED = "required";
-  public static java.lang.String SETTERVISIBILITY = "setterVisibility";
-  public static java.lang.String SYSTEM = "system";
+  public final static java.lang.String ATTRIBUTENAME = "attributeName";
+  public final static java.lang.String COLUMNNAME = "columnName";
+  public final static java.lang.String DEFININGMDCLASS = "definingMdClass";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String GENERATEACCESSOR = "generateAccessor";
+  public final static java.lang.String GETTERVISIBILITY = "getterVisibility";
+  public final static java.lang.String IMMUTABLE = "immutable";
+  public final static java.lang.String INDEXNAME = "indexName";
+  public final static java.lang.String INDEXTYPE = "indexType";
+  public final static java.lang.String REQUIRED = "required";
+  public final static java.lang.String SETTERVISIBILITY = "setterVisibility";
+  public final static java.lang.String SYSTEM = "system";
   public String getAttributeName()
   {
     return getValue(ATTRIBUTENAME);

@@ -45,8 +45,8 @@ public abstract class MdAttributeDecDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String DATABASEDECIMAL = "databaseDecimal";
-  public static java.lang.String DATABASELENGTH = "databaseLength";
+  public final static java.lang.String DATABASEDECIMAL = "databaseDecimal";
+  public final static java.lang.String DATABASELENGTH = "databaseLength";
   public Integer getDatabaseDecimal()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DATABASEDECIMAL));

@@ -34,7 +34,7 @@ public class DoubleFormat extends NumberFormat<Double>
   @Override
   protected Double convert(Number number)
   {
-    return new Double(number.doubleValue());
+    return Double.valueOf(number.doubleValue());
   }
   
   /* (non-Javadoc)

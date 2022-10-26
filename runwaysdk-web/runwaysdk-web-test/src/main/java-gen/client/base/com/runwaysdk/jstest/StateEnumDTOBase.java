@@ -45,10 +45,10 @@ public abstract class StateEnumDTOBase extends com.runwaysdk.system.EnumerationM
     return CLASS;
   }
   
-  public static java.lang.String ENUMINT = "enumInt";
-  public static java.lang.String STATECODE = "stateCode";
-  public static java.lang.String STATENAME = "stateName";
-  public static java.lang.String STATEPHONE = "statePhone";
+  public final static java.lang.String ENUMINT = "enumInt";
+  public final static java.lang.String STATECODE = "stateCode";
+  public final static java.lang.String STATENAME = "stateName";
+  public final static java.lang.String STATEPHONE = "statePhone";
   public Integer getEnumInt()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(ENUMINT));

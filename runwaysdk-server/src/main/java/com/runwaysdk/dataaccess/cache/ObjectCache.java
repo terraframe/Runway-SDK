@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jul 11, 2004
@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -726,9 +727,10 @@ public class ObjectCache
     Map<String, Map<String, Attribute>> tupleMap = i.next();
     while (tupleMap != null)
     {
-      String oid = tupleMap.keySet().iterator().next();
+      Entry<String, Map<String, Attribute>> entry = tupleMap.entrySet().iterator().next();
+      String oid = entry.getKey();
       structDAOids.add(oid);
-      Map<String, Attribute> attributeMap = tupleMap.get(oid);
+      Map<String, Attribute> attributeMap = entry.getValue();
       StructDAO structDAO = StructDAOFactory.factoryMethod(attributeMap, EntityTypes.METADATADISPLAYLABEL.getType());
       ObjectCache.putEntityDAOIFintoCache(structDAO);
 
@@ -740,9 +742,10 @@ public class ObjectCache
     tupleMap = i.next();
     while (tupleMap != null)
     {
-      String oid = tupleMap.keySet().iterator().next();
+      Entry<String, Map<String, Attribute>> entry = tupleMap.entrySet().iterator().next();
+      String oid = entry.getKey();
       structDAOids.add(oid);
-      Map<String, Attribute> attributeMap = tupleMap.get(oid);
+      Map<String, Attribute> attributeMap = entry.getValue();
       StructDAO structDAO = StructDAOFactory.factoryMethod(attributeMap, EntityTypes.MD_LOCALIZABLE_MESSAGE.getType());
       ObjectCache.putEntityDAOIFintoCache(structDAO);
 
@@ -796,15 +799,51 @@ public class ObjectCache
       ServerInitializerFacade.init();
 
       // Ensure that the generated .class directories exist
-      new File(ClientMarker.SOURCE_DIRECTORY).mkdirs();
-      new File(ClientMarker.BASE_DIRECTORY).mkdirs();
-      new File(ClientMarker.CLASS_DIRECTORY).mkdirs();
-      new File(CommonMarker.SOURCE_DIRECTORY).mkdirs();
-      new File(CommonMarker.BASE_DIRECTORY).mkdirs();
-      new File(CommonMarker.CLASS_DIRECTORY).mkdirs();
-      new File(ServerMarker.SOURCE_DIRECTORY).mkdirs();
-      new File(ServerMarker.BASE_DIRECTORY).mkdirs();
-      new File(ServerMarker.CLASS_DIRECTORY).mkdirs();
+      if (!new File(ClientMarker.SOURCE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.SOURCE_DIRECTORY + "]");
+      }
+      
+      if (!new File(ClientMarker.BASE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.BASE_DIRECTORY + "]");
+      }
+
+      if (!new File(ClientMarker.CLASS_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.CLASS_DIRECTORY + "]");
+      }
+
+      if (!new File(CommonMarker.SOURCE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.SOURCE_DIRECTORY + "]");
+      }
+
+      if (!new File(CommonMarker.BASE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.BASE_DIRECTORY + "]");
+      }
+      
+      if (!new File(CommonMarker.CLASS_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.CLASS_DIRECTORY + "]");
+      }
+
+      if (!new File(ServerMarker.SOURCE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.SOURCE_DIRECTORY + "]");
+      }
+
+      if (!new File(ServerMarker.BASE_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.BASE_DIRECTORY + "]");
+      }
+
+      if (!new File(ServerMarker.CLASS_DIRECTORY).mkdirs())
+      {
+        logger.debug("Unable to make directories [" + ClientMarker.CLASS_DIRECTORY + "]");
+      }
+
 
       // Reset temporary data structures used to help initialize the collections
       DefaultMdEntityInfo.refresh();
@@ -1087,7 +1126,7 @@ public class ObjectCache
       MdEntityDAOIF mdEntityIF = ObjectCache.getMdEntityDAO(entityType);
 
       BusinessDAOIF cacheEnumItem = mdEntityIF.getCacheAlgorithm();
-      int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+      int cacheCode = Integer.parseInt(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue());
 
       // Cache everything.
       if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
@@ -1154,7 +1193,7 @@ public class ObjectCache
   public static void updateParentCacheStrategy(MdEntityDAO mdEntity)
   {
     BusinessDAOIF cacheEnumItem = mdEntity.getCacheAlgorithm();
-    int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+    int cacheCode = Integer.parseInt(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue());
 
     if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_MOST_RECENTLY_USED.getCacheCode() || cacheCode == EntityCacheMaster.CACHE_HARDCODED.getCacheCode())
 
@@ -1178,7 +1217,7 @@ public class ObjectCache
   public static void updateCacheStrategy(MdEntityDAO mdEntity)
   {
     BusinessDAOIF cacheEnumItem = mdEntity.getCacheAlgorithm();
-    int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+    int cacheCode = Integer.parseInt(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue());
 
     // Skip checking the parent entity if the entity is the root of a hierarchy
     // (and consequently no parent)
@@ -2083,10 +2122,10 @@ public class ObjectCache
   public static boolean hasClassByTableName(String tableName)
   {
     MdClassStrategy mdClassStrategy = (MdClassStrategy) strategyMap.get(MdClassInfo.CLASS);
-    
+
     return mdClassStrategy.hasClassByTableName(tableName);
   }
-  
+
   /**
    * Returns a MdClassIF instance with a root oid that matches the given value.
    * 

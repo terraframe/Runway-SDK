@@ -29,7 +29,7 @@ package com.runwaysdk.jstest;
 public abstract class SubClassBase extends com.runwaysdk.jstest.TestClass implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.SubClass";
-  public static java.lang.String SUBCHARACTER = "subCharacter";
+  public final static java.lang.String SUBCHARACTER = "subCharacter";
   private static final long serialVersionUID = -1419416657;
   
   public SubClassBase()

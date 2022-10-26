@@ -29,10 +29,10 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class LayerLayerNameBase extends com.runwaysdk.business.LocalStruct
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.LayerLayerName";
-  public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String DEFAULTLOCALE = "defaultLocale";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -811256529;
   
   public LayerLayerNameBase()

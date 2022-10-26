@@ -166,6 +166,6 @@ public class AttributeInteger extends AttributeNumber
    */
   public AttributeInteger attributeClone()
   {
-    return new AttributeInteger(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeInteger(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

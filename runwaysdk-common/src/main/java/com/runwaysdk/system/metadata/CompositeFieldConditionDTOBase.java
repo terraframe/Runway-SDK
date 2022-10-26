@@ -45,8 +45,8 @@ public abstract class CompositeFieldConditionDTOBase extends com.runwaysdk.syste
     return CLASS;
   }
   
-  public static java.lang.String FIRSTCONDITION = "firstCondition";
-  public static java.lang.String SECONDCONDITION = "secondCondition";
+  public final static java.lang.String FIRSTCONDITION = "firstCondition";
+  public final static java.lang.String SECONDCONDITION = "secondCondition";
   public com.runwaysdk.system.metadata.FieldConditionDTO getFirstCondition()
   {
     if(getValue(FIRSTCONDITION) == null || getValue(FIRSTCONDITION).trim().equals(""))

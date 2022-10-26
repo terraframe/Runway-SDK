@@ -29,9 +29,9 @@ package com.runwaysdk.jstest;
 public abstract class TestProblemBase extends com.runwaysdk.business.Problem implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestProblem";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PROBLEMCHAR = "problemChar";
-  public static java.lang.String PROBLEMINT = "problemInt";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PROBLEMCHAR = "problemChar";
+  public final static java.lang.String PROBLEMINT = "problemInt";
   private static final long serialVersionUID = 236721288;
   
   public TestProblemBase()

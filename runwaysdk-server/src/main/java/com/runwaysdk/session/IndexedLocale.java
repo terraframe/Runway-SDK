@@ -64,7 +64,7 @@ public class IndexedLocale
 
   public Integer getIndex()
   {
-    return new Integer(index);
+    return Integer.valueOf(index);
   }
 
   public void setIndex(int index)
@@ -90,7 +90,7 @@ public class IndexedLocale
       matches = Math.max(matches, current);
     }
 
-    return new Integer(matches);
+    return Integer.valueOf(matches);
   }
 
   /**
@@ -110,10 +110,10 @@ public class IndexedLocale
     
     if(matches == maximum)
     {
-      return new Integer(TOTAL_MATCH);
+      return Integer.valueOf(TOTAL_MATCH);
     }
     
-    return new Integer(matches);
+    return Integer.valueOf(matches);
   }
   
   public Integer getMaxScore(Locale supportedLocale)

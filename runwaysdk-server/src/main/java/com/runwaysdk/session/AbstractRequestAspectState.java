@@ -1,6 +1,5 @@
 package com.runwaysdk.session;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -9,8 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +26,6 @@ import com.runwaysdk.business.Struct;
 import com.runwaysdk.business.Warning;
 import com.runwaysdk.business.graph.GraphObject;
 import com.runwaysdk.business.graph.VertexObject;
-import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
@@ -44,12 +40,9 @@ import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
 import com.runwaysdk.dataaccess.StructDAO;
-import com.runwaysdk.dataaccess.database.Database;
-import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.metadata.MdClassDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
-import com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement;
 import com.runwaysdk.dataaccess.transaction.AttributeNotificationMap;
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.logging.RunwayLogUtil;
@@ -72,7 +65,7 @@ public class AbstractRequestAspectState
 
   private List<ProblemIF>                       problemList                 = new LinkedList<ProblemIF>();
 
-  protected Logger                              log                         = LoggerFactory.getLogger(AbstractRequestManagement.class);
+  protected Logger                              log                         = LoggerFactory.getLogger(AbstractRequestAspectState.class);
 
   public RequestState getRequestState()
   {

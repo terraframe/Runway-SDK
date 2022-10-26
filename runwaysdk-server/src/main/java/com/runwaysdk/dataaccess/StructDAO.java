@@ -100,7 +100,7 @@ public class StructDAO extends EntityDAO implements StructDAOIF
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
     }
-    StructDAO clonedObject = (StructDAO) StructDAOFactory.factoryMethod(newAttrList, new String(this.componentType));
+    StructDAO clonedObject = (StructDAO) StructDAOFactory.factoryMethod(newAttrList, this.componentType);
 
     clonedObject.setIsNew(this.isNew());
     clonedObject.setAppliedToDB(this.isAppliedToDB());

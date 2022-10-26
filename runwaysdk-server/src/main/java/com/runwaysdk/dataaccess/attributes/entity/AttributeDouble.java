@@ -171,6 +171,6 @@ public class AttributeDouble extends AttributeNumber
    */
   public AttributeDouble attributeClone()
   {
-    return new AttributeDouble(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeDouble(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

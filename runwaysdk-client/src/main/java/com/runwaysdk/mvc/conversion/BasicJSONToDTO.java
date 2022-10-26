@@ -239,7 +239,7 @@ public abstract class BasicJSONToDTO
     @Override
     protected String getValue(String attributeName) throws JSONException
     {
-      Integer value = new Integer(object.getInt(attributeName));
+      Integer value = Integer.valueOf(object.getInt(attributeName));
       return value.toString();
     }
   }
@@ -254,8 +254,7 @@ public abstract class BasicJSONToDTO
     @Override
     protected String getValue(String attributeName) throws JSONException
     {
-      Long value = new Long(object.getLong(attributeName));
-      return value.toString();
+      return Long.toString(object.getLong(attributeName));
     }
   }
 
@@ -285,7 +284,7 @@ public abstract class BasicJSONToDTO
     @Override
     protected String getValue(String attributeName) throws JSONException
     {
-      Double value = new Double(object.getDouble(attributeName));
+      Double value = Double.valueOf(object.getDouble(attributeName));
       return value.toString();
     }
   }

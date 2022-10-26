@@ -29,20 +29,20 @@ package com.runwaysdk.system.metadata;
 public abstract class MdTypeBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdType";
-  public static java.lang.String BASECLASS = "baseClass";
-  public static java.lang.String BASESOURCE = "baseSource";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String BASECLASS = "baseClass";
+  public final static java.lang.String BASESOURCE = "baseSource";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String DTOCLASS = "dtoClass";
-  public static java.lang.String DTOSOURCE = "dtoSource";
-  public static java.lang.String EXPORTED = "exported";
-  public static java.lang.String GENERATESOURCE = "generateSource";
-  public static java.lang.String JSBASE = "jsBase";
-  public static java.lang.String JSSTUB = "jsStub";
-  public static java.lang.String PACKAGENAME = "packageName";
-  public static java.lang.String ROOTID = "rootId";
-  public static java.lang.String TYPENAME = "typeName";
+  public final static java.lang.String DTOCLASS = "dtoClass";
+  public final static java.lang.String DTOSOURCE = "dtoSource";
+  public final static java.lang.String EXPORTED = "exported";
+  public final static java.lang.String GENERATESOURCE = "generateSource";
+  public final static java.lang.String JSBASE = "jsBase";
+  public final static java.lang.String JSSTUB = "jsStub";
+  public final static java.lang.String PACKAGENAME = "packageName";
+  public final static java.lang.String ROOTID = "rootId";
+  public final static java.lang.String TYPENAME = "typeName";
   private static final long serialVersionUID = -1919431289;
   
   public MdTypeBase()

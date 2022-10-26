@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class RestoreAppnameExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.RestoreAppnameException";
-  public static java.lang.String CURRENTAPPNAME = "currentAppname";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String RESTOREAPPNAME = "restoreAppname";
+  public final static java.lang.String CURRENTAPPNAME = "currentAppname";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String RESTOREAPPNAME = "restoreAppname";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -483441707;
   

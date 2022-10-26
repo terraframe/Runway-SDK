@@ -69,22 +69,22 @@ public class RunwayVersionTest
 
     RunwayMetadataVersion actual = new RunwayMetadataVersion(toString);
 
-    Assert.assertEquals(new Integer(2), actual.getMajorVersion());
-    Assert.assertEquals(new Integer(3), actual.getMinorVersion());
-    Assert.assertEquals(new Integer(0), actual.getFixVersion());
+    Assert.assertEquals(Integer.valueOf(2), actual.getMajorVersion());
+    Assert.assertEquals(Integer.valueOf(3), actual.getMinorVersion());
+    Assert.assertEquals(Integer.valueOf(0), actual.getFixVersion());
   }
 
   @Request
   @Test
   public void testMajorStringConstructor()
   {
-    String toString = new Integer(2).toString();
+    String toString = Integer.valueOf(2).toString();
 
     RunwayMetadataVersion actual = new RunwayMetadataVersion(toString);
 
-    Assert.assertEquals(new Integer(2), actual.getMajorVersion());
-    Assert.assertEquals(new Integer(0), actual.getMinorVersion());
-    Assert.assertEquals(new Integer(0), actual.getFixVersion());
+    Assert.assertEquals(Integer.valueOf(2), actual.getMajorVersion());
+    Assert.assertEquals(Integer.valueOf(0), actual.getMinorVersion());
+    Assert.assertEquals(Integer.valueOf(0), actual.getFixVersion());
   }
 
   @Request

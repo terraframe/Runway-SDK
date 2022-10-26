@@ -45,7 +45,7 @@ public abstract class DomainTupleDTOBase extends com.runwaysdk.system.metadata.T
     return CLASS;
   }
   
-  public static java.lang.String PERMISSIONDOMAIN = "permissionDomain";
+  public final static java.lang.String PERMISSIONDOMAIN = "permissionDomain";
   public com.runwaysdk.system.metadata.MdDomainDTO getPermissionDomain()
   {
     if(getValue(PERMISSIONDOMAIN) == null || getValue(PERMISSIONDOMAIN).trim().equals(""))

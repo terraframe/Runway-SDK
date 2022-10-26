@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis;
 public abstract class InvalidFormatExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.InvalidFormatException";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   private static final long serialVersionUID = 912804527;
   
   public InvalidFormatExceptionBase()

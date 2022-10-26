@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebHeaderBase extends com.runwaysdk.system.metadata.MdWebField
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebHeader";
-  public static java.lang.String HEADERTEXT = "headerText";
+  public final static java.lang.String HEADERTEXT = "headerText";
   private com.runwaysdk.business.Struct headerText = null;
   
   private static final long serialVersionUID = -86306168;

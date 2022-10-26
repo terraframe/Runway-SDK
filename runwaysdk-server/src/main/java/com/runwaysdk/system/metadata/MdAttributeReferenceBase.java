@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeReferenceBase extends com.runwaysdk.system.metadata.MdAttributeRef
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeReference";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDBUSINESS = "mdBusiness";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDBUSINESS = "mdBusiness";
   private static final long serialVersionUID = 1104886814;
   
   public MdAttributeReferenceBase()

@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributePrimitiveBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributePrimitive";
-  public static java.lang.String EXPRESSION = "expression";
-  public static java.lang.String ISEXPRESSION = "isExpression";
+  public final static java.lang.String EXPRESSION = "expression";
+  public final static java.lang.String ISEXPRESSION = "isExpression";
   private static final long serialVersionUID = 1072297900;
   
   public MdAttributePrimitiveBase()

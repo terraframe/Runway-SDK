@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdUtilBase extends com.runwaysdk.system.metadata.MdSession
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdUtil";
-  public static java.lang.String SUPERMDUTIL = "superMdUtil";
+  public final static java.lang.String SUPERMDUTIL = "superMdUtil";
   private static final long serialVersionUID = 924904173;
   
   public MdUtilBase()

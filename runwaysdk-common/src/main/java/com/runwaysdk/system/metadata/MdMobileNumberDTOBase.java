@@ -45,8 +45,8 @@ public abstract class MdMobileNumberDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   public String getEndRange()
   {
     return getValue(ENDRANGE);

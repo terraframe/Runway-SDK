@@ -343,6 +343,6 @@ public class AttributeDecimal extends AttributeNumber implements AttributeDecima
    */
   public AttributeDecimal attributeClone()
   {
-    return new AttributeDecimal(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeDecimal(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

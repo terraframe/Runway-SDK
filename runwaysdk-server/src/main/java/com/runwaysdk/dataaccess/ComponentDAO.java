@@ -137,9 +137,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   {
     AttributeIF attribute = this.getAttributeIF(name);
 
-    String value = new String("");
-
-    value = attribute.getValue();
+    String value = attribute.getValue();
 
     return value;
   }

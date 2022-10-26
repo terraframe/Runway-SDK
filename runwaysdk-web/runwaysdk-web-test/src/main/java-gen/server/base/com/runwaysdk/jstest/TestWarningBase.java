@@ -29,9 +29,9 @@ package com.runwaysdk.jstest;
 public abstract class TestWarningBase extends com.runwaysdk.business.Warning implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestWarning";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String WARNINGCHAR = "warningChar";
-  public static java.lang.String WARNINGINT = "warningInt";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String WARNINGCHAR = "warningChar";
+  public final static java.lang.String WARNINGINT = "warningInt";
   private static final long serialVersionUID = 220977573;
   
   public TestWarningBase()

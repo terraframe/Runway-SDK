@@ -29,13 +29,13 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeVirtualBase extends com.runwaysdk.system.metadata.MdAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeVirtual";
-  public static java.lang.String ATTRIBUTENAME = "attributeName";
-  public static java.lang.String DEFININGMDVIEW = "definingMdView";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String ATTRIBUTENAME = "attributeName";
+  public final static java.lang.String DEFININGMDVIEW = "definingMdView";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
-  public static java.lang.String REQUIRED = "required";
+  public final static java.lang.String MDATTRIBUTECONCRETE = "mdAttributeConcrete";
+  public final static java.lang.String REQUIRED = "required";
   private static final long serialVersionUID = 293875284;
   
   public MdAttributeVirtualBase()

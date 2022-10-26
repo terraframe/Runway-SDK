@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeEmbeddedBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeEmbedded";
-  public static java.lang.String EMBEDDEDMDCLASS = "embeddedMdClass";
+  public final static java.lang.String EMBEDDEDMDCLASS = "embeddedMdClass";
   private static final long serialVersionUID = 1676121873;
   
   public MdAttributeEmbeddedBase()

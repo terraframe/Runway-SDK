@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebPrimitiveBase extends com.runwaysdk.system.metadata.MdWebAttribute
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebPrimitive";
-  public static java.lang.String EXPRESSION = "expression";
-  public static java.lang.String ISEXPRESSION = "isExpression";
+  public final static java.lang.String EXPRESSION = "expression";
+  public final static java.lang.String ISEXPRESSION = "isExpression";
   private static final long serialVersionUID = -575546099;
   
   public MdWebPrimitiveBase()

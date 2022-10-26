@@ -149,7 +149,7 @@ public class MdEnumerationGenerator extends Java5EnumGenerator implements Server
 
     for (BusinessDAOIF item : this.getMdTypeDAOIF().getAllEnumItemsOrdered())
     {
-      map.put(item.getValue(EnumerationMasterInfo.NAME), new String());
+      map.put(item.getValue(EnumerationMasterInfo.NAME), "");
     }
 
     writeEnumItems(map);

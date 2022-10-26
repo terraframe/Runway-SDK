@@ -45,7 +45,7 @@ public abstract class MdMobileAttributeDTOBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public final static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
   public com.runwaysdk.system.metadata.MdAttributeDTO getDefiningMdAttribute()
   {
     if(getValue(DEFININGMDATTRIBUTE) == null || getValue(DEFININGMDATTRIBUTE).trim().equals(""))

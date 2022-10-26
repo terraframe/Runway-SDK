@@ -29,12 +29,12 @@ package com.runwaysdk.system;
 public abstract class EmailKeyBase extends com.runwaysdk.business.Struct
 {
   public final static String CLASS = "com.runwaysdk.system.EmailKey";
-  public static java.lang.String EMAIL = "email";
-  public static java.lang.String ISSUEDONDATE = "issuedOnDate";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String UNIQUEKEY = "uniqueKey";
+  public final static java.lang.String EMAIL = "email";
+  public final static java.lang.String ISSUEDONDATE = "issuedOnDate";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String UNIQUEKEY = "uniqueKey";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 2052795463;
   

@@ -45,7 +45,7 @@ public abstract class MdInformationDTOBase extends com.runwaysdk.system.metadata
     return CLASS;
   }
   
-  public static java.lang.String SUPERMDINFORMATION = "superMdInformation";
+  public final static java.lang.String SUPERMDINFORMATION = "superMdInformation";
   public com.runwaysdk.system.metadata.MdInformationDTO getSuperMdInformation()
   {
     if(getValue(SUPERMDINFORMATION) == null || getValue(SUPERMDINFORMATION).trim().equals(""))

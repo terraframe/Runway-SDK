@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeLongBase extends com.runwaysdk.system.metadata.MdAttributeInt
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeLong";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   private static final long serialVersionUID = 1391279658;
   
   public MdAttributeLongBase()

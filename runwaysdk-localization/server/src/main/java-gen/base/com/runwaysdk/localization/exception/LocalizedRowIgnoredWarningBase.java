@@ -29,9 +29,9 @@ package com.runwaysdk.localization.exception;
 public abstract class LocalizedRowIgnoredWarningBase extends com.runwaysdk.business.Warning
 {
   public final static String CLASS = "com.runwaysdk.localization.exception.LocalizedRowIgnoredWarning";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String ROW = "row";
-  public static java.lang.String SHEET = "sheet";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String ROW = "row";
+  public final static java.lang.String SHEET = "sheet";
   private static final long serialVersionUID = 120528000;
   
   public LocalizedRowIgnoredWarningBase()

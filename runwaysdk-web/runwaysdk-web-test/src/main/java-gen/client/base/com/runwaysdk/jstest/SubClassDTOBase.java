@@ -45,7 +45,7 @@ public abstract class SubClassDTOBase extends com.runwaysdk.jstest.TestClassDTO 
     return CLASS;
   }
   
-  public static java.lang.String SUBCHARACTER = "subCharacter";
+  public final static java.lang.String SUBCHARACTER = "subCharacter";
   public String getSubCharacter()
   {
     return getValue(SUBCHARACTER);

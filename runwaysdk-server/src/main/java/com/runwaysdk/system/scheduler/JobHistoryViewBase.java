@@ -29,29 +29,29 @@ package com.runwaysdk.system.scheduler;
 public abstract class JobHistoryViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.JobHistoryView";
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String CRONEXPRESSION = "cronExpression";
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String CREATEDATE = "createDate";
+  public final static java.lang.String CRONEXPRESSION = "cronExpression";
+  public final static java.lang.String DESCRIPTION = "description";
   private com.runwaysdk.business.Struct description = null;
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String ENDTIME = "endTime";
-  public static java.lang.String HISTORYCOMMENT = "historyComment";
+  public final static java.lang.String ENDTIME = "endTime";
+  public final static java.lang.String HISTORYCOMMENT = "historyComment";
   private com.runwaysdk.business.Struct historyComment = null;
   
-  public static java.lang.String HISTORYINFORMATION = "historyInformation";
+  public final static java.lang.String HISTORYINFORMATION = "historyInformation";
   private com.runwaysdk.business.Struct historyInformation = null;
   
-  public static java.lang.String JOBOPERATION = "jobOperation";
-  public static java.lang.String LASTRUN = "lastRun";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String STARTTIME = "startTime";
-  public static java.lang.String STATUS = "status";
-  public static java.lang.String STATUSLABEL = "statusLabel";
-  public static java.lang.String WORKPROGRESS = "workProgress";
-  public static java.lang.String WORKTOTAL = "workTotal";
+  public final static java.lang.String JOBOPERATION = "jobOperation";
+  public final static java.lang.String LASTRUN = "lastRun";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String STARTTIME = "startTime";
+  public final static java.lang.String STATUS = "status";
+  public final static java.lang.String STATUSLABEL = "statusLabel";
+  public final static java.lang.String WORKPROGRESS = "workProgress";
+  public final static java.lang.String WORKTOTAL = "workTotal";
   private static final long serialVersionUID = -1518825943;
   
   public JobHistoryViewBase()

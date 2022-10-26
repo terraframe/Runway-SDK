@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebNumberBase extends com.runwaysdk.system.metadata.MdWebPrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebNumber";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   private static final long serialVersionUID = -1975904266;
   
   public MdWebNumberBase()

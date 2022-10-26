@@ -191,6 +191,6 @@ public class AttributeLong extends AttributeNumber implements AttributeLongIF
    */
   public AttributeLong attributeClone()
   {
-    return new AttributeLong(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeLong(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

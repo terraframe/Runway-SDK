@@ -33,7 +33,7 @@ public class IntegerFieldColumn extends FieldColumn
 
   public Object getCellValue(Cell cell) throws Exception
   {
-    return new Integer(new Double(cell.getNumericCellValue()).intValue());
+    return Integer.valueOf(Double.valueOf(cell.getNumericCellValue()).intValue());
   }
 
   @Override

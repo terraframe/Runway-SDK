@@ -29,13 +29,13 @@ package com.runwaysdk.jstest;
 public abstract class TestViewBase extends com.runwaysdk.business.View implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestView";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String VIEWCHARACTER = "viewCharacter";
-  public static java.lang.String VIEWPHONE = "viewPhone";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String VIEWCHARACTER = "viewCharacter";
+  public final static java.lang.String VIEWPHONE = "viewPhone";
   private com.runwaysdk.business.Struct viewPhone = null;
   
-  public static java.lang.String VIEWREFERENCEOBJECT = "viewReferenceObject";
-  public static java.lang.String VIEWSINGLESTATE = "viewSingleState";
+  public final static java.lang.String VIEWREFERENCEOBJECT = "viewReferenceObject";
+  public final static java.lang.String VIEWSINGLESTATE = "viewSingleState";
   private static final long serialVersionUID = 1453594677;
   
   public TestViewBase()

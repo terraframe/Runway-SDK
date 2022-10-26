@@ -320,8 +320,7 @@ public abstract class AbstractCompiler
     
     File parent = file.getParentFile();
     if (parent.exists()) {
-      file.mkdir();
-      return true;
+      return file.mkdir();
     }
     
     return false;

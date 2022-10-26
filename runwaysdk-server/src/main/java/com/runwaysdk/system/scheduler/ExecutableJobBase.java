@@ -29,11 +29,11 @@ package com.runwaysdk.system.scheduler;
 public abstract class ExecutableJobBase extends com.runwaysdk.system.scheduler.AbstractJob
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.ExecutableJob";
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DESCRIPTION = "description";
   private com.runwaysdk.business.Struct description = null;
   
-  public static java.lang.String RUNASDIMENSION = "runAsDimension";
-  public static java.lang.String RUNASUSER = "runAsUser";
+  public final static java.lang.String RUNASDIMENSION = "runAsDimension";
+  public final static java.lang.String RUNASUSER = "runAsUser";
   private static final long serialVersionUID = 994465420;
   
   public ExecutableJobBase()

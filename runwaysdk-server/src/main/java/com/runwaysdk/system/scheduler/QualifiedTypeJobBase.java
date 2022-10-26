@@ -29,7 +29,7 @@ package com.runwaysdk.system.scheduler;
 public abstract class QualifiedTypeJobBase extends com.runwaysdk.system.scheduler.ExecutableJob
 {
   public final static String CLASS = "com.runwaysdk.system.scheduler.QualifiedTypeJob";
-  public static java.lang.String CLASSNAME = "className";
+  public final static java.lang.String CLASSNAME = "className";
   private static final long serialVersionUID = 467896879;
   
   public QualifiedTypeJobBase()

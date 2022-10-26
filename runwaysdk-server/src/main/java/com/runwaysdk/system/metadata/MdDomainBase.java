@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class MdDomainBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdDomain";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String DOMAINNAME = "domainName";
+  public final static java.lang.String DOMAINNAME = "domainName";
   private static final long serialVersionUID = 372783775;
   
   public MdDomainBase()

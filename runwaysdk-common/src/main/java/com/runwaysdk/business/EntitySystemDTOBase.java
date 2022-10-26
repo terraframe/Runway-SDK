@@ -45,8 +45,8 @@ public abstract class EntitySystemDTOBase extends com.runwaysdk.business.Compone
     return CLASS;
   }
   
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String SITEMASTER = "siteMaster";
   public String getKeyName()
   {
     return getValue(KEYNAME);

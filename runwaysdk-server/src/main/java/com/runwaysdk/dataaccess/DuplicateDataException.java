@@ -43,7 +43,7 @@ public class DuplicateDataException extends DataAccessException
   /**
    * The attribute being set
    */
-  protected List<MdAttributeDAOIF> MdAttributeDAOIFList;
+  protected List<MdAttributeDAOIF> mdAttributeDAOIFList;
 
   /**
    * The display labels of the attributes being set
@@ -75,7 +75,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage);
     this.mdClassDAOIF = mdClassIF;
-    this.MdAttributeDAOIFList = MdAttributeDAOIFList;
+    this.mdAttributeDAOIFList = MdAttributeDAOIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(MdAttributeDAOIFList);
     this.valueList = valueList;
   }
@@ -108,7 +108,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage, cause);
     this.mdClassDAOIF = mdClassIF;
-    this.MdAttributeDAOIFList = MdAttributeDAOIFList;
+    this.mdAttributeDAOIFList = MdAttributeDAOIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(MdAttributeDAOIFList);
     this.valueList = valueList;
   }
@@ -135,7 +135,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(devMessage, cause);
     this.valueList = new LinkedList<String>();
-    this.MdAttributeDAOIFList = new LinkedList<MdAttributeDAOIF>();
+    this.mdAttributeDAOIFList = new LinkedList<MdAttributeDAOIF>();
   }
 
   /**
@@ -158,7 +158,7 @@ public class DuplicateDataException extends DataAccessException
   {
     super(cause);
     this.mdClassDAOIF = mdEntityIF;
-    this.MdAttributeDAOIFList = MdAttributeDAOIFList;
+    this.mdAttributeDAOIFList = MdAttributeDAOIFList;
     this.localizedAttrLabels = this.getLocalAttrNames(MdAttributeDAOIFList);
     this.valueList = valueList;
   }
@@ -178,7 +178,7 @@ public class DuplicateDataException extends DataAccessException
     super(devMsg);
 
     this.mdClassDAOIF = mdClassDAO;
-    this.MdAttributeDAOIFList = new LinkedList<MdAttributeDAOIF>();
+    this.mdAttributeDAOIFList = new LinkedList<MdAttributeDAOIF>();
     this.localizedAttrLabels = localizedAttrLabels2;
     this.valueList = valueList2;
   }
@@ -189,7 +189,7 @@ public class DuplicateDataException extends DataAccessException
    */
   public List<MdAttributeDAOIF> getAttributes()
   {
-    return this.MdAttributeDAOIFList;
+    return this.mdAttributeDAOIFList;
   }
 
   /**
@@ -226,21 +226,21 @@ public class DuplicateDataException extends DataAccessException
     }
     else
     {
-      String displayLabels = "";
-      String values = "";
+      StringBuilder displayLabels = new StringBuilder();
+      StringBuilder values = new StringBuilder();
 
       boolean firstIteration = true;
       for (String localizedLabel : this.localizedAttrLabels)
       {
         if (!firstIteration)
         {
-          displayLabels += ", ";
+          displayLabels.append(", ");
         }
         else
         {
           firstIteration = false;
         }
-        displayLabels += "[" + localizedLabel + "]";
+        displayLabels.append("[" + localizedLabel + "]");
       }
 
       firstIteration = true;
@@ -248,16 +248,16 @@ public class DuplicateDataException extends DataAccessException
       {
         if (!firstIteration)
         {
-          values += ", ";
+          values.append(", ");
         }
         else
         {
           firstIteration = false;
         }
-        values += "[" + value + "]";
+        values.append("[" + value + "]");
       }
 
-      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabels, values);
+      return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), displayLabels.toString(), values.toString());
     }
   }
 

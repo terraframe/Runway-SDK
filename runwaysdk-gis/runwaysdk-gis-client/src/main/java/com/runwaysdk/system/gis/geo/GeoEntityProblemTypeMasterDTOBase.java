@@ -45,7 +45,7 @@ public abstract class GeoEntityProblemTypeMasterDTOBase extends com.runwaysdk.sy
     return CLASS;
   }
   
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DESCRIPTION = "description";
   public com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescriptionDTO getDescription()
   {
     return (com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMasterDescriptionDTO) this.getAttributeStructDTO(DESCRIPTION).getStructDTO();

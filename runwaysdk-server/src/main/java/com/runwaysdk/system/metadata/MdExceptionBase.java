@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdExceptionBase extends com.runwaysdk.system.metadata.MdLocalizable
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdException";
-  public static java.lang.String SUPERMDEXCEPTION = "superMdException";
+  public final static java.lang.String SUPERMDEXCEPTION = "superMdException";
   private static final long serialVersionUID = 676313690;
   
   public MdExceptionBase()

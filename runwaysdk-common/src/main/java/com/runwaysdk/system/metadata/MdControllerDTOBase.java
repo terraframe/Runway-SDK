@@ -45,8 +45,8 @@ public abstract class MdControllerDTOBase extends com.runwaysdk.system.metadata.
     return CLASS;
   }
   
-  public static java.lang.String STUBCLASS = "stubClass";
-  public static java.lang.String STUBSOURCE = "stubSource";
+  public final static java.lang.String STUBCLASS = "stubClass";
+  public final static java.lang.String STUBSOURCE = "stubSource";
   public byte[] getStubClass()
   {
     return super.getBlob(STUBCLASS);

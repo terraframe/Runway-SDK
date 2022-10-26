@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebCharacterBase extends com.runwaysdk.system.metadata.MdWebPrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebCharacter";
-  public static java.lang.String DISPLAYLENGTH = "displayLength";
-  public static java.lang.String MAXLENGTH = "maxLength";
-  public static java.lang.String UNIQUE = "unique";
+  public final static java.lang.String DISPLAYLENGTH = "displayLength";
+  public final static java.lang.String MAXLENGTH = "maxLength";
+  public final static java.lang.String UNIQUE = "unique";
   private static final long serialVersionUID = -889513823;
   
   public MdWebCharacterBase()

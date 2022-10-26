@@ -29,10 +29,10 @@ package com.runwaysdk.system.gis.geo;
 public abstract class InvalidUniversalRemoveLinkExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.InvalidUniversalRemoveLinkException";
-  public static java.lang.String CHILDUNI = "childUni";
-  public static java.lang.String GEOENTITIES = "geoEntities";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PARENTUNI = "parentUni";
+  public final static java.lang.String CHILDUNI = "childUni";
+  public final static java.lang.String GEOENTITIES = "geoEntities";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PARENTUNI = "parentUni";
   private static final long serialVersionUID = 514133326;
   
   public InvalidUniversalRemoveLinkExceptionBase()

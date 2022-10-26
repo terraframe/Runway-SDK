@@ -579,7 +579,7 @@ public class EntityAttributeTest
   private void rollbackSavepointObjectState() throws SQLException
   {
     Savepoint savepoint = Database.setSavepoint();
-    Integer savepointId = new Integer(savepoint.getSavepointId());
+    Integer savepointId = Integer.valueOf(savepoint.getSavepointId());
 
     try
     {

@@ -29,8 +29,8 @@ package com.runwaysdk.system.gis.metadata;
 public abstract class MdAttributeGeometryBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.gis.metadata.MdAttributeGeometry";
-  public static java.lang.String DIMENSION = "dimension";
-  public static java.lang.String SRID = "srid";
+  public final static java.lang.String DIMENSION = "dimension";
+  public final static java.lang.String SRID = "srid";
   private static final long serialVersionUID = 1743544919;
   
   public MdAttributeGeometryBase()

@@ -29,7 +29,7 @@ package com.runwaysdk.system.ontology;
 public abstract class TermUtilBase extends com.runwaysdk.business.Util
 {
   public final static String CLASS = "com.runwaysdk.system.ontology.TermUtil";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 1165130574;
   

@@ -29,12 +29,12 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebDateBase extends com.runwaysdk.system.metadata.MdWebMoment
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebDate";
-  public static java.lang.String AFTERTODAYEXCLUSIVE = "afterTodayExclusive";
-  public static java.lang.String AFTERTODAYINCLUSIVE = "afterTodayInclusive";
-  public static java.lang.String BEFORETODAYEXCLUSIVE = "beforeTodayExclusive";
-  public static java.lang.String BEFORETODAYINCLUSIVE = "beforeTodayInclusive";
-  public static java.lang.String ENDDATE = "endDate";
-  public static java.lang.String STARTDATE = "startDate";
+  public final static java.lang.String AFTERTODAYEXCLUSIVE = "afterTodayExclusive";
+  public final static java.lang.String AFTERTODAYINCLUSIVE = "afterTodayInclusive";
+  public final static java.lang.String BEFORETODAYEXCLUSIVE = "beforeTodayExclusive";
+  public final static java.lang.String BEFORETODAYINCLUSIVE = "beforeTodayInclusive";
+  public final static java.lang.String ENDDATE = "endDate";
+  public final static java.lang.String STARTDATE = "startDate";
   private static final long serialVersionUID = -230403535;
   
   public MdWebDateBase()

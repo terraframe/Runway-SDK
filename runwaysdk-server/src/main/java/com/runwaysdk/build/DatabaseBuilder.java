@@ -3,23 +3,24 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.build;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.sql.Savepoint;
@@ -65,36 +66,47 @@ import com.runwaysdk.resource.ClasspathResource;
 import com.runwaysdk.session.Request;
 
 /**
- * This is a command-line Java tool which can be used to build the database. When running this tool, the goal
- * of the tool is to bring your system to a state where it is fully built and patched with all available
- * metadata (from the classpath). This tool is capable of building both Postgres and OrientDB databases.
+ * This is a command-line Java tool which can be used to build the database.
+ * When running this tool, the goal of the tool is to bring your system to a
+ * state where it is fully built and patched with all available metadata (from
+ * the classpath). This tool is capable of building both Postgres and OrientDB
+ * databases.
  * 
- * There are two distinct modes in which the tool runs: install and patch. If neither are specified, the
- * tool will auto-detect which to run as, with patch being preferred for already established databases.
- * If clean is specified, the tool will first destroy any existing database.
+ * There are two distinct modes in which the tool runs: install and patch. If
+ * neither are specified, the tool will auto-detect which to run as, with patch
+ * being preferred for already established databases. If clean is specified, the
+ * tool will first destroy any existing database.
  * 
- * This tool reads metadata files from the "domain" directory on the classpath, although that location may be
- * changed via the `path` CLI param. Inside this directory you may place files in the `install` or `patch`
- * inner directories, which may contain metadata files which are only run depending on if the tool is doing
- * an install or patch. Metadata placed at the top level 'domain' directory will be run on both patch and install,
- * assuming it has not already been imported.
+ * This tool reads metadata files from the "domain" directory on the classpath,
+ * although that location may be changed via the `path` CLI param. Inside this
+ * directory you may place files in the `install` or `patch` inner directories,
+ * which may contain metadata files which are only run depending on if the tool
+ * is doing an install or patch. Metadata placed at the top level 'domain'
+ * directory will be run on both patch and install, assuming it has not already
+ * been imported.
  * 
- * The system records an array of timestamps into the database to keep track of which metadata files have already
- * been imported. Timestamps are imported in the order dictated by the timestamp, however during patching if a
- * timestamp falls out of order with the timestamp of the last imported file (i.e. 3-10-2020 was already imported,
- * but 2-08-2020 now exists on classpath) the older timestamp will still be imported first, which is useful for
- * development where many developers may be submitting timestamps where the actual time ordering is not exact.
- * Timestamps must be unique, however. If the system detects two different metadata files with the same timestamp
- * on the classpath a CoreException will be thrown and the 2 different files will be identified as conflicting.
- * Metadata file timestamps may be appended with -ALWAYS to specify that the file will still run, regardless of if it
- * has already been imported or not. 
+ * The system records an array of timestamps into the database to keep track of
+ * which metadata files have already been imported. Timestamps are imported in
+ * the order dictated by the timestamp, however during patching if a timestamp
+ * falls out of order with the timestamp of the last imported file (i.e.
+ * 3-10-2020 was already imported, but 2-08-2020 now exists on classpath) the
+ * older timestamp will still be imported first, which is useful for development
+ * where many developers may be submitting timestamps where the actual time
+ * ordering is not exact. Timestamps must be unique, however. If the system
+ * detects two different metadata files with the same timestamp on the classpath
+ * a CoreException will be thrown and the 2 different files will be identified
+ * as conflicting. Metadata file timestamps may be appended with -ALWAYS to
+ * specify that the file will still run, regardless of if it has already been
+ * imported or not.
  * 
- * All metadata is by default imported inside a single transaction with a SYSTEM request. This includes any java classes
- * which are run. If you do not wish for your domain builder to run inside a transaction, you may append -NOTRANS to the
- * end of the timestamp. NOTRANS files will be run after all regular metadata files are imported.
+ * All metadata is by default imported inside a single transaction with a SYSTEM
+ * request. This includes any java classes which are run. If you do not wish for
+ * your domain builder to run inside a transaction, you may append -NOTRANS to
+ * the end of the timestamp. NOTRANS files will be run after all regular
+ * metadata files are imported.
  * 
- * For a complete list of options you may run this tool with `--help`, or you may view the `buildCliOptions` method
- * in this source. 
+ * For a complete list of options you may run this tool with `--help`, or you
+ * may view the `buildCliOptions` method in this source.
  * 
  * @author Richard Rowlands (rrowlands)
  */
@@ -115,31 +127,31 @@ public class DatabaseBuilder
   /**
    * List of timestamps which have already been imported
    */
-  protected Set<Date>                    timestamps;
+  protected Set<Date>              timestamps;
 
   /**
    * List of all schema resources in the given location in order from earliest
    * to latest
    */
-  protected Set<ClasspathResource>       ordered;
-  
+  protected Set<ClasspathResource> ordered;
+
   /**
    * All resources that have the -NOTRANS timestamp postfix.
    */
-  protected Set<ClasspathResource>       orderedPostTrans;
+  protected Set<ClasspathResource> orderedPostTrans;
 
-  private List<String>                   extensions;
+  private List<String>             extensions;
 
-  private String                         path;
+  private String                   path;
 
-  private Boolean                        ignoreErrors;
-  
-  private Boolean                        isPatch;
-  
+  private Boolean                  ignoreErrors;
+
+  private Boolean                  isPatch;
+
   public static Options buildCliOptions()
   {
     Options options = new Options();
-    
+
     options.addOption(Option.builder("install").hasArg().argName("install").longOpt("install").desc("Indicates that we are doing a new install. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
     options.addOption(Option.builder("patch").hasArg().argName("patch").longOpt("patch").desc("Indicates that we are doing a patch. This value can be set with a true/false value or simply specified without an argument. It is also optional. If you do not provide a install or a patch param this program will automatically detect the best course of action and bring your database up-to-date.").optionalArg(true).build());
     options.addOption(Option.builder("rootUser").hasArg().argName("rootUser").longOpt("rootUser").desc("Deprecated. Use 'postgresRootUser' instead. The username of the root Postgres database user. Only required when bootstrapping. The OrientDB root credentials are specified in orientdb.properties.").optionalArg(true).build());
@@ -152,28 +164,29 @@ public class DatabaseBuilder
     options.addOption(Option.builder("path").hasArg().argName("path").longOpt("path").desc("The path (from the root of the classpath) to the location of the metadata files. Defaults to 'domain'").optionalArg(true).build());
     options.addOption(Option.builder("ignoreErrors").hasArg().argName("ignoreErrors").longOpt("ignoreErrors").desc("Ignore errors if one occurs while importing sql. Not recommended for everyday usage.").optionalArg(true).build());
     options.addOption(Option.builder("plugins").hasArg().argName("plugins").longOpt("plugins").desc("A string array of ImportPluginIF implementors.").optionalArg(true).build());
-    
+
     return options;
   }
-  
+
   public static Boolean readCliBoolean(String name, CommandLine line)
   {
     if (!line.hasOption(name))
     {
       return null;
     }
-    
+
     String value = line.getOptionValue(name);
-    
-    // The end user is allow to provide a parameter without a value (for example: --patch). In which case we treat it as explicit set to true.
+
+    // The end user is allow to provide a parameter without a value (for
+    // example: --patch). In which case we treat it as explicit set to true.
     if (value == null || value.equals(""))
     {
       return Boolean.TRUE;
     }
-    
+
     return Boolean.valueOf(value);
   }
-  
+
   /**
    * Builds your database such that it includes all the relevant metadata.
    * 
@@ -189,7 +202,7 @@ public class DatabaseBuilder
       final CommandLineParser parser = new DefaultParser();
       final Options options = buildCliOptions();
       final CommandLine line = parser.parse(options, args);
-      
+
       Boolean install = readCliBoolean("install", line);
       Boolean patch = readCliBoolean("patch", line);
       Boolean clean = readCliBoolean("clean", line);
@@ -202,10 +215,12 @@ public class DatabaseBuilder
       String path = line.getOptionValue("path");
 
       /*
-       * Parse those options into values that make sense and provide some sensible defaults
+       * Parse those options into values that make sense and provide some
+       * sensible defaults
        */
-      
-      // If they explicitly specified either install or patch, but not the other one, then the other one is implied as the opposite.
+
+      // If they explicitly specified either install or patch, but not the other
+      // one, then the other one is implied as the opposite.
       if (Boolean.TRUE.equals(patch) && install == null)
       {
         install = Boolean.FALSE;
@@ -222,13 +237,26 @@ public class DatabaseBuilder
       {
         patch = Boolean.TRUE;
       }
-      
-      // Convert any null values to false at this point otherwise we get null pointers when autoboxing
-      if (install == null) { install = Boolean.FALSE; }
-      if (patch == null) { patch = Boolean.FALSE; }
-      if (clean == null) { clean = Boolean.FALSE; }
-      if (ignoreErrors == null) { ignoreErrors = Boolean.FALSE; }
-      
+
+      // Convert any null values to false at this point otherwise we get null
+      // pointers when autoboxing
+      if (install == null)
+      {
+        install = Boolean.FALSE;
+      }
+      if (patch == null)
+      {
+        patch = Boolean.FALSE;
+      }
+      if (clean == null)
+      {
+        clean = Boolean.FALSE;
+      }
+      if (ignoreErrors == null)
+      {
+        ignoreErrors = Boolean.FALSE;
+      }
+
       // Account for interactions between install / patch / clean
       if (install && patch)
       {
@@ -241,19 +269,19 @@ public class DatabaseBuilder
         logger.error("'clean' param does nothing when 'patch' is present.");
         clean = false;
       }
-      
+
       List<String> exts = supportedExtensions;
       if (extensions != null && extensions.length() > 0)
       {
         exts = toList(extensions);
       }
-      
+
       List<String> plugins = new ArrayList<String>();
       if (sPlugins != null)
       {
         plugins = toList(sPlugins);
       }
-      
+
       if (path == null || path.length() == 0)
       {
         path = DatabaseBuilder.METADATA_CLASSPATH_LOC;
@@ -264,22 +292,22 @@ public class DatabaseBuilder
         /*
          * Auto-detect patch / install
          */
-        if ( (!install && !patch) || (install && patch) )
+        if ( ( !install && !patch ) || ( install && patch ))
         {
           if (user == null || user.length() == 0)
           {
             user = DatabaseProperties.getRootUser();
           }
-          
+
           if (pass == null || pass.length() == 0)
           {
             pass = DatabaseProperties.getRootPassword();
           }
-          
-          if ( (user != null && user.length() > 0) && (pass != null && pass.length() > 0) )
+
+          if ( ( user != null && user.length() > 0 ) && ( pass != null && pass.length() > 0 ))
           {
             boolean runwayInstalled = DatabaseBootstrapper.isRunwayInstalled(user, pass, template);
-            
+
             patch = runwayInstalled;
             install = !runwayInstalled;
           }
@@ -288,7 +316,7 @@ public class DatabaseBuilder
             throw new CoreException("Unable to auto-detect a Runway installation without root database credentials. If you are trying to patch, you can supply a --patch param, otherwise please provide root database credentials.");
           }
         }
-        
+
         /*
          * Run the program
          */
@@ -296,7 +324,7 @@ public class DatabaseBuilder
         {
           DatabaseBootstrapper.bootstrap(user, pass, template, clean);
         }
-        
+
         DatabaseBuilder.run(exts, plugins, path, ignoreErrors, patch);
       }
       finally
@@ -309,7 +337,7 @@ public class DatabaseBuilder
       throw new RuntimeException(e);
     }
   }
-  
+
   public DatabaseBuilder(List<String> extensions, String path, Boolean ignoreErrors, Boolean isPatch)
   {
     if (path == null)
@@ -336,13 +364,13 @@ public class DatabaseBuilder
 
     initialize();
   }
-  
+
   private void throwDuplicateTimestamp(ClasspathResource resource)
   {
     List<URL> urls = ClasspathResource.getUrlsInPackage(resource.getPackage());
-    
+
     urls = urls.stream().filter(url -> resource.getName().equals(FilenameUtils.getName(url.getPath()))).collect(Collectors.toList());
-    
+
     if (urls.size() > 1)
     {
       throw new CoreException("Duplicate timestamp detected. The resource [" + urls.get(0) + "] has the same timestamp as another resource already on the classpath at [" + urls.get(1) + "].");
@@ -369,7 +397,7 @@ public class DatabaseBuilder
         throwDuplicateTimestamp(resource);
       }
     }
-    
+
     if (isPatch)
     {
       for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
@@ -390,12 +418,12 @@ public class DatabaseBuilder
         }
       }
     }
-    
+
     /*
      * Build orderedPostTrans
      */
     this.orderedPostTrans = new TreeSet<ClasspathResource>(new VersionComparator());
-    
+
     for (ClasspathResource resource : getTimestampedPostTransResources(this.path))
     {
       if (resource.getPackage().equals(this.path) && !orderedPostTrans.add(resource) || ordered.contains(resource))
@@ -403,7 +431,7 @@ public class DatabaseBuilder
         throwDuplicateTimestamp(resource);
       }
     }
-    
+
     if (isPatch)
     {
       for (ClasspathResource resource : getTimestampedPostTransResources(this.path + "/patch"))
@@ -425,13 +453,13 @@ public class DatabaseBuilder
       }
     }
   }
-  
+
   protected void performDoIt(ClasspathResource resource, Date timestamp, Boolean isTransaction)
   {
     refreshTimestamps();
 
     // Only perform the doIt if this file has not already been imported
-    if ( (!timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension())) || alwaysRun(resource) )
+    if ( ( !timestamps.contains(timestamp) && this.extensions.contains(resource.getNameExtension()) ) || alwaysRun(resource))
     {
       if (isTransaction)
       {
@@ -558,13 +586,13 @@ public class DatabaseBuilder
   public void performDoIt(List<ClasspathResource> resources, Boolean isTransaction)
   {
     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-    
+
     for (ClasspathResource resource : resources)
     {
       Date date = getDate(resource);
 
       this.performDoIt(resource, date, isTransaction);
-      
+
       Thread.yield();
     }
   }
@@ -586,18 +614,19 @@ public class DatabaseBuilder
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(ordered);
 
     this.performDoIt(list, true);
-    
-    // If we are doing a fresh install, we want to register all known patches as already imported.
+
+    // If we are doing a fresh install, we want to register all known patches as
+    // already imported.
     if (!this.isPatch)
     {
       this.markAllPatchesAsImported();
     }
   }
-  
+
   private void markAllPatchesAsImported()
   {
     Set<ClasspathResource> patches = new TreeSet<ClasspathResource>(new VersionComparator());
-    
+
     for (ClasspathResource resource : getTimestampedResources(this.path + "/patch"))
     {
       if (resource.getPackage().equals(this.path + "/patch"))
@@ -608,7 +637,7 @@ public class DatabaseBuilder
         }
       }
     }
-    
+
     for (ClasspathResource resource : getTimestampedPostTransResources(this.path + "/patch"))
     {
       if (resource.getPackage().equals(this.path + "/patch"))
@@ -619,13 +648,13 @@ public class DatabaseBuilder
         }
       }
     }
-    
+
     refreshTimestamps();
-    
+
     for (ClasspathResource resource : patches)
     {
       Date timestamp = getDate(resource);
-      
+
       if (!this.timestamps.contains(timestamp))
       {
         logger.info("Marking patch resource [" + resource.getAbsolutePath() + "] as already imported.");
@@ -638,7 +667,7 @@ public class DatabaseBuilder
       }
     }
   }
-  
+
   public void doPostNonTransaction()
   {
     List<ClasspathResource> list = new LinkedList<ClasspathResource>(orderedPostTrans);
@@ -663,14 +692,14 @@ public class DatabaseBuilder
   public static void run(List<String> extensions, List<String> plugins, String path, Boolean ignoreErrors, Boolean isPatch)
   {
     ServerProperties.setAllowModificationOfMdAttribute(true);
-    
+
     registerPlugins(plugins);
 
     DatabaseBuilder builder = new DatabaseBuilder(extensions, path, ignoreErrors, isPatch);
     builder.doAllInTransaction();
     builder.doPostNonTransaction();
   }
-  
+
   private static void registerPlugins(List<String> plugins)
   {
     try
@@ -678,9 +707,9 @@ public class DatabaseBuilder
       for (String sPlugin : plugins)
       {
         Class<?> clazz = DatabaseBuilder.class.getClassLoader().loadClass(sPlugin);
-        
+
         ImportPluginIF plugin = (ImportPluginIF) clazz.newInstance();
-        
+
         SAXSourceParser.registerPlugin(plugin);
       }
     }
@@ -717,7 +746,7 @@ public class DatabaseBuilder
 
     return null;
   }
-  
+
   public static Boolean alwaysRun(ClasspathResource resource)
   {
     Pattern namePattern = Pattern.compile(NAME_PATTERN);
@@ -726,16 +755,16 @@ public class DatabaseBuilder
     if (nameMatcher.find())
     {
       String timeGroup = nameMatcher.group(2);
-      
+
       if (timeGroup.contains("-ALWAYS"))
       {
         return true;
       }
     }
-    
+
     return false;
   }
-  
+
   public static Boolean isPostTransRun(ClasspathResource resource)
   {
     Pattern namePattern = Pattern.compile(NAME_PATTERN);
@@ -744,13 +773,13 @@ public class DatabaseBuilder
     if (nameMatcher.find())
     {
       String timeGroup = nameMatcher.group(2);
-      
+
       if (timeGroup.contains("-NOTRANS"))
       {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -762,17 +791,17 @@ public class DatabaseBuilder
     if (nameMatcher.find())
     {
       String timeGroup = nameMatcher.group(2);
-      
+
       if (timeGroup.contains("-ALWAYS"))
       {
         timeGroup = timeGroup.replace("-ALWAYS", "");
       }
-      
+
       if (timeGroup.contains("-NOTRANS"))
       {
         timeGroup = timeGroup.replace("-NOTRANS", "");
       }
-      
+
       Long timeStamp = Long.parseLong(timeGroup);
       return timeStamp;
     }
@@ -796,7 +825,7 @@ public class DatabaseBuilder
   {
     return getTimestamp(resource1).compareTo(getTimestamp(resource2));
   }
-  
+
   public static List<ClasspathResource> getTimestampedPostTransResources(String cpPackage)
   {
     List<ClasspathResource> list = new LinkedList<ClasspathResource>();
@@ -811,7 +840,7 @@ public class DatabaseBuilder
       {
         String name = resource.getName();
         Matcher nameMatcher = namePattern.matcher(name);
-  
+
         if (nameMatcher.find() && isPostTransRun(resource))
         {
           list.add(resource);
@@ -836,7 +865,7 @@ public class DatabaseBuilder
       {
         String name = resource.getName();
         Matcher nameMatcher = namePattern.matcher(name);
-  
+
         if (nameMatcher.find() && !isPostTransRun(resource))
         {
           list.add(resource);
@@ -846,9 +875,11 @@ public class DatabaseBuilder
 
     return list;
   }
-  
-  class VersionComparator implements Comparator<ClasspathResource>
+
+  static class VersionComparator implements Comparator<ClasspathResource>, Serializable
   {
+    private static final long serialVersionUID = 1L;
+
     public int compare(ClasspathResource arg0, ClasspathResource arg1)
     {
       return DatabaseBuilder.compare(arg0, arg1);

@@ -65,7 +65,7 @@ public class AttributeInteger extends AttributeNumber
     }
     else
     {
-      return new Integer(this.getValue());
+      return Integer.valueOf(this.getValue());
     }
   }
 }

@@ -191,7 +191,7 @@ public abstract class ClassBaseGenerator extends TypeGenerator
 
     for (MdAttributeDAOIF m : this.getMdTypeDAOIF().definesAttributesOrdered())
     {
-      getWriter().writeLine("public static " + String.class.getName() + " " + m.definesAttribute().toUpperCase() + " = \"" + m.definesAttribute() + "\";");
+      getWriter().writeLine("public final static " + String.class.getName() + " " + m.definesAttribute().toUpperCase() + " = \"" + m.definesAttribute() + "\";");
 
       if (m.getMdAttributeConcrete() instanceof MdAttributeStructDAOIF)
       {

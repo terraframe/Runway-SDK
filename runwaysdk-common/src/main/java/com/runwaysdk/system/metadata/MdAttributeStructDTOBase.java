@@ -45,7 +45,7 @@ public abstract class MdAttributeStructDTOBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static java.lang.String MDSTRUCT = "mdStruct";
+  public final static java.lang.String MDSTRUCT = "mdStruct";
   public com.runwaysdk.system.metadata.MdStructDTO getMdStruct()
   {
     if(getValue(MDSTRUCT) == null || getValue(MDSTRUCT).trim().equals(""))

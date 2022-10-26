@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdEnumerationBase extends com.runwaysdk.system.metadata.MdType
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEnumeration";
-  public static java.lang.String INCLUDEALL = "includeAll";
-  public static java.lang.String MASTERMDBUSINESS = "masterMdBusiness";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String INCLUDEALL = "includeAll";
+  public final static java.lang.String MASTERMDBUSINESS = "masterMdBusiness";
+  public final static java.lang.String TABLENAME = "tableName";
   private static final long serialVersionUID = 1268533967;
   
   public MdEnumerationBase()

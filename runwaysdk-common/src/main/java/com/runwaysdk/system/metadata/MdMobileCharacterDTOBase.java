@@ -45,8 +45,8 @@ public abstract class MdMobileCharacterDTOBase extends com.runwaysdk.system.meta
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLENGTH = "displayLength";
-  public static java.lang.String MAXLENGTH = "maxLength";
+  public final static java.lang.String DISPLAYLENGTH = "displayLength";
+  public final static java.lang.String MAXLENGTH = "maxLength";
   public Integer getDisplayLength()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DISPLAYLENGTH));

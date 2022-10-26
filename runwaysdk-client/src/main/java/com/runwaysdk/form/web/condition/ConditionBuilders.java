@@ -252,7 +252,7 @@ public class ConditionBuilders
       DoubleCondition c = (DoubleCondition) condition;
       super.init(mdField, c, conditionDTO);
       String value = conditionDTO.getValue(DoubleConditionInfo.VALUE);
-      Double dVal = new Double(value);
+      Double dVal = Double.valueOf(value);
       c.setValue(dVal);
     }
   }
@@ -291,7 +291,7 @@ public class ConditionBuilders
       LongCondition c = (LongCondition) condition;
       super.init(mdField, c, conditionDTO);
       String value = conditionDTO.getValue(LongConditionInfo.VALUE);
-      Long lVal = new Long(value);
+      Long lVal = Long.valueOf(value);
       c.setValue(lVal);
     }
 

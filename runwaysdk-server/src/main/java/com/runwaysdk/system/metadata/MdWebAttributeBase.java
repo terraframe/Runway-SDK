@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebAttributeBase extends com.runwaysdk.system.metadata.MdWebField
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebAttribute";
-  public static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
-  public static java.lang.String SHOWONSEARCH = "showOnSearch";
-  public static java.lang.String SHOWONVIEWALL = "showOnViewAll";
+  public final static java.lang.String DEFININGMDATTRIBUTE = "definingMdAttribute";
+  public final static java.lang.String SHOWONSEARCH = "showOnSearch";
+  public final static java.lang.String SHOWONVIEWALL = "showOnViewAll";
   private static final long serialVersionUID = 1431107703;
   
   public MdWebAttributeBase()

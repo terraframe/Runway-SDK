@@ -29,13 +29,13 @@ package com.runwaysdk.jstest;
 public abstract class TestUtilBase extends com.runwaysdk.business.Util implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestUtil";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String UTILCHARACTER = "utilCharacter";
-  public static java.lang.String UTILPHONE = "utilPhone";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String UTILCHARACTER = "utilCharacter";
+  public final static java.lang.String UTILPHONE = "utilPhone";
   private com.runwaysdk.business.Struct utilPhone = null;
   
-  public static java.lang.String UTILREFERENCEOBJECT = "utilReferenceObject";
-  public static java.lang.String UTILSINGLESTATE = "utilSingleState";
+  public final static java.lang.String UTILREFERENCEOBJECT = "utilReferenceObject";
+  public final static java.lang.String UTILSINGLESTATE = "utilSingleState";
   private static final long serialVersionUID = -2079002763;
   
   public TestUtilBase()

@@ -45,10 +45,10 @@ public abstract class MdAttributeEnumerationDTOBase extends com.runwaysdk.system
     return CLASS;
   }
   
-  public static java.lang.String CACHECOLUMNNAME = "cacheColumnName";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDENUMERATION = "mdEnumeration";
-  public static java.lang.String SELECTMULTIPLE = "selectMultiple";
+  public final static java.lang.String CACHECOLUMNNAME = "cacheColumnName";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDENUMERATION = "mdEnumeration";
+  public final static java.lang.String SELECTMULTIPLE = "selectMultiple";
   public String getCacheColumnName()
   {
     return getValue(CACHECOLUMNNAME);

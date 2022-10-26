@@ -99,7 +99,7 @@ public class InvalidLocaleFormatException extends BusinessException
    */
   public String getLocalizedMessage()
   {
-    return ServerExceptionMessageLocalizer.InvalidLocaleFormatException(this.getLocale(), this.localeString);
+    return ServerExceptionMessageLocalizer.invalidLocaleFormatException(this.getLocale(), this.localeString);
   }
 
 }

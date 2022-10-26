@@ -84,7 +84,7 @@ public class AttributeDouble extends AttributeNumber
     }
     else
     {
-      return new Double(this.getValue());
+      return Double.valueOf(this.getValue());
     }
   }
   

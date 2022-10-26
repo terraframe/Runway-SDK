@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdMobileCharacterBase extends com.runwaysdk.system.metadata.MdMobilePrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileCharacter";
-  public static java.lang.String DISPLAYLENGTH = "displayLength";
-  public static java.lang.String MAXLENGTH = "maxLength";
+  public final static java.lang.String DISPLAYLENGTH = "displayLength";
+  public final static java.lang.String MAXLENGTH = "maxLength";
   private static final long serialVersionUID = 1945934997;
   
   public MdMobileCharacterBase()

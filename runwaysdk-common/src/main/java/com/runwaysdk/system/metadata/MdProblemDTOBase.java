@@ -45,7 +45,7 @@ public abstract class MdProblemDTOBase extends com.runwaysdk.system.metadata.MdN
     return CLASS;
   }
   
-  public static java.lang.String SUPERMDPROBLEM = "superMdProblem";
+  public final static java.lang.String SUPERMDPROBLEM = "superMdProblem";
   public com.runwaysdk.system.metadata.MdProblemDTO getSuperMdProblem()
   {
     if(getValue(SUPERMDPROBLEM) == null || getValue(SUPERMDPROBLEM).trim().equals(""))

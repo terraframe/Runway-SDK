@@ -45,9 +45,9 @@ public abstract class MdWebCharacterDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLENGTH = "displayLength";
-  public static java.lang.String MAXLENGTH = "maxLength";
-  public static java.lang.String UNIQUE = "unique";
+  public final static java.lang.String DISPLAYLENGTH = "displayLength";
+  public final static java.lang.String MAXLENGTH = "maxLength";
+  public final static java.lang.String UNIQUE = "unique";
   public Integer getDisplayLength()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DISPLAYLENGTH));

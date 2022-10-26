@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeGraphReferenceBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeGraphReference";
-  public static java.lang.String REFERENCEMDVERTEX = "referenceMdVertex";
+  public final static java.lang.String REFERENCEMDVERTEX = "referenceMdVertex";
   private static final long serialVersionUID = -1280599209;
   
   public MdAttributeGraphReferenceBase()

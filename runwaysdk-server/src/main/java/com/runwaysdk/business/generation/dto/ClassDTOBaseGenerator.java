@@ -63,12 +63,12 @@ public abstract class ClassDTOBaseGenerator extends ComponentDTOGenerator
   /**
    * Hash key of the generated method signature code
    */
-  private static final Integer METHOD_SIGNATURE    = new Integer(0);
+  private static final Integer METHOD_SIGNATURE    = Integer.valueOf(0);
 
   /**
    * Hash key of the generated method call code
    */
-  private static final Integer METHOD_CALL         = new Integer(1);
+  private static final Integer METHOD_CALL         = Integer.valueOf(1);
 
   /**
    * @param mdClassDAOIF

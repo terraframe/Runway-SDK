@@ -555,7 +555,7 @@ public class OrientDBImpl implements GraphDB
     if (oClass != null)
     {
       OProperty oProperty = oClass.getProperty(attributeName);
-      maxLength = new Integer(oProperty.getMax());
+      maxLength = Integer.valueOf(oProperty.getMax());
     }
 
     return maxLength;

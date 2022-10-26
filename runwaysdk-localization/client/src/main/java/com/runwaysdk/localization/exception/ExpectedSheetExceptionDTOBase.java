@@ -69,8 +69,8 @@ public abstract class ExpectedSheetExceptionDTOBase extends com.runwaysdk.busine
     return CLASS;
   }
   
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SHEETNAME = "sheetName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SHEETNAME = "sheetName";
   public String getSheetName()
   {
     return getValue(SHEETNAME);

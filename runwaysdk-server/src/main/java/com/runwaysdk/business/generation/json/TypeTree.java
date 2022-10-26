@@ -39,7 +39,7 @@ public class TypeTree
   /**
    * An individual node in the tree.
    */
-  private class Node
+  private static class Node
   {
     /**
      * The MdTypeIF value of this node.

@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeIndicatorBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeIndicator";
-  public static java.lang.String INDICATORELEMENT = "indicatorElement";
+  public final static java.lang.String INDICATORELEMENT = "indicatorElement";
   private static final long serialVersionUID = -139864510;
   
   public MdAttributeIndicatorBase()

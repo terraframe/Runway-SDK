@@ -616,7 +616,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
     }
-    RelationshipDAO clonedObject = RelationshipDAOFactory.factoryMethod(this.getParentOid(), this.getChildOid(), newAttrList, new String(this.componentType), true);
+    RelationshipDAO clonedObject = RelationshipDAOFactory.factoryMethod(this.getParentOid(), this.getChildOid(), newAttrList, this.componentType, true);
 
     clonedObject.setIsNew(this.isNew());
     clonedObject.setAppliedToDB(this.isAppliedToDB());

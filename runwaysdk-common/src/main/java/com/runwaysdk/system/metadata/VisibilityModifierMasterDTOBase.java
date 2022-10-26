@@ -45,7 +45,7 @@ public abstract class VisibilityModifierMasterDTOBase extends com.runwaysdk.syst
     return CLASS;
   }
   
-  public static java.lang.String JAVAVALUE = "javaValue";
+  public final static java.lang.String JAVAVALUE = "javaValue";
   public String getJavaValue()
   {
     return getValue(JAVAVALUE);

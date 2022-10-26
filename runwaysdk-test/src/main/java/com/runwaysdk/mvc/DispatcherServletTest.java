@@ -147,9 +147,9 @@ public class DispatcherServletTest
 
       String result = new String(baos.toByteArray(), "UTF-8");
 
-      Integer test = new Integer(result);
+      Integer test = Integer.valueOf(result);
 
-      Assert.assertEquals(new Integer(15), test);
+      Assert.assertEquals(Integer.valueOf(15), test);
       Assert.assertEquals(200, resp.getStatus());
       Assert.assertEquals("application/json", resp.getContentType());
     }
@@ -188,9 +188,9 @@ public class DispatcherServletTest
 
       String result = new String(baos.toByteArray(), "UTF-8");
 
-      Integer test = new Integer(result);
+      Integer test = Integer.valueOf(result);
 
-      Assert.assertEquals(new Integer(100), test);
+      Assert.assertEquals(Integer.valueOf(100), test);
       Assert.assertEquals(200, resp.getStatus());
       Assert.assertEquals("application/json", resp.getContentType());
     }

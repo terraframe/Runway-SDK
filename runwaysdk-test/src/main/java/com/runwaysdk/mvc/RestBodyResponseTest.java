@@ -158,7 +158,7 @@ public class RestBodyResponseTest
   @Test
   public void testHandleBasicPaameter() throws Exception
   {
-    Integer value = new Integer(12);
+    Integer value = Integer.valueOf(12);
 
     MockServletRequest req = new MockServletRequest();
     MockServletResponse resp = new MockServletResponse();
@@ -171,7 +171,7 @@ public class RestBodyResponseTest
 
     String result = new String(baos.toByteArray(), "UTF-8");
 
-    Integer test = new Integer(result);
+    Integer test = Integer.valueOf(result);
 
     Assert.assertEquals(value, test);
   }

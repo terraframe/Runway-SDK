@@ -212,7 +212,7 @@ public class RestResponseTest
   @Test
   public void testHandleBasicParameter() throws Exception
   {
-    Integer value = new Integer(12);
+    Integer value = Integer.valueOf(12);
 
     MockServletRequest req = new MockServletRequest();
     MockServletResponse resp = new MockServletResponse();

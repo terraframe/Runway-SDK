@@ -853,10 +853,10 @@ public class EntityDAOFactory
     {
       if (count == superMdEntityIF.size() && ( entityDAO instanceof ElementDAO ))
       {
-        MdAttributeDAOIF mdAttr = mdEntity.definesAttribute(MdAttribute.SEQ);
+        MdAttributeConcreteDAOIF mdAttr = mdEntity.definesAttribute(MdAttribute.SEQ);
         
         String seqColumnName = ElementDAOIF.SEQUENCE_COLUMN;
-        if (mdAttr != null && mdAttr instanceof MdAttributeConcreteDAOIF)
+        if (mdAttr != null)
         {
           seqColumnName = mdAttr.getColumnName();
         }

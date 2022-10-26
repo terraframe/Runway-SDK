@@ -29,10 +29,10 @@ package com.runwaysdk.jstest.business.ontology;
 public abstract class AlphabetDisplayLabelBase extends com.runwaysdk.business.LocalStruct implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.business.ontology.AlphabetDisplayLabel";
-  public static java.lang.String DEFAULTLOCALE = "defaultLocale";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String DEFAULTLOCALE = "defaultLocale";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String SITEMASTER = "siteMaster";
   private static final long serialVersionUID = -830399315;
   
   public AlphabetDisplayLabelBase()

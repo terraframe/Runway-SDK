@@ -29,11 +29,11 @@ package com.runwaysdk.system.gis.geo;
 public abstract class GeoNodeGeometryBase extends com.runwaysdk.system.gis.geo.GeoNode
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoNodeGeometry";
-  public static java.lang.String DISPLAYLABELATTRIBUTE = "displayLabelAttribute";
-  public static java.lang.String GEOMETRYATTRIBUTE = "geometryAttribute";
-  public static java.lang.String IDENTIFIERATTRIBUTE = "identifierAttribute";
-  public static java.lang.String MULTIPOLYGONATTRIBUTE = "multiPolygonAttribute";
-  public static java.lang.String POINTATTRIBUTE = "pointAttribute";
+  public final static java.lang.String DISPLAYLABELATTRIBUTE = "displayLabelAttribute";
+  public final static java.lang.String GEOMETRYATTRIBUTE = "geometryAttribute";
+  public final static java.lang.String IDENTIFIERATTRIBUTE = "identifierAttribute";
+  public final static java.lang.String MULTIPOLYGONATTRIBUTE = "multiPolygonAttribute";
+  public final static java.lang.String POINTATTRIBUTE = "pointAttribute";
   private static final long serialVersionUID = 1563808938;
   
   public GeoNodeGeometryBase()

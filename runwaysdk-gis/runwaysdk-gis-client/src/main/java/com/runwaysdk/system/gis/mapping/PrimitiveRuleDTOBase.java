@@ -45,7 +45,7 @@ public abstract class PrimitiveRuleDTOBase extends com.runwaysdk.system.gis.mapp
     return CLASS;
   }
   
-  public static java.lang.String ATTRIBUTEVALUE = "attributeValue";
+  public final static java.lang.String ATTRIBUTEVALUE = "attributeValue";
   public String getAttributeValue()
   {
     return getValue(ATTRIBUTEVALUE);

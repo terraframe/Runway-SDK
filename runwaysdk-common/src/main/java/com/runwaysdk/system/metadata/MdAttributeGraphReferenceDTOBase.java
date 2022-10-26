@@ -45,7 +45,7 @@ public abstract class MdAttributeGraphReferenceDTOBase extends com.runwaysdk.sys
     return CLASS;
   }
   
-  public static java.lang.String REFERENCEMDVERTEX = "referenceMdVertex";
+  public final static java.lang.String REFERENCEMDVERTEX = "referenceMdVertex";
   public com.runwaysdk.system.metadata.MdVertexDTO getReferenceMdVertex()
   {
     if(getValue(REFERENCEMDVERTEX) == null || getValue(REFERENCEMDVERTEX).trim().equals(""))

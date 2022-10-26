@@ -45,7 +45,7 @@ public abstract class MdExceptionDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String SUPERMDEXCEPTION = "superMdException";
+  public final static java.lang.String SUPERMDEXCEPTION = "superMdException";
   public com.runwaysdk.system.metadata.MdExceptionDTO getSuperMdException()
   {
     if(getValue(SUPERMDEXCEPTION) == null || getValue(SUPERMDEXCEPTION).trim().equals(""))

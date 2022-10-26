@@ -45,8 +45,8 @@ public abstract class MdClassDimensionDTOBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static java.lang.String DEFININGMDCLASS = "definingMdClass";
-  public static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
+  public final static java.lang.String DEFININGMDCLASS = "definingMdClass";
+  public final static java.lang.String DEFININGMDDIMENSION = "definingMdDimension";
   public com.runwaysdk.system.metadata.MdClassDTO getDefiningMdClass()
   {
     if(getValue(DEFININGMDCLASS) == null || getValue(DEFININGMDCLASS).trim().equals(""))

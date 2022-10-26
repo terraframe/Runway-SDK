@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeDateTimeBase extends com.runwaysdk.system.metadata.MdAttributeMoment
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeDateTime";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   private static final long serialVersionUID = 133096649;
   
   public MdAttributeDateTimeBase()

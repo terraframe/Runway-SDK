@@ -176,7 +176,7 @@ public class EnumerationDTOGenerator extends Java5EnumGenerator implements Clien
 
     for (BusinessDAOIF item : this.getMdTypeDAOIF().getAllEnumItemsOrdered())
     {
-      map.put(item.getValue(EnumerationMasterInfo.NAME), new String());
+      map.put(item.getValue(EnumerationMasterInfo.NAME), "");
     }
 
     writeEnumItems(map);

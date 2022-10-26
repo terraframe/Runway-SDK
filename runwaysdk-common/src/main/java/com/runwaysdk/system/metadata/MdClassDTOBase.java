@@ -45,11 +45,11 @@ public abstract class MdClassDTOBase extends com.runwaysdk.system.metadata.MdTyp
     return CLASS;
   }
   
-  public static java.lang.String PUBLISH = "publish";
-  public static java.lang.String STUBCLASS = "stubClass";
-  public static java.lang.String STUBDTOCLASS = "stubDTOclass";
-  public static java.lang.String STUBDTOSOURCE = "stubDTOsource";
-  public static java.lang.String STUBSOURCE = "stubSource";
+  public final static java.lang.String PUBLISH = "publish";
+  public final static java.lang.String STUBCLASS = "stubClass";
+  public final static java.lang.String STUBDTOCLASS = "stubDTOclass";
+  public final static java.lang.String STUBDTOSOURCE = "stubDTOsource";
+  public final static java.lang.String STUBSOURCE = "stubSource";
   public Boolean getPublish()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(PUBLISH));

@@ -37,7 +37,7 @@ public class ViewResponseTest
   public void testAttribute() throws Exception
   {
     String name = "test";
-    Integer value = new Integer(45);
+    Integer value = Integer.valueOf(45);
 
     ViewTemplateResponse response = new ViewTemplateResponse("template.jsp", "view.jsp");
     response.set(name, value);
@@ -91,7 +91,7 @@ public class ViewResponseTest
     RequestManager manager = new RequestManager(req, resp, ServletMethod.GET, null, null);
 
     String name = "test";
-    Integer value = new Integer(45);
+    Integer value = Integer.valueOf(45);
 
     ViewTemplateResponse response = new ViewTemplateResponse("template.jsp", "view.jsp");
     response.set(name, value);

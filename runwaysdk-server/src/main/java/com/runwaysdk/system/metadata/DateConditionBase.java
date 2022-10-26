@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class DateConditionBase extends com.runwaysdk.system.metadata.FieldCondition
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.DateCondition";
-  public static java.lang.String DEFININGMDFIELD = "definingMdField";
-  public static java.lang.String OPERATION = "operation";
-  public static java.lang.String VALUE = "value";
+  public final static java.lang.String DEFININGMDFIELD = "definingMdField";
+  public final static java.lang.String OPERATION = "operation";
+  public final static java.lang.String VALUE = "value";
   private static final long serialVersionUID = -1887464019;
   
   public DateConditionBase()

@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.geo;
 public abstract class WKTParsingProblemBase extends com.runwaysdk.system.web.AttributeNotificationProblem
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.WKTParsingProblem";
-  public static java.lang.String REASON = "reason";
+  public final static java.lang.String REASON = "reason";
   private static final long serialVersionUID = 1990648359;
   
   public WKTParsingProblemBase()

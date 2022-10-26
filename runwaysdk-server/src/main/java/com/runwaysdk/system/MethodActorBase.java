@@ -29,7 +29,7 @@ package com.runwaysdk.system;
 public abstract class MethodActorBase extends com.runwaysdk.system.SingleActor
 {
   public final static String CLASS = "com.runwaysdk.system.MethodActor";
-  public static java.lang.String MDMETHOD = "mdMethod";
+  public final static java.lang.String MDMETHOD = "mdMethod";
   private static final long serialVersionUID = 1394017513;
   
   public MethodActorBase()

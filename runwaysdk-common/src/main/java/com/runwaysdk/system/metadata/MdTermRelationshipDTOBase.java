@@ -45,7 +45,7 @@ public abstract class MdTermRelationshipDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String ASSOCIATIONTYPE = "associationType";
+  public final static java.lang.String ASSOCIATIONTYPE = "associationType";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.AssociationTypeDTO> getAssociationType()
   {

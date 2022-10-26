@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeClobBase extends com.runwaysdk.system.metadata.MdAttributeChar
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeClob";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   private static final long serialVersionUID = -1145462201;
   
   public MdAttributeClobBase()

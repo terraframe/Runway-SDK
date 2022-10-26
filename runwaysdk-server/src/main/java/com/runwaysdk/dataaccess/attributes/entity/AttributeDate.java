@@ -276,6 +276,6 @@ public class AttributeDate extends AttributeMoment
    */
   public AttributeDate attributeClone()
   {
-    return new AttributeDate(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeDate(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class HashMethodsBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.HashMethods";
-  public static java.lang.String MESSAGEDIGEST = "messageDigest";
+  public final static java.lang.String MESSAGEDIGEST = "messageDigest";
   private static final long serialVersionUID = -1481037394;
   
   public HashMethodsBase()

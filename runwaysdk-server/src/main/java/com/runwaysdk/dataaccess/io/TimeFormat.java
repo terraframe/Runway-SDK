@@ -30,7 +30,7 @@ public class TimeFormat
 
   public String format()
   {
-    String format = new Long(time).toString();
+    String format = Long.toString(time);
     
     while(format.length() < 16)
     {

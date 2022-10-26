@@ -45,8 +45,8 @@ public abstract class EntityCacheMasterDTOBase extends com.runwaysdk.system.Enum
     return CLASS;
   }
   
-  public static java.lang.String CACHECODE = "cacheCode";
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String CACHECODE = "cacheCode";
+  public final static java.lang.String DESCRIPTION = "description";
   public Integer getCacheCode()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(CACHECODE));

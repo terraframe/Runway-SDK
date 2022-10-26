@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdTransientBase extends com.runwaysdk.system.metadata.MdClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdTransient";
-  public static java.lang.String EXTENDABLE = "extendable";
-  public static java.lang.String ISABSTRACT = "isAbstract";
+  public final static java.lang.String EXTENDABLE = "extendable";
+  public final static java.lang.String ISABSTRACT = "isAbstract";
   private static final long serialVersionUID = -1151834134;
   
   public MdTransientBase()

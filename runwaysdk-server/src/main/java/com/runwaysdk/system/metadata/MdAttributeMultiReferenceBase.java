@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeMultiReferenceBase extends com.runwaysdk.system.metadata.MdAttributeConcrete
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeMultiReference";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String MDBUSINESS = "mdBusiness";
-  public static java.lang.String TABLENAME = "tableName";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String MDBUSINESS = "mdBusiness";
+  public final static java.lang.String TABLENAME = "tableName";
   private static final long serialVersionUID = 1147612868;
   
   public MdAttributeMultiReferenceBase()

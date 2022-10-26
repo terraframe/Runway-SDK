@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebDecBase extends com.runwaysdk.system.metadata.MdWebNumber
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebDec";
-  public static java.lang.String DECPRECISION = "decPrecision";
-  public static java.lang.String DECSCALE = "decScale";
+  public final static java.lang.String DECPRECISION = "decPrecision";
+  public final static java.lang.String DECSCALE = "decScale";
   private static final long serialVersionUID = -761032164;
   
   public MdWebDecBase()

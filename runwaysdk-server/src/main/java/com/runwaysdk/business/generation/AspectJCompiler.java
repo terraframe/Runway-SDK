@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -30,7 +30,8 @@ import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.constants.ServerProperties;
 
 /**
- * Concrete implementation for programmatic compilation of generated content with AspectJ, including compile-time weaving.
+ * Concrete implementation for programmatic compilation of generated content
+ * with AspectJ, including compile-time weaving.
  *
  * @author Eric
  */
@@ -102,7 +103,8 @@ public class AspectJCompiler extends AbstractCompiler
   }
 
   /**
-   * Calls the AspectJ Compiler and wraps any errors or failures in a {@link CompilerException}
+   * Calls the AspectJ Compiler and wraps any errors or failures in a
+   * {@link CompilerException}
    *
    * @param args
    *          Arguments for the compiler
@@ -122,16 +124,16 @@ public class AspectJCompiler extends AbstractCompiler
     if (0 < Main.bareMain(args, false, fails, errors, warnings, infos))
     {
       // We have errors
-      String message = new String();
+      StringBuilder message = new StringBuilder();
       for (String error : errors)
       {
-        message += '\n' + error;
+        message.append('\n' + error);
       }
       for (String fail : fails)
       {
-        message += '\n' + fail;
+        message.append('\n' + fail);
       }
-      throw new CompilerException("Errors found during compilation:" + message, message);
+      throw new CompilerException("Errors found during compilation:" + message, message.toString());
     }
   }
 }

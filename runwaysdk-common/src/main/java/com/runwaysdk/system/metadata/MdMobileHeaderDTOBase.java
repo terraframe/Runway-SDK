@@ -45,7 +45,7 @@ public abstract class MdMobileHeaderDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String HEADERTEXT = "headerText";
+  public final static java.lang.String HEADERTEXT = "headerText";
   public com.runwaysdk.system.metadata.MdMobileHeaderHeaderTextDTO getHeaderText()
   {
     return (com.runwaysdk.system.metadata.MdMobileHeaderHeaderTextDTO) this.getAttributeStructDTO(HEADERTEXT).getStructDTO();

@@ -320,7 +320,7 @@ public class AttributeBoolean extends Attribute implements AttributeBooleanIF
    */
   public AttributeBoolean attributeClone()
   {
-    return new AttributeBoolean(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeBoolean(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 
 }

@@ -29,8 +29,8 @@ package com.runwaysdk.system.gis.geo;
 public abstract class DuplicateRootExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.DuplicateRootException";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String ROOTNAME = "rootName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String ROOTNAME = "rootName";
   private static final long serialVersionUID = -1006312184;
   
   public DuplicateRootExceptionBase()

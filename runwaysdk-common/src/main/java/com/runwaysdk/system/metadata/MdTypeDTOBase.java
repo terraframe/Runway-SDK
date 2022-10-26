@@ -45,18 +45,18 @@ public abstract class MdTypeDTOBase extends com.runwaysdk.system.metadata.Metada
     return CLASS;
   }
   
-  public static java.lang.String BASECLASS = "baseClass";
-  public static java.lang.String BASESOURCE = "baseSource";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String DTOCLASS = "dtoClass";
-  public static java.lang.String DTOSOURCE = "dtoSource";
-  public static java.lang.String EXPORTED = "exported";
-  public static java.lang.String GENERATESOURCE = "generateSource";
-  public static java.lang.String JSBASE = "jsBase";
-  public static java.lang.String JSSTUB = "jsStub";
-  public static java.lang.String PACKAGENAME = "packageName";
-  public static java.lang.String ROOTID = "rootId";
-  public static java.lang.String TYPENAME = "typeName";
+  public final static java.lang.String BASECLASS = "baseClass";
+  public final static java.lang.String BASESOURCE = "baseSource";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DTOCLASS = "dtoClass";
+  public final static java.lang.String DTOSOURCE = "dtoSource";
+  public final static java.lang.String EXPORTED = "exported";
+  public final static java.lang.String GENERATESOURCE = "generateSource";
+  public final static java.lang.String JSBASE = "jsBase";
+  public final static java.lang.String JSSTUB = "jsStub";
+  public final static java.lang.String PACKAGENAME = "packageName";
+  public final static java.lang.String ROOTID = "rootId";
+  public final static java.lang.String TYPENAME = "typeName";
   public byte[] getBaseClass()
   {
     return super.getBlob(BASECLASS);

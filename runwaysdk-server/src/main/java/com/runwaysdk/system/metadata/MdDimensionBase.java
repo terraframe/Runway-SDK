@@ -29,10 +29,10 @@ package com.runwaysdk.system.metadata;
 public abstract class MdDimensionBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdDimension";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String NAME = "name";
+  public final static java.lang.String NAME = "name";
   private static final long serialVersionUID = -1383666798;
   
   public MdDimensionBase()

@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -65,13 +66,13 @@ abstract public class Term extends Business implements QualifiedOntologyEntryIF
   public static final String TEMP_PARENT_OID_COL = "parentOid";
   public static final String TEMP_DEPTH_COL = "depth";
   public static final String INDEX_NAME_PREFIX = "TDIN_";
-  public static final List<String> TEMP_TABLE_COLUMNS = Arrays.asList(
+  public static final List<String> TEMP_TABLE_COLUMNS = Collections.unmodifiableList(Arrays.asList(
 //      TEMP_TERM_ID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
 //      TEMP_PARENT_OID_COL + " " + Database.formatCharacterField(DatabaseProperties.getDatabaseType(MdAttributeCharacterInfo.CLASS), "36"),
       TEMP_TERM_ID_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeUUIDInfo.CLASS),
       TEMP_PARENT_OID_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeUUIDInfo.CLASS),
       TEMP_DEPTH_COL + " " + DatabaseProperties.getDatabaseType(MdAttributeIntegerInfo.CLASS)
-  );
+  ));
   private static final List<String> TEMP_TABLE_ATTRS = Arrays.asList(
       MdAttributeUUIDInfo.CLASS, MdAttributeUUIDInfo.CLASS, MdAttributeIntegerInfo.CLASS
   );

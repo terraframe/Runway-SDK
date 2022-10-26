@@ -45,8 +45,8 @@ public abstract class MdMobileDecDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String DECPRECISION = "decPrecision";
-  public static java.lang.String DECSCALE = "decScale";
+  public final static java.lang.String DECPRECISION = "decPrecision";
+  public final static java.lang.String DECSCALE = "decScale";
   public Integer getDecPrecision()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DECPRECISION));

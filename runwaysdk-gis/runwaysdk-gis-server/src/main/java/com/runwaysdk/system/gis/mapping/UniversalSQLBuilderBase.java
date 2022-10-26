@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.mapping;
 public abstract class UniversalSQLBuilderBase extends com.runwaysdk.system.gis.mapping.LayerSQLBuilder
 {
   public final static String CLASS = "com.runwaysdk.system.gis.mapping.UniversalSQLBuilder";
-  public static java.lang.String UNIVERSAL = "universal";
+  public final static java.lang.String UNIVERSAL = "universal";
   private static final long serialVersionUID = 1836656327;
   
   public UniversalSQLBuilderBase()

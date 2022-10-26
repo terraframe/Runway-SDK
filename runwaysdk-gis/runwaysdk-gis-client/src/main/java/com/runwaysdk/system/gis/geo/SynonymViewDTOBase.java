@@ -34,10 +34,10 @@ public abstract class SynonymViewDTOBase extends com.runwaysdk.business.ViewDTO
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String RELATIONSHIPID = "relationshipId";
-  public static java.lang.String SYNONYMID = "synonymId";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String RELATIONSHIPID = "relationshipId";
+  public final static java.lang.String SYNONYMID = "synonymId";
   public String getDisplayLabel()
   {
     return getValue(DISPLAYLABEL);

@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class SymmetricMethodsBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.SymmetricMethods";
-  public static java.lang.String TRANSFORMATION = "transformation";
+  public final static java.lang.String TRANSFORMATION = "transformation";
   private static final long serialVersionUID = -29865020;
   
   public SymmetricMethodsBase()

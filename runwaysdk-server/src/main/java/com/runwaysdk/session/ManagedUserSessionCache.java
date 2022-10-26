@@ -239,7 +239,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
 
       session.setUser(user);
@@ -306,7 +306,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
       
       session.setUser(user);
@@ -427,7 +427,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
         int currentAmount = this.getUserSessionCount(user.getOid());
 
         // Add 1 to the session count for the user
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
     }
     finally
@@ -478,7 +478,7 @@ public abstract class ManagedUserSessionCache extends SessionCache
       //Increment the users session count
       if(!user.equals(publicUser))
       {
-        userSessions.put(user.getOid(), new Integer(currentAmount + 1));
+        userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
 
       session.setUser(user);

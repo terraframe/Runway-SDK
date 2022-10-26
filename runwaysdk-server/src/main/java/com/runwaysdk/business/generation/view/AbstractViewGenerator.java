@@ -529,7 +529,7 @@ public abstract class AbstractViewGenerator
   {
     HashMap<String, String> includeMap = new HashMap<String, String>();
     includeMap.put("page", page);
-    includeMap.put("flush", new Boolean(flush).toString());
+    includeMap.put("flush", Boolean.toString(flush));
 
     getWriter().writeEmptyEscapedTag(INCLUDE_TAG, includeMap);
   }

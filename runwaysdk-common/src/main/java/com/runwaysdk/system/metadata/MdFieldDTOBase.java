@@ -45,11 +45,11 @@ public abstract class MdFieldDTOBase extends com.runwaysdk.system.metadata.Metad
     return CLASS;
   }
   
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String FIELDCONDITION = "fieldCondition";
-  public static java.lang.String FIELDNAME = "fieldName";
-  public static java.lang.String FIELDORDER = "fieldOrder";
-  public static java.lang.String REQUIRED = "required";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String FIELDCONDITION = "fieldCondition";
+  public final static java.lang.String FIELDNAME = "fieldName";
+  public final static java.lang.String FIELDORDER = "fieldOrder";
+  public final static java.lang.String REQUIRED = "required";
   public com.runwaysdk.system.metadata.MdFieldDisplayLabelDTO getDisplayLabel()
   {
     return (com.runwaysdk.system.metadata.MdFieldDisplayLabelDTO) this.getAttributeStructDTO(DISPLAYLABEL).getStructDTO();

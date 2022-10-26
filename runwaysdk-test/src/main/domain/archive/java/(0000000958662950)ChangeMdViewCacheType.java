@@ -88,7 +88,7 @@ public class Sandbox
     {
       BusinessDAOIF cacheEnumItem = mdBusinessDAOIF.getCacheAlgorithm();
 
-      int cacheCode = new Integer(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+      int cacheCode = Integer.valueOf(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
       System.out.println(mdBusinessDAOIF.definesType() + " " + cacheCode);
     }
 

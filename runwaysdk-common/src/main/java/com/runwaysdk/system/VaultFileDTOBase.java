@@ -46,24 +46,24 @@ public abstract class VaultFileDTOBase extends com.runwaysdk.business.BusinessDT
     return CLASS;
   }
   
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String FILEEXTENSION = "fileExtension";
-  public static java.lang.String FILENAME = "fileName";
-  public static java.lang.String FILESIZE = "fileSize";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
-  public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
-  public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String OWNER = "owner";
-  public static java.lang.String SEQ = "seq";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TYPE = "type";
-  public static java.lang.String VAULTNAME = "vaultName";
-  public static java.lang.String VAULTPATH = "vaultPath";
-  public static java.lang.String VAULTREFERENCE = "vaultReference";
+  public final static java.lang.String CREATEDATE = "createDate";
+  public final static java.lang.String CREATEDBY = "createdBy";
+  public final static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public final static java.lang.String FILEEXTENSION = "fileExtension";
+  public final static java.lang.String FILENAME = "fileName";
+  public final static java.lang.String FILESIZE = "fileSize";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
+  public final static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
+  public final static java.lang.String LOCKEDBY = "lockedBy";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String OWNER = "owner";
+  public final static java.lang.String SEQ = "seq";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String TYPE = "type";
+  public final static java.lang.String VAULTNAME = "vaultName";
+  public final static java.lang.String VAULTPATH = "vaultPath";
+  public final static java.lang.String VAULTREFERENCE = "vaultReference";
   public java.util.Date getCreateDate()
   {
     return com.runwaysdk.constants.MdAttributeDateTimeUtil.getTypeSafeValue(getValue(CREATEDATE));

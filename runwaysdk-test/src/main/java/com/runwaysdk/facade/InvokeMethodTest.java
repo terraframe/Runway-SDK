@@ -272,7 +272,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     Assert.assertTrue(collectionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), collectionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), collectionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), collectionClass.getMethod("getALong").invoke(output));
   }
 
   @Request
@@ -790,7 +790,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     Assert.assertTrue(collectionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), collectionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), collectionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), collectionClass.getMethod("getALong").invoke(output));
     Assert.assertEquals(true, object.isModified("aDouble"));
     Assert.assertEquals(true, object.isModified());
   }
@@ -1022,7 +1022,7 @@ public class InvokeMethodTest extends InvokeMethodTestBase
 
     Assert.assertTrue(collectionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), collectionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), collectionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), collectionClass.getMethod("getALong").invoke(output));
   }
 
   @Request

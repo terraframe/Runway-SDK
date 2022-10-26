@@ -45,13 +45,13 @@ public abstract class MdViewDTOBase extends com.runwaysdk.system.metadata.MdSess
     return CLASS;
   }
   
-  public static java.lang.String QUERYBASECLASS = "queryBaseClass";
-  public static java.lang.String QUERYBASESOURCE = "queryBaseSource";
-  public static java.lang.String QUERYDTOCLASS = "queryDTOclass";
-  public static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
-  public static java.lang.String QUERYSTUBCLASS = "queryStubClass";
-  public static java.lang.String QUERYSTUBSOURCE = "queryStubSource";
-  public static java.lang.String SUPERMDVIEW = "superMdView";
+  public final static java.lang.String QUERYBASECLASS = "queryBaseClass";
+  public final static java.lang.String QUERYBASESOURCE = "queryBaseSource";
+  public final static java.lang.String QUERYDTOCLASS = "queryDTOclass";
+  public final static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
+  public final static java.lang.String QUERYSTUBCLASS = "queryStubClass";
+  public final static java.lang.String QUERYSTUBSOURCE = "queryStubSource";
+  public final static java.lang.String SUPERMDVIEW = "superMdView";
   public byte[] getQueryBaseClass()
   {
     return super.getBlob(QUERYBASECLASS);

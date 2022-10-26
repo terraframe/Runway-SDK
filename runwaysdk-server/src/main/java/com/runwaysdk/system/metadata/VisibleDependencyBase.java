@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class VisibleDependencyBase extends com.runwaysdk.system.metadata.MetadataRelationship
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.VisibleDependency";
-  public static java.lang.String CONDITION = "condition";
+  public final static java.lang.String CONDITION = "condition";
   private static final long serialVersionUID = -2074703911;
   
   public VisibleDependencyBase(String parentOid, String childOid)

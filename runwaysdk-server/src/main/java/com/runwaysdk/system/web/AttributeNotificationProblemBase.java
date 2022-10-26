@@ -29,12 +29,12 @@ package com.runwaysdk.system.web;
 public abstract class AttributeNotificationProblemBase extends com.runwaysdk.business.Problem
 {
   public final static String CLASS = "com.runwaysdk.system.web.AttributeNotificationProblem";
-  public static java.lang.String ATTRIBUTEDISPLAYLABEL = "attributeDisplayLabel";
-  public static java.lang.String ATTRIBUTENAME = "attributeName";
-  public static java.lang.String COMPONENTID = "componentId";
-  public static java.lang.String DEFININGTYPE = "definingType";
-  public static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String ATTRIBUTEDISPLAYLABEL = "attributeDisplayLabel";
+  public final static java.lang.String ATTRIBUTENAME = "attributeName";
+  public final static java.lang.String COMPONENTID = "componentId";
+  public final static java.lang.String DEFININGTYPE = "definingType";
+  public final static java.lang.String DEFININGTYPEDISPLAYLABEL = "definingTypeDisplayLabel";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = -1214448301;
   

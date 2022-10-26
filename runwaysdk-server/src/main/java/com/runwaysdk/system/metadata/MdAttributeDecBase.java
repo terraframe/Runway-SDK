@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeDecBase extends com.runwaysdk.system.metadata.MdAttributeNumber
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeDec";
-  public static java.lang.String DATABASEDECIMAL = "databaseDecimal";
-  public static java.lang.String DATABASELENGTH = "databaseLength";
+  public final static java.lang.String DATABASEDECIMAL = "databaseDecimal";
+  public final static java.lang.String DATABASELENGTH = "databaseLength";
   private static final long serialVersionUID = -2140983439;
   
   public MdAttributeDecBase()

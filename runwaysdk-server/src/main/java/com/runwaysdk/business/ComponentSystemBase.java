@@ -29,7 +29,7 @@ package com.runwaysdk.business;
 public abstract class ComponentSystemBase extends com.runwaysdk.business.Business
 {
   public final static String CLASS = "com.runwaysdk.business.Component";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String OID = "oid";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 815908764;
   

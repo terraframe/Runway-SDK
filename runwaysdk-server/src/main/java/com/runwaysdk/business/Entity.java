@@ -839,9 +839,9 @@ public abstract class Entity implements Mutable, Serializable
    * ****
    */
 
-  public static java.lang.String KEYNAME    = "keyName";
+  public final static java.lang.String KEYNAME    = "keyName";
 
-  public static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String SITEMASTER = "siteMaster";
 
   public String getKeyName()
   {
@@ -1019,4 +1019,9 @@ public abstract class Entity implements Mutable, Serializable
     return items;
   }
 
+  @Override
+  public int hashCode()
+  {
+    return this.getOid().hashCode();
+  }
 }

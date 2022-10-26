@@ -2167,7 +2167,7 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
       Integer deleteCount = this.deletedEntitySignatureCount.get(entityDAO.getOid());
       if (deleteCount == null)
       {
-        deleteCount = new Integer(0);
+        deleteCount = Integer.valueOf(0);
       }
 
       deleteCount++;

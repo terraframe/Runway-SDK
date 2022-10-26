@@ -1702,7 +1702,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     }
     Expression subSelectStatement = new MultiReferenceCountSubSelect(this.columnName, this.definingTableAlias, this.mdMultiReferenceTableName);
 
-    StatementSubSelectCondition basicConditionSubSelect = new StatementSubSelectCondition(new StatementPrimitive(new Integer(enumIds.length).toString()), subSelectStatement, false);
+    StatementSubSelectCondition basicConditionSubSelect = new StatementSubSelectCondition(new StatementPrimitive(Integer.valueOf(enumIds.length).toString()), subSelectStatement, false);
 
     return new AND(previousCondition, basicConditionSubSelect);
   }

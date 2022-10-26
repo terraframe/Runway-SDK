@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.constants.TypeGeneratorInfo;
@@ -149,9 +150,9 @@ public class ViewQueryBaseAPIGenerator extends ComponentQueryAPIGenerator
     File baseSrcFile = new File(TypeGenerator.getBaseQueryAPIsourceFilePath(this.getMdClassIF()));
     try
     {
-      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(baseSrcFile)));
+      this.srcBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(baseSrcFile), "UTF-8"));
     }
-    catch (FileNotFoundException e)
+    catch (FileNotFoundException | UnsupportedEncodingException e)
     {
       throw new FileWriteException(baseSrcFile, e);
     }

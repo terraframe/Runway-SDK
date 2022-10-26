@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class CharacterConditionBase extends com.runwaysdk.system.metadata.FieldCondition
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.CharacterCondition";
-  public static java.lang.String DEFININGMDFIELD = "definingMdField";
-  public static java.lang.String OPERATION = "operation";
-  public static java.lang.String VALUE = "value";
+  public final static java.lang.String DEFININGMDFIELD = "definingMdField";
+  public final static java.lang.String OPERATION = "operation";
+  public final static java.lang.String VALUE = "value";
   private static final long serialVersionUID = 1586277921;
   
   public CharacterConditionBase()

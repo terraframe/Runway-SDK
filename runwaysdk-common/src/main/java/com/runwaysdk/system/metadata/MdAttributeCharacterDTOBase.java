@@ -45,8 +45,8 @@ public abstract class MdAttributeCharacterDTOBase extends com.runwaysdk.system.m
     return CLASS;
   }
   
-  public static java.lang.String DATABASESIZE = "databaseSize";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DATABASESIZE = "databaseSize";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   public Integer getDatabaseSize()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DATABASESIZE));

@@ -29,8 +29,8 @@ package com.runwaysdk.localization.exception;
 public abstract class LocaleNotInstalledExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.localization.exception.LocaleNotInstalledException";
-  public static java.lang.String LOCALESTRING = "localeString";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String LOCALESTRING = "localeString";
+  public final static java.lang.String OID = "oid";
   private static final long serialVersionUID = -1044104874;
   
   public LocaleNotInstalledExceptionBase()

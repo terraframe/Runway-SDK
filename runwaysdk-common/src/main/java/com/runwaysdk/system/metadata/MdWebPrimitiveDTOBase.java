@@ -45,8 +45,8 @@ public abstract class MdWebPrimitiveDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String EXPRESSION = "expression";
-  public static java.lang.String ISEXPRESSION = "isExpression";
+  public final static java.lang.String EXPRESSION = "expression";
+  public final static java.lang.String ISEXPRESSION = "isExpression";
   public String getExpression()
   {
     return getValue(EXPRESSION);

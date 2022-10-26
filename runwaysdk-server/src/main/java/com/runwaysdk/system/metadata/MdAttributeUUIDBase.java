@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeUUIDBase extends com.runwaysdk.system.metadata.MdAttributePrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeUUID";
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   @SuppressWarnings("unused")
   private static final long serialVersionUID = 866538441;
   

@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdMobileHeaderBase extends com.runwaysdk.system.metadata.MdMobileField
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileHeader";
-  public static java.lang.String HEADERTEXT = "headerText";
+  public final static java.lang.String HEADERTEXT = "headerText";
   private com.runwaysdk.business.Struct headerText = null;
   
   private static final long serialVersionUID = 1385348178;

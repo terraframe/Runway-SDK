@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.RelationshipInfo;
@@ -73,9 +74,9 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
 
     // Root type is the last key in the ordered map
     String rootType = "";
-    for (String someType : rootInheritanceListMap.keySet())
+    for (Entry<String, String> entry : rootInheritanceListMap.entrySet())
     {
-      rootType = someType;
+      rootType = entry.getKey();
     }
 
     List<String> idList = new LinkedList<String>();
@@ -94,9 +95,10 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     Map<String, Map<String, Attribute>> tupleMap = i.next();
     while (tupleMap != null)
     {      
-      String oid = tupleMap.keySet().iterator().next();
+      Entry<String, Map<String, Attribute>> entry = tupleMap.entrySet().iterator().next();
+      String oid = entry.getKey();
       idList.add(oid);
-      Map<String, Attribute> attributeMap = tupleMap.get(oid);
+      Map<String, Attribute> attributeMap = entry.getValue();
       String type = attributeMap.get(ComponentInfo.TYPE).getValue();
       
       String parentOid = relationshipAttributesHackMap.get(oid).get(RelationshipInfo.PARENT_OID);
@@ -108,24 +110,26 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
       tupleMap = i.next();
     }
     
-    for (String currentType : allTypesTableMap.keySet())
+    for (Entry<String, String> entry : allTypesTableMap.entrySet())
     {
+      String currentType = entry.getKey();
       if (rootType.equals(currentType))
       {
         continue;
       }
           
       // get attributes from the table
-      String tableName = allTypesTableMap.get(currentType);
+      String tableName = entry.getValue();
       i = Database.getAttributesForHardcodedMetadataType(entityTableName, currentType, tableName, null, false);
       
       tupleMap = i.next();
       while (tupleMap != null)
       {       
-        String oid = tupleMap.keySet().iterator().next();
+        Entry<String, Map<String, Attribute>> nextEntry = tupleMap.entrySet().iterator().next();
+        String oid = nextEntry.getKey();
         idList.add(oid);
         
-        Map<String, Attribute> attributeMap = tupleMap.get(oid);
+        Map<String, Attribute> attributeMap = nextEntry.getValue();
 
         RelationshipDAO relationshipDAO = (RelationshipDAO)ObjectCache.getEntityDAOIFfromCache(oid);       
         relationshipDAO.addAdditionalAttributes(attributeMap);
@@ -183,8 +187,9 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
     Map<String, Attribute> attributeMap = new HashMap<String, Attribute>();
 
     // get attribute from each inherited class
-    for (String thisType : inheritanceListMap.keySet())
+    for (Entry<String, String> entry : inheritanceListMap.entrySet())
     {
+      String thisType = entry.getKey();
       boolean rootOfHierarchy = false;
 
       if (rootType.equals(thisType))
@@ -192,7 +197,7 @@ public class MetaDataRelationshipStrategy extends CacheAllRelationshipDAOStrateg
         rootOfHierarchy = true;
       }
 
-      String tableName = inheritanceListMap.get(thisType);
+      String tableName = entry.getValue();
 
       attributeMap.putAll(EntityDAOFactory.getAttributesForHardcodedMetadata(oid, thisType, tableName, relationshipAttributesHackMap,
       rootOfHierarchy));

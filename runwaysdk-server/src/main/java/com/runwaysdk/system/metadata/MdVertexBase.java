@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdVertexBase extends com.runwaysdk.system.metadata.MdGraphClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdVertex";
-  public static java.lang.String ISABSTRACT = "isAbstract";
-  public static java.lang.String SUPERMDVERTEX = "superMdVertex";
+  public final static java.lang.String ISABSTRACT = "isAbstract";
+  public final static java.lang.String SUPERMDVERTEX = "superMdVertex";
   private static final long serialVersionUID = 375453614;
   
   public MdVertexBase()

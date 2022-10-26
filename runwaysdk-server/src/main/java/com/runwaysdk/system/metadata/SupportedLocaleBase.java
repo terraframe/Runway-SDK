@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class SupportedLocaleBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.SupportedLocale";
-  public static java.lang.String LOCALELABEL = "localeLabel";
+  public final static java.lang.String LOCALELABEL = "localeLabel";
   private static final long serialVersionUID = 1782796801;
   
   public SupportedLocaleBase()

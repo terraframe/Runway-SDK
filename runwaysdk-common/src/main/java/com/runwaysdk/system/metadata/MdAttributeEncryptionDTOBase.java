@@ -45,7 +45,7 @@ public abstract class MdAttributeEncryptionDTOBase extends com.runwaysdk.system.
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
   public String getDefaultValue()
   {
     return getValue(DEFAULTVALUE);

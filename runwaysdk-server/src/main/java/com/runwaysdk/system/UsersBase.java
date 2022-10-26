@@ -29,11 +29,11 @@ package com.runwaysdk.system;
 public abstract class UsersBase extends com.runwaysdk.system.SingleActor
 {
   public final static String CLASS = "com.runwaysdk.system.Users";
-  public static java.lang.String INACTIVE = "inactive";
-  public static java.lang.String LOCALE = "locale";
-  public static java.lang.String PASSWORD = "password";
-  public static java.lang.String SESSIONLIMIT = "sessionLimit";
-  public static java.lang.String USERNAME = "username";
+  public final static java.lang.String INACTIVE = "inactive";
+  public final static java.lang.String LOCALE = "locale";
+  public final static java.lang.String PASSWORD = "password";
+  public final static java.lang.String SESSIONLIMIT = "sessionLimit";
+  public final static java.lang.String USERNAME = "username";
   private static final long serialVersionUID = -47212880;
   
   public UsersBase()

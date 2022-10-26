@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdAttributeHashBase extends com.runwaysdk.system.metadata.MdAttributeEncryption
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdAttributeHash";
-  public static java.lang.String HASHMETHOD = "hashMethod";
+  public final static java.lang.String HASHMETHOD = "hashMethod";
   private static final long serialVersionUID = 1273679867;
   
   public MdAttributeHashBase()

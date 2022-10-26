@@ -33,7 +33,7 @@ public class DoubleFieldColumn extends FieldColumn
 
   public Object getCellValue(Cell cell) throws Exception
   {
-    return new Double(cell.getNumericCellValue());
+    return Double.valueOf(cell.getNumericCellValue());
   }
 
   @Override

@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdEdgeBase extends com.runwaysdk.system.metadata.MdGraphClass
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEdge";
-  public static java.lang.String CHILDMDVERTEX = "childMdVertex";
-  public static java.lang.String PARENTMDVERTEX = "parentMdVertex";
+  public final static java.lang.String CHILDMDVERTEX = "childMdVertex";
+  public final static java.lang.String PARENTMDVERTEX = "parentMdVertex";
   private static final long serialVersionUID = -1809423937;
   
   public MdEdgeBase()

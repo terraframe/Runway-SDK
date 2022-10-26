@@ -45,9 +45,9 @@ public abstract class MdAttributeIntegerDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   public Integer getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

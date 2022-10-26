@@ -29,9 +29,9 @@ package com.runwaysdk.system.metadata;
 public abstract class MdFormBase extends com.runwaysdk.system.metadata.MdType
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdForm";
-  public static java.lang.String DIMENSION = "dimension";
-  public static java.lang.String FORMMDCLASS = "formMdClass";
-  public static java.lang.String FORMNAME = "formName";
+  public final static java.lang.String DIMENSION = "dimension";
+  public final static java.lang.String FORMMDCLASS = "formMdClass";
+  public final static java.lang.String FORMNAME = "formName";
   private static final long serialVersionUID = 1867170248;
   
   public MdFormBase()

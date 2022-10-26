@@ -29,7 +29,7 @@ package com.runwaysdk.system;
 public abstract class DomainTupleBase extends com.runwaysdk.system.metadata.TypeTuple
 {
   public final static String CLASS = "com.runwaysdk.system.DomainTuple";
-  public static java.lang.String PERMISSIONDOMAIN = "permissionDomain";
+  public final static java.lang.String PERMISSIONDOMAIN = "permissionDomain";
   private static final long serialVersionUID = 1648333491;
   
   public DomainTupleBase()

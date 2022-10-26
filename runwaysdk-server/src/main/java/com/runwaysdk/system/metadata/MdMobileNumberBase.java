@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class MdMobileNumberBase extends com.runwaysdk.system.metadata.MdMobilePrimitive
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdMobileNumber";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   private static final long serialVersionUID = -990649806;
   
   public MdMobileNumberBase()

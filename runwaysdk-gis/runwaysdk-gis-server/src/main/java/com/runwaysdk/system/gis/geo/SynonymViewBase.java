@@ -29,10 +29,10 @@ package com.runwaysdk.system.gis.geo;
 public abstract class SynonymViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.SynonymView";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String RELATIONSHIPID = "relationshipId";
-  public static java.lang.String SYNONYMID = "synonymId";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String RELATIONSHIPID = "relationshipId";
+  public final static java.lang.String SYNONYMID = "synonymId";
   private static final long serialVersionUID = 607740690;
   
   public SynonymViewBase()

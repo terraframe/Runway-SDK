@@ -45,7 +45,7 @@ public abstract class MethodActorDTOBase extends com.runwaysdk.system.SingleActo
     return CLASS;
   }
   
-  public static java.lang.String MDMETHOD = "mdMethod";
+  public final static java.lang.String MDMETHOD = "mdMethod";
   public com.runwaysdk.system.metadata.MdMethodDTO getMdMethod()
   {
     if(getValue(MDMETHOD) == null || getValue(MDMETHOD).trim().equals(""))

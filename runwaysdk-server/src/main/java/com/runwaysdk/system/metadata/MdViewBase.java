@@ -29,13 +29,13 @@ package com.runwaysdk.system.metadata;
 public abstract class MdViewBase extends com.runwaysdk.system.metadata.MdSession
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdView";
-  public static java.lang.String QUERYBASECLASS = "queryBaseClass";
-  public static java.lang.String QUERYBASESOURCE = "queryBaseSource";
-  public static java.lang.String QUERYDTOCLASS = "queryDTOclass";
-  public static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
-  public static java.lang.String QUERYSTUBCLASS = "queryStubClass";
-  public static java.lang.String QUERYSTUBSOURCE = "queryStubSource";
-  public static java.lang.String SUPERMDVIEW = "superMdView";
+  public final static java.lang.String QUERYBASECLASS = "queryBaseClass";
+  public final static java.lang.String QUERYBASESOURCE = "queryBaseSource";
+  public final static java.lang.String QUERYDTOCLASS = "queryDTOclass";
+  public final static java.lang.String QUERYDTOSOURCE = "queryDTOsource";
+  public final static java.lang.String QUERYSTUBCLASS = "queryStubClass";
+  public final static java.lang.String QUERYSTUBSOURCE = "queryStubSource";
+  public final static java.lang.String SUPERMDVIEW = "superMdView";
   private static final long serialVersionUID = -938481109;
   
   public MdViewBase()

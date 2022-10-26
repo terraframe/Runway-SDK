@@ -29,8 +29,8 @@ package com.runwaysdk.system.metadata;
 public abstract class EntityCacheMasterBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.EntityCacheMaster";
-  public static java.lang.String CACHECODE = "cacheCode";
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String CACHECODE = "cacheCode";
+  public final static java.lang.String DESCRIPTION = "description";
   private static final long serialVersionUID = 1810580479;
   
   public EntityCacheMasterBase()

@@ -45,9 +45,9 @@ public abstract class MdAttributeFloatDTOBase extends com.runwaysdk.system.metad
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   public Float getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeFloatUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

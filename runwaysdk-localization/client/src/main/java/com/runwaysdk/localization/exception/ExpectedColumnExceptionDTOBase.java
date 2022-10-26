@@ -69,9 +69,9 @@ public abstract class ExpectedColumnExceptionDTOBase extends com.runwaysdk.busin
     return CLASS;
   }
   
-  public static java.lang.String COLUMNNAME = "columnName";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SHEETNAME = "sheetName";
+  public final static java.lang.String COLUMNNAME = "columnName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SHEETNAME = "sheetName";
   public String getColumnName()
   {
     return getValue(COLUMNNAME);

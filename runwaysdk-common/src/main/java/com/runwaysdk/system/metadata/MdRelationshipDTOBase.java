@@ -45,22 +45,22 @@ public abstract class MdRelationshipDTOBase extends com.runwaysdk.system.metadat
     return CLASS;
   }
   
-  public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
-  public static java.lang.String CHILDCARDINALITY = "childCardinality";
-  public static java.lang.String CHILDDISPLAYLABEL = "childDisplayLabel";
-  public static java.lang.String CHILDMDBUSINESS = "childMdBusiness";
-  public static java.lang.String CHILDMETHOD = "childMethod";
-  public static java.lang.String CHILDVISIBILITY = "childVisibility";
-  public static java.lang.String COMPOSITION = "composition";
-  public static java.lang.String INDEX1NAME = "index1Name";
-  public static java.lang.String INDEX2NAME = "index2Name";
-  public static java.lang.String PARENTCARDINALITY = "parentCardinality";
-  public static java.lang.String PARENTDISPLAYLABEL = "parentDisplayLabel";
-  public static java.lang.String PARENTMDBUSINESS = "parentMdBusiness";
-  public static java.lang.String PARENTMETHOD = "parentMethod";
-  public static java.lang.String PARENTVISIBILITY = "parentVisibility";
-  public static java.lang.String SORTMDATTRIBUTE = "sortMdAttribute";
-  public static java.lang.String SUPERMDRELATIONSHIP = "superMdRelationship";
+  public final static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
+  public final static java.lang.String CHILDCARDINALITY = "childCardinality";
+  public final static java.lang.String CHILDDISPLAYLABEL = "childDisplayLabel";
+  public final static java.lang.String CHILDMDBUSINESS = "childMdBusiness";
+  public final static java.lang.String CHILDMETHOD = "childMethod";
+  public final static java.lang.String CHILDVISIBILITY = "childVisibility";
+  public final static java.lang.String COMPOSITION = "composition";
+  public final static java.lang.String INDEX1NAME = "index1Name";
+  public final static java.lang.String INDEX2NAME = "index2Name";
+  public final static java.lang.String PARENTCARDINALITY = "parentCardinality";
+  public final static java.lang.String PARENTDISPLAYLABEL = "parentDisplayLabel";
+  public final static java.lang.String PARENTMDBUSINESS = "parentMdBusiness";
+  public final static java.lang.String PARENTMETHOD = "parentMethod";
+  public final static java.lang.String PARENTVISIBILITY = "parentVisibility";
+  public final static java.lang.String SORTMDATTRIBUTE = "sortMdAttribute";
+  public final static java.lang.String SUPERMDRELATIONSHIP = "superMdRelationship";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.RelationshipCacheDTO> getCacheAlgorithm()
   {

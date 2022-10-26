@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdWebCommentBase extends com.runwaysdk.system.metadata.MdWebField
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdWebComment";
-  public static java.lang.String COMMENTTEXT = "commentText";
+  public final static java.lang.String COMMENTTEXT = "commentText";
   private com.runwaysdk.business.Struct commentText = null;
   
   private static final long serialVersionUID = -1406111006;

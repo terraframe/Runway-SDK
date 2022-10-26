@@ -45,8 +45,8 @@ public abstract class MdVertexDTOBase extends com.runwaysdk.system.metadata.MdGr
     return CLASS;
   }
   
-  public static java.lang.String ISABSTRACT = "isAbstract";
-  public static java.lang.String SUPERMDVERTEX = "superMdVertex";
+  public final static java.lang.String ISABSTRACT = "isAbstract";
+  public final static java.lang.String SUPERMDVERTEX = "superMdVertex";
   public Boolean getIsAbstract()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(ISABSTRACT));

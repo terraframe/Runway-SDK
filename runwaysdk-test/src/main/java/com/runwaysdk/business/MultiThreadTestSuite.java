@@ -444,7 +444,7 @@ public class MultiThreadTestSuite
   public static Integer updateCommonObjectWithUserLock2(String sessionId)
   {
     Business busObject = Business.get(testType1ObjectId);
-    Integer intVal = new Integer(busObject.getValue("someInt"));
+    Integer intVal = Integer.valueOf(busObject.getValue("someInt"));
     intVal += 1;
     busObject.setValue("someInt", intVal.toString());
     resultsVector.add(intVal);
@@ -631,7 +631,7 @@ public class MultiThreadTestSuite
     busObject.appLock();
     // System.out.println("2 lock attained: "+Thread.currentThread()+"
     // "+busObject.getValue(EntityInfo.SEQUENCE));
-    Integer intVal = new Integer(busObject.getValue("someInt"));
+    Integer intVal = Integer.valueOf(busObject.getValue("someInt"));
     intVal += 1;
     busObject.setValue("someInt", intVal.toString());
     resultsVector.add(intVal);
@@ -1461,7 +1461,7 @@ public class MultiThreadTestSuite
   {
     Business busObject = Business.get(objectId);
     busObject.lock();
-    Integer intVal = new Integer(busObject.getValue("someInt"));
+    Integer intVal = Integer.valueOf(busObject.getValue("someInt"));
     intVal += 1;
     busObject.setValue("someInt", intVal.toString());
 

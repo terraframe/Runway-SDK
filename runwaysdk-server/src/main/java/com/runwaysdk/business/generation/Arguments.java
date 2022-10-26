@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.generation;
 
@@ -41,15 +41,15 @@ import com.runwaysdk.constants.ServerProperties;
 public class Arguments
 {
   private final static Logger logger = LoggerFactory.getLogger(Arguments.class);
-  
+
   /**
    * We create 3 separate configurations - common, server, and client
    */
-  public Configuration common;
+  public Configuration        common;
 
-  public Configuration client;
+  public Configuration        client;
 
-  public Configuration server;
+  public Configuration        server;
 
   /**
    * Creates the configurations and sets basic values (destination and
@@ -76,7 +76,7 @@ public class Arguments
    * 
    * @author Eric
    */
-  class Configuration
+  static class Configuration
   {
     private List<String>  sourceFiles;
 
@@ -86,7 +86,7 @@ public class Arguments
 
     private List<String>  aspectpath;
 
-    protected String        destination;
+    protected String      destination;
 
     private String        compliance;
 
@@ -125,12 +125,12 @@ public class Arguments
     {
       sourceDirs.add(source);
     }
-    
+
     public List<String> getSourceDirs()
     {
       return sourceDirs;
     }
-    
+
     public List<String> getSourceFiles()
     {
       return sourceFiles;
@@ -223,13 +223,13 @@ public class Arguments
       opts.add("-source");
       opts.add(compliance);
       opts.add("-nowarn");
-      
+
       if (destination == null || destination.equals("none"))
       {
         try
         {
           destination = Files.createTempDirectory("javactemp").toFile().getAbsolutePath();
-          
+
           opts.add("-d");
           opts.add(destination);
         }
@@ -243,13 +243,13 @@ public class Arguments
         opts.add("-d");
         opts.add(destination);
       }
-      
+
       opts.add("-classpath");
       opts.add(buildClassPath());
-      
+
       return opts;
     }
-    
+
     /**
      * Converts this Configuration object into a String array suitable for
      * feeding into a standard javac compiler (java 8)
@@ -259,19 +259,19 @@ public class Arguments
     public String[] getJavac8Args()
     {
       LinkedList<String> args = new LinkedList<String>();
-      
+
       if (destination == null || destination.equals("none"))
       {
         try
         {
           destination = Files.createTempDirectory("javactemp").toFile().getAbsolutePath();
-          
+
           args.add("-d");
           args.add(destination);
         }
         catch (IOException e)
         {
-          
+
         }
       }
       else
@@ -279,16 +279,14 @@ public class Arguments
         args.add("-d");
         args.add(destination);
       }
-      
+
       args.add("-classpath");
       args.add(buildClassPath());
       args.addAll(sourceDirs);
       args.addAll(sourceFiles);
       return args.toArray(new String[args.size()]);
     }
-    
-    
-    
+
     /**
      * Converts this Configuration object into a String array suitable for
      * feeding into the Eclipse compiler via
@@ -335,14 +333,14 @@ public class Arguments
       args.addAll(sourceFiles);
       return args.toArray(new String[args.size()]);
     }
-    
+
     public Iterable<String> getClassPath()
     {
       if (dependency != null)
       {
         return dependency.classpath;
       }
-      
+
       return null;
     }
 
@@ -400,18 +398,18 @@ public class Arguments
      */
     private String delimit(Iterable<String> iterable)
     {
-      String result = new String();
+      StringBuilder result = new StringBuilder();
       boolean first = true;
       for (String item : iterable)
       {
         if (!first)
         {
-          result += File.pathSeparator;
+          result.append(File.pathSeparator);
         }
-        result += item;
+        result.append(item);
         first = false;
       }
-      return result;
+      return result.toString();
     }
   }
 }

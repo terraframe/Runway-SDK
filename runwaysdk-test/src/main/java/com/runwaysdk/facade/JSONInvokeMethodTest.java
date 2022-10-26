@@ -106,7 +106,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
 
     BusinessDTO output = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, jsonObject.toString());
 
-    Assert.assertEquals(new Long(142), new Long(output.getValue("aLong"))); // should
+    Assert.assertEquals(Long.valueOf(142), Long.valueOf(output.getValue("aLong"))); // should
     // be the
     // same
     // value
@@ -156,7 +156,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     }
 
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), Boolean.parseBoolean(output.getValue("aBoolean")));
-    Assert.assertEquals(new Long(3), new Long(Long.parseLong(output.getValue("aLong"))));
+    Assert.assertEquals(Long.valueOf(3), Long.valueOf(Long.parseLong(output.getValue("aLong"))));
   }
 
   @Request

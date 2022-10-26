@@ -45,9 +45,9 @@ public abstract class MdAttributeDecimalDTOBase extends com.runwaysdk.system.met
     return CLASS;
   }
   
-  public static java.lang.String DEFAULTVALUE = "defaultValue";
-  public static java.lang.String ENDRANGE = "endRange";
-  public static java.lang.String STARTRANGE = "startRange";
+  public final static java.lang.String DEFAULTVALUE = "defaultValue";
+  public final static java.lang.String ENDRANGE = "endRange";
+  public final static java.lang.String STARTRANGE = "startRange";
   public java.math.BigDecimal getDefaultValue()
   {
     return com.runwaysdk.constants.MdAttributeDecimalUtil.getTypeSafeValue(getValue(DEFAULTVALUE));

@@ -29,12 +29,12 @@ package com.runwaysdk.system.gis.geo;
 public abstract class UniversalInputBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.UniversalInput";
-  public static java.lang.String DESCRIPTION = "description";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String MOVEOPERATION = "moveOperation";
-  public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
-  public static java.lang.String UNIVERSAL = "universal";
+  public final static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String MOVEOPERATION = "moveOperation";
+  public final static java.lang.String PARENTUNIVERSAL = "parentUniversal";
+  public final static java.lang.String UNIVERSAL = "universal";
   private static final long serialVersionUID = -824894439;
   
   public UniversalInputBase()

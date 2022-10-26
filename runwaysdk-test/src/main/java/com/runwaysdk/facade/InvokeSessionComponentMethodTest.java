@@ -63,7 +63,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Assert.assertTrue(sessionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), sessionClass.getMethod("getALong").invoke(output));
   }
 
   @Request
@@ -408,7 +408,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Assert.assertTrue(sessionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), sessionClass.getMethod("getALong").invoke(output));
     Assert.assertEquals(true, object.isModified("aDouble"));
     Assert.assertEquals(true, object.isModified());
   }
@@ -496,7 +496,7 @@ public abstract class InvokeSessionComponentMethodTest extends InvokeSessionComp
 
     Assert.assertTrue(sessionClass.isInstance(output));
     Assert.assertEquals(Boolean.parseBoolean(booleanInput), sessionClass.getMethod("getABoolean").invoke(output));
-    Assert.assertEquals(new Long(3), sessionClass.getMethod("getALong").invoke(output));
+    Assert.assertEquals(Long.valueOf(3), sessionClass.getMethod("getALong").invoke(output));
   }
 
   @Request

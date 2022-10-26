@@ -46,8 +46,8 @@ public abstract class MdBusinessDTOBase extends com.runwaysdk.system.metadata.Md
     return CLASS;
   }
   
-  public static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
-  public static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
+  public final static java.lang.String CACHEALGORITHM = "cacheAlgorithm";
+  public final static java.lang.String SUPERMDBUSINESS = "superMdBusiness";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.metadata.ClassCacheDTO> getCacheAlgorithm()
   {

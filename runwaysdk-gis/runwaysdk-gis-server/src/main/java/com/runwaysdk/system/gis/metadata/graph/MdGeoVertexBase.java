@@ -29,8 +29,8 @@ package com.runwaysdk.system.gis.metadata.graph;
 public abstract class MdGeoVertexBase extends com.runwaysdk.system.metadata.MdVertex
 {
   public final static String CLASS = "com.runwaysdk.system.gis.metadata.graph.MdGeoVertex";
-  public static java.lang.String GEOMETRYTYPE = "geometryType";
-  public static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
+  public final static java.lang.String GEOMETRYTYPE = "geometryType";
+  public final static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
   private static final long serialVersionUID = -493298286;
   
   public MdGeoVertexBase()

@@ -156,6 +156,6 @@ public class AttributeClob extends Attribute
    */
   public AttributeClob attributeClone()
   {
-    return new AttributeClob(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeClob(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

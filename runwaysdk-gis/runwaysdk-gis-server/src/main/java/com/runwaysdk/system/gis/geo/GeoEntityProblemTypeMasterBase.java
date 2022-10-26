@@ -29,7 +29,7 @@ package com.runwaysdk.system.gis.geo;
 public abstract class GeoEntityProblemTypeMasterBase extends com.runwaysdk.system.EnumerationMaster
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblemTypeMaster";
-  public static java.lang.String DESCRIPTION = "description";
+  public final static java.lang.String DESCRIPTION = "description";
   private com.runwaysdk.business.Struct description = null;
   
   private static final long serialVersionUID = -318422872;

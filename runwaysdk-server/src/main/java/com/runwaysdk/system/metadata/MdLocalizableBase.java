@@ -29,7 +29,7 @@ package com.runwaysdk.system.metadata;
 public abstract class MdLocalizableBase extends com.runwaysdk.system.metadata.MdTransient
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdLocalizable";
-  public static java.lang.String MESSAGE = "message";
+  public final static java.lang.String MESSAGE = "message";
   private com.runwaysdk.business.Struct message = null;
   
   private static final long serialVersionUID = -1982999458;

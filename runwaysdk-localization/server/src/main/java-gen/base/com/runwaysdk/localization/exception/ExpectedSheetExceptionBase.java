@@ -29,8 +29,8 @@ package com.runwaysdk.localization.exception;
 public abstract class ExpectedSheetExceptionBase extends com.runwaysdk.business.SmartException
 {
   public final static String CLASS = "com.runwaysdk.localization.exception.ExpectedSheetException";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String SHEETNAME = "sheetName";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String SHEETNAME = "sheetName";
   private static final long serialVersionUID = 1650850055;
   
   public ExpectedSheetExceptionBase()

@@ -493,7 +493,7 @@ public abstract class MutableDTOToMutable
         {
           try
           {
-            param = new Long((String) value);
+            param = Long.valueOf((String) value);
           }
           catch (Throwable e)
           {
@@ -525,7 +525,7 @@ public abstract class MutableDTOToMutable
         {
           try
           {
-            param = new Double((String) value);
+            param = Double.valueOf((String) value);
           }
           catch (Throwable e)
           {
@@ -557,7 +557,7 @@ public abstract class MutableDTOToMutable
         {
           try
           {
-            param = new Integer((String) value);
+            param = Integer.valueOf((String) value);
           }
           catch (Throwable e)
           {

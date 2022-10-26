@@ -45,11 +45,11 @@ public abstract class UsersDTOBase extends com.runwaysdk.system.SingleActorDTO
     return CLASS;
   }
   
-  public static java.lang.String INACTIVE = "inactive";
-  public static java.lang.String LOCALE = "locale";
-  public static java.lang.String PASSWORD = "password";
-  public static java.lang.String SESSIONLIMIT = "sessionLimit";
-  public static java.lang.String USERNAME = "username";
+  public final static java.lang.String INACTIVE = "inactive";
+  public final static java.lang.String LOCALE = "locale";
+  public final static java.lang.String PASSWORD = "password";
+  public final static java.lang.String SESSIONLIMIT = "sessionLimit";
+  public final static java.lang.String USERNAME = "username";
   public Boolean getInactive()
   {
     return com.runwaysdk.constants.MdAttributeBooleanUtil.getTypeSafeValue(getValue(INACTIVE));

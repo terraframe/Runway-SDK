@@ -29,11 +29,11 @@ package com.runwaysdk.system.gis.geo;
 public abstract class GeoEntityProblemViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityProblemView";
-  public static java.lang.String CONCRETEID = "concreteId";
-  public static java.lang.String GEOID = "geoId";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String PROBLEM = "problem";
-  public static java.lang.String PROBLEMNAME = "problemName";
+  public final static java.lang.String CONCRETEID = "concreteId";
+  public final static java.lang.String GEOID = "geoId";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String PROBLEM = "problem";
+  public final static java.lang.String PROBLEMNAME = "problemName";
   private static final long serialVersionUID = 1004051346;
   
   public GeoEntityProblemViewBase()

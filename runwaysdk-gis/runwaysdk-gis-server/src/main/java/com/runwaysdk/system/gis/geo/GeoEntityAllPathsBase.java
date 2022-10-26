@@ -29,22 +29,22 @@ package com.runwaysdk.system.gis.geo;
 public abstract class GeoEntityAllPathsBase extends com.runwaysdk.business.Business
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityAllPaths";
-  public static java.lang.String CHILDGEOENTITY = "childGeoEntity";
-  public static java.lang.String CHILDUNIVERSAL = "childUniversal";
-  public static java.lang.String CREATEDATE = "createDate";
-  public static java.lang.String CREATEDBY = "createdBy";
-  public static java.lang.String ENTITYDOMAIN = "entityDomain";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String KEYNAME = "keyName";
-  public static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
-  public static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
-  public static java.lang.String LOCKEDBY = "lockedBy";
-  public static java.lang.String OWNER = "owner";
-  public static java.lang.String PARENTGEOENTITY = "parentGeoEntity";
-  public static java.lang.String PARENTUNIVERSAL = "parentUniversal";
-  public static java.lang.String SEQ = "seq";
-  public static java.lang.String SITEMASTER = "siteMaster";
-  public static java.lang.String TYPE = "type";
+  public final static java.lang.String CHILDGEOENTITY = "childGeoEntity";
+  public final static java.lang.String CHILDUNIVERSAL = "childUniversal";
+  public final static java.lang.String CREATEDATE = "createDate";
+  public final static java.lang.String CREATEDBY = "createdBy";
+  public final static java.lang.String ENTITYDOMAIN = "entityDomain";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String KEYNAME = "keyName";
+  public final static java.lang.String LASTUPDATEDATE = "lastUpdateDate";
+  public final static java.lang.String LASTUPDATEDBY = "lastUpdatedBy";
+  public final static java.lang.String LOCKEDBY = "lockedBy";
+  public final static java.lang.String OWNER = "owner";
+  public final static java.lang.String PARENTGEOENTITY = "parentGeoEntity";
+  public final static java.lang.String PARENTUNIVERSAL = "parentUniversal";
+  public final static java.lang.String SEQ = "seq";
+  public final static java.lang.String SITEMASTER = "siteMaster";
+  public final static java.lang.String TYPE = "type";
   private static final long serialVersionUID = -742121615;
   
   public GeoEntityAllPathsBase()

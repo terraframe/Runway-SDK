@@ -45,7 +45,7 @@ public abstract class MdWebHeaderDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String HEADERTEXT = "headerText";
+  public final static java.lang.String HEADERTEXT = "headerText";
   public com.runwaysdk.system.metadata.MdWebHeaderHeaderTextDTO getHeaderText()
   {
     return (com.runwaysdk.system.metadata.MdWebHeaderHeaderTextDTO) this.getAttributeStructDTO(HEADERTEXT).getStructDTO();

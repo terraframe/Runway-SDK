@@ -45,8 +45,8 @@ public abstract class MdAttributeClassificationDTOBase extends com.runwaysdk.sys
     return CLASS;
   }
   
-  public static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
-  public static java.lang.String ROOT = "root";
+  public final static java.lang.String REFERENCEMDCLASSIFICATION = "referenceMdClassification";
+  public final static java.lang.String ROOT = "root";
   public com.runwaysdk.system.metadata.MdClassificationDTO getReferenceMdClassification()
   {
     if(getValue(REFERENCEMDCLASSIFICATION) == null || getValue(REFERENCEMDCLASSIFICATION).trim().equals(""))

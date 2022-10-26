@@ -60,7 +60,7 @@ public class AttributeLocalCharacter extends AttributeLocal implements Attribute
   public Attribute attributeClone()
   {
     return new AttributeLocalCharacter(this.getName(), this.mdAttributeKey, this.getDefiningClassType(),
-                                  new String(this.getValue()), (StructDAO)this.getStructDAO().clone());
+                                  this.getValue(), (StructDAO)this.getStructDAO().clone());
   }
 
   /**
@@ -69,7 +69,7 @@ public class AttributeLocalCharacter extends AttributeLocal implements Attribute
   public Attribute attributeCopy()
   {
     return new AttributeLocalCharacter(this.getName(), this.mdAttributeKey, this.getDefiningClassType(),
-                                new String(this.getValue()), (StructDAO)this.getStructDAO().copy());
+                                this.getValue(), (StructDAO)this.getStructDAO().copy());
   }
 
 }

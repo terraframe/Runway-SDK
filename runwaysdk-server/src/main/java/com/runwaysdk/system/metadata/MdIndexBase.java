@@ -29,13 +29,13 @@ package com.runwaysdk.system.metadata;
 public abstract class MdIndexBase extends com.runwaysdk.system.metadata.Metadata
 {
   public final static String CLASS = "com.runwaysdk.system.metadata.MdIndex";
-  public static java.lang.String ACTIVE = "active";
-  public static java.lang.String DISPLAYLABEL = "displayLabel";
+  public final static java.lang.String ACTIVE = "active";
+  public final static java.lang.String DISPLAYLABEL = "displayLabel";
   private com.runwaysdk.business.Struct displayLabel = null;
   
-  public static java.lang.String INDEXNAME = "indexName";
-  public static java.lang.String MDENTITY = "mdEntity";
-  public static java.lang.String UNIQUEVALUE = "uniqueValue";
+  public final static java.lang.String INDEXNAME = "indexName";
+  public final static java.lang.String MDENTITY = "mdEntity";
+  public final static java.lang.String UNIQUEVALUE = "uniqueValue";
   private static final long serialVersionUID = -117201012;
   
   public MdIndexBase()

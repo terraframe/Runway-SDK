@@ -45,8 +45,8 @@ public abstract class MdAttributeGeometryDTOBase extends com.runwaysdk.system.me
     return CLASS;
   }
   
-  public static java.lang.String DIMENSION = "dimension";
-  public static java.lang.String SRID = "srid";
+  public final static java.lang.String DIMENSION = "dimension";
+  public final static java.lang.String SRID = "srid";
   public Integer getDimension()
   {
     return com.runwaysdk.constants.MdAttributeIntegerUtil.getTypeSafeValue(getValue(DIMENSION));

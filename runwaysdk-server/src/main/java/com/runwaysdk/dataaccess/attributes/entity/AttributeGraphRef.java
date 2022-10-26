@@ -113,6 +113,6 @@ public class AttributeGraphRef extends Attribute
   @Override
   public Attribute attributeClone()
   {
-    return new AttributeGraphRef(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), new String(this.getRawValue()));
+    return new AttributeGraphRef(this.getName(), this.mdAttributeKey, this.getDefiningClassType(), this.getRawValue());
   }
 }

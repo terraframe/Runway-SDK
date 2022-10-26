@@ -355,7 +355,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Integer value = new Integer(5);
+    Integer value = Integer.valueOf(5);
     vertexDAO.setValue(attributeName, value, startDate(), endDate());
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
@@ -373,7 +373,7 @@ public class VertexObjectDAOChangeOverTimeTest
       Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
 
       // Test update
-      value = new Integer(10);
+      value = Integer.valueOf(10);
 
       vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
       vertexDAO.apply();
@@ -400,7 +400,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Long value = new Long(5);
+    Long value = Long.valueOf(5);
     vertexDAO.setValue(attributeName, value, startDate(), endDate());
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
@@ -417,7 +417,7 @@ public class VertexObjectDAOChangeOverTimeTest
       Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
 
       // Test update
-      value = new Long(10);
+      value = Long.valueOf(10);
 
       vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
       vertexDAO.apply();
@@ -488,7 +488,7 @@ public class VertexObjectDAOChangeOverTimeTest
 
     Assert.assertNotNull(vertexDAO.getAttributeIF(attributeName));
 
-    Double value = new Double(5D);
+    Double value = Double.valueOf(5D);
     vertexDAO.setValue(attributeName, value, startDate(), endDate());
 
     Assert.assertEquals(value, vertexDAO.getObjectValue(attributeName, date()));
@@ -505,7 +505,7 @@ public class VertexObjectDAOChangeOverTimeTest
       Assert.assertEquals(1, test.getValuesOverTime(attributeName).size());
 
       // Test update
-      value = new Double(10D);
+      value = Double.valueOf(10D);
 
       vertexDAO.getValuesOverTime(attributeName).first().setValue(value);
       vertexDAO.apply();

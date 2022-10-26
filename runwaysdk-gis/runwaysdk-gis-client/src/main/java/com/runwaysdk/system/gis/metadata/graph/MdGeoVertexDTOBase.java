@@ -45,8 +45,8 @@ public abstract class MdGeoVertexDTOBase extends com.runwaysdk.system.metadata.M
     return CLASS;
   }
   
-  public static java.lang.String GEOMETRYTYPE = "geometryType";
-  public static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
+  public final static java.lang.String GEOMETRYTYPE = "geometryType";
+  public final static java.lang.String ISGEOMETRYEDITABLE = "isGeometryEditable";
   @SuppressWarnings("unchecked")
   public java.util.List<com.runwaysdk.system.gis.geo.GeometryTypeDTO> getGeometryType()
   {

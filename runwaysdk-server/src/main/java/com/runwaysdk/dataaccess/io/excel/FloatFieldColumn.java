@@ -33,7 +33,7 @@ public class FloatFieldColumn extends FieldColumn
 
   public Object getCellValue(Cell cell) throws Exception
   {
-    return new Float(new Double(cell.getNumericCellValue()).floatValue());
+    return new Float(Double.valueOf(cell.getNumericCellValue()).floatValue());
   }
 
   @Override

@@ -29,13 +29,13 @@ package com.runwaysdk.system.gis.geo;
 public abstract class GeoEntityViewBase extends com.runwaysdk.business.View
 {
   public final static String CLASS = "com.runwaysdk.system.gis.geo.GeoEntityView";
-  public static java.lang.String CANCREATECHILDREN = "canCreateChildren";
-  public static java.lang.String GEOENTITYDISPLAYLABEL = "geoEntityDisplayLabel";
-  public static java.lang.String GEOENTITYID = "geoEntityId";
-  public static java.lang.String OID = "oid";
-  public static java.lang.String RELATIONSHIPID = "relationshipId";
-  public static java.lang.String RELATIONSHIPTYPE = "relationshipType";
-  public static java.lang.String UNIVERSALDISPLAYLABEL = "universalDisplayLabel";
+  public final static java.lang.String CANCREATECHILDREN = "canCreateChildren";
+  public final static java.lang.String GEOENTITYDISPLAYLABEL = "geoEntityDisplayLabel";
+  public final static java.lang.String GEOENTITYID = "geoEntityId";
+  public final static java.lang.String OID = "oid";
+  public final static java.lang.String RELATIONSHIPID = "relationshipId";
+  public final static java.lang.String RELATIONSHIPTYPE = "relationshipType";
+  public final static java.lang.String UNIVERSALDISPLAYLABEL = "universalDisplayLabel";
   private static final long serialVersionUID = -1625522447;
   
   public GeoEntityViewBase()

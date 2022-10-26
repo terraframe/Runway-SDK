@@ -45,7 +45,7 @@ public abstract class SymmetricMethodsDTOBase extends com.runwaysdk.system.Enume
     return CLASS;
   }
   
-  public static java.lang.String TRANSFORMATION = "transformation";
+  public final static java.lang.String TRANSFORMATION = "transformation";
   public String getTransformation()
   {
     return getValue(TRANSFORMATION);

@@ -29,9 +29,9 @@ package com.runwaysdk.jstest;
 public abstract class TestExceptionBase extends com.runwaysdk.business.SmartException implements com.runwaysdk.generation.loader.
 {
   public final static String CLASS = "com.runwaysdk.jstest.TestException";
-  public static java.lang.String EXCHAR = "exChar";
-  public static java.lang.String EXINT = "exInt";
-  public static java.lang.String OID = "oid";
+  public final static java.lang.String EXCHAR = "exChar";
+  public final static java.lang.String EXINT = "exInt";
+  public final static java.lang.String OID = "oid";
   private static final long serialVersionUID = 595253420;
   
   public TestExceptionBase()
