@@ -181,6 +181,7 @@ public class PostgreSQL extends AbstractDatabase
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+//        config.addDataSourceProperty("autosave", "conservative");
         config.setMaximumPoolSize(maxDbConnections);
 
         // If environment is configured for connection pooling, pool connections

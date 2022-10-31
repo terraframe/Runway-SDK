@@ -818,10 +818,12 @@ public abstract class AbstractDatabase
   {
     List<String> subClassTypeList = new LinkedList<String>();
 
-    String sqlSelect = "SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n " + " WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n " + "   AND "
-        + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = '" + mdEntityId + "'";
+    StringBuilder sqlSelect = new StringBuilder();
+    sqlSelect.append("SELECT " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.CHILD_OID_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.PACKAGE_NAME_COLUMN + ", " + MdTypeDAOIF.TABLE + "." + MdTypeDAOIF.TYPE_NAME_COLUMN + ", " + MdElementDAOIF.TABLE + "." + MdElementDAOIF.ABSTRACT_COLUMN + "\n" + "  FROM " + MdTypeDAOIF.TABLE + " LEFT JOIN " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + " ON " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + RelationshipTypes.CLASS_INHERITANCE.getTableName() + "." + RelationshipDAOIF.PARENT_OID_COLUMN + ", " + MdElementDAOIF.TABLE + "\n ");
+    sqlSelect.append(" WHERE " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = " + MdElementDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + "\n ");
+    sqlSelect.append("   AND " + MdTypeDAOIF.TABLE + "." + EntityDAOIF.ID_COLUMN + " = '" + mdEntityId + "'");
 
-    ResultSet resultSet = this.query(sqlSelect);
+    ResultSet resultSet = this.query(sqlSelect.toString());
 
     try
     {
@@ -1703,9 +1705,9 @@ public abstract class AbstractDatabase
    */
   public String buildSQLDeleteStatement(String table, String oid, String seqColumnName, long seq)
   {
-    String statement = "DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-    statement += " AND " + seqColumnName + " = " + seq;
-    return statement;
+    StringBuilder statement = new StringBuilder("DELETE FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'");
+    statement.append(" AND " + seqColumnName + " = " + seq);
+    return statement.toString();
   }
 
   /**
@@ -1721,13 +1723,14 @@ public abstract class AbstractDatabase
    */
   public String buildSQLDeleteWhereStatement(String table, List<String> conditions)
   {
-    String statement = "DELETE FROM " + table + " WHERE ";
+    StringBuilder builder = new StringBuilder("DELETE FROM " + table + " WHERE ");
 
     for (String condition : conditions)
     {
-      statement += " AND " + condition;
+      builder.append(" AND " + condition);
     }
 
+    String statement = builder.toString();
     statement = statement.replaceFirst(" AND ", "");
 
     return statement;
@@ -1884,36 +1887,36 @@ public abstract class AbstractDatabase
   public String selectClause(List<String> columnNames, List<String> tables, List<String> conditions)
   {
     Iterator<String> i = columnNames.iterator();
-    String statement = "SELECT " + i.next();
+    StringBuilder statement = new StringBuilder("SELECT " + i.next());
     while (i.hasNext())
     {
-      statement += ", " + i.next();
+      statement.append(", " + i.next());
     }
 
-    statement += "\n";
+    statement.append("\n");
 
     i = tables.iterator();
-    statement += " FROM " + i.next();
+    statement.append(" FROM " + i.next());
     while (i.hasNext())
     {
-      statement += ", " + i.next();
+      statement.append(", " + i.next());
     }
 
-    statement += "\n";
+    statement.append("\n");
 
     if (conditions.size() > 0)
     {
       i = conditions.iterator();
-      statement += " WHERE " + i.next();
+      statement.append(" WHERE " + i.next());
       while (i.hasNext())
       {
-        statement += " AND " + i.next();
+        statement.append(" AND " + i.next());
       }
     }
 
-    statement += "\n";
+    statement.append("\n");
 
-    return statement;
+    return statement.toString();
   }
 
   /**
@@ -1964,39 +1967,39 @@ public abstract class AbstractDatabase
       System.out.println(this.buildSQLinsertStatement(table, columnNames, values, attributeTypes) + ";");
     }
 
-    String sqlStmt = "INSERT INTO " + table;
+    StringBuilder sqlStmt = new StringBuilder("INSERT INTO " + table);
 
     Iterator<String> interator = columnNames.iterator();
-    sqlStmt += " (" + interator.next();
+    sqlStmt.append(" (" + interator.next());
     while (interator.hasNext())
     {
-      sqlStmt += ", " + interator.next();
+      sqlStmt.append(", " + interator.next());
     }
 
     interator = prepStmtVars.iterator();
-    sqlStmt += ") VALUES (";
+    sqlStmt.append(") VALUES (");
 
     boolean firstIteration = true;
     while (interator.hasNext())
     {
       if (!firstIteration)
       {
-        sqlStmt += ", ";
+        sqlStmt.append(", ");
       }
       firstIteration = false;
 
       String prepStmtVar = interator.next();
 
-      sqlStmt += prepStmtVar;
+      sqlStmt.append(prepStmtVar);
     }
-    sqlStmt += ")";
+    sqlStmt.append(")");
 
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
 
     try
     {
-      prepared = conn.prepareStatement(sqlStmt);
+      prepared = conn.prepareStatement(sqlStmt.toString());
     }
     catch (SQLException e)
     {
@@ -2031,12 +2034,12 @@ public abstract class AbstractDatabase
    */
   public String buildSQLinsertStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes)
   {
-    String sqlStmt = "INSERT INTO " + table;
+    StringBuilder sqlStmt = new StringBuilder("INSERT INTO " + table);
 
     Iterator<String> columnNameIterator = columnNames.iterator();
     Iterator<Object> valuesIterator = values.iterator();
 
-    sqlStmt += " (";
+    sqlStmt.append(" (");
 
     StringBuffer columnNamesSQL = new StringBuffer();
 
@@ -2057,7 +2060,7 @@ public abstract class AbstractDatabase
     valuesIterator = values.iterator();
     Iterator<String> typesInterator = attributeTypes.iterator();
 
-    sqlStmt += columnNamesSQL.toString().replaceFirst(",", "") + ") VALUES (";
+    sqlStmt.append(columnNamesSQL.toString().replaceFirst(",", "") + ") VALUES (");
 
     boolean firstIteration = true;
     while (valuesIterator.hasNext())
@@ -2073,15 +2076,15 @@ public abstract class AbstractDatabase
 
       if (!firstIteration)
       {
-        sqlStmt += ", ";
+        sqlStmt.append(", ");
       }
       firstIteration = false;
 
-      sqlStmt += this.formatJavaToSQL(value.toString(), attributeType, false);
+      sqlStmt.append(this.formatJavaToSQL(value.toString(), attributeType, false));
     }
-    sqlStmt += ")";
+    sqlStmt.append(")");
 
-    return sqlStmt;
+    return sqlStmt.toString();
   }
 
   /**
@@ -2111,12 +2114,12 @@ public abstract class AbstractDatabase
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, oid) + ";");
     }
 
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
     Iterator<String> fieldIterator = columnNames.iterator();
     Iterator<String> prepStmtIterator = prepStmtVars.iterator();
 
-    sqlStmt += " SET ";
+    sqlStmt.append(" SET ");
 
     boolean firstIteration = true;
     while (fieldIterator.hasNext())
@@ -2126,21 +2129,21 @@ public abstract class AbstractDatabase
 
       if (!firstIteration)
       {
-        sqlStmt += ", ";
+        sqlStmt.append(", ");
       }
 
       firstIteration = false;
-      sqlStmt += field + "= " + prepStmtVar + " ";
+      sqlStmt.append(field + "= " + prepStmtVar + " ");
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
+    sqlStmt.append(" WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'");
 
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
 
     try
     {
-      prepared = conn.prepareStatement(sqlStmt);
+      prepared = conn.prepareStatement(sqlStmt.toString());
     }
     catch (SQLException e)
     {
@@ -2177,13 +2180,13 @@ public abstract class AbstractDatabase
    */
   public String buildSQLupdateStatement(String table, List<String> columnNames, List<Object> values, List<String> attributeTypes, String oid)
   {
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
     Iterator<String> fieldIterator = columnNames.iterator();
     Iterator<Object> valueIterator = values.iterator();
     Iterator<String> attributeTypeIterator = attributeTypes.iterator();
 
-    sqlStmt += " SET ";
+    sqlStmt.append(" SET ");
 
     boolean firstIteration = true;
     while (fieldIterator.hasNext())
@@ -2200,16 +2203,16 @@ public abstract class AbstractDatabase
 
       if (!firstIteration)
       {
-        sqlStmt += ", ";
+        sqlStmt.append(", ");
       }
 
       firstIteration = false;
-      sqlStmt += field + "= " + this.formatJavaToSQL(value.toString(), attributeType, false) + " ";
+      sqlStmt.append(field + "= " + this.formatJavaToSQL(value.toString(), attributeType, false) + " ");
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
+    sqlStmt.append(" WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'");
 
-    return sqlStmt;
+    return sqlStmt.toString();
   }
 
   /**
@@ -2241,12 +2244,12 @@ public abstract class AbstractDatabase
       System.out.println(this.buildSQLupdateStatement(table, columnNames, values, attributeTypes, oid) + ";");
     }
 
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
     Iterator<String> fieldIterator = columnNames.iterator();
     Iterator<String> prepStmtIterator = prepStmtVars.iterator();
 
-    sqlStmt += " SET ";
+    sqlStmt.append(" SET ");
 
     boolean firstIteration = true;
     while (fieldIterator.hasNext())
@@ -2256,22 +2259,22 @@ public abstract class AbstractDatabase
 
       if (!firstIteration)
       {
-        sqlStmt += ", ";
+        sqlStmt.append(", ");
       }
 
       firstIteration = false;
-      sqlStmt += field + "= " + prepStmtVar + " ";
+      sqlStmt.append(field + "= " + prepStmtVar + " ");
     }
 
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'";
-    sqlStmt += " AND " + EntityDAOIF.SEQUENCE_COLUMN + " = " + seq;
+    sqlStmt.append(" WHERE " + EntityDAOIF.ID_COLUMN + "='" + oid + "'");
+    sqlStmt.append(" AND " + EntityDAOIF.SEQUENCE_COLUMN + " = " + seq);
 
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
 
     try
     {
-      prepared = conn.prepareStatement(sqlStmt);
+      prepared = conn.prepareStatement(sqlStmt.toString());
     }
     catch (SQLException e)
     {
@@ -2320,14 +2323,14 @@ public abstract class AbstractDatabase
       }
     }
 
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
-    sqlStmt += " SET " + columnName + " = " + prepStmtVar + " ";
-    sqlStmt += " WHERE " + columnName + " = " + prepStmtVar + " ";
+    sqlStmt.append(" SET " + columnName + " = " + prepStmtVar + " ");
+    sqlStmt.append(" WHERE " + columnName + " = " + prepStmtVar + " ");
 
     if (entityId != null)
     {
-      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ";
+      sqlStmt.append(" AND " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ");
     }
 
     Connection conn = Database.getConnection();
@@ -2335,7 +2338,7 @@ public abstract class AbstractDatabase
 
     try
     {
-      prepared = conn.prepareStatement(sqlStmt);
+      prepared = conn.prepareStatement(sqlStmt.toString());
     }
     catch (SQLException e)
     {
@@ -2377,17 +2380,17 @@ public abstract class AbstractDatabase
    */
   public PreparedStatement buildPreparedUpdateFieldStatement(String table, String entityId, String columnName, String prepStmtVar, Object newValue, String attributeType)
   {
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
-    sqlStmt += " SET " + columnName + " = " + prepStmtVar + " ";
-    sqlStmt += " WHERE " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ";
+    sqlStmt.append(" SET " + columnName + " = " + prepStmtVar + " ");
+    sqlStmt.append(" WHERE " + EntityDAOIF.ID_COLUMN + " = " + prepStmtVar + " ");
 
     Connection conn = Database.getConnection();
     PreparedStatement prepared = null;
 
     try
     {
-      prepared = conn.prepareStatement(sqlStmt);
+      prepared = conn.prepareStatement(sqlStmt.toString());
     }
     catch (SQLException e)
     {
@@ -2423,17 +2426,17 @@ public abstract class AbstractDatabase
    */
   public String buildPreparedSQLUpdateField(String table, String entityId, String columnName, Object oldValue, Object newValue, String attributeType)
   {
-    String sqlStmt = "UPDATE " + table;
+    StringBuilder sqlStmt = new StringBuilder("UPDATE " + table);
 
-    sqlStmt += " SET " + columnName + " = " + this.formatJavaToSQL(newValue.toString(), attributeType, false) + " ";
-    sqlStmt += " WHERE " + columnName + " = " + this.formatJavaToSQL(oldValue.toString(), attributeType, false) + " ";
+    sqlStmt.append(" SET " + columnName + " = " + this.formatJavaToSQL(newValue.toString(), attributeType, false) + " ");
+    sqlStmt.append(" WHERE " + columnName + " = " + this.formatJavaToSQL(oldValue.toString(), attributeType, false) + " ");
 
     if (entityId != null)
     {
-      sqlStmt += " AND " + EntityDAOIF.ID_COLUMN + " = " + this.formatJavaToSQL(entityId, MdAttributeUUIDInfo.CLASS, false) + " ";
+      sqlStmt.append(" AND " + EntityDAOIF.ID_COLUMN + " = " + this.formatJavaToSQL(entityId, MdAttributeUUIDInfo.CLASS, false) + " ");
     }
 
-    return sqlStmt;
+    return sqlStmt.toString();
   }
 
   /**
@@ -2511,10 +2514,8 @@ public abstract class AbstractDatabase
    */
   protected void executeAsRoot(Connection conx, List<String> stmt, boolean autoCommit)
   {
-    Statement statement = null;
-    try
+    try (Statement statement = conx.createStatement())
     {
-      statement = conx.createStatement();
       for (String sql : stmt)
       {
         statement.execute(sql);
@@ -2527,19 +2528,19 @@ public abstract class AbstractDatabase
     }
     catch (SQLException ex)
     {
-      String error = "\nBEGIN Batch SQL Statments";
+      StringBuilder error = new StringBuilder("\nBEGIN Batch SQL Statments");
       for (String sql : stmt)
-        error += "\n  " + sql;
-      error += "\nEND Batch SQL Statements";
+      {
+        error.append("\n  " + sql);
+      }
+      error.append("\nEND Batch SQL Statements");
 
-      this.throwDatabaseException(ex, error);
+      this.throwDatabaseException(ex, error.toString());
     }
     finally
     {
       try
       {
-        if (statement != null)
-          statement.close();
         conx.close();
       }
       catch (SQLException ex)
@@ -2589,21 +2590,21 @@ public abstract class AbstractDatabase
     }
     catch (SQLException ex)
     {
-      String errMsg = "One of the following SQL statements executed in batch, one or more \n" + "caused an error in the database:\n " + "------------------------------------------------------------------\n";
+      StringBuilder errMsg = new StringBuilder("One of the following SQL statements executed in batch, one or more \n" + "caused an error in the database:\n " + "------------------------------------------------------------------\n");
 
       SQLException exception = ex.getNextException();
       while (exception != null)
       {
-        errMsg += "Exception: " + exception.getMessage();
+        errMsg.append("Exception: " + exception.getMessage());
         exception = exception.getNextException();
       }
 
       for (String stmt : sqlStmts)
       {
-        errMsg += "Statement: " + stmt + "\n";
+        errMsg.append("Statement: " + stmt + "\n");
       }
 
-      this.throwDatabaseException(ex, errMsg);
+      this.throwDatabaseException(ex, errMsg.toString());
     }
     finally
     {
@@ -2689,10 +2690,12 @@ public abstract class AbstractDatabase
     Connection conn = Database.getConnection();
 
     String returnString = null;
+    String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+
     try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(query))
       {
 
@@ -2770,11 +2773,11 @@ public abstract class AbstractDatabase
   public void setClob(String table, String columnName, String oid, String clobString)
   {
     Connection conn = Database.getConnection();
+    String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+    String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = ?";
     try (Statement statement = conn.createStatement())
     {
       // get the blob
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(select))
       {
 
@@ -2811,6 +2814,7 @@ public abstract class AbstractDatabase
               {
                 prepared.setString(1, clobString);
               }
+              prepared.setObject(2, UUID.fromString(oid));
               prepared.executeUpdate();
             }
           }
@@ -2833,6 +2837,7 @@ public abstract class AbstractDatabase
               try (PreparedStatement prepared = conn.prepareStatement(update))
               {
                 prepared.setClob(1, clob);
+                prepared.setObject(2, UUID.fromString(oid));
                 prepared.executeUpdate();
               }
             }
@@ -2853,6 +2858,8 @@ public abstract class AbstractDatabase
             {
               prepared.setString(1, clobString);
             }
+            prepared.setObject(2, UUID.fromString(oid));
+
             prepared.executeUpdate();
           }
         }
@@ -2918,10 +2925,12 @@ public abstract class AbstractDatabase
   public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
     byte[] returnBytes = null;
+    String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+
     try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(query))
       {
         resultSet.next();
@@ -2929,7 +2938,9 @@ public abstract class AbstractDatabase
 
         // null check
         if (blob == null)
+        {
           return new byte[0];
+        }
 
         returnBytes = blob.getBytes(1, (int) blob.length());
       }
@@ -2959,10 +2970,12 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     byte[] returnBytes = null;
+    String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+
     try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(query))
       {
         resultSet.next();
@@ -3014,11 +3027,11 @@ public abstract class AbstractDatabase
     Connection conn = Database.getConnection();
     int written = 0;
 
+    String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
     try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(select))
       {
         resultSet.next();
@@ -3041,9 +3054,12 @@ public abstract class AbstractDatabase
           {
             // The current database needs to be manually updated (it doesn't
             // support auto blob updates)
+            String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = ?";
+
             try (PreparedStatement prepared = conn.prepareStatement(update))
             {
               prepared.setBlob(1, blob);
+              prepared.setObject(2, UUID.fromString(oid));
               prepared.executeUpdate();
             }
           }
@@ -3081,11 +3097,14 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     int written = 0;
+
+    String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+    String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = ?";
+
     try (Statement statement = conn.createStatement();)
     {
+
       // get the blob
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(select))
       {
 
@@ -3103,6 +3122,7 @@ public abstract class AbstractDatabase
           try (PreparedStatement prepared = conn.prepareStatement(update))
           {
             prepared.setBytes(1, bytes);
+            prepared.setObject(2, UUID.fromString(oid));
             prepared.executeUpdate();
           }
           written = bytes.length;
@@ -3118,6 +3138,7 @@ public abstract class AbstractDatabase
             try (PreparedStatement prepared = conn.prepareStatement(update))
             {
               prepared.setBlob(1, blob);
+              prepared.setObject(2, UUID.fromString(oid));
               prepared.executeUpdate();
             }
           }
@@ -3154,10 +3175,12 @@ public abstract class AbstractDatabase
   {
     Connection conn = Database.getConnection();
     long size = 0;
-    try (Statement statement = conn.createStatement();)
+    String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+
+    try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(query))
       {
         resultSet.next();
@@ -3198,11 +3221,12 @@ public abstract class AbstractDatabase
    */
   public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
+    String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+    String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = ?";
+
     try (Statement statement = conn.createStatement();)
     {
       // get the blob
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       try (ResultSet resultSet = statement.executeQuery(select))
       {
 
@@ -3220,6 +3244,7 @@ public abstract class AbstractDatabase
             try (PreparedStatement prepared = conn.prepareStatement(update))
             {
               prepared.setBlob(1, blob);
+              prepared.setObject(2, UUID.fromString(oid));
               prepared.executeUpdate();
             }
           }
@@ -3322,14 +3347,14 @@ public abstract class AbstractDatabase
   public ResultSet query(String sqlStmt)
   {
     Connection conx = Database.getConnection();
-    String selectStatement = sqlStmt;
 
     ResultSet resultSet = null;
 
-    try (Statement statement = conx.createStatement())
+    try
     {
+      Statement statement = conx.createStatement();
 
-      boolean isResultSet = statement.execute(selectStatement);
+      boolean isResultSet = statement.execute(sqlStmt);
 
       while (true)
       {
@@ -3414,14 +3439,14 @@ public abstract class AbstractDatabase
    */
   public ResultSet getMdAttributeDimensionIds(String mdDimensionId)
   {
-    String sqlStmt = "SELECT " + MdAttributeDimensionInfo.OID + " FROM " + MdAttributeDimensionDAOIF.TABLE;
+    StringBuilder sqlStmt = new StringBuilder("SELECT " + MdAttributeDimensionInfo.OID + " FROM " + MdAttributeDimensionDAOIF.TABLE);
 
     if (mdDimensionId != null)
     {
-      sqlStmt += " WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION + " = '" + mdDimensionId + "' ";
+      sqlStmt.append(" WHERE " + MdAttributeDimensionDAOIF.DEFINING_MD_DIMENSION + " = '" + mdDimensionId + "' ");
     }
 
-    return this.query(sqlStmt);
+    return this.query(sqlStmt.toString());
   }
 
   /**
@@ -4039,14 +4064,15 @@ public abstract class AbstractDatabase
   {
     int written = 0;
 
+    String select = "SELECT " + classColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
+    String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ?  WHERE " + EntityInfo.OID + " = ?";
     try (Statement statement = conn.createStatement())
     {
+      // get the blob
       // clear the blobs
       this.truncateBlob(table, classColumnName, mdTypeId, 0, conn);
 
       // get the blob
-      String select = "SELECT " + classColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
-      String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ?  WHERE " + EntityInfo.OID + " = '" + mdTypeId + "'";
       try (ResultSet resultSet = statement.executeQuery(select))
       {
 
@@ -4062,6 +4088,7 @@ public abstract class AbstractDatabase
         {
           written = addBlobToStatement(prepared, 1, classBlob, classBytes);
           prepared.setString(2, source);
+          prepared.setObject(3, UUID.fromString(mdTypeId));
           prepared.executeUpdate();
         }
       }
@@ -4101,11 +4128,11 @@ public abstract class AbstractDatabase
       this.truncateBlob(table, clientClassesColumnName, mdFacadeId, 0, conn);
 
       // get the blob
+      String select = "SELECT " + serverClassesColumnName + ", " + commonClassesColumnName + ", " + clientClassesColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
+      String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = ?";
       try (Statement statement = conn.createStatement())
       {
 
-        String select = "SELECT " + serverClassesColumnName + ", " + commonClassesColumnName + ", " + clientClassesColumnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
-        String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
         try (ResultSet resultSet = statement.executeQuery(select))
         {
 
@@ -4124,6 +4151,8 @@ public abstract class AbstractDatabase
             written += addBlobToStatement(prepared, 1, serverClassesBlob, serverClassesBytes);
             written += addBlobToStatement(prepared, 2, commonClassesBlob, commonClassesBytes);
             written += addBlobToStatement(prepared, 3, clientClassesBlob, clientClassesBytes);
+            prepared.setObject(4, UUID.fromString(mdFacadeId));
+
             prepared.executeUpdate();
           }
         }
@@ -4551,9 +4580,11 @@ public abstract class AbstractDatabase
   {
     String stubSource = null;
 
+    String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
+
     try (Statement statement = conn.createStatement())
     {
-      String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
+
       try (ResultSet resultSet = statement.executeQuery(select))
       {
         if (resultSet.next())
@@ -4590,10 +4621,12 @@ public abstract class AbstractDatabase
   public String getEnumCacheFieldInTable(String tableName, String columnName, String entityId)
   {
     Connection conn = Database.getConnection();
+    String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + entityId + "'";
+
     try (Statement statement = conn.createStatement())
     {
+
       // get the blob
-      String query = "SELECT " + columnName + " FROM " + tableName + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + entityId + "'";
       try (ResultSet resultSet = statement.executeQuery(query))
       {
 
