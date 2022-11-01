@@ -22,7 +22,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.SystemException;
+import com.runwaysdk.build.DatabaseBootstrapper;
 import com.runwaysdk.business.ClassSignature;
 import com.runwaysdk.constants.LocalProperties;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
@@ -41,6 +45,8 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 
 public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerMarker
 {
+  private static Logger    logger    = LoggerFactory.getLogger(ComponentQueryAPIGenerator.class);
+
   private MdClassDAOIF     mdClassIF;
 
   protected String         queryTypeName;
@@ -86,12 +92,12 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     String pack = GenerationUtil.getPackageForFileSystem(this.getMdClassIF());
     if (!new File(ServerMarker.SOURCE_DIRECTORY + pack).mkdirs())
     {
-//      throw new ProgrammingErrorException("Unable to create source directory");
+      logger.error("Unable to create [" + ServerMarker.SOURCE_DIRECTORY + pack + "] directory");
     }
 
     if (!new File(ServerMarker.BASE_DIRECTORY + pack).mkdirs())
     {
-//      throw new ProgrammingErrorException("Unable to create base directory");
+      logger.error("Unable to create [" + ServerMarker.BASE_DIRECTORY + pack + "] directory");
     }
   }
 

@@ -198,7 +198,7 @@ public class AttributeSymmetric extends AttributeEncryption implements Attribute
       // encrypt the value
       if (opmode == Cipher.ENCRYPT_MODE)
       {
-        byte[] encryptedBytes = cipher.doFinal(value.getBytes());
+        byte[] encryptedBytes = cipher.doFinal(value.getBytes("UTF-8"));
         return Base64.encodeToString(encryptedBytes, false);
       }
       // decrypt the value

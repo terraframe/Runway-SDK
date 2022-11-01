@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
@@ -918,8 +919,10 @@ public abstract class AbstractDatabase
       Map<String, Map<String, String>> mdAttributeInfoMap = DefaultMdEntityInfo.getAttributeMapForType(type);
 
       // Iterate over the fields
-      for (String columnName : mdAttributeInfoMap.keySet())
+      for (Entry<String, Map<String, String>> entry : mdAttributeInfoMap.entrySet())
       {
+        String columnName = entry.getKey();
+        
         if ( ( !columnName.equals(EntityDAOIF.ID_COLUMN) || type.equals(ElementInfo.CLASS) || rootClass ))
         {
           String attributeName = DefaultMdEntityInfo.getAttributeName(type, columnName);
@@ -928,7 +931,7 @@ public abstract class AbstractDatabase
 
           Object value = AttributeFactory.getColumnValueFromRow(resultSet, columnName, attributeType, false);
 
-          Map<String, String> attributePropertyMap = mdAttributeInfoMap.get(columnName);
+          Map<String, String> attributePropertyMap = entry.getValue();
           String attributeTypeName = attributePropertyMap.get(EntityInfo.TYPE);
           String mdAttributeKey = attributePropertyMap.get(EntityInfo.KEY);
           Attribute attribute = AttributeFactory.createAttribute(mdAttributeKey, attributeTypeName, attributeName, type, value);
@@ -955,10 +958,10 @@ public abstract class AbstractDatabase
               String structTable = "";
 
               // The last item is the root type.
-              for (String someStructType : structMap.keySet())
+              for (Entry<String,String> someStructEntry : structMap.entrySet())
               {
-                structType = someStructType;
-                structTable = structMap.get(someStructType);
+                structType = someStructEntry.getKey();
+                structTable = someStructEntry.getValue();
               }
 
               Map<String, Attribute> structAttributeMap = getAttributesForHardcodedMetadataObject(structId, structType, structTable, null, true);
@@ -4674,14 +4677,6 @@ public abstract class AbstractDatabase
    */
   public String buildAddItemStatement(String enumTableName, String setOid, String enumItemID)
   {
-    LinkedList<String> columnNames = new LinkedList<String>();
-    columnNames.add(MdEnumerationDAOIF.SET_ID_COLUMN);
-    columnNames.add(MdEnumerationDAOIF.ITEM_ID_COLUMN);
-
-    LinkedList<String> values = new LinkedList<String>();
-    values.add("'" + setOid + "'");
-    values.add("'" + enumItemID + "'");
-
     String sqlStmt = "INSERT INTO " + enumTableName + " (" + MdEnumerationDAOIF.SET_ID_COLUMN + ", " + MdEnumerationDAOIF.ITEM_ID_COLUMN + ") " + " VALUES " + " ('" + setOid + "', '" + enumItemID + "')";
 
     return sqlStmt;

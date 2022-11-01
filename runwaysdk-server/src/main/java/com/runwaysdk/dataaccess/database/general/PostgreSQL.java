@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * Created on Sep 17, 2005
@@ -141,14 +141,14 @@ public class PostgreSQL extends AbstractDatabase
     this.databaseNamespace = DatabaseProperties.getNamespace();
 
     // The container is not providing a pooled datasource
-//    getDataSource();
+    // getDataSource();
   }
-  
+
   public void initializeConnection()
   {
     getDataSource();
   }
-  
+
   public void initializeRootConnection(String rootUser, String rootPass, String rootDb)
   {
     // Set up the root connection
@@ -181,7 +181,7 @@ public class PostgreSQL extends AbstractDatabase
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-//        config.addDataSourceProperty("autosave", "conservative");
+        // config.addDataSourceProperty("autosave", "conservative");
         config.setMaximumPoolSize(maxDbConnections);
 
         // If environment is configured for connection pooling, pool connections
@@ -319,9 +319,9 @@ public class PostgreSQL extends AbstractDatabase
   public void dropDb()
   {
     String dbName = DatabaseProperties.getDatabaseName();
-    
+
     logger.info("Dropping PostgreSQL database [" + dbName + "].");
-    
+
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("DROP DATABASE IF EXISTS " + dbName);
     executeAsRoot(statements, true);
@@ -334,11 +334,12 @@ public class PostgreSQL extends AbstractDatabase
   public void createDb(String rootDb)
   {
     String dbName = DatabaseProperties.getDatabaseName();
-    
+
     logger.info("Creating PostgreSQL database [" + dbName + "].");
-    
+
     LinkedList<String> statements = new LinkedList<String>();
-//    statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb + " ENCODING = 'UTF8'");
+    // statements.add("CREATE DATABASE " + dbName + " WITH TEMPLATE = " + rootDb
+    // + " ENCODING = 'UTF8'");
     statements.add("CREATE DATABASE " + dbName + " ENCODING = 'UTF8'");
     executeAsRoot(statements, true);
   }
@@ -357,39 +358,20 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
-    Connection conn = null;
-    Statement statement = null;
-    
     String namespace = this.getNamespace();
-    
+
     logger.info("Dropping PostgreSQL database namespace [" + namespace + "].");
 
-    try
+    try (Connection conn = tempRootDatasource.getConnection())
     {
-      conn = tempRootDatasource.getConnection();
-      statement = conn.createStatement();
-      statement.execute(" DROP SCHEMA " + namespace + " CASCADE");
+      try (Statement statement = conn.createStatement())
+      {
+        statement.execute(" DROP SCHEMA " + namespace + " CASCADE");
+      }
     }
     catch (SQLException e)
     {
       throw new DatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (statement != null)
-        {
-          statement.close();
-        }
-        if (conn != null)
-        {
-          conn.close();
-        }
-      }
-      catch (Exception exception)
-      {
-      }
     }
   }
 
@@ -407,52 +389,33 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
-    Connection conn = null;
-    Statement statement = null;
-    
-    try
+    try (Connection conn = tempRootDatasource.getConnection())
     {
       String userName = DatabaseProperties.getUser();
       String namespace = this.getNamespace();
-      
+
       logger.info("Creating PostgreSQL database namespace [" + namespace + "] with owner [" + userName + "].");
 
-      conn = tempRootDatasource.getConnection();
-      statement = conn.createStatement();
-      if (!namespace.trim().equals(userName.trim()))
+      try (Statement statement = conn.createStatement())
       {
-        statement.execute("CREATE SCHEMA " + namespace + " AUTHORIZATION " + userName);
-      }
-      else
-      {
-        statement.execute("ALTER SCHEMA " + namespace + " OWNER TO " + userName);
+
+        if (!namespace.trim().equals(userName.trim()))
+        {
+          statement.execute("CREATE SCHEMA " + namespace + " AUTHORIZATION " + userName);
+        }
+        else
+        {
+          statement.execute("ALTER SCHEMA " + namespace + " OWNER TO " + userName);
+        }
       }
 
       LinkedList<String> statements = new LinkedList<String>();
       statements.add("ALTER USER " + userName + " SET search_path = " + namespace + ", public");
       executeAsRoot(statements, true);
-
     }
     catch (SQLException e)
     {
       throw new DatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (statement != null)
-        {
-          statement.close();
-        }
-        if (conn != null)
-        {
-          conn.close();
-        }
-      }
-      catch (Exception exception)
-      {
-      }
     }
   }
 
@@ -470,37 +433,18 @@ public class PostgreSQL extends AbstractDatabase
     tempRootDatasource.setUser(rootUser);
     tempRootDatasource.setPassword(rootPass);
 
-    Connection conn = null;
-    Statement statement = null;
-    
     logger.info("Creating PostgreSQL database extension [" + "uuid-ossp" + "].");
 
-    try
+    try (Connection conn = tempRootDatasource.getConnection())
     {
-      conn = tempRootDatasource.getConnection();
-      statement = conn.createStatement();
-      statement.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
+      try (Statement statement = conn.createStatement())
+      {
+        statement.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
+      }
     }
     catch (SQLException e)
     {
       throw new DatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (statement != null)
-        {
-          statement.close();
-        }
-        if (conn != null)
-        {
-          conn.close();
-        }
-      }
-      catch (Exception exception)
-      {
-      }
     }
   }
 
@@ -511,7 +455,7 @@ public class PostgreSQL extends AbstractDatabase
   public void dropUser()
   {
     String userName = DatabaseProperties.getUser();
-    
+
     logger.info("Dropping PostgreSQL database user [" + userName + "]");
 
     LinkedList<String> statements = new LinkedList<String>();
@@ -526,7 +470,7 @@ public class PostgreSQL extends AbstractDatabase
   public void createUser()
   {
     String userName = DatabaseProperties.getUser();
-    
+
     logger.info("Creating PostgreSQL database user [" + userName + "]");
 
     LinkedList<String> statements = new LinkedList<String>();
@@ -631,32 +575,27 @@ public class PostgreSQL extends AbstractDatabase
   {
     final String viewName = "viewname";
     String sqlStmt = "SELECT " + viewName + " FROM pg_views WHERE viewowner='" + DatabaseProperties.getUser() + "' AND " + viewName + " LIKE '" + prefix.toLowerCase() + "%' ORDER BY " + viewName;
-    ResultSet resultSet = this.query(sqlStmt);
     List<String> list = new LinkedList<String>();
 
-    try
+    try (ResultSet resultSet = this.query(sqlStmt))
     {
-      while (resultSet.next())
+      try
       {
-        list.add(resultSet.getString(viewName));
+
+        while (resultSet.next())
+        {
+          list.add(resultSet.getString(viewName));
+        }
+      }
+      finally
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        statement.close();
       }
     }
     catch (SQLException sqlEx1)
     {
       Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
     }
     return list;
   }
@@ -682,46 +621,40 @@ public class PostgreSQL extends AbstractDatabase
   {
     String sqlStmt = "SELECT pg_attribute.attname \n" + "  FROM pg_attribute, pg_class \n" + " WHERE pg_class.relname = '" + indexName + "' \n" + "   AND pg_attribute.attrelid = pg_class.oid";
 
-    ResultSet resultSet = query(sqlStmt);
-
     boolean returnResult = false;
 
-    try
+    try (ResultSet resultSet = query(sqlStmt))
     {
-      int loopCount = 0;
-
-      if (resultSet.next())
+      try
       {
-        String attrName = resultSet.getString("attname");
 
-        if (attrName.equals(columnName.toLowerCase()))
+        int loopCount = 0;
+
+        if (resultSet.next())
         {
-          returnResult = true;
-        }
-        loopCount++;
-      }
+          String attrName = resultSet.getString("attname");
 
-      if (loopCount != 1)
+          if (attrName.equals(columnName.toLowerCase()))
+          {
+            returnResult = true;
+          }
+          loopCount++;
+        }
+
+        if (loopCount != 1)
+        {
+          returnResult = false;
+        }
+      }
+      finally
       {
-        returnResult = false;
+        java.sql.Statement statement = resultSet.getStatement();
+        statement.close();
       }
     }
     catch (SQLException sqlEx1)
     {
       Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
     }
 
     return returnResult;
@@ -750,29 +683,29 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void addGroupAttributeIndex(String tableName, String indexName, List<String> attributeNames, boolean isUnique)
   {
-    String statement = "CREATE ";
+    StringBuilder statement = new StringBuilder("CREATE ");
 
     if (isUnique)
     {
-      statement += " UNIQUE ";
+      statement.append(" UNIQUE ");
     }
 
-    statement += " INDEX " + indexName + " ON " + tableName + " (";
+    statement.append(" INDEX " + indexName + " ON " + tableName + " (");
 
     for (int i = 0; i < attributeNames.size(); i++)
     {
       if (i != 0)
       {
-        statement += ", ";
+        statement.append(", ");
       }
-      statement += attributeNames.get(i);
+      statement.append(attributeNames.get(i));
     }
 
-    statement += ")";
+    statement.append(")");
 
     String undo = "DROP INDEX " + indexName;
 
-    new AddGroupIndexDDLCommand(tableName, indexName, statement, undo).doIt();
+    new AddGroupIndexDDLCommand(tableName, indexName, statement.toString(), undo).doIt();
   }
 
   /**
@@ -796,29 +729,29 @@ public class PostgreSQL extends AbstractDatabase
   {
     if (this.indexExists(tableName, indexName))
     {
-      String statement = "DROP INDEX " + indexName;
+      StringBuilder statement = new StringBuilder("DROP INDEX " + indexName);
 
-      String undo = "CREATE ";
+      StringBuilder undo = new StringBuilder("CREATE ");
 
       if (isUnique)
       {
-        undo += " UNIQUE ";
+        undo.append(" UNIQUE ");
       }
 
-      undo += " INDEX " + indexName + " ON " + tableName + " (";
+      undo.append(" INDEX " + indexName + " ON " + tableName + " (");
 
       for (int i = 0; i < attributeNames.size(); i++)
       {
         if (i != 0)
         {
-          undo += ", ";
+          undo.append(", ");
         }
-        undo += attributeNames.get(i);
+        undo.append(attributeNames.get(i));
       }
 
-      undo += ")";
+      undo.append(")");
 
-      new AddGroupIndexDDLCommand(tableName, indexName, statement, undo).doIt();
+      new AddGroupIndexDDLCommand(tableName, indexName, statement.toString(), undo.toString()).doIt();
     }
   }
 
@@ -833,33 +766,25 @@ public class PostgreSQL extends AbstractDatabase
   {
     String sqlStmt = "SELECT pg_attribute.attname \n" + "  FROM pg_attribute, pg_class \n" + " WHERE pg_class.relname = '" + indexName + "' \n" + "   AND pg_attribute.attrelid = pg_class.oid";
 
-    ResultSet resultSet = query(sqlStmt);
-
     boolean returnResult = false;
-
-    try
+    try (ResultSet resultSet = query(sqlStmt))
     {
-      if (resultSet.next())
+      try
       {
-        returnResult = true;
+        if (resultSet.next())
+        {
+          returnResult = true;
+        }
+      }
+      finally
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        statement.close();
       }
     }
     catch (SQLException sqlEx1)
     {
       Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
     }
 
     return returnResult;
@@ -1218,18 +1143,18 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void createClassTableBatch(String tableName, List<String> columnDefs)
   {
-    String statement = startCreateClassTable(tableName);
+    StringBuilder statement = new StringBuilder(startCreateClassTable(tableName));
 
     for (String columnDef : columnDefs)
     {
-      statement += "\n," + columnDef;
+      statement.append("\n," + columnDef);
     }
 
-    statement += " " + endCreateClassTable(tableName);
+    statement.append(" " + endCreateClassTable(tableName));
 
     String undo = "DROP TABLE " + tableName;
 
-    new DDLCommand(statement, undo, false).doIt();
+    new DDLCommand(statement.toString(), undo, false).doIt();
   }
 
   /**
@@ -1245,23 +1170,23 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void alterClassTableBatch(String tableName, List<String> columnNames, List<String> columnDefs)
   {
-    String statement = "ALTER TABLE " + tableName + " ";
+    StringBuilder statement = new StringBuilder("ALTER TABLE " + tableName + " ");
 
-    String undo = "ALTER TABLE " + tableName + " ";
+    StringBuilder undo = new StringBuilder("ALTER TABLE " + tableName + " ");
 
     boolean firstIteration = true;
     for (String columnDef : columnDefs)
     {
       if (!firstIteration)
       {
-        statement += ", ";
+        statement.append(", ");
       }
       else
       {
         firstIteration = false;
       }
 
-      statement += "ADD COLUMN " + columnDef;
+      statement.append("ADD COLUMN " + columnDef);
     }
 
     firstIteration = true;
@@ -1269,17 +1194,17 @@ public class PostgreSQL extends AbstractDatabase
     {
       if (!firstIteration)
       {
-        undo += ", ";
+        undo.append(", ");
       }
       else
       {
         firstIteration = false;
       }
 
-      undo += "DROP " + columnName;
+      undo.append("DROP " + columnName);
     }
 
-    new DDLCommand(statement, undo, false).doIt();
+    new DDLCommand(statement.toString(), undo.toString(), false).doIt();
   }
 
   /**
@@ -1317,18 +1242,18 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void createRelationshipTableBatch(String tableName, List<String> columnDefs)
   {
-    String statement = startCreateRelationshipTableBatch(tableName);
+    StringBuilder statement = new StringBuilder(startCreateRelationshipTableBatch(tableName));
 
     for (String columnDef : columnDefs)
     {
-      statement += "\n," + columnDef;
+      statement.append("\n," + columnDef);
     }
 
-    statement += " " + endCreateClassTable(tableName);
+    statement.append(" " + endCreateClassTable(tableName));
 
     String undo = "DROP TABLE " + tableName;
 
-    new DDLCommand(statement, undo, false).doIt();
+    new DDLCommand(statement.toString(), undo, false).doIt();
   }
 
   /**
@@ -1533,28 +1458,26 @@ public class PostgreSQL extends AbstractDatabase
   public List<String> getColumnNames(String table)
   {
     Connection conx = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
 
     LinkedList<String> attributeList = new LinkedList<String>();
 
-    try
+    String sqlStmt = "SELECT * FROM " + table + " WHERE 1=0";
+    try (Statement statement = conx.createStatement();)
     {
-      String sqlStmt = "SELECT * FROM " + table + " WHERE 1=0";
 
-      statement = conx.createStatement();
-      resultSet = statement.executeQuery(sqlStmt);
-
-      ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-
-      for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++)
+      try (ResultSet resultSet = statement.executeQuery(sqlStmt))
       {
-        attributeList.add( ( resultSetMetaData.getColumnName(i) ).toLowerCase());
+        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+
+        for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++)
+        {
+          attributeList.add( ( resultSetMetaData.getColumnName(i) ).toLowerCase());
+        }
+
+        conx.commit();
+
+        return attributeList;
       }
-
-      conx.commit();
-
-      return attributeList;
     }
     catch (SQLException ex)
     {
@@ -1565,10 +1488,6 @@ public class PostgreSQL extends AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         Database.closeConnection(conx);
       }
       catch (SQLException e)
@@ -1805,32 +1724,32 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public void addTempFieldsToTable(String tableName, String columnName, String columnType, Integer numberOfTempFields)
   {
-    String statement = "ALTER TABLE " + tableName + " ";
+    StringBuilder statement = new StringBuilder("ALTER TABLE " + tableName + " ");
     for (int i = 0; i < numberOfTempFields; i++)
     {
       if (i != 0)
       {
-        statement += ", ";
+        statement.append(", ");
       }
 
-      statement += "ADD COLUMN " + columnName + "_" + i + " " + columnType;
+      statement.append("ADD COLUMN " + columnName + "_" + i + " " + columnType);
     }
 
-    statement += ")";
+    statement.append(")");
 
-    String undo = "ALTER TABLE " + tableName + " ";
+    StringBuilder undo = new StringBuilder("ALTER TABLE " + tableName + " ");
     for (int i = 0; i < numberOfTempFields; i++)
     {
       if (i != 0)
       {
-        undo += ", ";
+        undo.append(", ");
       }
 
-      undo += "DROP " + columnName + "_" + i;
+      undo.append("DROP " + columnName + "_" + i);
     }
-    undo += ")";
+    undo.append(")");
 
-    new DDLCommand(statement, undo, false).doIt();
+    new DDLCommand(statement.toString(), undo.toString(), false).doIt();
   }
 
   /*
@@ -1857,7 +1776,7 @@ public class PostgreSQL extends AbstractDatabase
   {
     try
     {
-      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeGraphReferenceInfo.CLASS) || dataType.equals(MdAttributeClassificationInfo.CLASS)   || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
+      if (dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeGraphReferenceInfo.CLASS) || dataType.equals(MdAttributeClassificationInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS))
       {
         String va = (String) value;
         if (value == null || va.equals(""))
@@ -2200,77 +2119,80 @@ public class PostgreSQL extends AbstractDatabase
   public int setBlobAsBytes(String table, String columnName, String oid, long pos, byte[] bytes, int offset, int length)
   {
     Connection conn = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
     int written = 0;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      resultSet.next();
-      byte[] resultBytes = resultSet.getBytes(columnName);
-
-      // null check
-      if (resultBytes == null)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        // because this method is used to place byte in specific positions, it
-        // wouldn't
-        // make sense to insert the bytes into a null columnName as it defeats
-        // the
-        // purpose of
-        // this method. Just return a write count of 0 and don't do anything
-        // else.
-        return written;
-      }
-      else
-      {
-        // modify the blob
-        written = length;
-        byte[] setBytes = null;
 
-        pos = pos - 1; // subtract one to use positioning like a normal array
+        resultSet.next();
+        byte[] resultBytes = resultSet.getBytes(columnName);
 
-        // check to see if the bytes will run longer than the current length of
-        // the blob length.
-        if ( ( pos + length ) > resultBytes.length)
+        // null check
+        if (resultBytes == null)
         {
-          byte[] temp = new byte[(int) ( pos + length )];
-          // get the old bytes, up until pos
-          for (int i = 0; i < pos; i++)
-          {
-            temp[i] = resultBytes[i];
-          }
-
-          // set the new bytes
-          for (int i = 0; i < length; i++)
-          {
-            temp[(int) pos] = bytes[offset];
-            offset++;
-            pos++;
-            written++;
-          }
-          setBytes = temp;
+          // because this method is used to place byte in specific positions, it
+          // wouldn't
+          // make sense to insert the bytes into a null columnName as it defeats
+          // the
+          // purpose of
+          // this method. Just return a write count of 0 and don't do anything
+          // else.
+          return written;
         }
         else
         {
-          // set the new bytes
-          for (int i = 0; i < length; i++)
-          {
-            resultBytes[(int) pos] = bytes[offset];
-            offset++;
-            pos++;
-            written++;
-          }
-          setBytes = resultBytes;
-        }
+          // modify the blob
+          written = length;
+          byte[] setBytes = null;
 
-        // save the changes to the blob
-        PreparedStatement prepared = conn.prepareStatement(update);
-        prepared.setBytes(1, setBytes);
-        prepared.executeUpdate();
+          pos = pos - 1; // subtract one to use positioning like a normal array
+
+          // check to see if the bytes will run longer than the current length
+          // of
+          // the blob length.
+          if ( ( pos + length ) > resultBytes.length)
+          {
+            byte[] temp = new byte[(int) ( pos + length )];
+            // get the old bytes, up until pos
+            for (int i = 0; i < pos; i++)
+            {
+              temp[i] = resultBytes[i];
+            }
+
+            // set the new bytes
+            for (int i = 0; i < length; i++)
+            {
+              temp[(int) pos] = bytes[offset];
+              offset++;
+              pos++;
+              written++;
+            }
+            setBytes = temp;
+          }
+          else
+          {
+            // set the new bytes
+            for (int i = 0; i < length; i++)
+            {
+              resultBytes[(int) pos] = bytes[offset];
+              offset++;
+              pos++;
+              written++;
+            }
+            setBytes = resultBytes;
+          }
+
+          // save the changes to the blob
+          try (PreparedStatement prepared = conn.prepareStatement(update))
+          {
+            prepared.setBytes(1, setBytes);
+            prepared.executeUpdate();
+          }
+        }
       }
     }
     catch (SQLException e)
@@ -2281,10 +2203,6 @@ public class PostgreSQL extends AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2308,12 +2226,11 @@ public class PostgreSQL extends AbstractDatabase
   {
     Connection conn = Database.getConnection();
     int written = 0;
-    PreparedStatement prepared = null;
-    try
+    String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
+
+    try (PreparedStatement prepared = conn.prepareStatement(update);)
     {
       // get the blob
-      String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      prepared = conn.prepareStatement(update);
       prepared.setBytes(1, bytes);
       prepared.executeUpdate();
       written = bytes.length;
@@ -2326,8 +2243,6 @@ public class PostgreSQL extends AbstractDatabase
     {
       try
       {
-        if (prepared != null)
-          prepared.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2351,44 +2266,29 @@ public class PostgreSQL extends AbstractDatabase
    */
   public byte[] getBlobAsBytes(String table, String columnName, String oid, Connection conn)
   {
-    Statement statement = null;
-    ResultSet resultSet = null;
     byte[] returnBytes = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-
-      if (resultSet.next())
+      try (ResultSet resultSet = statement.executeQuery(query))
       {
-        returnBytes = resultSet.getBytes(columnName);
-      }
-      else
-      {
-        returnBytes = new byte[0];
-      }
 
+        if (resultSet.next())
+        {
+          returnBytes = resultSet.getBytes(columnName);
+        }
+        else
+        {
+          returnBytes = new byte[0];
+        }
+      }
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
     }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
-    }
+
     return returnBytes;
   }
 
@@ -2408,26 +2308,26 @@ public class PostgreSQL extends AbstractDatabase
   public byte[] getBlobAsBytes(String table, String columnName, String oid, long pos, int length)
   {
     Connection conn = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
     byte[] returnBytes = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-      resultSet.next();
-
-      byte[] resultBytes = resultSet.getBytes(columnName);
-      byte[] temp = new byte[length];
-      pos = pos - 1;
-      for (int i = 0; i < length; i++)
+      try (ResultSet resultSet = statement.executeQuery(query))
       {
-        temp[i] = resultBytes[(int) pos];
-        pos++;
+
+        resultSet.next();
+
+        byte[] resultBytes = resultSet.getBytes(columnName);
+        byte[] temp = new byte[length];
+        pos = pos - 1;
+        for (int i = 0; i < length; i++)
+        {
+          temp[i] = resultBytes[(int) pos];
+          pos++;
+        }
+        returnBytes = temp;
       }
-      returnBytes = temp;
     }
     catch (SQLException e)
     {
@@ -2437,10 +2337,6 @@ public class PostgreSQL extends AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2461,47 +2357,34 @@ public class PostgreSQL extends AbstractDatabase
    */
   public void truncateBlob(String table, String columnName, String oid, long length, Connection conn)
   {
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String select = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
       String update = "UPDATE " + table + " SET " + columnName + " = " + "? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(select);
-      resultSet.next();
-      byte[] resultBytes = resultSet.getBytes(columnName);
-
-      // truncate the bytes
-      byte[] temp = new byte[(int) length];
-      for (int i = 0; i < length; i++)
+      try (ResultSet resultSet = statement.executeQuery(select))
       {
-        temp[i] = resultBytes[i];
-      }
+        resultSet.next();
+        byte[] resultBytes = resultSet.getBytes(columnName);
 
-      // save the truncated blob
-      PreparedStatement prepared = conn.prepareStatement(update);
-      prepared.setBytes(1, temp);
-      prepared.executeUpdate();
+        // truncate the bytes
+        byte[] temp = new byte[(int) length];
+        for (int i = 0; i < length; i++)
+        {
+          temp[i] = resultBytes[i];
+        }
+
+        // save the truncated blob
+        try (PreparedStatement prepared = conn.prepareStatement(update))
+        {
+          prepared.setBytes(1, temp);
+          prepared.executeUpdate();
+        }
+      }
     }
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
     }
   }
 
@@ -2517,22 +2400,21 @@ public class PostgreSQL extends AbstractDatabase
   public long getBlobSize(String table, String columnName, String oid)
   {
     Connection conn = Database.getConnection();
-    Statement statement = null;
-    ResultSet resultSet = null;
     long size = 0;
-    try
+    try (Statement statement = conn.createStatement())
     {
       // get the blob
-      statement = conn.createStatement();
       String query = "SELECT " + columnName + " FROM " + table + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + oid + "'";
-      resultSet = statement.executeQuery(query);
-      resultSet.next();
-
-      byte[] bytes = resultSet.getBytes(columnName);
-
-      if (bytes != null)
+      try (ResultSet resultSet = statement.executeQuery(query))
       {
-        size = resultSet.getBytes(columnName).length;
+        resultSet.next();
+
+        byte[] bytes = resultSet.getBytes(columnName);
+
+        if (bytes != null)
+        {
+          size = resultSet.getBytes(columnName).length;
+        }
       }
     }
     catch (SQLException e)
@@ -2543,10 +2425,6 @@ public class PostgreSQL extends AbstractDatabase
     {
       try
       {
-        if (resultSet != null)
-          resultSet.close();
-        if (statement != null)
-          statement.close();
         this.closeConnection(conn);
       }
       catch (SQLException e)
@@ -2573,18 +2451,16 @@ public class PostgreSQL extends AbstractDatabase
   @Override
   public int updateClassAndSource(String mdTypeId, String table, String classColumnName, byte[] classBytes, String sourceColumnName, String source, Connection conn)
   {
-    PreparedStatement prepared = null;
 
     int written = 0;
 
-    try
-    {
-      // clear the blob
-      this.truncateBlob(table, classColumnName, mdTypeId, 0, conn);
+    // clear the blob
+    this.truncateBlob(table, classColumnName, mdTypeId, 0, conn);
 
-      // get the blob
-      String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
-      prepared = conn.prepareStatement(update);
+    // get the blob
+    String update = "UPDATE " + table + " SET " + classColumnName + " = ?, " + sourceColumnName + " = ? WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdTypeId + "'";
+    try (PreparedStatement prepared = conn.prepareStatement(update))
+    {
       prepared.setBytes(1, classBytes);
       prepared.setString(2, source);
 
@@ -2596,18 +2472,7 @@ public class PostgreSQL extends AbstractDatabase
     {
       this.throwDatabaseException(e);
     }
-    finally
-    {
-      try
-      {
-        if (prepared != null)
-          prepared.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
-    }
+
     return written;
   }
 
@@ -2629,20 +2494,17 @@ public class PostgreSQL extends AbstractDatabase
    */
   public int updateMdFacadeGeneratedClasses(String mdFacadeId, String table, String serverClassesColumnName, byte[] serverClassesBytes, String commonClassesColumnName, byte[] commonClassesBytes, String clientClassesColumnName, byte[] clientClassesBytes, Connection conn)
   {
-    PreparedStatement prepared = null;
-
     int written = 0;
 
-    try
-    {
-      // clear the blob
-      this.truncateBlob(table, serverClassesColumnName, mdFacadeId, 0, conn);
-      this.truncateBlob(table, commonClassesColumnName, mdFacadeId, 0, conn);
-      this.truncateBlob(table, clientClassesColumnName, mdFacadeId, 0, conn);
+    // clear the blob
+    this.truncateBlob(table, serverClassesColumnName, mdFacadeId, 0, conn);
+    this.truncateBlob(table, commonClassesColumnName, mdFacadeId, 0, conn);
+    this.truncateBlob(table, clientClassesColumnName, mdFacadeId, 0, conn);
 
-      // get the blob
-      String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
-      prepared = conn.prepareStatement(update);
+    // get the blob
+    String update = "UPDATE " + table + " SET " + serverClassesColumnName + " = ?, " + commonClassesColumnName + " = ?, " + clientClassesColumnName + " = ? " + " WHERE " + EntityDAOIF.ID_COLUMN + " = '" + mdFacadeId + "'";
+    try (PreparedStatement prepared = conn.prepareStatement(update))
+    {
       prepared.setBytes(1, serverClassesBytes);
       prepared.setBytes(2, commonClassesBytes);
       prepared.setBytes(3, clientClassesBytes);
@@ -2655,18 +2517,6 @@ public class PostgreSQL extends AbstractDatabase
     catch (SQLException e)
     {
       this.throwDatabaseException(e);
-    }
-    finally
-    {
-      try
-      {
-        if (prepared != null)
-          prepared.close();
-      }
-      catch (SQLException e)
-      {
-        this.throwDatabaseException(e);
-      }
     }
     return written;
   }
@@ -2701,36 +2551,29 @@ public class PostgreSQL extends AbstractDatabase
    */
   public long getChildCountForParent(String parent_oid, String relationshipTableName)
   {
+    long returnValue = 0;
     String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "' \n" + " AND " + RelationshipDAOIF.CHILD_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.CHILD_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.PARENT_OID_COLUMN + " = '" + parent_oid + "')";
 
-    ResultSet resultSet = this.query(query);
-
-    long returnValue = 0;
-
-    try
+    try (ResultSet resultSet = this.query(query))
     {
-      if (resultSet.next())
+
+      try
       {
-        Long number = (Long) resultSet.getLong("ct");
-        returnValue = number.longValue();
+        if (resultSet.next())
+        {
+          Long number = (Long) resultSet.getLong("ct");
+          returnValue = number.longValue();
+        }
+      }
+      finally
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        statement.close();
       }
     }
     catch (SQLException sqlEx1)
     {
       Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
     }
 
     return returnValue;
@@ -2744,34 +2587,27 @@ public class PostgreSQL extends AbstractDatabase
   {
     String query = " SELECT COUNT(*) AS CT \n" + " FROM " + relationshipTableName + " \n" + " WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "' \n" + " AND " + RelationshipDAOIF.PARENT_OID_COLUMN + " IN " + "   (SELECT DISTINCT " + RelationshipDAOIF.PARENT_OID_COLUMN + " \n" + "    FROM " + relationshipTableName + " \n" + "    WHERE " + RelationshipDAOIF.CHILD_OID_COLUMN + " = '" + child_oid + "')";
 
-    ResultSet resultSet = this.query(query);
-
     long returnValue = 0;
 
-    try
+    try (ResultSet resultSet = this.query(query))
     {
-      if (resultSet.next())
+      try
       {
-        Long number = (Long) resultSet.getLong("ct");
-        returnValue = number.longValue();
+        if (resultSet.next())
+        {
+          Long number = (Long) resultSet.getLong("ct");
+          returnValue = number.longValue();
+        }
+      }
+      finally
+      {
+        java.sql.Statement statement = resultSet.getStatement();
+        statement.close();
       }
     }
     catch (SQLException sqlEx1)
     {
       Database.throwDatabaseException(sqlEx1);
-    }
-    finally
-    {
-      try
-      {
-        java.sql.Statement statement = resultSet.getStatement();
-        resultSet.close();
-        statement.close();
-      }
-      catch (SQLException sqlEx2)
-      {
-        Database.throwDatabaseException(sqlEx2);
-      }
     }
 
     return returnValue;
@@ -3024,27 +2860,13 @@ public class PostgreSQL extends AbstractDatabase
     buffer.append("WHERE dependent.relname = '" + mdElement.getTableName() + "' ");
     buffer.append("AND pg_attribute.attnum > 0 ");
 
-    try
+    try (ResultSet result = this.query(buffer.toString()))
     {
-      ResultSet result = null;
-
-      try
+      while (result.next())
       {
-        result = this.query(buffer.toString());
+        String viewName = result.getString("view_name");
 
-        while (result.next())
-        {
-          String viewName = result.getString("view_name");
-
-          viewNames.add(viewName);
-        }
-      }
-      finally
-      {
-        if (result != null)
-        {
-          result.close();
-        }
+        viewNames.add(viewName);
       }
     }
     catch (SQLException e)

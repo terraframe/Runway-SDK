@@ -286,26 +286,26 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
     {
       this.buildErrorStrings();
 
-      String values = "";
+      StringBuilder values = new StringBuilder();
       boolean firstIteration = true;
       for (String value : valueList)
       {
         if (!firstIteration)
         {
-          values += ", ";
+          values.append(", ");
         }
         else
         {
           firstIteration = false;
         }
-        values += "["+value+"]";
+        values.append("["+value+"]");
       }
 
       if (mdAttributeWithIndex != null)
       {
         if (valueList.size() > 0)
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
         }
         else
         {
@@ -316,7 +316,7 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
       {
         if (valueList.size() > 0)
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values);
+          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
         }
         else
         {

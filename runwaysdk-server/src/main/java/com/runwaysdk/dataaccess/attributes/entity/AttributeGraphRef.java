@@ -86,18 +86,6 @@ public class AttributeGraphRef extends Attribute
   @Override
   protected void validate(String valueToValidate, MdAttributeDAOIF mdAttribute)
   {
-    if (valueToValidate != null)
-    {
-      MdAttributeGraphRefDAOIF mdAttributeIF = this.getMdAttributeConcrete();
-
-      // First verify that the object is of the correct type.
-      if (! ( valueToValidate instanceof String ))
-      {
-        String devMessage = "Value is not a " + VertexObjectDAO.class.getName();
-        throw new AttributeUUIDParseException(devMessage, mdAttributeIF.getDisplayLabel(Session.getCurrentLocale()), valueToValidate.getClass().getName());
-      }
-    }
-
     super.validate(valueToValidate, mdAttribute);
   }
   

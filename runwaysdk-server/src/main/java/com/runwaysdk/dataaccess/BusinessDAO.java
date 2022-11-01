@@ -1062,7 +1062,7 @@ public class BusinessDAO extends ElementDAO implements BusinessDAOIF
       Attribute attrNew = attrOld.attributeClone();
       newAttrList.put(attrNew.getName(), attrNew);
     }
-    BusinessDAO clonedObject = (BusinessDAO) BusinessDAOFactory.factoryMethod(newAttrList, new String(this.componentType), true);
+    BusinessDAO clonedObject = (BusinessDAO) BusinessDAOFactory.factoryMethod(newAttrList, this.componentType, true);
 
     clonedObject.setIsNew(this.isNew());
     clonedObject.setAppliedToDB(this.isAppliedToDB());
