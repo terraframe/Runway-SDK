@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -51,8 +51,9 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   /**
    * Constructs a MdAttributeClob from the given {@link Map} of Attributes.
    *
-   * <br/><b>Precondition:</b>   attributeMap != null
-   * <br/><b>Precondition:</b>   type != null
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null
    *
    * @param attributeMap
    * @param type
@@ -83,7 +84,7 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   }
 
   /**
-   * Called for java class generation.  Returns the java type of this attribute
+   * Called for java class generation. Returns the java type of this attribute
    * (String), which is used in the generated classes for type safety.
    *
    * @return The java type of this attribute (String)
@@ -92,7 +93,7 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     return "String";
   }
-  
+
   /**
    * Returns the java class object for the attribute type.
    * 
@@ -104,9 +105,11 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   }
 
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
    *
-   * @return string representing the query attribute class for attributes of this type.
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
@@ -114,16 +117,19 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   }
 
   /**
-   * Used for data generation.  Returns a random 256-character String.
+   * Used for data generation. Returns a random 256-character String.
    */
   public void setRandomValue(EntityDAO object)
   {
     Random random = EntityGenerator.getRandom();
-    String s = new String();
+    StringBuilder s = new StringBuilder();
     String alpha = "abcdefghijklmnopqrstuvwxyz    ";
-    for (int i=0; i<256; i++)
-      s += alpha.charAt(random.nextInt(30));
-    object.setValue(this.definesAttribute(), s);
+    for (int i = 0; i < 256; i++)
+    {
+      s.append(alpha.charAt(random.nextInt(30)));
+    }
+    
+    object.setValue(this.definesAttribute(), s.toString());
   }
 
   /**
@@ -143,9 +149,9 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   }
 
   /**
-   * Returns a new {@link MdAttributeClobDAO}.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
+   * Returns a new {@link MdAttributeClobDAO}. Some attributes will contain
+   * default values, as defined in the attribute metadata. Otherwise, the
+   * attributes will be blank.
    *
    * @return {@link MdAttributeClobDAO}.
    */
@@ -173,16 +179,16 @@ public class MdAttributeClobDAO extends MdAttributePrimitiveDAO implements MdAtt
   {
     visitor.visitClob(this);
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
     throw new UnsupportedOperationException();
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */

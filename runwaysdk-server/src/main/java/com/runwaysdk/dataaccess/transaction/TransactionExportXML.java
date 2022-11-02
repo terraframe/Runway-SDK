@@ -20,7 +20,11 @@ package com.runwaysdk.dataaccess.transaction;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ImportLogInfo;
@@ -36,6 +40,8 @@ import com.runwaysdk.util.IdParser;
 
 public class TransactionExportXML
 {
+  private static Logger                 logger                = LoggerFactory.getLogger(TransactionExportXML.class);
+
   /**
    * Writes the XML code
    */
@@ -137,7 +143,11 @@ public class TransactionExportXML
 
     String transactionRecordXMLFileLocation = this.transactionsDirLocation + fileLocation;
 
-    new File(this.transactionsDirLocation + filePathLocation).mkdirs();
+    File file = new File(this.transactionsDirLocation + filePathLocation);
+    if (!file.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + file.getAbsolutePath() + "]");
+    }
 
     TransactionRecordXML transactionRecordXML = new TransactionRecordXML(new FileMarkupWriter(transactionRecordXMLFileLocation), this.getSchemaLocation(), transactionRecordDAOIF);
     transactionRecordXML.exportTransaction();
@@ -145,11 +155,12 @@ public class TransactionExportXML
 
   public void writeProperties(HashMap<String, String> properties)
   {
-    Set<String> names = properties.keySet();
+    Set<Entry<String, String>> entries = properties.entrySet();
 
-    for (String name : names)
+    for (Entry<String, String> entry : entries)
     {
-      String value = properties.get(name);
+      String name = entry.getKey();
+      String value = entry.getValue();
 
       HashMap<String, String> attributes = new HashMap<String, String>();
 

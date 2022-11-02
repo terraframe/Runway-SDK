@@ -770,13 +770,15 @@ public abstract class AggregateFunction extends Function implements Expression, 
   
   protected String getOverClause(String sql)
   {
+    StringBuilder builder = new StringBuilder(sql);
+    
     if (this.overClause)
     {
-      sql += " OVER(";
+      builder.append(" OVER(");
     
       if (this.windowPartitionBy != null)
       {
-        sql += this.windowPartitionBy.getSQL()+" ";
+        builder.append(this.windowPartitionBy.getSQL()+" ");
       }
     
       if (this.windowOrderyBys != null)
@@ -787,20 +789,20 @@ public abstract class AggregateFunction extends Function implements Expression, 
         {
           if (!firstTime)
           {
-            sql += ", ";
+            builder.append(", ");
           }
           else
           {
-            sql += "ORDER BY ";
+            builder.append("ORDER BY ");
             firstTime = false;
           }
         
-          sql+= orderBy.getSQL();
+          builder.append(orderBy.getSQL());
         }
       }
     
-      sql += ")";
+      builder.append(")");
     }
-    return sql;
+    return sql.toString();
   }
 }

@@ -218,7 +218,7 @@ public class ValueQueryExcelExporter
             if (numberValue != null && !numberValue.equals(""))
             {
               // Precondition - assumes value is a valid couble.
-              valueRow.createCell(selectableCount).setCellValue(Double.valueOf(numberValue));
+              valueRow.createCell(selectableCount).setCellValue(Double.parseDouble(numberValue));
             }
           }
           else if (attribute instanceof com.runwaysdk.dataaccess.attributes.value.AttributeDate)

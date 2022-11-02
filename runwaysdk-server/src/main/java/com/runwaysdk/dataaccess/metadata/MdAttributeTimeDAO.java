@@ -116,7 +116,7 @@ public class MdAttributeTimeDAO extends MdAttributeMomentDAO implements MdAttrib
   public void setRandomValue(EntityDAO object)
   {
     SimpleDateFormat sdf = new SimpleDateFormat(Constants.TIME_FORMAT);
-    object.setValue(definesAttribute(), sdf.format(new Date(EntityGenerator.getRandom().nextInt())));
+    object.setValue(definesAttribute(), sdf.format(new Date(EntityGenerator.getRandom().nextLong())));
   }
 
   /* (non-Javadoc)

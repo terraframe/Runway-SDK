@@ -54,35 +54,35 @@ public aspect ServerLoggingManagement
 
   public static Logger loggingHelperMethod(Object[] aArgs, String loggerName, String fullyQualifiedMethodName)
   {
-    String sArgs = "";
+    StringBuilder sArgs = new StringBuilder();
 
     int index = 1;
     for (Object oArg : aArgs)
     {
-      sArgs += "[" + index + " : ";
+      sArgs.append("[" + index + " : ");
 
       if (oArg != null)
       {
-        sArgs += oArg.toString();
+        sArgs.append(oArg.toString());
       }
       else
       {
-        sArgs += "null";
+        sArgs.append("null");
       }
 
-      sArgs += "]";
+      sArgs.append("]");
 
       index++;
     }
 
     if (aArgs.length == 0)
     {
-      sArgs = "[]";
+      sArgs = new StringBuilder("[]");
     }
 
     Logger log = LoggerFactory.getLogger(loggerName);
 
-    String msg = "Entering method [" + fullyQualifiedMethodName + "] with arguments " + sArgs + ".";
+    String msg = "Entering method [" + fullyQualifiedMethodName + "] with arguments " + sArgs.toString() + ".";
 
     log.trace(msg);
 

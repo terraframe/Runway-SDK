@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -90,7 +90,7 @@ public class TransactionState
 
   private volatile Set<String>                 setRelLocksSet;
 
-  private volatile int                         metadataTempColumnCounter;
+  private int                                  metadataTempColumnCounter;
 
   private String                               transactionId;
 
@@ -581,15 +581,15 @@ public class TransactionState
     {
       if (notUndoableCommandList.size() > 0)
       {
-        String errMsg = "A [" + ex.getClass().getName() + "] prevented some statements from " + "executing. Check to see if these need to be executed to prevent data corruption:";
+        StringBuilder errMsg = new StringBuilder("A [" + ex.getClass().getName() + "] prevented some statements from " + "executing. Check to see if these need to be executed to prevent data corruption:");
         for (int i = 0; i < notUndoableCommandList.size(); i++)
         {
-          errMsg += "\n  [" + ( notUndoableCommandList.get(i) ).doItString() + "]";
+          errMsg.append("\n  [" + ( notUndoableCommandList.get(i) ).doItString() + "]");
         }
 
-        errMsg += "\n\nRoot cause:\n" + ex.getMessage();
+        errMsg.append("\n\nRoot cause:\n" + ex.getMessage());
 
-        throw new DatabaseException(errMsg);
+        throw new DatabaseException(errMsg.toString());
       }
     }
     finally
@@ -810,7 +810,10 @@ public class TransactionState
     this.doFinallyNotUndoableCommandList.remove(command);
     this.completedNotUndoableCommandStack.remove(command);
 
-    this.groupIndexDDLCommandMap.remove(command);
+    if (command instanceof AddGroupIndexDDLCommand)
+    {
+      this.groupIndexDDLCommandMap.remove( ( (AddGroupIndexDDLCommand) command ).getIndexName());
+    }
   }
 
   /**

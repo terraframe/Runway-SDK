@@ -480,7 +480,7 @@ public abstract class Math extends SimpleFunction implements SelectableNumber
    */
   public Condition NE(SimpleFunction simpleFunction)
   {
-    return this.NE((SimpleFunction) simpleFunction);
+    return super.NE((SimpleFunction) simpleFunction);
   }
 
   /**

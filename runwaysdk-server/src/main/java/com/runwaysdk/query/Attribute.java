@@ -109,8 +109,6 @@ public abstract class Attribute implements SelectableSingle, Statement
 
   protected String                        attributeNamespace;
 
-  protected String                        value;
-
   protected String                        attributeName;
 
   protected String                        columnName;

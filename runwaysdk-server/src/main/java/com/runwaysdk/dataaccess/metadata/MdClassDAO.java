@@ -100,40 +100,40 @@ public abstract class MdClassDAO extends MdTypeDAO implements MdClassDAOIF
    */
   public String getSignature()
   {
-    String signature = super.getSignature() + " Attributes[";
+    StringBuilder signature = new StringBuilder(super.getSignature() + " Attributes[");
 
     boolean firstIteration = true;
     for (MdAttributeDAOIF mdAttributeDAOIF : this.definesAttributesOrdered())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      signature += mdAttributeDAOIF.getSignature();
+      signature.append(mdAttributeDAOIF.getSignature());
     }
-    signature += "]";
+    signature.append("]");
 
-    signature += " Methods[";
+    signature.append(" Methods[");
     firstIteration = true;
     for (MdMethodDAOIF mdMethodDAOIF : this.getMdMethodsOrdered())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      signature += mdMethodDAOIF.getSignature();
+      signature.append(mdMethodDAOIF.getSignature());
     }
-    signature += "]";
+    signature.append("]");
 
-    return signature;
+    return signature.toString();
   }
 
   /**

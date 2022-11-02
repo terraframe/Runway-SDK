@@ -64,7 +64,7 @@ public abstract class MdAttributeDAO extends MetadataDAO implements MdAttributeD
   /**
    * A comparator that sorts <code>MdAttributeDAOIF</code> alphabetically
    */
-  protected static Comparator<MdAttributeDAOIF>  alphabetical     = new Comparator<MdAttributeDAOIF>()
+  protected static final Comparator<MdAttributeDAOIF>  alphabetical     = new Comparator<MdAttributeDAOIF>()
                                                                   {
                                                                     public int compare(MdAttributeDAOIF o1, MdAttributeDAOIF o2)
                                                                     {

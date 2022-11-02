@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.instance;
 
@@ -37,7 +37,8 @@ import com.runwaysdk.dataaccess.resolver.IConflictResolver;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 
 /**
- * This class performs a full import of Runway object instances (and their attributes) using our custom XML syntax.
+ * This class performs a full import of Runway object instances (and their
+ * attributes) using our custom XML syntax.
  */
 public class InstanceImporter extends XMLHandlerWithResolver
 {
@@ -133,7 +134,8 @@ public class InstanceImporter extends XMLHandlerWithResolver
   {
     try
     {
-      if (schemaLocation != null && !schemaLocation.contains("classpath:")) {
+      if (schemaLocation != null && !schemaLocation.contains("classpath:"))
+      {
         File file = new File(schemaLocation);
         try
         {
@@ -144,7 +146,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
           throw new FileReadException(file, e);
         }
       }
-      
+
       InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), schemaLocation, resolver);
       importer.begin();
     }
@@ -166,23 +168,31 @@ public class InstanceImporter extends XMLHandlerWithResolver
   @Transaction
   public synchronized static void runImport(File file, String schemaLocation, IConflictResolver resolver)
   {
-    // The xml file can either be a directory or a file. If its a directory we're going to run a separate import for every file.
+    // The xml file can either be a directory or a file. If its a directory
+    // we're going to run a separate import for every file.
     if (file.isDirectory())
     {
-      for (File file2 : file.listFiles())
+      File[] files = file.listFiles();
+
+      if (files != null)
       {
-        if (file2.isFile() && file2.getName().endsWith(".xml")) {
-          System.out.println("Importing " + file2.getAbsolutePath());
-          runImport(file2, schemaLocation, resolver);
+        for (File file2 : files)
+        {
+          if (file2.isFile() && file2.getName().endsWith(".xml"))
+          {
+            System.out.println("Importing " + file2.getAbsolutePath());
+            runImport(file2, schemaLocation, resolver);
+          }
         }
       }
-      
+
       return;
     }
-    
+
     try
     {
-      if (schemaLocation != null && !schemaLocation.contains("classpath:")) {
+      if (schemaLocation != null && !schemaLocation.contains("classpath:"))
+      {
         File schema = new File(schemaLocation);
         try
         {
@@ -202,7 +212,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       throw new XMLParseException(e);
     }
   }
-  
+
   @Transaction
   public synchronized static void runImport(File file, URL schemaLocation, IConflictResolver resolver)
   {

@@ -27,5 +27,10 @@ public abstract class ConflictAdapter implements IConflictResolver
   {
     this.strategy = strategy;
   }
+  
+  protected IPersistanceStrategy getStrategy()
+  {
+    return strategy;
+  }
 
 }

@@ -47,7 +47,7 @@ import com.sun.xml.xsom.parser.XSOMParser;
  */
 public class XSDConstraintsManager
 {
-  class ParseLogger implements ErrorHandler
+  static class ParseLogger implements ErrorHandler
   {
     private Logger log = LoggerFactory.getLogger(XSDConstraintsManager.class);
 

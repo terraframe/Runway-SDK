@@ -3,21 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.instance;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -45,7 +46,8 @@ import com.runwaysdk.query.OIterator;
 import com.runwaysdk.util.Base64;
 
 /**
- * This class performs a full export of Runway object instances (and their attributes) using our custom XML syntax.
+ * This class performs a full export of Runway object instances (and their
+ * attributes) using our custom XML syntax.
  */
 public abstract class InstanceExporter
 {
@@ -63,17 +65,17 @@ public abstract class InstanceExporter
    * True if only modified attributes should be exported, false otherwise.
    */
   private boolean                      exportOnlyModifiedAttributes;
-  
+
   /**
    * Include system attributes in the export?
    */
-  private boolean                      exportSystemAttrs = true;
+  private boolean                      exportSystemAttrs   = true;
 
   /**
    * A list of attribute names that are masked out of the export file
    */
-  private static final TreeSet<String> ATTRIBUTE_MASK = InstanceExporter.getAttributeMask();
-  
+  private static final TreeSet<String> ATTRIBUTE_MASK      = InstanceExporter.getAttributeMask();
+
   private static final TreeSet<String> ATTRIBUTE_WHITELIST = new TreeSet<String>();
 
   /**
@@ -94,7 +96,7 @@ public abstract class InstanceExporter
     this.schemaLocation = _schemaLocation;
     this.exportOnlyModifiedAttributes = _exportOnlyModifiedAttributes;
   }
-  
+
   protected InstanceExporter(MarkupWriter _writer, String _schemaLocation, boolean _exportOnlyModifiedAttributes, boolean exportSystemAttributes)
   {
     this.writer = _writer;
@@ -127,15 +129,17 @@ public abstract class InstanceExporter
   {
     return exportOnlyModifiedAttributes;
   }
-  
+
   /**
    * Used to not export certain attributes.
    */
-  public void blacklistAttributes(Collection<String> attributeNames) {
+  public void blacklistAttributes(Collection<String> attributeNames)
+  {
     ATTRIBUTE_MASK.addAll(attributeNames);
   }
-  
-  public void whitelistAttributes(Collection<String> attributeNames) {
+
+  public void whitelistAttributes(Collection<String> attributeNames)
+  {
     ATTRIBUTE_WHITELIST.addAll(attributeNames);
   }
 
@@ -225,7 +229,7 @@ public abstract class InstanceExporter
       while (iterator.hasNext())
       {
         ComponentIF component = iterator.next();
-        
+
         export(component.getOid());
       }
 
@@ -302,7 +306,8 @@ public abstract class InstanceExporter
    * @param attributes
    *          An array of attributes to export
    * 
-   * @param true if the attributes come from a new component, false otherwise.
+   * @param true
+   *          if the attributes come from a new component, false otherwise.
    */
   private void exportAttributes(boolean isNewComponent, boolean appliedToDB, AttributeIF[] attributes)
   {
@@ -314,30 +319,30 @@ public abstract class InstanceExporter
       {
         continue;
       }
-      
+
       String attributeName = attributeIF.getName();
       String attributeValue = attributeIF.getValue();
-      
+
       // Do not export system attributes
-      if (!ATTRIBUTE_MASK.contains(attributeName) && !(attributeIF.getMdAttribute().isSystem() && !(exportSystemAttrs) && !(ATTRIBUTE_WHITELIST.contains(attributeName))))
+      if (!ATTRIBUTE_MASK.contains(attributeName) && ! ( attributeIF.getMdAttribute().isSystem() && ! ( exportSystemAttrs ) && ! ( ATTRIBUTE_WHITELIST.contains(attributeName) ) ))
       {
         if (attributeIF instanceof AttributeStructIF)
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
-          
+
           AttributeStructIF attributeStructIF = (AttributeStructIF) attributeIF;
-          
+
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
           parameters.put(XMLTags.ID_TAG, attributeStructIF.getStructDAO().getOid());
-          
+
           // write the selection tag
           writer.openEscapedTag(XMLTags.STRUCT_REF_TAG, parameters);
-          
+
           boolean isNew = attributeStructIF.getStructDAO().isNew();
           AttributeIF[] attributeArrayIF = attributeStructIF.getAttributeArrayIF();
-          
+
           exportAttributes(isNew, appliedToDB, attributeArrayIF);
-          
+
           // Close the selection tag
           writer.closeTag();
         }
@@ -345,7 +350,7 @@ public abstract class InstanceExporter
         else if (attributeIF instanceof AttributeEnumerationIF)
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
-          
+
           parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
 
           // write the selection tag
@@ -386,13 +391,21 @@ public abstract class InstanceExporter
         {
           HashMap<String, String> parameters = new HashMap<String, String>();
 
-          String hex = Base64.encodeToString(attributeIF.getRawValue().getBytes(), false);
+          try
+          {
 
-          parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
+            String hex = Base64.encodeToString(attributeIF.getRawValue().getBytes("UTF-8"), false);
 
-          writer.openEscapedTag(XMLTags.VALUE_TAG, parameters);
-          writer.writeCData(hex);
-          writer.closeTag();
+            parameters.put(XMLTags.ATTRIBUTE_TAG, attributeName);
+
+            writer.openEscapedTag(XMLTags.VALUE_TAG, parameters);
+            writer.writeCData(hex);
+            writer.closeTag();
+          }
+          catch (UnsupportedEncodingException e)
+          {
+            throw new RuntimeException("Unsupported encoding", e);
+          }
         }
         else
         {

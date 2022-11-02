@@ -73,7 +73,7 @@ public class ValueQueryParser
    * interceptors are added in a stack-like fashion with the last interceptor to
    * execute first.
    */
-  public final class InterceptorChain
+  public static final class InterceptorChain
   {
     /**
      * A single entry in the chain.
@@ -182,7 +182,7 @@ public class ValueQueryParser
    * Class representing a custom attribute select entry, created by a user
    * independent of the input XML.
    */
-  private class CustomAttributeSelect
+  private static class CustomAttributeSelect
   {
     private String entityAlias;
 
@@ -207,7 +207,7 @@ public class ValueQueryParser
   /**
    * Class representing a forced change to a column's alias.
    */
-  private class CustomColumnAlias
+  private static class CustomColumnAlias
   {
     // private String entityAlias;
     // private String userAlias;
@@ -253,7 +253,7 @@ public class ValueQueryParser
 
   public static final String                    SQLTEXT_TAG                = "sqltext";
 
-  public static final String                    SQLCLOB_TAG                = "sqltext";
+  public static final String                    SQLCLOB_TAG                = "sqlclob";
 
   public static final String                    SQLDATE_TAG                = "sqldate";
 

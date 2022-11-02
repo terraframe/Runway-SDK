@@ -504,7 +504,7 @@ public class XMLImporter
     values.add(getValueFromChildTag(enumeration, MdEnumerationInfo.SET_ID));
     attributeTypes.add(MdAttributeCharacterInfo.CLASS);
 
-    String enumString = "";
+    StringBuilder enumString = new StringBuilder();
 
     PreparedStatement preparedStmt = null;
 
@@ -525,14 +525,14 @@ public class XMLImporter
 
       if (j != 0)
       {
-        enumString += ",";
+        enumString.append(",");
       }
-      enumString += itemId;
+      enumString.append(itemId);
     }
 
     Database.executeStatementBatch(preparedStatementList);
 
-    return enumString;
+    return enumString.toString();
   }
 
   private void createType(Element object, String metaDataType)
@@ -965,7 +965,7 @@ public class XMLImporter
       }
       else
       {
-        String loopAttributeType = new String("");
+        String loopAttributeType = "";
 
         // This really should be in its own method, but two values are needed
         // and I did not
@@ -1135,7 +1135,7 @@ public class XMLImporter
 
     if (child.getFirstChild() == null)
     {
-      return new String();
+      return "";
     }
     else
     {

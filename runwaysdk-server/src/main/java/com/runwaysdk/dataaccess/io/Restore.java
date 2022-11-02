@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -57,7 +57,7 @@ import com.runwaysdk.util.FileIO;
 public class Restore
 {
   private PrintStream        logPrintStream;
-  
+
   private PrintStream        errPrintStream;
 
   private String             zipFileLocation;
@@ -68,7 +68,7 @@ public class Restore
 
   private String             cacheDir;
 
-  private static Logger                logger = LoggerFactory.getLogger(Restore.class);
+  private static Logger      logger = LoggerFactory.getLogger(Restore.class);
 
   private String             cacheName;
 
@@ -89,13 +89,16 @@ public class Restore
       cbe.setBackupName(zipFileLocation);
       throw cbe;
     }
-    
+
     String rootZipFileName = zipFileName.substring(0, zipFileName.indexOf(".zip"));
 
     String restoreDirectoryString = zipFile.getParent() + File.separator + rootZipFileName;
 
     this.restoreDirectory = new File(restoreDirectoryString);
-    this.restoreDirectory.mkdir();
+    if (!this.restoreDirectory.mkdir())
+    {
+      logger.debug("Unable to create directory [" + this.restoreDirectory.getAbsolutePath() + "]");
+    }
 
     this.cacheDir = ServerProperties.getGlobalCacheFileLocation();
     this.cacheName = ServerProperties.getGlobalCacheName();
@@ -118,7 +121,7 @@ public class Restore
     this.unzipFile();
 
     this.validateRestore();
-    
+
     this.logPrintStream.println("\n" + ServerExceptionMessageLocalizer.droppingTablesMessage(Session.getCurrentLocale()));
     Database.dropAll();
 
@@ -129,9 +132,9 @@ public class Restore
     deleteCacheFile();
 
     restoreWebapp();
-    
+
     restoreVault();
-    
+
     /*
      * restoreProfiles();
      * 
@@ -157,20 +160,22 @@ public class Restore
   }
 
   /**
-   * Check to make sure this restore makes sense. We want to fail before we do anything too important.
+   * Check to make sure this restore makes sense. We want to fail before we do
+   * anything too important.
    */
   private void validateRestore()
   {
-//    String webappRootDir = DeployProperties.getDeployPath();
-    
-    // Check if the webapp that we're restoring onto has the same name as what's in the backup, otherwise the user may be restoring the wrong backup file!
+    // String webappRootDir = DeployProperties.getDeployPath();
+
+    // Check if the webapp that we're restoring onto has the same name as what's
+    // in the backup, otherwise the user may be restoring the wrong backup file!
     // TODO : Add support for the non-legacy properties format
     String propertiesFileName = "terraframe.properties";
 
     final Properties restoreProps = new Properties();
-    try
+    try (FileInputStream stream = new FileInputStream(this.restoreDirectory.getPath() + File.separator + Backup.WEBAPP_DIR_NAME + File.separator + "WEB-INF" + File.separator + "classes" + File.separator + propertiesFileName))
     {
-      restoreProps.load(new FileInputStream(this.restoreDirectory.getPath() + File.separator + Backup.WEBAPP_DIR_NAME + File.separator + "WEB-INF" + File.separator + "classes" + File.separator + propertiesFileName));
+      restoreProps.load(stream);
     }
     catch (FileNotFoundException e)
     {
@@ -184,10 +189,20 @@ public class Restore
       cbe.setBackupName(new File(zipFileLocation).getName());
       throw cbe;
     }
-    
+
     String restoreAppName = restoreProps.getProperty("deploy.appname");
-    String currentAppName = CommonProperties.getDeployAppName(); // It makes the most sense to get this value from DeployProperties, but for backwards compatibility (cough ddms) we'll do it this way
-    
+    String currentAppName = CommonProperties.getDeployAppName(); // It makes the
+                                                                 // most sense
+                                                                 // to get this
+                                                                 // value from
+                                                                 // DeployProperties,
+                                                                 // but for
+                                                                 // backwards
+                                                                 // compatibility
+                                                                 // (cough ddms)
+                                                                 // we'll do it
+                                                                 // this way
+
     if (!restoreAppName.equalsIgnoreCase(currentAppName))
     {
       RestoreAppnameException rae = new RestoreAppnameException();
@@ -197,24 +212,24 @@ public class Restore
     }
   }
 
-//  private void dropApplicationTabels()
-//  {
-//    List<String> tableNames = null;
-//    try
-//    {
-//      tableNames = Database.getAllApplicationTables();
-//    }
-//    catch (Throwable e)
-//    {
-//      // The framework has already been dropped.
-//    }
-//
-//    if (tableNames != null)
-//    {
-//      Database.cascadeDropTables(tableNames);
-//    }
-//  }
-  
+  // private void dropApplicationTabels()
+  // {
+  // List<String> tableNames = null;
+  // try
+  // {
+  // tableNames = Database.getAllApplicationTables();
+  // }
+  // catch (Throwable e)
+  // {
+  // // The framework has already been dropped.
+  // }
+  //
+  // if (tableNames != null)
+  // {
+  // Database.cascadeDropTables(tableNames);
+  // }
+  // }
+
   private void unzipFile()
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.extractingFileMessage(Session.getCurrentLocale(), this.zipFileLocation));
@@ -267,7 +282,7 @@ public class Restore
   private void deleteCacheFile()
   {
     this.logPrintStream.println(ServerExceptionMessageLocalizer.backingUpCacheMessage(Session.getCurrentLocale()));
-    
+
     File dataFile = new File(cacheDir + File.separator + cacheName + ".data");
     try
     {
@@ -280,7 +295,7 @@ public class Restore
       bre.setLocation(dataFile.getAbsolutePath());
       throw bre;
     }
-    
+
     File indexFile = new File(cacheDir + File.separator + cacheName + ".index");
     try
     {
@@ -342,7 +357,7 @@ public class Restore
     String webappRootDir = DeployProperties.getDeployPath();
 
     File webappRootFile = new File(webappRootDir);
-    
+
     FilenameFilter filenameFilter = new FilenameFilter()
     {
       public boolean accept(File dir, String name)
@@ -378,7 +393,8 @@ public class Restore
     boolean success = FileIO.copyFolder(backupProfileLocationFile, webappRootFile, filenameFilter);
     if (!success)
     {
-      // TODO : This success stuff is garbage, I want the actual IOException why swallow it
+      // TODO : This success stuff is garbage, I want the actual IOException why
+      // swallow it
       BackupReadException bre = new BackupReadException();
       bre.setLocation(webappRootFile.getAbsolutePath());
       throw bre;
@@ -389,17 +405,15 @@ public class Restore
   {
     agents.add(agent);
   }
-  
- 
+
   private void restoreVault()
   {
     logger.trace("Starting restore of vaults.");
-    
+
     QueryFactory qf = new QueryFactory();
     BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
 
-    String backupVaultFileLocation = this.restoreDirectory.getPath() + File.separator
-        + Backup.VAULT_DIR_NAME + File.separator;
+    String backupVaultFileLocation = this.restoreDirectory.getPath() + File.separator + Backup.VAULT_DIR_NAME + File.separator;
 
     OIterator<Business> i = vaultQ.getIterator();
     try
@@ -409,19 +423,23 @@ public class Restore
         String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
         String vaultLocation = VaultProperties.getPath(vaultName);
         String vaultInsideBackup = backupVaultFileLocation + File.separator + vault.getOid() + File.separator;
-        
+
         File vaultInsideBackupFile = new File(vaultInsideBackup);
         File vaultLocationFile = new File(vaultLocation);
 
         if (!vaultLocationFile.exists())
         {
-          vaultLocationFile.mkdirs();
+          if (!vaultLocationFile.mkdirs())
+          {
+            logger.debug("Unable to create directory [" + vaultLocationFile.getAbsolutePath() + "]");
+          }
+
         }
-        
+
         if (vaultInsideBackupFile.exists())
         {
           logger.debug("Restoring vault [" + vaultName + "] from [" + vaultInsideBackup + "] to [" + vaultLocation + "].");
-          
+
           FileIO.copyFolder(vaultInsideBackupFile, vaultLocationFile);
         }
         else
@@ -435,7 +453,6 @@ public class Restore
       i.close();
     }
   }
-   
 
   /*
    * private void restoreProfiles() { File backupProfileLocationFile = new

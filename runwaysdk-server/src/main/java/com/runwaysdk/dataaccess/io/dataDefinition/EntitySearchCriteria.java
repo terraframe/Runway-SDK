@@ -56,6 +56,12 @@ public class EntitySearchCriteria implements SearchCriteriaIF
   {
     return this.type + " - " + this.key;
   }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.criteria().hashCode();
+  }
     
   @Override
   public boolean equals(Object obj)

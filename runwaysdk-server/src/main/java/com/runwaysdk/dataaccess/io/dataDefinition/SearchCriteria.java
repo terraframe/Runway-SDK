@@ -66,6 +66,12 @@ public class SearchCriteria implements SearchCriteriaIF
   }
   
   @Override
+  public int hashCode()
+  {
+    return this.key.hashCode();
+  }
+  
+  @Override
   public boolean equals(Object obj)
   {
     if(obj instanceof SearchCriteria)

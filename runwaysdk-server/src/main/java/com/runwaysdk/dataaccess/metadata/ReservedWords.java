@@ -653,7 +653,7 @@ public class ReservedWords
     
     if (sqlContains(clean))
     {
-      clean.substring(0, clean.length()-1);
+      clean = clean.substring(0, clean.length()-1);
       clean = clean + "4";
     }
     

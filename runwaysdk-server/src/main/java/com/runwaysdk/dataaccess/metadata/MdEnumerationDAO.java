@@ -102,25 +102,25 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    */
   public String getSignature()
   {
-    String signature = super.getSignature();
-    signature += " MasterType:" + this.getMasterListMdBusinessDAO().definesType();
-    signature += " Enums[";
+    StringBuilder signature = new StringBuilder(super.getSignature());
+    signature.append(" MasterType:" + this.getMasterListMdBusinessDAO().definesType());
+    signature.append(" Enums[");
     boolean firstIteration = true;
     for (BusinessDAOIF businessDAOIF : getAllEnumItemsOrdered())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      signature += businessDAOIF.getAttributeIF(EnumerationMasterInfo.NAME).getValue();
+      signature.append(businessDAOIF.getAttributeIF(EnumerationMasterInfo.NAME).getValue());
     }
-    signature += "]";
+    signature.append("]");
 
-    return signature;
+    return signature.toString();
   }
 
   /**
@@ -481,7 +481,7 @@ public class MdEnumerationDAO extends MdTypeDAO implements MdEnumerationDAOIF
    */
   public String save(boolean validateRequired)
   {
-    String oid = new String("");
+    String oid = "";
 
     this.validate();
 

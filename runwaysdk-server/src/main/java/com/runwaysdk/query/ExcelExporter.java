@@ -180,7 +180,7 @@ public abstract class ExcelExporter implements ExporterIF
     if (value != null && !value.equals(""))
     {
       // Precondition - assumes value is a valid couble.
-      valueRow.createCell(col).setCellValue(Double.valueOf(value));
+      valueRow.createCell(col).setCellValue(Double.parseDouble(value));
     }
   }
 

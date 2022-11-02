@@ -191,7 +191,7 @@ public abstract class Join implements Component
      
   public int hashCode()
   {
-    return new String(this.expression1+this.expression2).hashCode();
+    return String.valueOf(this.expression1+this.expression2).hashCode();
   }
 
   

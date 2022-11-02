@@ -18,13 +18,11 @@
  */
 package com.runwaysdk.dataaccess.attributes.entity;
 
-import com.runwaysdk.AttributeUUIDParseException;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
-import com.runwaysdk.session.Session;
 
 public class AttributeGraphRef extends Attribute
 {

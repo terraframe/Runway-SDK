@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.metadata;
 
@@ -59,9 +59,10 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   /**
    * Constructs a BusinessDAO from the given hashtable of Attributes.
    *
-   * <br/><b>Precondition:</b> attributeMap != null
-   * <br/><b>Precondition:</b> type != null
-   * <br/><b>Precondition:</b>ObjectCache.isSubTypeOf(classType, Constants.MD_CLASS)
+   * <br/>
+   * <b>Precondition:</b> attributeMap != null <br/>
+   * <b>Precondition:</b> type != null <br/>
+   * <b>Precondition:</b>ObjectCache.isSubTypeOf(classType, Constants.MD_CLASS)
    *
    * @param attributeMap
    * @param classType
@@ -71,7 +72,9 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     super(attributeMap, classType);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#create(java.util.Hashtable)
    */
   public MdAttributeCharacterDAO create(Map<String, Attribute> attributeMap, String classType)
@@ -101,7 +104,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
 
   /**
-   * Called for java class generation.  Returns the java type of this attribute
+   * Called for java class generation. Returns the java type of this attribute
    * (String), which is used in the generated classes for type safety.
    *
    * @return The java type of this attribute (String)
@@ -110,7 +113,7 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     return "String";
   }
-  
+
   /**
    * Returns the java class object for the attribute type.
    * 
@@ -128,9 +131,11 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
 
   /**
-   * Returns a string representing the query attribute class for attributes of this type.
+   * Returns a string representing the query attribute class for attributes of
+   * this type.
    *
-   * @return string representing the query attribute class for attributes of this type.
+   * @return string representing the query attribute class for attributes of
+   *         this type.
    */
   public String queryAttributeClass()
   {
@@ -138,7 +143,8 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
 
   /**
-   *Returns the total maximum length of this character field.
+   * Returns the total maximum length of this character field.
+   * 
    * @return total maximum length of this character field.
    */
   public String getSize()
@@ -147,21 +153,25 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   }
 
   /**
-   * Used for data generation.  Returns a random String that conforms to this
+   * Used for data generation. Returns a random String that conforms to this
    * instances size constraint.
    */
   public void setRandomValue(EntityDAO object)
   {
     Random random = EntityGenerator.getRandom();
-    String s = new String();
+    StringBuilder s = new StringBuilder();
     String alpha = "abcdefghijklmnopqrstuvwxyz    ";
     int size = Integer.parseInt(this.getSize());
-    for (int i=0; i<size && i<32; i++)
-      s += alpha.charAt(random.nextInt(30));
-    object.setValue(this.definesAttribute(), s);
+    for (int i = 0; i < size && i < 32; i++)
+    {
+      s.append(alpha.charAt(random.nextInt(30)));
+    }
+    object.setValue(this.definesAttribute(), s.toString());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see com.runwaysdk.dataaccess.BusinessDAO#getBusinessDAO()
    */
   public MdAttributeCharacterDAO getBusinessDAO()
@@ -169,10 +179,10 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     return (MdAttributeCharacterDAO) super.getBusinessDAO();
   }
 
-   /**
-   * Returns a new MdAttributeCharacter.
-   * Some attributes will contain default values, as defined in the attribute
-   * metadata. Otherwise, the attributes will be blank.
+  /**
+   * Returns a new MdAttributeCharacter. Some attributes will contain default
+   * values, as defined in the attribute metadata. Otherwise, the attributes
+   * will be blank.
    *
    * @return MdAttributeCharacter
    */
@@ -181,8 +191,11 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
     return (MdAttributeCharacterDAO) BusinessDAO.newInstance(MdAttributeCharacterInfo.CLASS);
   }
 
-  /* (non-Javadoc)
-   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.runwaysdk.dataaccess.BusinessDAO#get(java.lang.String,
+   * java.lang.String)
    */
   public static MdAttributeCharacterDAOIF get(String oid)
   {
@@ -205,69 +218,70 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     super.validate();
 
-    AttributeInteger attributeSize = (AttributeInteger)this.getAttributeIF(MdAttributeCharacterInfo.SIZE);
+    AttributeInteger attributeSize = (AttributeInteger) this.getAttributeIF(MdAttributeCharacterInfo.SIZE);
     if (attributeSize.isModified() && !attributeSize.getValue().trim().equals(""))
     {
-      int charLength = Integer.valueOf(attributeSize.getValue());
+      int charLength = Integer.parseInt(attributeSize.getValue());
       int maxCharLength = MdAttributeCharacterInfo.MAX_CHARACTER_SIZE;
 
-      if (charLength > charLength)
+      if (charLength > maxCharLength)
       {
-        String error = "Attribute [" + attributeSize.getName() + "] on type [" + attributeSize.getDefiningClassType()
-            + "] may not exceed " + maxCharLength + " characters in length.";
+        String error = "Attribute [" + attributeSize.getName() + "] on type [" + attributeSize.getDefiningClassType() + "] may not exceed " + maxCharLength + " characters in length.";
         throw new AttributeLengthCharacterException(error, attributeSize, maxCharLength);
       }
     }
   }
-  
+
   /**
    * Precondition: assumes this character attribute is an OID. The collection of
-   * <code>AttributeDAO</code> objects do not have their containing reference updated to
-   * the returned <code>MdAttributeReferenceDAO</code> 
+   * <code>AttributeDAO</code> objects do not have their containing reference
+   * updated to the returned <code>MdAttributeReferenceDAO</code>
    */
   public MdAttributeReferenceDAOIF convertToReference()
   {
     MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
-    
+
     mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
-    
+
     mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(this.getMdBusinessDAO().getOid());
-    
+
     return mdAttributeReferenceDAO;
   }
-  
+
   /**
-   * This is used by the query API to allow for parent ids and child ids of relationships to
-   * be used in queries.
+   * This is used by the query API to allow for parent ids and child ids of
+   * relationships to be used in queries.
    * 
    * Precondition: assumes this character attribute is an OID. The collection of
-   * <code>AttributeDAO</code> objects do not have their containing reference updated to
-   * the returned <code>MdAttributeReferenceDAO</code> 
+   * <code>AttributeDAO</code> objects do not have their containing reference
+   * updated to the returned <code>MdAttributeReferenceDAO</code>
    * 
-   * @param the code>MdBusinessDAOIF</code> of the referenced type in the relationship.
+   * @param the
+   *          code>MdBusinessDAOIF</code> of the referenced type in the
+   *          relationship.
    */
   public MdAttributeReferenceDAOIF convertToReference(MdBusinessDAOIF mdReferenecedBusinessDAOIF)
   {
     MdAttributeReferenceDAO mdAttributeReferenceDAO = MdAttributeReferenceDAO.newInstance();
-    
+
     mdAttributeReferenceDAO.replaceAttributeMap(this.getObjectState().getAttributeMap());
-    
+
     mdAttributeReferenceDAO.getAttribute(MdAttributeReferenceInfo.REF_MD_ENTITY).setValue(mdReferenecedBusinessDAOIF.getOid());
-    
+
     return mdAttributeReferenceDAO;
   }
-  
+
   /**
    * Used for client-side metadata caching.
    */
   @Override
-  public AttributeMdSession getAttributeMdSession() 
+  public AttributeMdSession getAttributeMdSession()
   {
-    AttributeCharacterMdSession attrSes = new AttributeCharacterMdSession(Integer.valueOf(this.getSize()));
+    AttributeCharacterMdSession attrSes = new AttributeCharacterMdSession(Integer.parseInt(this.getSize()));
     super.populateAttributeMdSession(attrSes);
     return attrSes;
   }
-  
+
   /**
    * @see com.runwaysdk.dataaccess.metadata.MdAttributeDAO#getInterfaceClassName()
    */

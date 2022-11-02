@@ -234,6 +234,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, formMdClass.definesType(), mdField.getKey());
         }
 
+        mdAttribute = formMdClass.definesAttribute(attributeName);
         mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getOid());
       }
     }

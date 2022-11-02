@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -30,6 +30,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.CommonProperties;
@@ -65,19 +68,19 @@ import com.runwaysdk.vault.WebFileDAOIF;
 
 public class TransactionExportManager
 {
-  public static String                  XML_EXPORT_FILE       = "export.xml";
+  public static final String            XML_EXPORT_FILE       = "export.xml";
 
-  public static String                  TRANSACTIONS_DIR_NAME = "transactions";
+  public static final String            TRANSACTIONS_DIR_NAME = "transactions";
 
-  public static String                  VAULTS_DIR_NAME       = "vaults";
+  public static final String            VAULTS_DIR_NAME       = "vaults";
 
-  public static String                  WEBFILES_DIR_NAME     = "webfiles";
+  public static final String            WEBFILES_DIR_NAME     = "webfiles";
 
-  public static String                  APP_FILES_DIR_NAME    = "applicationfiles";
+  public static final String            APP_FILES_DIR_NAME    = "applicationfiles";
 
-  public static String                  EXT_DELIMETER         = ".";
+  public static final String            EXT_DELIMETER         = ".";
 
-  private static final SimpleDateFormat formatter             = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
+  private static Logger                 logger                = LoggerFactory.getLogger(TransactionExportManager.class);
 
   private List<String>                  applicationFiles;
 
@@ -161,7 +164,7 @@ public class TransactionExportManager
     this.exportFileRootName = _exportFileRootName;
     this.exportFileDirLocation = _exportFileLocationDir;
 
-    this.timeStampedName = this.exportFileRootName + "-" + formatter.format(now);
+    this.timeStampedName = this.exportFileRootName + "-" + new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss").format(now);
     this.tempExportDirLocation = exportFileDirLocation + File.separator + "_temp_" + this.timeStampedName + File.separator;
 
     this.transactionsDirLocation = this.tempExportDirLocation + File.separator + TRANSACTIONS_DIR_NAME + File.separator;
@@ -174,22 +177,34 @@ public class TransactionExportManager
 
     this.xmlExportFileLocation = this.tempExportDirLocation + XML_EXPORT_FILE;
 
-    this.tempExportDir = new File(this.tempExportDirLocation);
-    this.tempExportDir.mkdirs();
+    this.tempExportDir = new File(this.tempExportDirLocation);    
+    if (!this.tempExportDir.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + this.tempExportDir.getAbsolutePath() + "]");
+    }
 
     this.webFilesDirLocation = this.tempExportDirLocation + File.separator + WEBFILES_DIR_NAME + File.separator;
     this.webFilesDir = new File(webFilesDirLocation);
-    this.webFilesDir.mkdirs();
+    if (!this.webFilesDir.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + this.webFilesDir.getAbsolutePath() + "]");
+    }
 
     // Create directories for all of the vaults
     this.vaultsDirLocation = this.tempExportDirLocation + File.separator + VAULTS_DIR_NAME + File.separator;
     this.vaultsDir = new File(this.vaultsDirLocation);
-    this.vaultsDir.mkdirs();
+    if (!this.vaultsDir.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + this.vaultsDir.getAbsolutePath() + "]");
+    }
 
     // Creates director for the application files
     this.appFilesDirLocation = this.tempExportDirLocation + File.separator + APP_FILES_DIR_NAME + File.separator;
     this.appFilesDir = new File(this.appFilesDirLocation);
-    this.appFilesDir.mkdirs();
+    if (!this.appFilesDir.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + this.appFilesDir.getAbsolutePath() + "]");
+    }
 
     QueryFactory qf = new QueryFactory();
     BusinessDAOQuery vaultQ = qf.businessDAOQuery(VaultInfo.CLASS);

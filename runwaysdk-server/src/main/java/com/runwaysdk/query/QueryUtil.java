@@ -46,7 +46,7 @@ public class QueryUtil
    */
   protected static StatementPrimitive formatAndValidateDouble(double doubleValue)
   {
-    String formattedValue = Database.formatJavaToSQL(new String(""+doubleValue), MdAttributeDoubleInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(Double.toString(doubleValue), MdAttributeDoubleInfo.CLASS, false);
     return new StatementPrimitive(formattedValue);
   }
 
@@ -59,7 +59,7 @@ public class QueryUtil
    */
   protected static StatementPrimitive formatAndValidateFloat(float floatValue)
   {
-    String formattedValue = Database.formatJavaToSQL(new String(""+floatValue), MdAttributeFloatInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(Float.toString(floatValue), MdAttributeFloatInfo.CLASS, false);
     return new StatementPrimitive(formattedValue);
   }
 
@@ -71,7 +71,7 @@ public class QueryUtil
    */
   protected static StatementPrimitive formatAndValidateInteger(int intValue)
   {
-    String formattedValue = Database.formatJavaToSQL(new String(""+intValue), MdAttributeIntegerInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(Integer.toString(intValue), MdAttributeIntegerInfo.CLASS, false);
     return new StatementPrimitive(formattedValue);
   }
 
@@ -83,7 +83,7 @@ public class QueryUtil
    */
   protected static StatementPrimitive formatAndValidateLong(long longValue)
   {
-    String formattedValue = Database.formatJavaToSQL(new String(""+longValue), MdAttributeLongInfo.CLASS, false);
+    String formattedValue = Database.formatJavaToSQL(Long.toString(longValue), MdAttributeLongInfo.CLASS, false);
     return new StatementPrimitive(formattedValue);
   }
 

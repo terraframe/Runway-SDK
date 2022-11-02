@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.instance;
 
@@ -79,15 +79,24 @@ public class InstanceImporterUnzipper
         throw new RuntimeException(e); // I hate checked exceptions
       }
     }
-    outputDir.mkdir();
 
-    for (File zip : directory.listFiles())
+    if (!outputDir.mkdir())
     {
-      if (zip.getName().endsWith(".gz"))
-      {
-        logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
+      logger.debug("Unable to make directory [" + outputDir.getAbsolutePath() + "]");
+    }
 
-        FileIO.gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
+    File[] files = directory.listFiles();
+
+    if (files != null)
+    {
+      for (File zip : files)
+      {
+        if (zip.getName().endsWith(".gz"))
+        {
+          logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
+
+          FileIO.gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
+        }
       }
     }
 
@@ -112,12 +121,17 @@ public class InstanceImporterUnzipper
 
   private static void importXmlFiles(final File outputDir)
   {
-    for (File xml : outputDir.listFiles())
+    File[] files = outputDir.listFiles();
+
+    if (files != null)
     {
-      if (xml.getName().endsWith(".xml"))
+      for (File xml : files)
       {
-        logger.info("Importing " + xml.getAbsolutePath() + ".");
-        SAXImporter.runImport(xml, "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
+        if (xml.getName().endsWith(".xml"))
+        {
+          logger.info("Importing " + xml.getAbsolutePath() + ".");
+          SAXImporter.runImport(xml, "classpath:com/runwaysdk/resources/xsd/datatype.xsd");
+        }
       }
     }
   }

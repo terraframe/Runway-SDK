@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Jul 22, 2005
@@ -24,11 +24,14 @@ package com.runwaysdk.dataaccess.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -95,8 +98,9 @@ import com.runwaysdk.util.Base64;
 import com.runwaysdk.util.FileIO;
 
 /**
- * XMLExporter provides the structure to incrementally build a DOM Document representing data from the core. The DOM can be written to an XML file, which can be imported to other instances of the core
- * using XMLImporter.
+ * XMLExporter provides the structure to incrementally build a DOM Document
+ * representing data from the core. The DOM can be written to an XML file, which
+ * can be imported to other instances of the core using XMLImporter.
  * 
  * @author Eric
  * @version $Revision 1.0 $
@@ -110,7 +114,8 @@ public class XMLExporter
   private Document                        document;
 
   /**
-   * The root of the parsed <code>schema</code>, used to determine the correct sequence of tags in a definition.
+   * The root of the parsed <code>schema</code>, used to determine the correct
+   * sequence of tags in a definition.
    */
   private Element                         schema;
 
@@ -120,35 +125,44 @@ public class XMLExporter
   private Element                         root;
 
   /**
-   * <code>elementMap</code> stores oid-->element mappings. Used for quick access to an element if additional information needs to be added.
+   * <code>elementMap</code> stores oid-->element mappings. Used for quick
+   * access to an element if additional information needs to be added.
    */
   private Hashtable<String, Element>      elementMap;
 
   /**
    * <code>attributeMap</code> stores Element-->oid mappings. When an <code>&lt;
-   * md_attribute></code> tag is created, it is attached as a child to the <code>&lt;
-   * definitions></code> tag of the defining <code>&lt;object</code>. This map allows the elements to be attached to the appropriate parents before writing to the file.
+   * md_attribute></code> tag is created, it is attached as a child to the
+   * <code>&lt;
+   * definitions></code> tag of the defining <code>&lt;object</code>. This map
+   * allows the elements to be attached to the appropriate parents before
+   * writing to the file.
    */
   private Hashtable<Element, String>      attributeMap;
 
   /**
-   * When the correct order of tags in an attribute definition is built, <code>attributeOrder</code> stores a type-->order mapping, so that future tags of the same type don't need to rebuild their
-   * order.
+   * When the correct order of tags in an attribute definition is built,
+   * <code>attributeOrder</code> stores a type-->order mapping, so that future
+   * tags of the same type don't need to rebuild their order.
    */
   private Hashtable<String, List<String>> attributeOrder;
 
   /**
-   * Indicates whether or not duplicate instances of the same OID are allowed. Documents with duplicates will not validate on schemas that enforce referential integrity.
+   * Indicates whether or not duplicate instances of the same OID are allowed.
+   * Documents with duplicates will not validate on schemas that enforce
+   * referential integrity.
    */
   private boolean                         allowDuplicates;
 
   /**
-   * <code>ids</code> contains every oid that has been added to the Document. Used when detecting duplicates. <code><b>false</b></code> by default.
+   * <code>ids</code> contains every oid that has been added to the Document.
+   * Used when detecting duplicates. <code><b>false</b></code> by default.
    */
   private TreeSet<String>                 ids;
 
   /**
-   * Initializes the <code>document</code>, creates the <code>root</code> element, and parses the <code>schema</code>.
+   * Initializes the <code>document</code>, creates the <code>root</code>
+   * element, and parses the <code>schema</code>.
    * 
    * @param schemaFile
    *          A path String that points to the schema for this XMLExporter
@@ -259,11 +273,11 @@ public class XMLExporter
   public void addChangelog(List<Changelog> logs)
   {
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-    
+
     for (Changelog log : logs)
     {
       Element changelogTag = document.createElement("changelog");
-      
+
       this.root.appendChild(changelogTag);
 
       Element changeNumber = document.createElement("changeNumber");
@@ -273,14 +287,14 @@ public class XMLExporter
       Element completeDate = document.createElement("completeDate");
       completeDate.appendChild(document.createTextNode(format.format(log.getCompleteDate())));
       changelogTag.appendChild(completeDate);
-      
+
       Element appliedBy = document.createElement("appliedBy");
       appliedBy.appendChild(document.createTextNode(log.getAppliedBy()));
       changelogTag.appendChild(appliedBy);
-      
+
       Element description = document.createElement("description");
       description.appendChild(document.createTextNode(log.getDescription()));
-      changelogTag.appendChild(description);      
+      changelogTag.appendChild(description);
     }
   }
 
@@ -295,11 +309,15 @@ public class XMLExporter
   }
 
   /**
-   * Adds data to the <code>document</code> for each element in the <code>List</code>. The <code>List</code> does not need to be homogenous, and accepts references (Strings), BusinessDAOs, and
-   * Relationships (Enumerations soon). If an object is not of the accepted types, a DataAccessException is thrown.
+   * Adds data to the <code>document</code> for each element in the
+   * <code>List</code>. The <code>List</code> does not need to be homogenous,
+   * and accepts references (Strings), BusinessDAOs, and Relationships
+   * (Enumerations soon). If an object is not of the accepted types, a
+   * DataAccessException is thrown.
    * 
    * @param objects
-   *          <code>List</code> of references, BusinessDAOs, Relationships, and Enumerations
+   *          <code>List</code> of references, BusinessDAOs, Relationships, and
+   *          Enumerations
    */
   public void add(List<? extends Object> objects)
   {
@@ -310,11 +328,15 @@ public class XMLExporter
   }
 
   /**
-   * Adds data to the <code>document</code> for each element in the <code>List</code>. The <code>List</code> does not need to be homogenous, and accepts references (Strings), BusinessDAOs, and
-   * Relationships (Enumerations soon). If an object is not of the accepted types, a DataAccessException is thrown.
+   * Adds data to the <code>document</code> for each element in the
+   * <code>List</code>. The <code>List</code> does not need to be homogenous,
+   * and accepts references (Strings), BusinessDAOs, and Relationships
+   * (Enumerations soon). If an object is not of the accepted types, a
+   * DataAccessException is thrown.
    * 
    * @param objects
-   *          <code>List</code> of references, BusinessDAOs, Relationships, and Enumerations
+   *          <code>List</code> of references, BusinessDAOs, Relationships, and
+   *          Enumerations
    */
   public void addComponent(Object object)
   {
@@ -334,7 +356,8 @@ public class XMLExporter
   }
 
   /**
-   * Adds a Component to the <code>document</code>. Handles the special case of <code>
+   * Adds a Component to the <code>document</code>. Handles the special case of
+   * <code>
    * MD_ATTRIBUTE</code>, as well as any BusinessDAO or Relationship instance.
    * 
    * @param component
@@ -376,7 +399,8 @@ public class XMLExporter
   }
 
   /**
-   * Gets the instance of the <code>Component</code> referenced by the given <code>oid</code> and adds it to the <code>document</code>.
+   * Gets the instance of the <code>Component</code> referenced by the given
+   * <code>oid</code> and adds it to the <code>document</code>.
    * 
    * @param oid
    *          of a Component in the database
@@ -389,7 +413,8 @@ public class XMLExporter
   }
 
   /**
-   * Generates the approriate tags for the given <code>EntityDAO</code> and adds them to the <code>document</code>.
+   * Generates the approriate tags for the given <code>EntityDAO</code> and adds
+   * them to the <code>document</code>.
    * 
    * @param entityDAO
    *          A EntityDAO instance
@@ -418,7 +443,8 @@ public class XMLExporter
   }
 
   /**
-   * Generates the approriate tags for the given <code>Relationship</code> and adds them to the <code>document</code>.
+   * Generates the approriate tags for the given <code>Relationship</code> and
+   * adds them to the <code>document</code>.
    * 
    * @param relationship
    *          A Relationship instance
@@ -517,7 +543,14 @@ public class XMLExporter
       }
       else if (attribute instanceof AttributeSymmetric)
       {
-        value = Base64.encodeToString(attribute.getRawValue().getBytes(), false);
+        try
+        {
+          value = Base64.encodeToString(attribute.getRawValue().getBytes("UTF-8"), false);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+          throw new RuntimeException("Unknown encoding", e);
+        }
       }
       else if (attribute.getDefiningClassType().equals(ActorDAOIF.CLASS) && attribute.getName().equals(ElementInfo.SITE_MASTER))
       {
@@ -590,7 +623,8 @@ public class XMLExporter
 
   /**
    * Handles the special case of <code>MdAttribute</code>s. <code>MdAttribute
-   * </code> definitions do not create new <code>&lt;object></code> tags like other <code>EntityDAO<code>s.  Rather, they attach themselves to the <code>
+   * </code> definitions do not create new <code>&lt;object></code> tags like
+   * other <code>EntityDAO<code>s.  Rather, they attach themselves to the <code>
    * &lt;definitions></code> tag of their parent type in the document.
    * 
    * @param mdAttribute
@@ -724,7 +758,8 @@ public class XMLExporter
   }
 
   /**
-   * Checks an oid to see if it has already been added to this document. If so (and duplicates are not allowed), an exception is thrown.
+   * Checks an oid to see if it has already been added to this document. If so
+   * (and duplicates are not allowed), an exception is thrown.
    * 
    * @param oid
    *          The oid of an element to be added to the document.
@@ -743,10 +778,12 @@ public class XMLExporter
   }
 
   /**
-   * Builds the correct sequence of tags in attribute definitions for the given attribute classType.
+   * Builds the correct sequence of tags in attribute definitions for the given
+   * attribute classType.
    * 
    * @param classType
-   *          The type of the MD_ATTRIBUTE class whose sequence of tags is being built
+   *          The type of the MD_ATTRIBUTE class whose sequence of tags is being
+   *          built
    */
   private List<String> buildAttributeOrder(String classType)
   {
@@ -770,7 +807,7 @@ public class XMLExporter
         break;
       }
     }
-    
+
     List<String> order = new LinkedList<String>();
     if (base != null)
     {
@@ -831,7 +868,8 @@ public class XMLExporter
   }
 
   /**
-   * Given an Element, returns the first <code>complexType</code> child node with the specified <code>name</code> attribute.
+   * Given an Element, returns the first <code>complexType</code> child node
+   * with the specified <code>name</code> attribute.
    * 
    * @param source
    *          The parent Element of the search domain
@@ -856,7 +894,9 @@ public class XMLExporter
   }
 
   /**
-   * Exports the <code>document</code> into an XML file, at the location specified by <code>outFile</code>. If the file already exists, it will be overwritten.
+   * Exports the <code>document</code> into an XML file, at the location
+   * specified by <code>outFile</code>. If the file already exists, it will be
+   * overwritten.
    * 
    * @param outFile
    */
@@ -885,14 +925,17 @@ public class XMLExporter
   }
 
   /**
-   * Joins the <code>&lt;md_attribute></code> tags to their parent <code>&lt;definitions>
+   * Joins the <code>&lt;md_attribute></code> tags to their parent
+   * <code>&lt;definitions>
    * </code> tags.
    */
   private void joinDefinitions()
   {
-    for (Element attributeTag : attributeMap.keySet())
+    Set<Entry<Element, String>> entries = attributeMap.entrySet();
+    for (Entry<Element, String> entry : entries)
     {
-      Element object = (Element) elementMap.get(attributeMap.get(attributeTag));
+      Element attributeTag = entry.getKey();
+      Element object = (Element) elementMap.get(entry.getValue());
 
       if (object == null)
       {

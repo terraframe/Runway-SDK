@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io.instance;
 
@@ -64,18 +64,25 @@ public class VersioningUnzipper
         FileUtils.deleteDirectory(outputDir);
       }
 
-      outputDir.mkdir();
+      if (!outputDir.mkdir())
+      {
+        logger.debug("Unable to make directory [" + outputDir.getAbsolutePath() + "]");
+      }
 
       try
       {
-
-        for (File zip : directory.listFiles())
+        File[] files = directory.listFiles();
+        
+        if (files != null)
         {
-          if (zip.getName().endsWith(".gz"))
+          for (File zip : files)
           {
-            logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
+            if (zip.getName().endsWith(".gz"))
+            {
+              logger.info("Unzipping " + zip.getAbsolutePath() + " to " + outputDir + ".");
 
-            FileIO.gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
+              FileIO.gunzip(zip, new File(outputDir, zip.getName().substring(0, zip.getName().length() - 3)));
+            }
           }
         }
 

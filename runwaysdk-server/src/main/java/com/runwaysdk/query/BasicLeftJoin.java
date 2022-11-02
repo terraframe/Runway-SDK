@@ -65,7 +65,7 @@ public abstract class BasicLeftJoin extends LeftJoin
   {
     if (this.selectable1 != null)
     {
-      String leftJoinString = "";
+      StringBuilder leftJoinString = new StringBuilder();
       
       Selectable[] selectableArray2 = this.getSelectableArray2();
 
@@ -77,17 +77,17 @@ public abstract class BasicLeftJoin extends LeftJoin
         {
           ValueQuery valueObjectQuery = (ValueQuery) componentQuery;
 
-          leftJoinString += " LEFT JOIN\n(" + valueObjectQuery.getSQL() + ") " + valueObjectQuery.getTableAlias() + " ON " + this.selectable1.getSQL() + " " + this.getOperator() + " " + loopSelectable.getSQL() + "\n";
+          leftJoinString.append(" LEFT JOIN\n(" + valueObjectQuery.getSQL() + ") " + valueObjectQuery.getTableAlias() + " ON " + this.selectable1.getSQL() + " " + this.getOperator() + " " + loopSelectable.getSQL() + "\n");
 
           continue;
         }
 
-        leftJoinString += "\n LEFT JOIN " + loopSelectable.getDefiningTableName() + " " + loopSelectable.getDefiningTableAlias() + " ON " + this.selectable1.getSQL() + " " + this.getOperator() + " " + loopSelectable.getSQL() + "\n";
+        leftJoinString.append("\n LEFT JOIN " + loopSelectable.getDefiningTableName() + " " + loopSelectable.getDefiningTableAlias() + " ON " + this.selectable1.getSQL() + " " + this.getOperator() + " " + loopSelectable.getSQL() + "\n");
 
         continue;
       }
 
-      return leftJoinString;
+      return leftJoinString.toString();
     }
     else
     {

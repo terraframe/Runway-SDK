@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -28,6 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.zip.ZipFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.RunwayMetadataVersion;
 import com.runwaysdk.constants.CommonProperties;
@@ -46,6 +49,8 @@ import com.runwaysdk.vault.WebFileDAOIF;
 
 public class TransactionImportManager implements IPropertyListener
 {
+  private static Logger           logger = LoggerFactory.getLogger(TransactionImportManager.class);
+
   private String                  importZipFileLocation;
 
   private File                    restoreDirectory;
@@ -73,7 +78,7 @@ public class TransactionImportManager implements IPropertyListener
   /**
    * Version of the importer
    */
-  private RunwayMetadataVersion           version;
+  private RunwayMetadataVersion   version;
 
   private List<IPropertyListener> propertyListeners;
 
@@ -107,8 +112,10 @@ public class TransactionImportManager implements IPropertyListener
     String restoreDirectoryString = zipFile.getParent() + File.separator + rootZipFileName + File.separator;
 
     this.restoreDirectory = new File(restoreDirectoryString);
-
-    this.restoreDirectory.mkdir();
+    if (!this.restoreDirectory.mkdir())
+    {
+      logger.debug("Unable to create folder [" + this.restoreDirectory.getAbsolutePath() + "]");
+    }
 
     this.exportXMLFileLocation = restoreDirectoryString + TransactionExportManager.XML_EXPORT_FILE;
 
@@ -207,12 +214,14 @@ public class TransactionImportManager implements IPropertyListener
         this.restoreApplicationFiles();
       }
 
-//      // IMPORTANT: It is required that we update the databaes source and class
-//      // after restoring the application files. This is due to the fact that the
-//      // new application files might contain updated source and class files.
-//      this.fireStartTaskEvent("Update_database_source_and_class", -1);
-//
-//      UpdateDatabaseSourceAndClasses.storeSourceAndClassesInDatabase();
+      // // IMPORTANT: It is required that we update the databaes source and
+      // class
+      // // after restoring the application files. This is due to the fact that
+      // the
+      // // new application files might contain updated source and class files.
+      // this.fireStartTaskEvent("Update_database_source_and_class", -1);
+      //
+      // UpdateDatabaseSourceAndClasses.storeSourceAndClassesInDatabase();
 
       this.fireStartTaskEvent("Cleanup_temp_files", -1);
 
@@ -311,18 +320,24 @@ public class TransactionImportManager implements IPropertyListener
     };
 
     // The root is a folder - get all of its files
-    for (File child : vaultsDir.listFiles(fileFilter))
-    {
-      String vaultId = child.getName();
+    File[] children = vaultsDir.listFiles(fileFilter);
 
-      try
+    if (children != null)
+    {
+
+      for (File child : children)
       {
-        VaultDAOIF vaultDAOIF = VaultDAO.get(vaultId);
-        restoreValut(vaultDAOIF);
-      }
-      catch (DataNotFoundException e)
-      {
-        // No vault with the given oid exists. Vault may have been deleted.
+        String vaultId = child.getName();
+
+        try
+        {
+          VaultDAOIF vaultDAOIF = VaultDAO.get(vaultId);
+          restoreValut(vaultDAOIF);
+        }
+        catch (DataNotFoundException e)
+        {
+          // No vault with the given oid exists. Vault may have been deleted.
+        }
       }
     }
   }
@@ -367,24 +382,29 @@ public class TransactionImportManager implements IPropertyListener
     };
 
     // The root is a folder - get all of its files
-    for (File child : webDir.listFiles(fileFilter))
+    File[] children = webDir.listFiles(fileFilter);
+
+    if (children != null)
     {
-      String webFileId = child.getName();
+      for (File child : children)
+      {
+        String webFileId = child.getName();
 
-      try
-      {
-        WebFileDAOIF webFileDAOIF = WebFileDAO.get(webFileId);
+        try
+        {
+          WebFileDAOIF webFileDAOIF = WebFileDAO.get(webFileId);
 
-        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(child));
-        webFileDAOIF.putFile(inputStream);
-      }
-      catch (IOException e)
-      {
-        throw new FileWriteException(child, e);
-      }
-      catch (DataNotFoundException e)
-      {
-        // No webfile with the given oid exists. it may have been deleted.
+          BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(child));
+          webFileDAOIF.putFile(inputStream);
+        }
+        catch (IOException e)
+        {
+          throw new FileWriteException(child, e);
+        }
+        catch (DataNotFoundException e)
+        {
+          // No webfile with the given oid exists. it may have been deleted.
+        }
       }
     }
   }
@@ -423,7 +443,11 @@ public class TransactionImportManager implements IPropertyListener
         String path = directory + child.getName();
 
         // Make the directory if it doesn't exist
-        new File(directory).mkdirs();
+        File outFile = new File(directory);
+        if (!outFile.mkdirs())
+        {
+          logger.debug("Unable to create folder [" + outFile.getAbsolutePath() + "]");
+        }
 
         FileOutputStream out = new FileOutputStream(new File(path));
         FileInputStream in = new FileInputStream(child);

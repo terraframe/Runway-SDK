@@ -123,7 +123,7 @@ public abstract class IntegerFunction extends SimpleFunction implements Selectab
    */
   public Condition NE(SimpleFunction simpleFunction)
   {
-    return this.NE((SimpleFunction)simpleFunction);
+    return super.NE((SimpleFunction)simpleFunction);
   }
 
   /**

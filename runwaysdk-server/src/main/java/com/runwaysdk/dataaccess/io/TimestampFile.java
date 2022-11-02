@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -69,6 +69,17 @@ public class TimestampFile
     return this.getTimestamp().compareTo(file.getTimestamp());
   }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (obj instanceof TimestampFile)
+    {
+      return this.getTimestamp().equals( ( (TimestampFile) obj ).getTimestamp());
+    }
+
+    return super.equals(obj);
+  }
+
   public static List<File> getTimestampedFiles(File directory)
   {
     List<File> list = new LinkedList<File>();
@@ -77,14 +88,19 @@ public class TimestampFile
     {
       Pattern namePattern = Pattern.compile(NAME_PATTERN);
 
-      for (File file : directory.listFiles())
-      {
-        String name = file.getName();
-        Matcher nameMatcher = namePattern.matcher(name);
+      File[] files = directory.listFiles();
 
-        if (nameMatcher.find())
+      if (files != null)
+      {
+        for (File file : files)
         {
-          list.add(file);
+          String name = file.getName();
+          Matcher nameMatcher = namePattern.matcher(name);
+
+          if (nameMatcher.find())
+          {
+            list.add(file);
+          }
         }
       }
     }

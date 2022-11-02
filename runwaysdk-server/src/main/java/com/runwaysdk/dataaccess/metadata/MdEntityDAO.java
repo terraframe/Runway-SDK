@@ -526,7 +526,7 @@ public abstract class MdEntityDAO extends MdClassDAO implements MdEntityDAOIF
     // Validate the name
     validateName();
 
-    String oid = new String();
+    String oid = "";
     boolean applied = this.isAppliedToDB();
 
     if (this.isNew() && !applied)

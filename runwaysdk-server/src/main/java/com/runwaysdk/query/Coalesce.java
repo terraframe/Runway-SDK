@@ -108,23 +108,23 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
    */
   protected String calculateDisplayLabel()
   {
-    String displayLabel = this.getFunctionName() + "(";
+    StringBuilder displayLabel = new StringBuilder(this.getFunctionName() + "(");
 
-    displayLabel += this.calculateDisplayLabel(this.selectable);
+    displayLabel.append(this.calculateDisplayLabel(this.selectable));
 
     for (Selectable optionalSelectable : this.optionalSelectableArray)
     {
-      displayLabel += "," + this.calculateDisplayLabel(optionalSelectable);
+      displayLabel.append("," + this.calculateDisplayLabel(optionalSelectable));
     }
 
     if (other != null)
     {
-      displayLabel += "," + other;
+      displayLabel.append("," + other);
     }
 
-    displayLabel += ")";
+    displayLabel.append(")");
 
-    return displayLabel;
+    return displayLabel.toString();
   }
 
   private String calculateDisplayLabel(Selectable optionalSelectable)
@@ -142,22 +142,22 @@ public class Coalesce extends SimpleFunction implements SelectableChar, Selectab
   @Override
   public String getSQL()
   {
-    String sql = this.getFunctionName() + "(";
-    sql += this.selectable.getSQL();
+    StringBuilder sql = new StringBuilder(this.getFunctionName() + "(");
+    sql.append(this.selectable.getSQL());
 
     for (Selectable optionalSelectable : this.optionalSelectableArray)
     {
-      sql += ", " + optionalSelectable.getSQL();
+      sql.append(", " + optionalSelectable.getSQL());
     }
 
     if (this.other != null)
     {
-      sql += ", " + this.other;
+      sql.append(", " + this.other);
     }
 
-    sql += ")";
+    sql.append(")");
 
-    return sql;
+    return sql.toString();
   }
 
   @Override

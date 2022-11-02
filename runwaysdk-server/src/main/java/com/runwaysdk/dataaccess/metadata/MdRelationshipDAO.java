@@ -150,7 +150,7 @@ public class MdRelationshipDAO extends MdElementDAO implements MdRelationshipDAO
   public boolean cacheAllInstances()
   {
     BusinessDAOIF cacheEnumItem = this.getCacheAlgorithm();
-    int cacheCode = Integer.valueOf(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue()).intValue();
+    int cacheCode = Integer.parseInt(cacheEnumItem.getAttributeIF(EntityCacheMaster.CACHE_CODE).getValue());
 
     if (cacheCode == EntityCacheMaster.CACHE_EVERYTHING.getCacheCode())
     {

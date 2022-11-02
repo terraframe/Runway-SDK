@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * 
@@ -82,7 +82,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
+     * @see
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(
+     * java.lang.String, org.xml.sax.Attributes,
+     * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
     public void onStartElement(String localName, Attributes attributes, TagContext context)
@@ -107,7 +110,9 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     }
 
     /**
-     * Checks if the attribute MdAttribute has already been defined. If the MdAttribute has not already been applied then apply one, else throw an exception
+     * Checks if the attribute MdAttribute has already been defined. If the
+     * MdAttribute has not already been applied then apply one, else throw an
+     * exception
      * 
      * @pre mdAttribute instanceof MdAttribute
      * 
@@ -172,7 +177,8 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
           String[] search_tags = { XMLTags.MD_BUSINESS_TAG, XMLTags.MD_TERM_TAG };
           SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, mdClass.definesType(), mdField.getKey());
         }
-
+        
+        mdAttribute = mdClass.definesAttribute(attributeName);        
         mdField.setValue(MdWebPrimitiveInfo.DEFINING_MD_ATTRIBUTE, mdAttribute.getOid());
       }
     }
@@ -180,8 +186,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.MdWebFieldHandler.FieldHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebFormDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
-     * org.xml.sax.Attributes)
+     * @see
+     * com.runwaysdk.dataaccess.io.dataDefinition.MdWebFieldHandler.FieldHandler
+     * #configure(com.runwaysdk.dataaccess.metadata.MdWebFormDAO,
+     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
@@ -208,8 +216,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
-     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.
+     * FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.
+     * MdWebSingleTermGridDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
+     * org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
@@ -236,8 +246,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
-     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.
+     * FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.
+     * MdWebSingleTermGridDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
+     * org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
@@ -265,8 +277,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
-     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.
+     * FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.
+     * MdWebSingleTermGridDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
+     * org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)
@@ -292,8 +306,10 @@ public class GridFieldHandler extends TagHandler implements TagHandlerIF, Handle
     /*
      * (non-Javadoc)
      * 
-     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.MdWebSingleTermGridDAO,
-     * com.runwaysdk.dataaccess.metadata.MdFieldDAO, org.xml.sax.Attributes)
+     * @see com.runwaysdk.dataaccess.io.dataDefinition.GridFieldHandler.
+     * FieldAttributeHandler#configure(com.runwaysdk.dataaccess.metadata.
+     * MdWebSingleTermGridDAO, com.runwaysdk.dataaccess.metadata.MdFieldDAO,
+     * org.xml.sax.Attributes)
      */
     @Override
     protected void configure(MdWebSingleTermGridDAO mdGrid, MdFieldDAO mdField, Attributes attributes)

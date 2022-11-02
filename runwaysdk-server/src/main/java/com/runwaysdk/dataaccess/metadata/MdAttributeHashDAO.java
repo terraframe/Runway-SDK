@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.metadata;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -39,8 +40,6 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.transport.metadata.caching.AttributeHashMdSession;
 import com.runwaysdk.transport.metadata.caching.AttributeMdSession;
-
-import sun.security.provider.Sun;
 
 public class MdAttributeHashDAO extends MdAttributeEncryptionDAO implements MdAttributeHashDAOIF
 {
@@ -128,21 +127,21 @@ public class MdAttributeHashDAO extends MdAttributeEncryptionDAO implements MdAt
   public void setRandomValue(EntityDAO object)
   {
     Random random = EntityGenerator.getRandom();
-    String s = new String();
+    StringBuilder s = new StringBuilder();
     String alpha = "abcdefghijklmnopqrstuvwxyz    ";
     for (int i=0; i<256; i++)
-      s += alpha.charAt(random.nextInt(30));
+      s.append(alpha.charAt(random.nextInt(30)));
     
     // hash the value according to the hashing method
     String type = getEncryptionMethod();
     String hash = null;
     try
     {
-      MessageDigest digest = MessageDigest.getInstance(type, new Sun());
-      digest.update(s.getBytes());
-      hash = new String(digest.digest());
+      MessageDigest digest = MessageDigest.getInstance(type);
+      digest.update(s.toString().getBytes("UTF-8"));
+      hash = new String(digest.digest(), "UTF-8");
     }
-    catch (NoSuchAlgorithmException e)
+    catch (NoSuchAlgorithmException | UnsupportedEncodingException e)
     {
       String error = "Attribute [" + this.definesAttribute() + "] on ["
           + this.definedByClass().definesType() + "] has an incorrect hashing algorithm.";

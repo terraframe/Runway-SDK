@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -23,12 +23,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
 
 public class CreateDomainModel
 {
-  private File directory;
+  private static Logger logger = LoggerFactory.getLogger(CreateDomainModel.class);
+
+  private File          directory;
 
   public CreateDomainModel(String directory)
   {
@@ -42,7 +47,10 @@ public class CreateDomainModel
 
     if (!directory.exists())
     {
-      directory.mkdirs();
+      if (!directory.mkdirs())
+      {
+        logger.debug("Unable to create directory [" + directory.getAbsolutePath() + "]");
+      }
     }
 
     String path = directory.getAbsolutePath() + "/schema(" + format + ").xml";
@@ -53,7 +61,11 @@ public class CreateDomainModel
     {
       try
       {
-        file.createNewFile();
+        if (!file.createNewFile())
+        {
+          logger.debug("Unable to create new file");
+        }
+
         BufferedWriter out = new BufferedWriter(new FileWriter(path));
         out.write("<version xsi:noNamespaceSchemaLocation=\"classpath:com/runwaysdk/resources/xsd/version.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" + "  <doIt>\n" + "    <create></create>\n" + "    <update></update>\n" + "  </doIt>\n" + "  <undoIt>\n" + "    <delete></delete>\n" + "  </undoIt>\n" + "</version>");
         out.close();

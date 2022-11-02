@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -50,47 +50,45 @@ import com.runwaysdk.util.FileIO;
 
 public class Backup
 {
-  public static final String            WEBAPP_DIR_NAME  = "webapp";
-  
-  public static final String            PROVILE_DIR_NAME = "profiles";
+  public static final String WEBAPP_DIR_NAME  = "webapp";
 
-  public static final String            VAULT_DIR_NAME   = "vaults";
+  public static final String PROVILE_DIR_NAME = "profiles";
 
-  public static final String            WEBFILE_DIR_NAME = "webfiles";
+  public static final String VAULT_DIR_NAME   = "vaults";
 
-  public static final String            CACHE            = "cache";
+  public static final String WEBFILE_DIR_NAME = "webfiles";
 
-  public static final String            SQL              = "sql";
+  public static final String CACHE            = "cache";
 
-  private static final SimpleDateFormat formatter        = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
+  public static final String SQL              = "sql";
 
-  private PrintStream                   logPrintStream;
-  
-  private PrintStream                   errOut;
+  private static Logger      logger           = LoggerFactory.getLogger(Backup.class);
 
-  private String                        backupFileRootName;
+  private PrintStream        logPrintStream;
 
-  private String                        backupFileLocation;
+  private PrintStream        errOut;
 
-  private String                        tempBackupFileLocation;
+  private String             backupFileRootName;
 
-  private File                          tempBackupDir;
+  private String             backupFileLocation;
 
-   private boolean backupVaults;
+  private String             tempBackupFileLocation;
+
+  private File               tempBackupDir;
+
+  private boolean            backupVaults;
   //
   // private boolean backupWebFiles;
 
-  private String                        timeStampedName;
+  private String             timeStampedName;
 
-  private String                        cacheDir;
+  private String             cacheDir;
 
-  private String                        cacheName;
+  private String             cacheName;
 
-  private java.util.Date                now              = new java.util.Date();
+  private java.util.Date     now              = new java.util.Date();
 
-  private List<BackupAgent>             agents;
-
-  private static Logger                           logger = LoggerFactory.getLogger(Backup.class);
+  private List<BackupAgent>  agents;
 
   public Backup(PrintStream logPrintStream, PrintStream errOut, String backupFileRootName, String backupFileLocationDir, boolean backupVaults, boolean backupWebFiles)
   {
@@ -100,14 +98,17 @@ public class Backup
     this.backupFileRootName = backupFileRootName;
     this.backupFileLocation = backupFileLocationDir;
 
-     this.backupVaults = backupVaults;
+    this.backupVaults = backupVaults;
     // this.backupWebFiles = backupWebFiles;
 
-    this.timeStampedName = this.backupFileRootName + "-" + formatter.format(now);
+    this.timeStampedName = this.backupFileRootName + "-" + new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss").format(now);
     this.tempBackupFileLocation = backupFileLocationDir + File.separator + "_temp_" + this.timeStampedName;
 
     this.tempBackupDir = new File(this.tempBackupFileLocation);
-    this.tempBackupDir.mkdirs();
+    if (!this.tempBackupDir.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + this.tempBackupDir.getAbsolutePath() + "]");
+    }
 
     this.cacheDir = ServerProperties.getGlobalCacheFileLocation();
     this.cacheName = ServerProperties.getGlobalCacheName();
@@ -148,10 +149,13 @@ public class Backup
     backupDatabase(useNamespace);
 
     backupWebapp();
-    
+
     backupVaults();
-    
-    if (this.backupVaults) { backupVaults(); }
+
+    if (this.backupVaults)
+    {
+      backupVaults();
+    }
 
     /*
      * // backup the profiles backupProfiles();
@@ -185,16 +189,15 @@ public class Backup
 
     return zipFileNameAndLocation;
   }
-  
+
   private void backupVaults()
   {
     logger.trace("Starting backup of vaults.");
-    
+
     QueryFactory qf = new QueryFactory();
     BusinessQuery vaultQ = qf.businessQuery(VaultInfo.CLASS);
 
-    String backupVaultFileLocation = this.tempBackupFileLocation + File.separator + VAULT_DIR_NAME
-        + File.separator;
+    String backupVaultFileLocation = this.tempBackupFileLocation + File.separator + VAULT_DIR_NAME + File.separator;
 
     OIterator<Business> i = vaultQ.getIterator();
     try
@@ -203,15 +206,14 @@ public class Backup
       {
         String vaultName = vault.getValue(VaultInfo.VAULT_NAME);
         String vaultLocation = VaultProperties.getPath(vaultName);
-        
+
         File vaultLocationFile = new File(vaultLocation);
 
         if (vaultLocationFile != null && vaultLocationFile.exists())
         {
           logger.debug("Backing up vault [" + vaultName + "] at location [" + vaultLocation + "].");
-          
-          FileIO.copyFolder(new File(vaultLocation), new File(backupVaultFileLocation + File.separator
-              + vault.getOid() + File.separator));
+
+          FileIO.copyFolder(new File(vaultLocation), new File(backupVaultFileLocation + File.separator + vault.getOid() + File.separator));
         }
         else
         {
@@ -249,7 +251,8 @@ public class Backup
     boolean success = FileIO.copyFolder(webappRootFile, backupProfileLocationFile, filenameFilter);
     if (!success)
     {
-      // TODO : This success stuff is garbage, I want the actual IOException why swallow it
+      // TODO : This success stuff is garbage, I want the actual IOException why
+      // swallow it
       CreateBackupException cbe = new CreateBackupException();
       cbe.setLocation(backupProfileLocationFile.getAbsolutePath());
       throw cbe;
@@ -265,7 +268,10 @@ public class Backup
       // Make the temp cache directory
       File directory = new File(this.tempBackupFileLocation + File.separator + CACHE + File.separator);
       String copyTo = directory.getAbsolutePath();
-      directory.mkdirs();
+      if (!directory.mkdirs())
+      {
+        logger.debug("Unable to create folder [" + directory.getAbsolutePath() + "]");
+      }
 
       File cacheDir = new File(this.cacheDir);
       logger.trace("Backing up cache files from [" + cacheDir + "] to [" + copyTo + "].");
@@ -310,7 +316,10 @@ public class Backup
 
     // Make the temp sql directory
     File directory = new File(this.tempBackupFileLocation + File.separator + SQL + File.separator);
-    directory.mkdirs();
+    if (!directory.mkdirs())
+    {
+      logger.debug("Unable to create folder [" + directory.getAbsolutePath() + "]");
+    }
 
     String createdFile;
     if (useNamespace)

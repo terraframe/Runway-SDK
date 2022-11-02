@@ -192,7 +192,7 @@ public abstract class MdTransientDAO extends MdClassDAO implements MdTransientDA
 
       for (MdTransientDAOIF subMdTransientIF : this.getAllSubClasses())
       {
-        if (subMdTransientIF.getOid() == this.getOid())
+        if (subMdTransientIF.getOid().equals(this.getOid()))
         {
           continue;
         }

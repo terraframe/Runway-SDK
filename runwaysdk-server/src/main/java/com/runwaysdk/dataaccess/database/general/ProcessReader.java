@@ -119,7 +119,7 @@ public class ProcessReader implements UncaughtExceptionHandler
       {
         try
         {
-          String line = new String();
+          String line = null;
 
           while ( ( line = buffIn.readLine() ) != null)
           {

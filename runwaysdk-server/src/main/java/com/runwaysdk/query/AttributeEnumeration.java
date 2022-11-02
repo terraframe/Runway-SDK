@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -72,10 +72,10 @@ import com.runwaysdk.dataaccess.MdLocalStructDAOIF;
 import com.runwaysdk.dataaccess.MdStructDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
 
-
 /**
- * You can only sort/order by attributes defined by the enumeration master list class, and not on
- * any attributes that are inherited from the enumeration master's super class.
+ * You can only sort/order by attributes defined by the enumeration master list
+ * class, and not on any attributes that are inherited from the enumeration
+ * master's super class.
  *
  * @author nathan
  *
@@ -89,31 +89,25 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     pluginMap.put(pluginFactory.getModuleIdentifier(), pluginFactory);
   }
 
+  protected String mdEnumerationTableName;
 
-  protected String          mdEnumerationTableName;
-  
-  private String            cacheColumnName;
-  
-  private String            cacheColumnAlias;
+  private String   cacheColumnName;
 
-  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery,
-      Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  private String   cacheColumnAlias;
+
+  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     this(mdAttributeIF, attributeNameSpace, definingTableName, definingTableAlias, mdEnumerationTableName, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, null);
   }
 
-  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeDAOIF, String attributeNameSpace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery,
-      Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel, MdAttributeStructDAOIF mdAttributeStructIF)
+  protected AttributeEnumeration(MdAttributeEnumerationDAOIF mdAttributeDAOIF, String attributeNameSpace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel, MdAttributeStructDAOIF mdAttributeStructIF)
   {
-    super(mdAttributeDAOIF, attributeNameSpace, definingTableName, definingTableAlias,
-        referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, mdAttributeStructIF);
+    super(mdAttributeDAOIF, attributeNameSpace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel, mdAttributeStructIF);
 
-    this.mdEnumerationTableName  = mdEnumerationTableName;
-    
-    this.cacheColumnName = ( (MdAttributeEnumerationDAOIF)mdAttributeDAOIF ).getCacheColumnName();
-    
+    this.mdEnumerationTableName = mdEnumerationTableName;
+
+    this.cacheColumnName = ( (MdAttributeEnumerationDAOIF) mdAttributeDAOIF ).getCacheColumnName();
+
     this.cacheColumnAlias = rootQuery.getColumnAlias(attributeNameSpace, this.cacheColumnName);
   }
 
@@ -125,7 +119,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   {
     return this.cacheColumnName;
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -134,13 +128,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   {
     return this.cacheColumnAlias;
   }
-  
+
   /**
    * {@inheritDoc}
    */
   @Override
   public ColumnInfo getCacheColumnInfo()
-  {  
+  {
     return new ColumnInfo(this.getDefiningTableName(), this.getDefiningTableAlias(), this.getCacheColumnName(), this.getCacheColumnAlias());
   }
 
@@ -154,10 +148,12 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     columnInfoList.add(this.getCacheColumnInfo());
     return columnInfoList;
   }
-  
+
   /**
    * Compares the oid of a component for equality.
-   * @param oid oid of the object to compare.
+   * 
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
   public BasicCondition EQ(String oid)
@@ -169,7 +165,9 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Compares the oid of a component for equality.
-   * @param oid oid of the object to compare.
+   * 
+   * @param oid
+   *          oid of the object to compare.
    * @return Basic Condition object
    */
   public BasicCondition NE(String oid)
@@ -181,7 +179,9 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute statement object.
    */
   public Attribute get(String name)
@@ -191,8 +191,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute statement object.
    */
   public Attribute get(String name, String userDefinedAlias)
@@ -202,8 +205,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute statement object.
    */
@@ -217,14 +223,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
       throw new AttributeDoesNotExistException(error, name, this.referenceMdBusinessIF);
     }
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
     return this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeCharacter aCharacter(String name)
@@ -234,8 +242,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute character statement object.
    */
   public AttributeCharacter aCharacter(String name, String userDefinedAlias)
@@ -245,8 +256,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
@@ -256,53 +270,63 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeCharacterInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeCharacter)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeCharacter) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute character statement object.
    */
   public AttributeUUID aUUID(String name)
   {
     return this.aUUID(name, null, null);
   }
-  
+
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute character statement object.
    */
   public AttributeUUID aUUID(String name, String userDefinedAlias)
   {
     return this.aUUID(name, userDefinedAlias, null);
   }
-  
+
   /**
    * Returns an attribute character statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute character statement object.
    */
   public AttributeUUID aUUID(String name, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
-    
+
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeUUIDInfo.CLASS);
-    
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
-    
-    return (AttributeUUID)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
+
+    return (AttributeUUID) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
-  
+
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute text statement object.
    */
   public AttributeText aText(String name)
@@ -312,8 +336,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute text statement object.
    */
   public AttributeText aText(String name, String userDefinedAlias)
@@ -323,8 +350,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute text statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute text statement object.
    */
@@ -334,14 +364,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeTextInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeText)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeText) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute..
+   * 
+   * @param name
+   *          name of the attribute..
    * @return Attribute CLOB statement object.
    */
   public AttributeClob aClob(String name)
@@ -351,8 +383,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute CLOB statement object.
    */
   public AttributeClob aClob(String name, String userDefinedAlias)
@@ -362,8 +397,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute CLOB statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute CLOB statement object.
    */
@@ -373,14 +411,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeClobInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeClob)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeClob) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute date statement object.
    */
   public AttributeDate aDate(String name)
@@ -390,8 +430,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute date statement object.
    */
   public AttributeDate aDate(String name, String userDefinedAlias)
@@ -399,11 +442,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aDate(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute date statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute date statement object.
    */
@@ -413,14 +458,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDateInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDate)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDate) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute time statement object.
    */
   public AttributeTime aTime(String name)
@@ -430,8 +477,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute time statement object.
    */
   public AttributeTime aTime(String name, String userDefinedAlias)
@@ -439,11 +489,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aTime(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute time statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute time statement object.
    */
@@ -453,14 +505,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeTimeInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeTime)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeTime) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute datetime statement object.
    */
   public AttributeDateTime aDateTime(String name)
@@ -470,8 +524,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute datetime statement object.
    */
   public AttributeDateTime aDateTime(String name, String userDefinedAlias)
@@ -479,11 +536,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return aDateTime(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute datetime statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute datetime statement object.
    */
@@ -493,14 +552,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDateTimeInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDateTime)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDateTime) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute integer statement object.
    */
   public AttributeInteger aInteger(String name)
@@ -510,8 +571,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute integer statement object.
    */
   public AttributeInteger aInteger(String name, String userDefinedAlias)
@@ -519,11 +583,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aInteger(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute integer statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute integer statement object.
    */
@@ -533,14 +599,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeIntegerInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeInteger)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeInteger) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute long statement object.
    */
   public AttributeLong aLong(String name)
@@ -550,8 +618,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute long statement object.
    */
   public AttributeLong aLong(String name, String userDefinedAlias)
@@ -559,11 +630,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aLong(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute long statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute long statement object.
    */
@@ -573,14 +646,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLongInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLong)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLong) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute double statement object.
    */
   public AttributeDouble aDouble(String name)
@@ -590,8 +665,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute double statement object.
    */
   public AttributeDouble aDouble(String name, String userDefinedAlias)
@@ -599,12 +677,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aDouble(name, userDefinedAlias, null);
   }
 
-
-
   /**
    * Returns an attribute double statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute double statement object.
    */
@@ -614,14 +693,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDoubleInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDouble)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDouble) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute decimal statement object.
    */
   public AttributeDecimal aDecimal(String name)
@@ -631,8 +712,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute decimal statement object.
    */
   public AttributeDecimal aDecimal(String name, String userDefinedAlias)
@@ -640,11 +724,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aDecimal(name, null, null);
   }
 
-
   /**
    * Returns an attribute decimal statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute decimal statement object.
    */
@@ -654,14 +740,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeDecimalInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeDecimal)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeDecimal) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute float statement object.
    */
   public AttributeFloat aFloat(String name)
@@ -671,8 +759,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute float statement object.
    */
   public AttributeFloat aFloat(String name, String userDefinedAlias)
@@ -680,11 +771,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aFloat(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute float statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute float statement object.
    */
@@ -694,14 +787,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeFloatInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeFloat)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeFloat) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute boolean statement object.
    */
   public AttributeBoolean aBoolean(String name)
@@ -711,8 +806,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute boolean statement object.
    */
   public AttributeBoolean aBoolean(String name, String userDefinedAlias)
@@ -720,11 +818,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aBoolean(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute boolean statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute boolean statement object.
    */
@@ -734,14 +834,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeBooleanInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeBoolean)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBoolean) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute blob statement object.
    */
   public AttributeBlob aBlob(String name)
@@ -751,8 +853,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute blob statement object.
    */
@@ -761,11 +866,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aBlob(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute blob statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute blob statement object.
    */
@@ -775,14 +882,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeBlobInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeBlob)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeBlob) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute referrence statement object.
    */
   public AttributeReference aReference(String name)
@@ -792,8 +901,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute referrence statement object.
    */
   public AttributeReference aReference(String name, String userDefinedAlias)
@@ -803,8 +915,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute referrence statement object.
    */
@@ -814,14 +929,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeReferenceInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeReference)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute referrence statement object.
    */
   public AttributeReference aFile(String name)
@@ -831,8 +948,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute referrence statement object.
    */
   public AttributeReference aFile(String name, String userDefinedAlias)
@@ -840,11 +960,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aFile(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute reference statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute referrence statement object.
    */
@@ -854,14 +976,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeFileInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeReference)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeReference) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute struct statement object.
    */
   public AttributeStruct aStruct(String name)
@@ -871,8 +995,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute struct statement object.
    */
   public AttributeStruct aStruct(String name, String userDefinedAlias)
@@ -880,11 +1007,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aStruct(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute struct statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute struct statement object.
    */
@@ -894,15 +1023,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeStructInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeStruct)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeStruct) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
-
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalCharacter(String name)
@@ -912,8 +1042,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalCharacter(String name, String userDefinedAlias)
@@ -921,11 +1054,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aLocalCharacter(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute local statement object.
    */
@@ -935,14 +1070,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalCharacterInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLocal)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLocal) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalText(String name)
@@ -952,8 +1089,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute local statement object.
    */
   public AttributeLocal aLocalText(String name, String userDefinedAlias)
@@ -963,8 +1103,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute local statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute local statement object.
    */
@@ -974,14 +1117,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeLocalTextInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeLocal)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeLocal) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
+   * 
+   * @param name
+   *          name of the attribute.
    * @return Attribute struct enumeration object.
    */
   public AttributeEnumeration aEnumeration(String name)
@@ -991,8 +1136,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @return Attribute struct enumeration object.
    */
   public AttributeEnumeration aEnumeration(String name, String userDefinedAlias)
@@ -1000,11 +1148,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     return this.aEnumeration(name, userDefinedAlias, null);
   }
 
-
   /**
    * Returns an attribute enumeration statement object.
-   * @param name name of the attribute.
-   * @param userDefinedAlias user defined alias.
+   * 
+   * @param name
+   *          name of the attribute.
+   * @param userDefinedAlias
+   *          user defined alias.
    * @param userDefinedDisplayLabel
    * @return Attribute struct enumeration object.
    */
@@ -1012,28 +1162,27 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   {
     MdAttributeConcreteDAOIF mdAttributeIF = this.getMdAttributeROfromMap(name);
 
-    this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeStructInfo .CLASS);
+    this.rootQuery.checkValidAttributeRequest(name, this.referenceMdBusinessIF, mdAttributeIF, MdAttributeStructInfo.CLASS);
 
-    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF)mdAttributeIF.definedByClass();
+    MdEntityDAOIF definingMdEntity = (MdEntityDAOIF) mdAttributeIF.definedByClass();
 
-    return (AttributeEnumeration)this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
+    return (AttributeEnumeration) this.internalAttributeFactory(name, mdAttributeIF, definingMdEntity, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
    * Factory to construct an attribute object with the given name.
+   * 
    * @return attribute object with the given name.
    */
   private Attribute internalAttributeFactory(String name, MdAttributeConcreteDAOIF mdAttributeIF, MdEntityDAOIF definingMdEntity, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    String refAttributeNameSpace = this.attributeNamespace+"."+this.attributeName;
+    String refAttributeNameSpace = this.attributeNamespace + "." + this.attributeName;
 
     // Join the mapping table with the attribute on the entity.
-    Join enumMappingTableJoin =
-      new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
+    Join enumMappingTableJoin = new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
 
     // Join the mapping table with the enumeration item master table
-    Join tableJoin = new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, MdEnumerationInfo.ITEM_ID,
-        this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
+    Join tableJoin = new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, MdEnumerationInfo.ITEM_ID, this.mdEnumerationTableName, rootQuery.getTableAlias(this.attributeNamespace, this.mdEnumerationTableName));
 
     this.tableJoinSet.add(enumMappingTableJoin);
     this.tableJoinSet.add(tableJoin);
@@ -1047,12 +1196,12 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
       String tableAlias = rootQuery.getTableAlias(refAttributeNameSpace, tableName);
       this.tableJoinSet.add(new InnerJoinEq(EntityInfo.OID, this.referenceTableName, this.referenceTableAlias, EntityInfo.OID, tableName, tableAlias));
 
-      parameterTableName  = tableName;
+      parameterTableName = tableName;
       parameterTableAlias = tableAlias;
     }
     else
     {
-      parameterTableName  = this.referenceTableName;
+      parameterTableName = this.referenceTableName;
       parameterTableAlias = this.referenceTableAlias;
     }
 
@@ -1060,122 +1209,102 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     if (mdAttributeIF instanceof MdAttributeCharacterDAOIF)
     {
-      attribute = new AttributeCharacter((MdAttributeCharacterDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeCharacter((MdAttributeCharacterDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTextDAOIF)
     {
-      attribute = new AttributeText((MdAttributeTextDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeText((MdAttributeTextDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeClobDAOIF)
     {
-      attribute = new AttributeClob((MdAttributeClobDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeClob((MdAttributeClobDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateDAOIF)
     {
-      attribute = new AttributeDate((MdAttributeDateDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDate((MdAttributeDateDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeTimeDAOIF)
     {
-      attribute = new AttributeTime((MdAttributeTimeDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeTime((MdAttributeTimeDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDateTimeDAOIF)
     {
-      attribute = new AttributeDateTime((MdAttributeDateTimeDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDateTime((MdAttributeDateTimeDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeIntegerDAOIF)
     {
-      attribute = new AttributeInteger((MdAttributeIntegerDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeInteger((MdAttributeIntegerDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLongDAOIF)
     {
-      attribute = new AttributeLong((MdAttributeLongDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeLong((MdAttributeLongDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDoubleDAOIF)
     {
-      attribute = new AttributeDouble((MdAttributeDoubleDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDouble((MdAttributeDoubleDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeDecimalDAOIF)
     {
-      attribute = new AttributeDecimal((MdAttributeDecimalDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeDecimal((MdAttributeDecimalDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeFloatDAOIF)
     {
-      attribute = new AttributeFloat((MdAttributeFloatDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeFloat((MdAttributeFloatDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBooleanDAOIF)
     {
-      attribute = new AttributeBoolean((MdAttributeBooleanDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBoolean((MdAttributeBooleanDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeBlobDAOIF)
     {
-      attribute = new AttributeBlob((MdAttributeBlobDAOIF)mdAttributeIF, refAttributeNameSpace, parameterTableName,
-          parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = new AttributeBlob((MdAttributeBlobDAOIF) mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeLocalDAOIF)
     {
-      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF)mdAttributeIF;
+      MdAttributeLocalDAOIF mdAttributeLocalIF = (MdAttributeLocalDAOIF) mdAttributeIF;
       MdLocalStructDAOIF localStructMdBusinessIF = mdAttributeLocalIF.getMdStructDAOIF();
       String structTableName = localStructMdBusinessIF.getTableName();
       String structTableAlias = this.rootQuery.getTableAlias(refAttributeNameSpace, structTableName);
 
-      attribute = this.localFactory(mdAttributeLocalIF, refAttributeNameSpace, parameterTableName, parameterTableAlias,
-          localStructMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.localFactory(mdAttributeLocalIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, localStructMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeStructDAOIF)
     {
-      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF)mdAttributeIF;
+      MdAttributeStructDAOIF mdAttributeStructIF = (MdAttributeStructDAOIF) mdAttributeIF;
       MdStructDAOIF structMdBusinessIF = mdAttributeStructIF.getMdStructDAOIF();
       String structTableName = structMdBusinessIF.getTableName();
       String structTableAlias = this.rootQuery.getTableAlias(refAttributeNameSpace, structTableName);
 
-      attribute = this.structFactory(mdAttributeStructIF, refAttributeNameSpace, parameterTableName, parameterTableAlias,
-          structMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.structFactory(mdAttributeStructIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, structMdBusinessIF, structTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeEnumerationDAOIF)
     {
-      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF)mdAttributeIF;
+      MdAttributeEnumerationDAOIF mdAttributeEnumerationIF = (MdAttributeEnumerationDAOIF) mdAttributeIF;
       MdEnumerationDAOIF mdEnumerationIF = mdAttributeEnumerationIF.getMdEnumerationDAO();
-      String mdEnumerationTableName =  mdEnumerationIF.getTableName();
+      String mdEnumerationTableName = mdEnumerationIF.getTableName();
 
       MdBusinessDAOIF masterListMdBusinessIF = mdEnumerationIF.getMasterListMdBusinessDAO();
       String masterListTalbeAlias = this.rootQuery.getTableAlias(this.attributeNamespace, masterListMdBusinessIF.getTableName());
 
-      attribute = this.enumerationFactory(mdAttributeEnumerationIF, refAttributeNameSpace, parameterTableName, parameterTableAlias,
-          mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = this.enumerationFactory(mdAttributeEnumerationIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else if (mdAttributeIF instanceof MdAttributeRefDAOIF)
     {
-      MdAttributeRefDAOIF mdAttributerRefIF = (MdAttributeRefDAOIF)mdAttributeIF;
+      MdAttributeRefDAOIF mdAttributerRefIF = (MdAttributeRefDAOIF) mdAttributeIF;
 
       MdBusinessDAOIF refAttrMdBusinessIF = mdAttributerRefIF.getReferenceMdBusinessDAO();
 
       String referenceAttrTableName = refAttrMdBusinessIF.getTableName();
-      String referenceAttrTableAlias =  this.rootQuery.getTableAlias(refAttributeNameSpace, referenceAttrTableName);
+      String referenceAttrTableAlias = this.rootQuery.getTableAlias(refAttributeNameSpace, referenceAttrTableName);
 
-      attribute = referenceFactory(mdAttributerRefIF, refAttributeNameSpace, parameterTableName, parameterTableAlias,
-          refAttrMdBusinessIF, referenceAttrTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+      attribute = referenceFactory(mdAttributerRefIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, refAttrMdBusinessIF, referenceAttrTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
 
     if (attribute == null)
     {
       for (AttributeEnumeration.PluginIF plugin : pluginMap.values())
       {
-        attribute = plugin.internalAttributeFactory(
-            name, mdAttributeIF,
-            refAttributeNameSpace, parameterTableName, parameterTableAlias,
-            this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+        attribute = plugin.internalAttributeFactory(name, mdAttributeIF, refAttributeNameSpace, parameterTableName, parameterTableAlias, this.rootQuery, this.tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
 
         if (attribute != null)
         {
@@ -1194,9 +1323,9 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   }
 
   /**
-   * Returns an AttributeReference with the given values. This can represent an AttributeFile as well. Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
+   * Returns an AttributeReference with the given values. This can represent an
+   * AttributeFile as well. Generated subclasses with override this method and
+   * return subclasses of AttributeReference.
    *
    * @param name
    * @param mdAttributeIF
@@ -1207,19 +1336,16 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @param rootEntityQuery
    * @param tableJoinSet
    * @param userDefinedAlias
-   * @return AttributeReference with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeReference.
+   * @return AttributeReference with the given values. Generated subclasses with
+   *         override this method and return subclasses of AttributeReference.
    */
-  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeReference referenceFactory(MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeReference(mdAttributeIF,  attributeNamespace, definingTableName, definingTableAlias,
-        referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeReference(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeStruct</code> with the given values.  Generated
+   * Returns an <code>AttributeStruct</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeStruct</code>.
    *
@@ -1232,19 +1358,17 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @param rootEntityQuery
    * @param tableJoinSet
    * @param userDefinedAlias
-   * @return <code>AttributeStruct</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeStruct</code>.
+   * @return <code>AttributeStruct</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeStruct</code>.
    */
-  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeStruct structFactory(MdAttributeStructDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeStruct(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an <code>AttributeLocale</code> with the given values.  Generated
+   * Returns an <code>AttributeLocale</code> with the given values. Generated
    * subclasses with override this method and return subclasses of
    * <code>AttributeLocale</code>.
    *
@@ -1257,21 +1381,18 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @param rootEntityQuery
    * @param tableJoinSet
    * @param userDefinedAlias
-   * @return <code>AttributeLocale</code> with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * <code>AttributeLocale</code>.
+   * @return <code>AttributeLocale</code> with the given values. Generated
+   *         subclasses with override this method and return subclasses of
+   *         <code>AttributeLocale</code>.
    */
-  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      MdLocalStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeLocal localFactory(MdAttributeLocalDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, MdLocalStructDAOIF mdStructIF, String structTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeLocal(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdStructIF, structTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
+   * Returns an AttributeEnumeration with the given values. Generated subclasses
+   * with override this method and return subclasses of AttributeEnumeration.
    *
    * @param mdAttributeIF
    * @param attributeNamespace
@@ -1283,23 +1404,26 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @param rootEntityQuery
    * @param tableJoinSet
    * @param userDefinedAlias
-   * @return AttributeEnumeration with the given values.  Generated
-   * subclasses with override this method and return subclasses of
-   * AttributeEnumeration.
+   * @return AttributeEnumeration with the given values. Generated subclasses
+   *         with override this method and return subclasses of
+   *         AttributeEnumeration.
    */
-  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,
-      String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
+  protected AttributeEnumeration enumerationFactory(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, MdBusinessDAOIF masterListMdBusinessIF, String masterListTalbeAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
-    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias,
-        mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    return new AttributeEnumeration(mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, mdEnumerationTableName, masterListMdBusinessIF, masterListTalbeAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
   }
 
   /**
-   * Returns an attribute query object for the attribute with the given name and type.
-   * @param attributeName name of the attribute.
-   * @param attributeType type of the attribute.
+   * Returns an attribute query object for the attribute with the given name and
+   * type.
+   * 
+   * @param attributeName
+   *          name of the attribute.
+   * @param attributeType
+   *          type of the attribute.
    * @param userDefinedAlias
-   * @return attribute query object for the attribute with the given name and type.
+   * @return attribute query object for the attribute with the given name and
+   *         type.
    */
   public Attribute attributeFactory(String attributeName, String attributeType, String userDefinedAlias, String userDefinedDisplayLabel)
   {
@@ -1389,17 +1513,20 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
       throw new QueryException(error);
     }
   }
+
   // Any
   /**
-   * Checks if the enumeration attribute contains a mapping with
-   * one of the enumeration items with the given oid.
-   * @param enumIds OID of an enumeration.
+   * Checks if the enumeration attribute contains a mapping with one of the
+   * enumeration items with the given oid.
+   * 
+   * @param enumIds
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
-  public Condition containsAny(String ... enumIds)
+  public Condition containsAny(String... enumIds)
   {
     StatementPrimitive[] statementPrimitiveArray = new StatementPrimitive[enumIds.length];
-    for (int i=0; i<enumIds.length; i++)
+    for (int i = 0; i < enumIds.length; i++)
     {
       String formattedValue = Database.formatJavaToSQL(enumIds[i], MdAttributeEnumerationInfo.CLASS, false);
       statementPrimitiveArray[i] = new StatementPrimitive(formattedValue);
@@ -1409,34 +1536,37 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   // Not Any
   /**
-   * Checks if the enumeration attribute does not contain a mapping with
-   * one of the enumeration items with the given oid.
-   * @param enumIds OID of an enumeration.
+   * Checks if the enumeration attribute does not contain a mapping with one of
+   * the enumeration items with the given oid.
+   * 
+   * @param enumIds
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
-  public Condition notContainsAny(String ... enumIds)
+  public Condition notContainsAny(String... enumIds)
   {
-    return new EnumerationNotContainsAny(this.subFactory(this.attributeNamespace),
-        new EnumerationSubSelectNotContainsAny(this.columnName, this.definingTableAlias, this.mdEnumerationTableName, enumIds));
+    return new EnumerationNotContainsAny(this.subFactory(this.attributeNamespace), new EnumerationSubSelectNotContainsAny(this.columnName, this.definingTableAlias, this.mdEnumerationTableName, enumIds));
   }
 
   // All
   /**
-   * Checks if the enumeration attribute contains a mapping with
-   * all of the enumeration items with the given oid.
-   * @param enumIds OID of an enumeration.
+   * Checks if the enumeration attribute contains a mapping with all of the
+   * enumeration items with the given oid.
+   * 
+   * @param enumIds
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
-  public Condition containsAll(String ... enumIds)
+  public Condition containsAll(String... enumIds)
   {
     StatementPrimitive[] statementPrimitiveArray = new StatementPrimitive[enumIds.length];
     Condition previousCondition = null;
-    for (int i=0; i<enumIds.length; i++)
+    for (int i = 0; i < enumIds.length; i++)
     {
       String formattedValue = Database.formatJavaToSQL(enumIds[i], MdAttributeEnumerationInfo.CLASS, false);
       statementPrimitiveArray[i] = new StatementPrimitive(formattedValue);
 
-      BasicCondition basicCondition = new BasicConditionEq(this.subFactory(this.attributeNamespace+enumIds[i]), statementPrimitiveArray[i]);
+      BasicCondition basicCondition = new BasicConditionEq(this.subFactory(this.attributeNamespace + enumIds[i]), statementPrimitiveArray[i]);
 
       if (previousCondition != null)
       {
@@ -1452,16 +1582,18 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   // NOT All
   /**
-   * Checks if the enumeration attribute does not contain a mapping with
-   * all of the enumeration items with the given oid.
-   * @param enumIds OID of an enumeration.
+   * Checks if the enumeration attribute does not contain a mapping with all of
+   * the enumeration items with the given oid.
+   * 
+   * @param enumIds
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
-  public Condition notContainsAll(String ... enumIds)
+  public Condition notContainsAll(String... enumIds)
   {
     StatementPrimitive[] statementPrimitiveArray = new StatementPrimitive[enumIds.length];
     Condition previousCondition = null;
-    for (int i=0; i<enumIds.length; i++)
+    for (int i = 0; i < enumIds.length; i++)
     {
       String formattedValue = Database.formatJavaToSQL(enumIds[i], MdAttributeEnumerationInfo.CLASS, false);
       statementPrimitiveArray[i] = new StatementPrimitive(formattedValue);
@@ -1482,21 +1614,23 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
   // Exactly
   /**
-   * Checks if the enumeration attribute contains a mapping with
-   * exactly the given set of the enumeration items with the given oid.
-   * @param enumIds OID of an enumeration.
+   * Checks if the enumeration attribute contains a mapping with exactly the
+   * given set of the enumeration items with the given oid.
+   * 
+   * @param enumIds
+   *          OID of an enumeration.
    * @return Condition representing the query constraint.
    */
-  public Condition containsExactly(String ... enumIds)
+  public Condition containsExactly(String... enumIds)
   {
     StatementPrimitive[] statementPrimitiveArray = new StatementPrimitive[enumIds.length];
     Condition previousCondition = null;
-    for (int i=0; i<enumIds.length; i++)
+    for (int i = 0; i < enumIds.length; i++)
     {
       String formattedValue = Database.formatJavaToSQL(enumIds[i], MdAttributeEnumerationInfo.CLASS, false);
       statementPrimitiveArray[i] = new StatementPrimitive(formattedValue);
 
-      BasicCondition basicCondition = new BasicConditionEq(this.subFactory(this.attributeNamespace+enumIds[i]), statementPrimitiveArray[i]);
+      BasicCondition basicCondition = new BasicConditionEq(this.subFactory(this.attributeNamespace + enumIds[i]), statementPrimitiveArray[i]);
 
       if (previousCondition != null)
       {
@@ -1507,18 +1641,19 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
         previousCondition = basicCondition;
       }
     }
-    Expression subSelectStatement =
-      new EnumerationCountSubSelect(this.columnName, this.definingTableAlias, this.mdEnumerationTableName);
+    Expression subSelectStatement = new EnumerationCountSubSelect(this.columnName, this.definingTableAlias, this.mdEnumerationTableName);
 
-    StatementSubSelectCondition basicConditionSubSelect =
-      new StatementSubSelectCondition(new StatementPrimitive(Integer.valueOf(enumIds.length).toString()), subSelectStatement, false);
+    StatementSubSelectCondition basicConditionSubSelect = new StatementSubSelectCondition(new StatementPrimitive(Integer.toString(enumIds.length)), subSelectStatement, false);
 
     return new AND(previousCondition, basicConditionSubSelect);
   }
 
   /**
-   * Returns the a nested aggregate function in this composite function tree, if there is one, or return null;
-   * @return nested aggregate function in this composite function tree, if there is one, or return null;
+   * Returns the a nested aggregate function in this composite function tree, if
+   * there is one, or return null;
+   * 
+   * @return nested aggregate function in this composite function tree, if there
+   *         is one, or return null;
    */
   public SelectableAggregate getAggregateFunction()
   {
@@ -1526,8 +1661,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   }
 
   /**
-   * Returns true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
-   * @return true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
+   * Returns true if this selectable is an aggregate function or contains an
+   * aggregate function. False otherwise.
+   * 
+   * @return true if this selectable is an aggregate function or contains an
+   *         aggregate function. False otherwise.
    */
   public boolean isAggregateFunction()
   {
@@ -1542,12 +1680,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   }
 
   /**
-   * Returns a condition based on the String version of the operator
-   * and the Ref version of the value.
+   * Returns a condition based on the String version of the operator and the Ref
+   * version of the value.
+   * 
    * @param operator
    * @param value
-   * @return condition based on the String version of the operator
-   * and the String version of the value.
+   * @return condition based on the String version of the operator and the
+   *         String version of the value.
    */
   public Condition getCondition(String operator, String value)
   {
@@ -1555,22 +1694,20 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   }
 
   /**
-   * Constructs the appropriate AttributeEnumeration_Sub object, depending if this
-   * attribute is a part of the stub or not.
+   * Constructs the appropriate AttributeEnumeration_Sub object, depending if
+   * this attribute is a part of the stub or not.
+   * 
    * @param attributeNameSpace
    * @param userDefinedAlias
    * @return appropriate AttributeEnumeration_Sub object, depending if this
-   * attribute is a part of the stub or not.
+   *         attribute is a part of the stub or not.
    */
   private AttributeEnumeration_Sub subFactory(String attributeNameSpace)
   {
-    return new AttributeEnumeration_Sub((MdAttributeEnumerationDAOIF)this.mdAttributeIF, attributeNameSpace,
-      this.definingTableName, this.definingTableAlias,
-      this.mdEnumerationTableName, this.rootQuery.getTableAlias(attributeNameSpace, this.mdEnumerationTableName), this.rootQuery,
-      this.tableJoinSet);
+    return new AttributeEnumeration_Sub((MdAttributeEnumerationDAOIF) this.mdAttributeIF, attributeNameSpace, this.definingTableName, this.definingTableAlias, this.mdEnumerationTableName, this.rootQuery.getTableAlias(attributeNameSpace, this.mdEnumerationTableName), this.rootQuery, this.tableJoinSet);
   }
 
-  class EnumerationNotContainsAny extends AttributeCondition
+  static class EnumerationNotContainsAny extends AttributeCondition
   {
     private EnumerationSubSelectNotContainsAny statement;
 
@@ -1582,14 +1719,15 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     public String getSQL()
     {
-      return ((AttributeEnumeration_Sub)this.selectableLeft).getSQL2()+" NOT IN \n"+statement.getSQL();
+      return ( (AttributeEnumeration_Sub) this.selectableLeft ).getSQL2() + " NOT IN \n" + statement.getSQL();
     }
 
     /**
-     * Returns a Set of TableJoin objects that represent joins statements
-     * that are required for this expression.
-     * @return Set of TableJoin objects that represent joins statements
-     * that are required for this expression, or null of there are none.
+     * Returns a Set of TableJoin objects that represent joins statements that
+     * are required for this expression.
+     * 
+     * @return Set of TableJoin objects that represent joins statements that are
+     *         required for this expression, or null of there are none.
      */
     public Set<Join> getJoinStatements()
     {
@@ -1597,10 +1735,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns a Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
-     * @return Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
+     * Returns a Map representing tables that should be included in the from
+     * clause, where the key is the table alias and the value is the name of the
+     * table.
+     * 
+     * @return Map representing tables that should be included in the from
+     *         clause, where the key is the table alias and the value is the
+     *         name of the table.
      */
     public Map<String, String> getFromTableMap()
     {
@@ -1609,6 +1750,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     /**
      * Visitor to traverse the query object structure.
+     * 
      * @param visitor
      */
     public void accept(Visitor visitor)
@@ -1623,50 +1765,54 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @author nathan
    *
    */
-  class EnumerationSubSelectNotContainsAny extends Condition
+  static class EnumerationSubSelectNotContainsAny extends Condition
   {
     private String columnName;
+
     private String definingTableAlias;
+
     private String mdEnumerationTableName;
+
     private String enumIds[];
 
-    public EnumerationSubSelectNotContainsAny(String columnName, String definingTableAlias, String mdEnumerationTableName, String ... enumIds)
+    public EnumerationSubSelectNotContainsAny(String columnName, String definingTableAlias, String mdEnumerationTableName, String... enumIds)
     {
-      this.columnName             = columnName;
-      this.definingTableAlias     = definingTableAlias;
+      this.columnName = columnName;
+      this.definingTableAlias = definingTableAlias;
       this.mdEnumerationTableName = mdEnumerationTableName;
       this.enumIds = enumIds;
     }
 
     public String getSQL()
     {
-      String sqlStmt =
-        "(SELECT "+MdEnumerationInfo.SET_ID+" \n"+
-        " FROM "+this.mdEnumerationTableName+"\n"+
-        " WHERE "+MdEnumerationDAOIF.SET_ID_COLUMN+" = "+this.definingTableAlias+"."+this.columnName+"\n"+
-        "   AND (";
+      StringBuilder sqlStmt = new StringBuilder();
+      sqlStmt.append("(SELECT " + MdEnumerationInfo.SET_ID + " \n");
+      sqlStmt.append(" FROM " + this.mdEnumerationTableName + "\n");
+      sqlStmt.append(" WHERE " + MdEnumerationDAOIF.SET_ID_COLUMN + " = " + this.definingTableAlias + "." + this.columnName + "\n");
+      sqlStmt.append("   AND (");
 
       boolean firstIteration = true;
       for (String enumId : this.enumIds)
       {
-        if(!firstIteration)
+        if (!firstIteration)
         {
-          sqlStmt += "\n        OR ";
+          sqlStmt.append("\n        OR ");
         }
         firstIteration = false;
 
-        sqlStmt += MdEnumerationInfo.ITEM_ID+" = '"+enumId+"'";
+        sqlStmt.append(MdEnumerationInfo.ITEM_ID + " = '" + enumId + "'");
       }
 
-      sqlStmt += "))";
-      return sqlStmt;
+      sqlStmt.append("))");
+      return sqlStmt.toString();
     }
 
     /**
-     * Returns a Set of TableJoin objects that represent joins statements
-     * that are required for this expression.
-     * @return Set of TableJoin objects that represent joins statements
-     * that are required for this expression, or null of there are none.
+     * Returns a Set of TableJoin objects that represent joins statements that
+     * are required for this expression.
+     * 
+     * @return Set of TableJoin objects that represent joins statements that are
+     *         required for this expression, or null of there are none.
      */
     public Set<Join> getJoinStatements()
     {
@@ -1674,10 +1820,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns a Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
-     * @return Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
+     * Returns a Map representing tables that should be included in the from
+     * clause, where the key is the table alias and the value is the name of the
+     * table.
+     * 
+     * @return Map representing tables that should be included in the from
+     *         clause, where the key is the table alias and the value is the
+     *         name of the table.
      */
     public Map<String, String> getFromTableMap()
     {
@@ -1686,6 +1835,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     /**
      * Visitor to traverse the query object structure.
+     * 
      * @param visitor
      */
     public void accept(Visitor visitor)
@@ -1699,29 +1849,32 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @author nathan
    *
    */
-  class EnumerationCountSubSelect extends Condition
+  static class EnumerationCountSubSelect extends Condition
   {
     private String columnName;
+
     private String definingTableAlias;
+
     private String mdEnumerationTableName;
 
     public EnumerationCountSubSelect(String columnName, String definingTableAlias, String mdEnumerationTableName)
     {
-      this.columnName             = columnName;
-      this.definingTableAlias     = definingTableAlias;
+      this.columnName = columnName;
+      this.definingTableAlias = definingTableAlias;
       this.mdEnumerationTableName = mdEnumerationTableName;
     }
 
     public String getSQL()
     {
-      return "(SELECT COUNT(*) FROM "+this.mdEnumerationTableName+" WHERE "+MdEnumerationDAOIF.SET_ID_COLUMN+" = "+this.definingTableAlias+"."+this.columnName+")";
+      return "(SELECT COUNT(*) FROM " + this.mdEnumerationTableName + " WHERE " + MdEnumerationDAOIF.SET_ID_COLUMN + " = " + this.definingTableAlias + "." + this.columnName + ")";
     }
 
     /**
-     * Returns a Set of TableJoin objects that represent joins statements
-     * that are required for this expression.
-     * @return Set of TableJoin objects that represent joins statements
-     * that are required for this expression, or null of there are none.
+     * Returns a Set of TableJoin objects that represent joins statements that
+     * are required for this expression.
+     * 
+     * @return Set of TableJoin objects that represent joins statements that are
+     *         required for this expression, or null of there are none.
      */
     public Set<Join> getJoinStatements()
     {
@@ -1729,10 +1882,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns a Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
-     * @return Map representing tables that should be included in the from clause,
-     * where the key is the table alias and the value is the name of the table.
+     * Returns a Map representing tables that should be included in the from
+     * clause, where the key is the table alias and the value is the name of the
+     * table.
+     * 
+     * @return Map representing tables that should be included in the from
+     *         clause, where the key is the table alias and the value is the
+     *         name of the table.
      */
     public Map<String, String> getFromTableMap()
     {
@@ -1741,6 +1897,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
 
     /**
      * Visitor to traverse the query object structure.
+     * 
      * @param visitor
      */
     public void accept(Visitor visitor)
@@ -1754,33 +1911,32 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
    * @author nathan
    *
    */
-  class AttributeEnumeration_Sub extends Attribute
+  static class AttributeEnumeration_Sub extends Attribute
   {
-    private String    mdEnumerationTableName;
-    private String    mdEnumerationTableAlias;
-    private Join      enumMappingTableJoin;
+    private String mdEnumerationTableName;
 
-    protected AttributeEnumeration_Sub(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace,
-        String definingTableName, String definingTableAlias,
-        String mdEnumerationTableName, String mdEnumerationTableAlias,
-        ComponentQuery rootQuery,
-        Set<Join> tableJoinSet)
+    private String mdEnumerationTableAlias;
+
+    private Join   enumMappingTableJoin;
+
+    protected AttributeEnumeration_Sub(MdAttributeEnumerationDAOIF mdAttributeIF, String attributeNameSpace, String definingTableName, String definingTableAlias, String mdEnumerationTableName, String mdEnumerationTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet)
     {
       super(mdAttributeIF, attributeNameSpace, definingTableName, definingTableAlias, rootQuery, tableJoinSet, null, null);
 
-      this.mdEnumerationTableName  = mdEnumerationTableName;
+      this.mdEnumerationTableName = mdEnumerationTableName;
       this.mdEnumerationTableAlias = mdEnumerationTableAlias;
 
-      this.enumMappingTableJoin =
-        new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdEnumerationTableName, this.mdEnumerationTableAlias);
+      this.enumMappingTableJoin = new InnerJoinEq(this.columnName, this.definingTableName, this.definingTableAlias, MdEnumerationDAOIF.SET_ID_COLUMN, this.mdEnumerationTableName, this.mdEnumerationTableAlias);
 
     }
 
     /**
-     * Compares the oid of a component for equality.
-     * This class is used only by its enclosing class and is never called by a client.  Hence
-     * This method is implemented only to satisfy the contract of the super class;
-     * @param oid oid of the object to compare.
+     * Compares the oid of a component for equality. This class is used only by
+     * its enclosing class and is never called by a client. Hence This method is
+     * implemented only to satisfy the contract of the super class;
+     * 
+     * @param oid
+     *          oid of the object to compare.
      * @return null;
      */
     public BasicCondition EQ(String oid)
@@ -1789,10 +1945,12 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Compares the oid of a component for equality.
-     * This class is used only by its enclosing class and is never called by a client.  Hence
-     * This method is implemented only to satisfy the contract of the super class;
-     * @param oid oid of the object to compare.
+     * Compares the oid of a component for equality. This class is used only by
+     * its enclosing class and is never called by a client. Hence This method is
+     * implemented only to satisfy the contract of the super class;
+     * 
+     * @param oid
+     *          oid of the object to compare.
      * @return null;
      */
     public BasicCondition NE(String oid)
@@ -1801,12 +1959,13 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns a condition based on the String version of the operator
-     * and the Ref version of the value.
+     * Returns a condition based on the String version of the operator and the
+     * Ref version of the value.
+     * 
      * @param operator
      * @param value
-     * @return condition based on the String version of the operator
-     * and the String version of the value.
+     * @return condition based on the String version of the operator and the
+     *         String version of the value.
      */
     public Condition getCondition(String operator, String value)
     {
@@ -1814,8 +1973,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns the a nested aggregate function in this composite function tree, if there is one, or return null;
-     * @return nested aggregate function in this composite function tree, if there is one, or return null;
+     * Returns the a nested aggregate function in this composite function tree,
+     * if there is one, or return null;
+     * 
+     * @return nested aggregate function in this composite function tree, if
+     *         there is one, or return null;
      */
     public SelectableAggregate getAggregateFunction()
     {
@@ -1823,8 +1985,11 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
     }
 
     /**
-     * Returns true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
-     * @return true if this selectable is an aggregate function or contains an aggregate function.  False otherwise.
+     * Returns true if this selectable is an aggregate function or contains an
+     * aggregate function. False otherwise.
+     * 
+     * @return true if this selectable is an aggregate function or contains an
+     *         aggregate function. False otherwise.
      */
     public boolean isAggregateFunction()
     {
@@ -1845,7 +2010,7 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
      */
     public String getSQL()
     {
-      return this.mdEnumerationTableAlias+"."+MdEnumerationInfo.ITEM_ID;
+      return this.mdEnumerationTableAlias + "." + MdEnumerationInfo.ITEM_ID;
     }
 
     /**
@@ -1855,14 +2020,15 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
      */
     public String getSQL2()
     {
-      return this.definingTableAlias+"."+this.columnName;
+      return this.definingTableAlias + "." + this.columnName;
     }
 
     /**
-     * Returns a Set of TableJoin objects that represent joins statements
-     * that are required for this expression.
-     * @return Set of TableJoin objects that represent joins statements
-     * that are required for this expression, or null of there are none.
+     * Returns a Set of TableJoin objects that represent joins statements that
+     * are required for this expression.
+     * 
+     * @return Set of TableJoin objects that represent joins statements that are
+     *         required for this expression, or null of there are none.
      */
     public Set<Join> getJoinStatements()
     {
@@ -1882,9 +2048,6 @@ public class AttributeEnumeration extends AttributeRef implements SelectableEnum
   {
     public String getModuleIdentifier();
 
-    public Attribute internalAttributeFactory(
-        String attributeName, MdAttributeConcreteDAOIF mdAttributeIF,
-        String refAttributeNameSpace, String parameterTableName, String parameterTableAlias,
-        ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel);
+    public Attribute internalAttributeFactory(String attributeName, MdAttributeConcreteDAOIF mdAttributeIF, String refAttributeNameSpace, String parameterTableName, String parameterTableAlias, ComponentQuery rootQuery, Set<Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel);
   }
 }

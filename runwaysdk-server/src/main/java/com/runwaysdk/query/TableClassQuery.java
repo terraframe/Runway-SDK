@@ -1711,7 +1711,7 @@ public abstract class TableClassQuery extends ComponentQuery
     String rootDefiningTableName = rootMdEntityIF.getTableName();
     String rootTableAlias = this.getTableAlias("", rootDefiningTableName);
 
-    String typeRestrictionClause = "";
+    StringBuilder typeRestrictionClause = new StringBuilder();
     boolean firstIteration = true;
     for (MdTableClassIF excludedMdTableClassType : excludeTableClassTypeList)
     {
@@ -1719,16 +1719,16 @@ public abstract class TableClassQuery extends ComponentQuery
 
       if (!firstIteration)
       {
-        typeRestrictionClause += "\nAND ";
+        typeRestrictionClause.append("\nAND ");
       }
       else
       {
         firstIteration = false;
       }
 
-      typeRestrictionClause += rootTableAlias + "." + EntityInfo.OID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.OID + " FROM " + definingTableName + ")";
+      typeRestrictionClause.append(rootTableAlias + "." + EntityInfo.OID + " NOT IN " + "(SELECT " + definingTableName + "." + EntityInfo.OID + " FROM " + definingTableName + ")");
     }
-    return typeRestrictionClause;
+    return typeRestrictionClause.toString();
   }
 
 
@@ -1850,20 +1850,20 @@ public abstract class TableClassQuery extends ComponentQuery
     // Restrict the number of rows returned from the database.
     if (limitRowRange)
     {
-      String selectClauseAttributes = "";
+      StringBuilder selectClauseAttributes = new StringBuilder();
       boolean firstIteration = true;
       ColumnInfo fistColumnInfo = null;
       for (ColumnInfo columnInfo : _columnInfoMap.values())
       {
         if (!firstIteration)
         {
-          selectClauseAttributes += ", ";
+          selectClauseAttributes.append(", ");
         }
         else
         {
           fistColumnInfo = columnInfo;
         }
-        selectClauseAttributes += columnInfo.getColumnAlias();
+        selectClauseAttributes.append(columnInfo.getColumnAlias());
 
         firstIteration = false;
       }
@@ -1873,7 +1873,7 @@ public abstract class TableClassQuery extends ComponentQuery
         orderByClause = "ORDER BY " + fistColumnInfo.getColumnAlias() + " ASC";
       }
 
-      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes, orderByClause);
+      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes.toString(), orderByClause);
     }
     else
     {
@@ -2475,7 +2475,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * 
    * @author nathan
    */
-  protected class QueryMdTableClassInfo
+  protected static class QueryMdTableClassInfo
   {
     private MdTableClassIF       qItableClass;
 
@@ -2629,7 +2629,7 @@ public abstract class TableClassQuery extends ComponentQuery
    * @author nathan
    * 
    */
-  private class FindMdTableClassessForQuery
+  private static class FindMdTableClassessForQuery
   {
     private List<MdTableClassIF> excludeEntityList;
 

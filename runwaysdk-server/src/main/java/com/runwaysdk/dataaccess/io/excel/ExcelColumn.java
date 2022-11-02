@@ -130,6 +130,12 @@ public class ExcelColumn
   {
     return transform;
   }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getAttributeName().hashCode();
+  }
 
   @Override
   public boolean equals(Object obj)

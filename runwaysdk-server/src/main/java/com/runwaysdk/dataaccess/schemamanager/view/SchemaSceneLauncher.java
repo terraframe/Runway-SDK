@@ -89,10 +89,6 @@ public class SchemaSceneLauncher
         frame.setVisible (true);
     }
 
-    public static int randInt (int max) {
-        return (int) (Math.random () * max);
-    }
-
     public static void invokeLater (final Runnable runnable, int delay) {
         RequestProcessor.getDefault ().post (new Runnable() {
             public void run () {

@@ -34,8 +34,6 @@ import com.runwaysdk.dataaccess.schemamanager.xml.SMXMLTags;
  */
 public class SchemaEnumeration extends KeyedElement implements ElementListener
 {
-  private SchemaClass               master;
-
   private boolean                   doesIncludeAll = false;
 
   private Set<EnumItemModification> enumItemAdditions;
@@ -101,11 +99,6 @@ public class SchemaEnumeration extends KeyedElement implements ElementListener
     this.doesIncludeAll = true;
   }
 
-  public SchemaClass master()
-  {
-    return master;
-  }
-
   public boolean doesIncludeAll()
   {
     return doesIncludeAll;
@@ -127,6 +120,12 @@ public class SchemaEnumeration extends KeyedElement implements ElementListener
     items.addAll(enumItemAdditions);
     items.addAll(enumItemDeletions);
     return items;
+  }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getKey().hashCode();
   }
 
   @Override

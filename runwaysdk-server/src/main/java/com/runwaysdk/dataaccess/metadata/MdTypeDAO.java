@@ -172,11 +172,11 @@ public abstract class MdTypeDAO extends MetadataDAO implements MdTypeDAOIF
 
       if (value != null && value.length() > 0)
       {
-        return new Boolean(value);
+        return Boolean.valueOf(value);
       }
     }
 
-    return new Boolean(true);
+    return Boolean.valueOf(true);
   }
 
   /**

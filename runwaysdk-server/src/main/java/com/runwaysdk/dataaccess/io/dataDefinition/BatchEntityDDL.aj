@@ -22,7 +22,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import com.runwaysdk.constants.MdEntityInfo;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.database.Database;
@@ -507,9 +509,10 @@ public privileged aspect BatchEntityDDL percflow(runImport())
 
   protected static MdEntityDAO findTypeByTable(Map<String, MdEntityInfo> typeDDLMap, String table)
   {
-    for (String type : typeDDLMap.keySet())
+    for (Entry<String, MdEntityInfo> entry : typeDDLMap.entrySet())
     {
-      MdEntityDAO mdEntityDAO = typeDDLMap.get(type).getMdEntityDAO();
+      String type = entry.getKey();
+      MdEntityDAO mdEntityDAO = entry.getValue().getMdEntityDAO();
 
       if (mdEntityDAO.getTableName().equals(table))
       {

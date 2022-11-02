@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -378,9 +379,9 @@ public class ValueQuery extends ComponentQuery
       }
 
       // restore the custom FROM tables
-      for (String alias : customFromBackup.keySet())
+      for (Entry<String, String> alias : customFromBackup.entrySet())
       {
-        this.FROM(customFromBackup.get(alias), alias);
+        this.FROM(alias.getValue(), alias.getKey());
       }
     }
     else
@@ -423,9 +424,9 @@ public class ValueQuery extends ComponentQuery
     }
 
     // restore the custom FROM tables
-    for (String alias : customFromBackup.keySet())
+    for (Entry<String, String> alias : customFromBackup.entrySet())
     {
-      this.FROM(customFromBackup.get(alias), alias);
+      this.FROM(alias.getValue(), alias.getKey());
     }
 
     return removeMe;
@@ -1072,20 +1073,20 @@ public class ValueQuery extends ComponentQuery
    */
   private String getCombineSQL(boolean limitRowRange, int limit, int skip)
   {
-    String sql = "";
+    StringBuilder sql = new StringBuilder();
 
     ValueQuery valueQueryFirst = this.combineValueQueryArray[0];
-    sql += "(" + valueQueryFirst.getSQL(limitRowRange, limit, skip) + ")\n";
+    sql.append("(" + valueQueryFirst.getSQL(limitRowRange, limit, skip) + ")\n");
 
     for (int i = 1; i < this.combineValueQueryArray.length; i++)
     {
       ValueQuery valueQuery = this.combineValueQueryArray[i];
 
-      sql += this.combineType.getOperator() + "\n";
-      sql += "(" + valueQuery.getSQL(limitRowRange, limit, skip) + ")";
+      sql.append(this.combineType.getOperator() + "\n");
+      sql.append("(" + valueQuery.getSQL(limitRowRange, limit, skip) + ")");
     }
 
-    return sql;
+    return sql.toString();
   }
 
   @Override
@@ -1563,20 +1564,20 @@ public class ValueQuery extends ComponentQuery
     // Restrict the number of rows returned from the database.
     if (limitRowRange)
     {
-      String selectClauseAttributes = "";
+      StringBuilder selectClauseAttributes = new StringBuilder();
       boolean firstIteration = true;
       ColumnInfo fistColumnInfo = null;
       for (ColumnInfo columnInfo : columnInfoList)
       {
         if (!firstIteration)
         {
-          selectClauseAttributes += ", ";
+          selectClauseAttributes.append(", ");
         }
         else
         {
           fistColumnInfo = columnInfo;
         }
-        selectClauseAttributes += columnInfo.getColumnAlias();
+        selectClauseAttributes.append(columnInfo.getColumnAlias());
 
         firstIteration = false;
       }
@@ -1586,7 +1587,7 @@ public class ValueQuery extends ComponentQuery
         orderByClause = "ORDER BY " + fistColumnInfo.getColumnAlias() + " ASC";
       }
 
-      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes, orderByClause);
+      sqlStmt = Database.buildRowRangeRestriction(sqlStmt, limit, skip, selectClauseAttributes.toString(), orderByClause);
     }
     else
     {
@@ -1613,21 +1614,21 @@ public class ValueQuery extends ComponentQuery
    */
   protected String buildGroupByClause()
   {
-    String sql = "";
+    StringBuilder sql = new StringBuilder();
 
     if (this.groupByList.size() > 0)
     {
-      sql += "\nGROUP BY ";
+      sql.append("\nGROUP BY ");
 
       boolean goupByFirstIteration = true;
       for (String groupBy : this.groupByList)
       {
         if (!goupByFirstIteration)
         {
-          sql += ", ";
+          sql.append(", ");
         }
 
-        sql += groupBy;
+        sql.append(groupBy);
         goupByFirstIteration = false;
       }
     }
@@ -1650,10 +1651,10 @@ public class ValueQuery extends ComponentQuery
         }
       }
 
-      sql += "\nHAVING " + this.havingCondition.getSQL();
+      sql.append("\nHAVING " + this.havingCondition.getSQL());
     }
 
-    return sql;
+    return sql.toString();
   }
 
   /**
@@ -1688,20 +1689,20 @@ public class ValueQuery extends ComponentQuery
   @Override
   protected String addGroupBySelectablesToSelectClauseForCount()
   {
-    String sql = "";
+    StringBuilder sql = new StringBuilder();
 
     boolean firstIteration = true;
     for (String selectable : this.groupByList)
     {
       if (!firstIteration)
       {
-        sql += ", ";
+        sql.append(", ");
       }
       firstIteration = false;
-      sql += selectable;
+      sql.append(selectable);
     }
 
-    return sql;
+    return sql.toString();
   }
 
   /**

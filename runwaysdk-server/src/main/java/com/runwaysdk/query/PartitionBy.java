@@ -51,24 +51,24 @@ public class PartitionBy
   
   protected String getSQL()
   {
-    String sql = "PARTITION BY ";
+    StringBuilder sql = new StringBuilder("PARTITION BY ");
     
     boolean firstTime = true;
     for (Selectable selectable : this.selectables)
     {
       if (!firstTime)
       {
-        sql += ", ";
+        sql.append(", ");
       }
       else
       {
         firstTime = false;
       }
       
-      sql += selectable.getSQL();
+      sql.append(selectable.getSQL());
     }
     
-    return sql;
+    return sql.toString();
   }
 
 }

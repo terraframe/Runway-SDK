@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -699,12 +699,9 @@ public class ImportManager
       AttributeStruct attributeStruct = (AttributeStruct) attribute;
 
       StructDAO structDAO = attributeStruct.getStructDAO();
-
+      
       // Set the default value to English
-      if (value != null)
-      {
-        structDAO.getAttribute(MdAttributeLocalInfo.DEFAULT_LOCALE).setValue(value);
-      }
+      structDAO.getAttribute(MdAttributeLocalInfo.DEFAULT_LOCALE).setValue(value);
 
       // Loop through all of the attributes of the struct and try to determine
       // if the attribute
@@ -754,16 +751,20 @@ public class ImportManager
    */
   public void register(String name, HandlerFactoryIF... factories)
   {
-    if (factories != null && factories.length > 0 && !this.map.containsKey(name))
+    if (factories != null && factories.length > 0)
     {
-      this.map.put(name, new LinkedHashMap<String, HandlerFactoryIF>());
+      if (!this.map.containsKey(name))
+      {
+        this.map.put(name, new LinkedHashMap<String, HandlerFactoryIF>());
+      }
+
+      for (HandlerFactoryIF factory : factories)
+      {
+        Map<String, HandlerFactoryIF> set = this.map.get(name);
+        set.put(factory.getClass().getName(), factory);
+      }
     }
 
-    for (HandlerFactoryIF factory : factories)
-    {
-      Map<String, HandlerFactoryIF> set = this.map.get(name);
-      set.put(factory.getClass().getName(), factory);
-    }
   }
 
   /**

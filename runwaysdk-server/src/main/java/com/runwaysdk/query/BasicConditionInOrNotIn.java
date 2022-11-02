@@ -45,39 +45,41 @@ public abstract class BasicConditionInOrNotIn extends BasicCondition
    */
   public String getSQL()
   {
-    String sqlString = null;
+    StringBuilder sqlString = new StringBuilder();
     
     if (this.ignoreCase)
     {
-      sqlString = Database.toUpperFunction(this.selectableLeft.getSQL());
+      sqlString.append(Database.toUpperFunction(this.selectableLeft.getSQL()));
     }
     else
     {
-      sqlString = this.selectableLeft.getSQL();
+      sqlString.append(this.selectableLeft.getSQL());
     }
 
-    sqlString += " "+this.getOperatorSymbol()+" (";
+    sqlString.append(" "+this.getOperatorSymbol()+" (");
 
     for (int i=0; i<this.statementPrimitiveArray.length; i++)
     {
       if (i != 0)
       {
-        sqlString +=", ";
+        sqlString.append(", ");
       }
       
       Statement statement = this.statementPrimitiveArray[i];
       
       if(this.ignoreCase)
       {
-        sqlString += Database.toUpperFunction(statement.getSQL());
+        sqlString.append(Database.toUpperFunction(statement.getSQL()));
       }
       else
       {
-        sqlString += statement.getSQL();        
+        sqlString.append(statement.getSQL());
       } 
     }
     
-    return sqlString+")";
+    sqlString.append(")");
+    
+    return sqlString.toString();
   }
   
   /**

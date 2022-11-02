@@ -47,13 +47,13 @@ public class SMClassHandler extends SMKeyedElementHandler
 
       root = schema().getElement(key);
 
-      if (root != null || root instanceof NullElement)
+      if (root != null)
       {
         root.addAttributesWithReplacement(attributes);
       }
       else
       {
-        throw new SourceElementNotDeclaredException(new SchemaClass(attributes, tag), new String());
+        throw new SourceElementNotDeclaredException(new SchemaClass(attributes, tag), "");
       }
     }
 

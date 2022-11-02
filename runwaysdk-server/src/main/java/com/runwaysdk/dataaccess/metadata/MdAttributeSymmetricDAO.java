@@ -82,12 +82,12 @@ public class MdAttributeSymmetricDAO extends MdAttributeEncryptionDAO implements
   public void setRandomValue(EntityDAO object)
   {
     Random random = EntityGenerator.getRandom();
-    String s = new String();
+    StringBuilder s = new StringBuilder();
     String alpha = "abcdefghijklmnopqrstuvwxyz    ";
     for (int i=0; i<256; i++)
-      s += alpha.charAt(random.nextInt(30));
+      s.append(alpha.charAt(random.nextInt(30)));
 
-    object.setValue(definesAttribute(), s);
+    object.setValue(definesAttribute(), s.toString());
   }
 
   @Override

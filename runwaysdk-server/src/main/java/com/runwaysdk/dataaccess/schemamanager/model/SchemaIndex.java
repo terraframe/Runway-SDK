@@ -55,11 +55,6 @@ public class SchemaIndex extends UnKeyedElement implements ElementListener
     indexAttributes.add(attribute);
   }
 
-  public boolean containsIndexAttribute(String attrName)
-  {
-    return indexAttributes.contains(attrName);
-  }
-
   public <T> T accept(SchemaVisitor<T> v)
   {
     return v.visit(this);

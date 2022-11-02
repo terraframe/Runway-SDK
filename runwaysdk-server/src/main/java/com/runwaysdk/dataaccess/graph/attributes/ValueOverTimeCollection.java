@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -40,8 +41,10 @@ import com.runwaysdk.localization.LocalizationFacade;
 
 public class ValueOverTimeCollection implements Collection<ValueOverTime>
 {
-  private final class ValueOverTimeComparator implements Comparator<ValueOverTime>
+  private static final class ValueOverTimeComparator implements Comparator<ValueOverTime>, Serializable
   {
+    private static final long serialVersionUID = 5620180560116795690L;
+
     @Override
     public int compare(ValueOverTime o1, ValueOverTime o2)
     {

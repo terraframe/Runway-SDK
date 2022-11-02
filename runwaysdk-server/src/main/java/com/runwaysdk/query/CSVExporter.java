@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.query;
 
@@ -30,19 +30,21 @@ import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
 
 public abstract class CSVExporter implements ExporterIF
 {
-  protected static String DELIMETER = ",";
+  protected static final String DELIMETER = ",";
 
-  private StringBuffer  buffer;
-  
-  private DateFormat dateFormat;
-  private DateFormat dateTimeFormat;
-  private DateFormat timeFormat;
+  private StringBuffer    buffer;
+
+  private DateFormat      dateFormat;
+
+  private DateFormat      dateTimeFormat;
+
+  private DateFormat      timeFormat;
 
   public CSVExporter()
   {
     this(null, null, null);
   }
-  
+
   public CSVExporter(DateFormat dateFormat, DateFormat dateTimeFormat, DateFormat timeFormat)
   {
     this.buffer = new StringBuffer();
@@ -61,25 +63,33 @@ public abstract class CSVExporter implements ExporterIF
     }
     catch (UnsupportedEncodingException e)
     {
-      return new ByteArrayInputStream(csv.getBytes());
+      throw new RuntimeException("Unsupported encoding", e);
     }
   }
 
   public Byte[] export()
   {
-    String csv = this.buffer.toString();
-
-    byte[] byteArray = csv.getBytes();
-    Byte[] bigByteArray = new Byte[byteArray.length];
-
-    for (int i = 0; i < byteArray.length; i++)
+    try
     {
-      bigByteArray[i] = Byte.valueOf(byteArray[i]);
-    }
 
-    return bigByteArray;
+      String csv = this.buffer.toString();
+
+      byte[] byteArray = csv.getBytes("UTF-8");
+      Byte[] bigByteArray = new Byte[byteArray.length];
+
+      for (int i = 0; i < byteArray.length; i++)
+      {
+        bigByteArray[i] = Byte.valueOf(byteArray[i]);
+      }
+
+      return bigByteArray;
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      throw new RuntimeException("Unsupported encoding", e);
+    }
   }
-  
+
   protected void addRow(StringBuffer row)
   {
     buffer.append(row.toString().replaceFirst(DELIMETER, ""));
@@ -99,8 +109,8 @@ public abstract class CSVExporter implements ExporterIF
       Date date = parser.parse(value, new java.text.ParsePosition(0));
 
       String exportValue = date.toString();
-      
-      if(timeFormat != null)
+
+      if (timeFormat != null)
       {
         exportValue = timeFormat.format(date);
       }
@@ -123,8 +133,8 @@ public abstract class CSVExporter implements ExporterIF
       Date date = parser.parse(value, new java.text.ParsePosition(0));
 
       String exportValue = date.toString();
-      
-      if(dateTimeFormat != null)
+
+      if (dateTimeFormat != null)
       {
         exportValue = dateTimeFormat.format(date);
       }
@@ -143,12 +153,12 @@ public abstract class CSVExporter implements ExporterIF
     if (value != null && !value.equals(""))
     {
       SimpleDateFormat parser = new SimpleDateFormat(Constants.DATE_FORMAT);
-      
+
       Date date = parser.parse(value, new java.text.ParsePosition(0));
-      
+
       String exportValue = date.toString();
-      
-      if(dateFormat != null)
+
+      if (dateFormat != null)
       {
         exportValue = dateFormat.format(date);
       }
@@ -180,7 +190,7 @@ public abstract class CSVExporter implements ExporterIF
     String displayLabel;
 
     // exports as 1 and 0 as per #2735
-    if(value == null || value.trim().length() == 0)
+    if (value == null || value.trim().length() == 0)
     {
       displayLabel = "";
     }

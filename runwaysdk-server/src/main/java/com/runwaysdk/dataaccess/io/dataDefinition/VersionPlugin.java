@@ -26,7 +26,7 @@ import com.runwaysdk.dataaccess.io.dataDefinition.VersionHandler.Action;
 
 public class VersionPlugin implements ImportPluginIF
 {
-  private class NullHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  private static class NullHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public NullHandler(ImportManager manager)
     {
@@ -34,7 +34,7 @@ public class VersionPlugin implements ImportPluginIF
     }
   }
 
-  private class VersionRootHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
+  private static class VersionRootHandler extends TagHandler implements TagHandlerIF, HandlerFactoryIF
   {
     public VersionRootHandler(ImportManager manager, Action action)
     {

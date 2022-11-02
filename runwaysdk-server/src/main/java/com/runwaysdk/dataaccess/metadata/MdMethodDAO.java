@@ -58,7 +58,7 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
   /**
    * A comparator that sorts <code>MdMethodDAOIF</code> alphabetically
    */
-  protected static Comparator<MdMethodDAOIF> alphabetical     = new Comparator<MdMethodDAOIF>()
+  protected static final Comparator<MdMethodDAOIF> alphabetical     = new Comparator<MdMethodDAOIF>()
                                                               {
                                                                 public int compare(MdMethodDAOIF o1, MdMethodDAOIF o2)
                                                                 {
@@ -86,25 +86,25 @@ public class MdMethodDAO extends MetadataDAO implements MdMethodDAOIF
    */
   public String getSignature()
   {
-    String signature = "Name:" + this.getName() + " IsStatic:" + this.isStatic() + " ReturnType: " + this.getReturnType().getType() + " Parameters[";
+    StringBuilder signature = new StringBuilder("Name:" + this.getName() + " IsStatic:" + this.isStatic() + " ReturnType: " + this.getReturnType().getType() + " Parameters[");
 
     boolean firstIteration = true;
     for (MdParameterDAOIF mdParameterDAOIF : this.getMdParameterDAOs())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      signature += mdParameterDAOIF.getSignature();
+      signature.append(mdParameterDAOIF.getSignature());
     }
 
-    signature += "]";
+    signature.append("]");
 
-    return signature;
+    return signature.toString();
   }
 
   /**

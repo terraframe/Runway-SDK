@@ -21,6 +21,7 @@ package com.runwaysdk.dataaccess.io.excel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.runwaysdk.business.Entity;
@@ -64,16 +65,17 @@ public class FormValidationImportListener extends ImportAdapter implements Impor
   @Override
   public void validate(Mutable instance, HashMap<String, List<Entity>> entities)
   {
-    Set<MdAttributeDAOIF> keys = map.keySet();
+    Set<Entry<MdAttributeDAOIF, List<FieldConditionDAOIF>>> entries = map.entrySet();
 
-    for (MdAttributeDAOIF key : keys)
+    for (Entry<MdAttributeDAOIF, List<FieldConditionDAOIF>> entry : entries)
     {
+      MdAttributeDAOIF key = entry.getKey();
       String value = instance.getValue(key.getMdAttributeConcrete().getValue(MdAttributeConcreteInfo.NAME));
 
       // IMPORTANT: Only valiate attributes that have values
       if (value != null && value.length() > 0)
       {
-        List<FieldConditionDAOIF> conditions = map.get(key);
+        List<FieldConditionDAOIF> conditions = entry.getValue();
 
         for (FieldConditionDAOIF condition : conditions)
         {

@@ -27,6 +27,7 @@ package com.runwaysdk.dataaccess.transaction;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.runwaysdk.business.LockException;
@@ -99,7 +100,7 @@ public class LockObject
   {
     if (!this.lockedIDsMap.containsKey(oid))
     {
-      if (this.lockCache == null || ( ( this.lockCache != null ) && ( isLockedByThread(this.lockCache) ) ))
+      if (this.lockCache == null || ( isLockedByThread(this.lockCache) ))
       {
         this.recordAppLock(oid);
         return true;
@@ -198,14 +199,16 @@ public class LockObject
    */
   public synchronized void addTransactionLocks(Map<String, TransactionItemEntityDAOAction> entityDAOidMap)
   {
-    for (String oid : entityDAOidMap.keySet())
+    for (Entry<String, TransactionItemEntityDAOAction> entry : entityDAOidMap.entrySet())
     {
+      String oid = entry.getKey();
+      
       if (this.transactionIDsMap.get(oid) != null && !isLockedByThread(this.transactionIDsMap.get(oid)))
       {
         this.transactionIDsMap.put(oid, getCurrentThread());
       }
 
-      TransactionItemAction transactionItemAction = entityDAOidMap.get(oid);
+      TransactionItemAction transactionItemAction = entry.getValue();
 
       if (transactionItemAction instanceof TransactionItemEntityDAOAction)
       {
@@ -237,8 +240,9 @@ public class LockObject
   {
     Map<String, TransactionItemEntityDAOAction> entityDAOidMap = transactionCache.getEntityDAOIDsMap();
     
-    for (String oid : entityDAOidMap.keySet())
+    for (Entry<String, TransactionItemEntityDAOAction> entry : entityDAOidMap.entrySet())
     {
+      String oid = entry.getKey();
       // OID Could have changed during the transaction
       String originalId = transactionCache.getOriginalId(oid);
       
@@ -247,7 +251,7 @@ public class LockObject
         this.transactionIDsMap.remove(originalId);
       }
 
-      TransactionItemAction transactionItemAction = entityDAOidMap.get(oid);
+      TransactionItemAction transactionItemAction = entry.getValue();
 
       if (transactionItemAction instanceof TransactionItemEntityDAOAction)
       {

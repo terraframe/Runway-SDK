@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.xml.sax.Attributes;
@@ -68,7 +69,7 @@ public abstract class SchemaElement extends ElementObservable
   {
     super();
 
-    this.tag = new String(tag);
+    this.tag = tag;
     this.xmlAttributes = new LinkedHashMap<String, String>();
     this.children = new LinkedHashSet<SchemaElementIF>();
     this.parent = parent;
@@ -100,9 +101,9 @@ public abstract class SchemaElement extends ElementObservable
   {
     Map<String, String> attributes = element.getAttributes();
 
-    for (String key : attributes.keySet())
+    for (Entry<String, String> entry : attributes.entrySet())
     {
-      xmlAttributes.put(key, attributes.get(key));
+      xmlAttributes.put(entry.getKey(), entry.getValue());
     }
   }
 
@@ -283,7 +284,7 @@ public abstract class SchemaElement extends ElementObservable
 
           String childValue = child.getXMLAttributeValue(key);
 
-          if ( ( value != null && childValue == null ) || !value.equals(childValue))
+          if ( ( value != null && childValue == null ) || (value != null && !value.equals(childValue)))
           {
             continue outer;
           }
@@ -385,18 +386,18 @@ public abstract class SchemaElement extends ElementObservable
     {
       XSDElementFinder elementFinder = new XSDElementFinder(this.getTag());
 
-      String xsds = "{";
+      StringBuilder xsds = new StringBuilder("{");
       Collection<XSSchema> schemas = schemaSet.getSchemas();
       for (XSSchema schema : schemas)
       {
         schema.visit(elementFinder);
-        xsds += "[" + schema.getLocator().getSystemId() + "],";
+        xsds.append("[" + schema.getLocator().getSystemId() + "],");
       }
-      xsds += "}";
+      xsds.append("}");
 
       if (elementFinder.getElementDecl() == null)
       {
-        throw new XSDDefinitionNotResolvedException(this.getTag(), "Could not find tag [" + this.getTag() + "] in xsdset " + xsds);
+        throw new XSDDefinitionNotResolvedException(this.getTag(), "Could not find tag [" + this.getTag() + "] in xsdset " + xsds.toString());
       }
 
       return elementFinder.getElementDecl().getType();

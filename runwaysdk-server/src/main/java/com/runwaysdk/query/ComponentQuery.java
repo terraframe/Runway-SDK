@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.runwaysdk.ComponentIF;
@@ -39,7 +40,7 @@ import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 
 public abstract class ComponentQuery
 {
-  protected static String selectIndent = "     ";
+  protected static final String selectIndent = "     ";
 
   protected QueryFactory  queryFactory;
 
@@ -878,27 +879,27 @@ public abstract class ComponentQuery
    */
   protected String buildOrderByClause()
   {
-    String orderByClause = "";
+    StringBuilder orderByClause = new StringBuilder();
     if (orderByList.size() > 0)
     {
-      orderByClause = "ORDER BY ";
+      orderByClause.append("ORDER BY ");
       boolean firstIteration = true;
       for (OrderBy orderBy : orderByList)
       {
         if (!firstIteration)
         {
-          orderByClause += ", ";
+          orderByClause.append(", ");
         }
         else
         {
           firstIteration = false;
         }
-        orderByClause += getOrderBySQL(orderBy) + " ";
+        orderByClause.append(getOrderBySQL(orderBy) + " ");
       }
-      orderByClause += "\n";
+      orderByClause.append("\n");
     }
 
-    return orderByClause;
+    return orderByClause.toString();
   }
 
   public abstract String getOrderBySQL(OrderBy orderBy);
@@ -996,10 +997,9 @@ public abstract class ComponentQuery
       }
     }
 
-    for (String tableAlias : leftJoinMap.keySet())
+    for (Entry<String, List<LeftJoin>> entry : leftJoinMap.entrySet())
     {
-
-      List<LeftJoin> leftOuterJoinList = leftJoinMap.get(tableAlias);
+      List<LeftJoin> leftOuterJoinList = entry.getValue();
 
       if (!firstIteration)
       {
@@ -1020,13 +1020,13 @@ public abstract class ComponentQuery
       firstIteration = false;
     }
 
-    for (String tableAlias : fromMap.keySet())
+    for (Entry<String, String> entry : fromMap.entrySet())
     {
       if (!firstIteration)
       {
         fromClause.append(",\n" + selectIndent);
       }
-      fromClause.append(fromMap.get(tableAlias) + " " + tableAlias);
+      fromClause.append(entry.getValue() + " " + entry.getKey());
       firstIteration = false;
     }
 

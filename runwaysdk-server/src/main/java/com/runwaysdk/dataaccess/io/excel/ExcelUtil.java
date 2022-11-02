@@ -186,7 +186,7 @@ public class ExcelUtil
     }
     else if (cellType.equals(CellType.BOOLEAN))
     {
-      return new Boolean(cell.getBooleanCellValue()).toString();
+      return Boolean.toString(cell.getBooleanCellValue());
     }
     else
     {

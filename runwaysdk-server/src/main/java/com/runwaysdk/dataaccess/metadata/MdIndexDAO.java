@@ -77,25 +77,25 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
    */
   public String getSignature()
   {
-    String signature = "Name:"+this.getIndexName()+" Attributes[";
+    StringBuilder signature = new StringBuilder("Name:"+this.getIndexName()+" Attributes[");
 
     boolean firstIteration = true;
     for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : getIndexedAttributes())
     {
       if (!firstIteration)
       {
-        signature +=", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
-      signature += mdAttributeConcreteDAOIF.definesAttribute();
+      signature.append(mdAttributeConcreteDAOIF.definesAttribute());
     }
 
-    signature += "]";
+    signature.append("]");
 
-    return signature;
+    return signature.toString();
   }
 
   /**
@@ -415,24 +415,24 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
         List<String> attributeColumnNames = this.getColumnNames();
 
-        String attributeString = "";
+        StringBuilder attributeString = new StringBuilder();
 
         boolean firstIteration = true;
         for (String attributeName : attributeColumnNames)
         {
           if (!firstIteration)
           {
-            attributeString += ", ";
+            attributeString.append(", ");
           }
 
-          attributeString += attributeName;
+          attributeString.append(attributeName);
 
           firstIteration = false;
         }
 
         String errMsg = "Index ["+this.getDisplayLabel(Session.getCurrentLocale())+"] on entity ["+mdEntityDAOIF.definesType()+"] is invalid. "+
         "An index is already defined on entity ["+mdEntityDAOIF.definesType()+"] with attributes ["+attributeString+"].";
-        throw new IdenticalIndexException(errMsg, mdEntityDAOIF, this, attributeString);
+        throw new IdenticalIndexException(errMsg, mdEntityDAOIF, this, attributeString.toString());
       }
     }
     finally
@@ -443,14 +443,14 @@ public class MdIndexDAO extends MetadataDAO implements MdIndexDAOIF
 
   public static String buildKey(String definingType, String[] columnNames)
   {
-    String key = definingType+".Index";
+    StringBuilder key = new StringBuilder(definingType+".Index");
 
     for (String columnName : columnNames)
     {
-      key += "."+columnName;
+      key.append("."+columnName);
     }
 
-    return key;
+    return key.toString();
   }
 
   /**

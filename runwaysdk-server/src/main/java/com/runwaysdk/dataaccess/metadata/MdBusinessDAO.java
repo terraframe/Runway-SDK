@@ -94,14 +94,14 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
    */
   public String getSignature()
   {
-    String signature = super.getSignature() + " ParentMethods[";
+    StringBuilder signature = new StringBuilder(super.getSignature() + " ParentMethods[");
 
     boolean firstIteration = true;
     for (MdRelationshipDAOIF mdRelationshipDAOIF : this.getChildMdRelationshipsOrdered())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
@@ -114,17 +114,17 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
       String parentMethod = mdRelationshipDAOIF.getParentMethod();
       String parentGetterVisibility = mdRelationshipDAOIF.getParentVisibility().getJavaModifier();
 
-      signature += "RelationshipVisibility: " + relationshipVisibility + " Type:" + parentType + " TypeVisibility: " + parentTypeVisibility + " Method:" + parentMethod + " ParentGetterVisibility:" + parentGetterVisibility;
+      signature.append("RelationshipVisibility: " + relationshipVisibility + " Type:" + parentType + " TypeVisibility: " + parentTypeVisibility + " Method:" + parentMethod + " ParentGetterVisibility:" + parentGetterVisibility);
     }
-    signature += "]";
+    signature.append("]");
 
-    signature += " ChildMethods[";
+    signature.append(" ChildMethods[");
     firstIteration = true;
     for (MdRelationshipDAOIF mdRelationshipDAOIF : this.getParentMdRelationshipsOrdered())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
@@ -137,30 +137,30 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
       String childMethod = mdRelationshipDAOIF.getChildMethod();
       String childGetterVisibility = mdRelationshipDAOIF.getChildVisibility().getJavaModifier();
 
-      signature += "RelationshipVisibility: " + relationshipVisibility + " Type:" + childType + " TypeVisibility: " + childTypeVisibility + " Method:" + childMethod + " ChildGetterVisibility:" + childGetterVisibility;
+      signature.append("RelationshipVisibility: " + relationshipVisibility + " Type:" + childType + " TypeVisibility: " + childTypeVisibility + " Method:" + childMethod + " ChildGetterVisibility:" + childGetterVisibility);
     }
-    signature += "]";
+    signature.append("]");
 
-    signature += " Enumerations[";
+    signature.append(" Enumerations[");
 
     firstIteration = true;
     for (MdEnumerationDAOIF mdEnumerationDAOIF : this.getMdEnumerationDAOs())
     {
       if (!firstIteration)
       {
-        signature += ", ";
+        signature.append(", ");
       }
       else
       {
         firstIteration = false;
       }
 
-      signature += mdEnumerationDAOIF.getSignature();
+      signature.append(mdEnumerationDAOIF.getSignature());
     }
 
-    signature += "]";
+    signature.append("]");
 
-    return signature;
+    return signature.toString();
   }
 
   /**
@@ -907,7 +907,7 @@ public class MdBusinessDAO extends MdElementDAO implements MdBusinessDAOIF
 
       for (MdBusinessDAOIF subMdBusinessIF : this.getAllSubClasses())
       {
-        if (subMdBusinessIF.getOid() == this.getOid())
+        if (subMdBusinessIF.getOid().equals(this.getOid()))
         {
           continue;
         }

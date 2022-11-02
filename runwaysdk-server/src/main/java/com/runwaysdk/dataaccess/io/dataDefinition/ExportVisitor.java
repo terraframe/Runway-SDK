@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -2083,14 +2084,14 @@ public class ExportVisitor extends MarkupVisitor
   {
     HashMap<String, String> parameters = new HashMap<String, String>();
 
-    String requiredForDimension = new String();
+    StringBuilder builder = new StringBuilder();
     List<MdAttributeDimensionDAOIF> mdAttributeDimensions = mdAttributeIF.getMdAttributeDimensions();
 
     for (MdAttributeDimensionDAOIF mdAttributeDimension : mdAttributeDimensions)
     {
       if (mdAttributeDimension.getValue(MdAttributeDimensionInfo.REQUIRED).equals(MdAttributeBooleanInfo.TRUE))
       {
-        requiredForDimension += ", " + mdAttributeDimension.definingMdDimension().getName();
+        builder.append(", " + mdAttributeDimension.definingMdDimension().getName());
       }
     }
 
@@ -2098,6 +2099,8 @@ public class ExportVisitor extends MarkupVisitor
     {
       parameters.put(XMLTags.RENAME_ATTRIBUTE, metadata.getRename(mdAttributeIF));
     }
+    
+    String requiredForDimension = builder.toString();
 
     if (requiredForDimension.length() > 0)
     {
@@ -2469,11 +2472,12 @@ public class ExportVisitor extends MarkupVisitor
    */
   protected static void writeLocaleValues(HashMap<String, String> attributes, String tagName, Map<String, String> localValues)
   {
-    for (String locale : localValues.keySet())
+    for (Entry<String, String> entry : localValues.entrySet())
     {
+      String locale = entry.getKey();
       if (locale.equals(MdAttributeLocalInfo.DEFAULT_LOCALE))
       {
-        attributes.put(tagName, localValues.get(locale));
+        attributes.put(tagName, entry.getValue());
       }
       else
       {

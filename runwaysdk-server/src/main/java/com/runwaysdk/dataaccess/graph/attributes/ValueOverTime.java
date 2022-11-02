@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -46,7 +46,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   private LocalDate endDate;
 
   private Object    value;
-  
+
   private String    oid;
 
   /**
@@ -62,10 +62,10 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 
     this.setStartDate(startDate);
     this.setEndDate(endDate);
-    
+
     this.oid = UUID.randomUUID().toString();
   }
-  
+
   public ValueOverTime(String oid, Date startDate, Date endDate, Object value)
   {
     super();
@@ -74,7 +74,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
 
     this.setStartDate(startDate);
     this.setEndDate(endDate);
-    
+
     this.oid = oid;
   }
 
@@ -90,7 +90,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
   {
     return this.startDate;
   }
-  
+
   public String getOid()
   {
     return oid;
@@ -111,7 +111,7 @@ public class ValueOverTime implements Comparable<ValueOverTime>
     {
       startDate = new Date();
     }
-    
+
     this.startDate = startDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
   }
 
@@ -139,14 +139,12 @@ public class ValueOverTime implements Comparable<ValueOverTime>
    */
   public void setEndDate(Date endDate)
   {
-    if (endDate != null)
-    {
-      this.endDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
-    }
-    else
+    if (endDate == null)
     {
       endDate = INFINITY_END_DATE;
     }
+
+    this.endDate = endDate.toInstant().atZone(ZoneId.of("Z")).toLocalDate();
   }
 
   /**

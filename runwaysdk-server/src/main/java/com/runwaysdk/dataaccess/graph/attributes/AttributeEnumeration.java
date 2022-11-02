@@ -185,7 +185,7 @@ public class AttributeEnumeration extends Attribute implements AttributeSet
       }
       else
       {
-        this.setValueInternal(value);
+        this.setValueInternal(null);
       }
     }
     

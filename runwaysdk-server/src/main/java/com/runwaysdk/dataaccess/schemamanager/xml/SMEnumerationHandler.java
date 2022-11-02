@@ -47,13 +47,13 @@ public class SMEnumerationHandler extends AbstractSchemaHandler
     {
       root = (SchemaEnumeration) schema().getElement(attributes.getValue(XMLTags.NAME_ATTRIBUTE));
       
-      if (root != null || root instanceof NullElement)
+      if (root != null)
       {
         root.addAttributesWithReplacement(attributes);
       }
       else
       {
-        throw new SourceElementNotDeclaredException(new SchemaEnumeration(attributes, localName), new String());
+        throw new SourceElementNotDeclaredException(new SchemaEnumeration(attributes, localName), "");
       }
     }
 

@@ -132,7 +132,7 @@ public privileged aspect ThreadTransactionManagement extends AbstractTransaction
 
     try
     {
-      Integer savepointId = new Integer(savepoint.getSavepointId());
+      Integer savepointId = Integer.valueOf(savepoint.getSavepointId());
 
       try
       {

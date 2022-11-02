@@ -23,7 +23,6 @@
 package com.runwaysdk.dataaccess.metadata;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -576,10 +575,6 @@ public class MdAttributeConcrete_E extends MdAttributeConcreteStrategy
   {
     // get the MdEntity that defines this attribute
     MdEntityDAOIF mdEntityIF = this.definedByClass();
-
-    // create a list of attribute names
-    List<String> attr = new LinkedList<String>();
-    attr.add(this.getMdAttribute().definesAttribute());
 
     String indexName = this.getMdAttribute().getIndexName();
 

@@ -1702,7 +1702,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     }
     Expression subSelectStatement = new MultiReferenceCountSubSelect(this.columnName, this.definingTableAlias, this.mdMultiReferenceTableName);
 
-    StatementSubSelectCondition basicConditionSubSelect = new StatementSubSelectCondition(new StatementPrimitive(Integer.valueOf(enumIds.length).toString()), subSelectStatement, false);
+    StatementSubSelectCondition basicConditionSubSelect = new StatementSubSelectCondition(new StatementPrimitive(Integer.toString(enumIds.length)), subSelectStatement, false);
 
     return new AND(previousCondition, basicConditionSubSelect);
   }
@@ -1766,7 +1766,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
     return new AttributeMultiReference_Sub((MdAttributeMultiReferenceDAOIF) this.mdAttributeIF, attributeNameSpace, this.definingTableName, this.definingTableAlias, this.mdMultiReferenceTableName, this.rootQuery.getTableAlias(attributeNameSpace, this.mdMultiReferenceTableName), this.rootQuery, this.tableJoinSet);
   }
 
-  class MultiReferenceNotContainsAny extends AttributeCondition
+  static class MultiReferenceNotContainsAny extends AttributeCondition
   {
     private MultiReferenceSubSelectNotContainsAny statement;
 
@@ -1824,7 +1824,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * @author nathan
    * 
    */
-  class MultiReferenceSubSelectNotContainsAny extends Condition
+  static class MultiReferenceSubSelectNotContainsAny extends Condition
   {
     private String columnName;
 
@@ -1844,22 +1844,22 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
 
     public String getSQL()
     {
-      String sqlStmt = "(SELECT " + MdEnumerationInfo.SET_ID + " \n" + " FROM " + this.mdMultiReferenceTableName + "\n" + " WHERE " + MdEnumerationDAOIF.SET_ID_COLUMN + " = " + this.definingTableAlias + "." + this.columnName + "\n" + "   AND (";
+      StringBuilder sqlStmt = new StringBuilder("(SELECT " + MdEnumerationInfo.SET_ID + " \n" + " FROM " + this.mdMultiReferenceTableName + "\n" + " WHERE " + MdEnumerationDAOIF.SET_ID_COLUMN + " = " + this.definingTableAlias + "." + this.columnName + "\n" + "   AND (");
 
       boolean firstIteration = true;
       for (String enumId : this.enumIds)
       {
         if (!firstIteration)
         {
-          sqlStmt += "\n        OR ";
+          sqlStmt.append("\n        OR ");
         }
         firstIteration = false;
 
-        sqlStmt += MdEnumerationInfo.ITEM_ID + " = '" + enumId + "'";
+        sqlStmt.append(MdEnumerationInfo.ITEM_ID + " = '" + enumId + "'");
       }
 
-      sqlStmt += "))";
-      return sqlStmt;
+      sqlStmt.append("))");
+      return sqlStmt.toString();
     }
 
     /**
@@ -1904,7 +1904,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * @author nathan
    * 
    */
-  class MultiReferenceCountSubSelect extends Condition
+  static class MultiReferenceCountSubSelect extends Condition
   {
     private String columnName;
 
@@ -1966,7 +1966,7 @@ public class AttributeMultiReference extends AttributeRef implements SelectableM
    * @author nathan
    * 
    */
-  class AttributeMultiReference_Sub extends Attribute
+  static class AttributeMultiReference_Sub extends Attribute
   {
     private String mdMultiReferenceTableName;
 
