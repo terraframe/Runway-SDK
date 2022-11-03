@@ -37,7 +37,7 @@ public class IdParser
   {
     try
     {
-      return oid.substring(0, Integer.valueOf(DatabaseInfo.ROOT_ID_SIZE).intValue());
+      return oid.substring(0, Integer.parseInt(DatabaseInfo.ROOT_ID_SIZE));
     }
     catch (StringIndexOutOfBoundsException e)
     {

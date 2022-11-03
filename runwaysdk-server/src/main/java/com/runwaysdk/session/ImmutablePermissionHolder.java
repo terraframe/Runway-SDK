@@ -11,7 +11,7 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.RoleDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
-public class PermissionHolder implements Serializable
+public class ImmutablePermissionHolder implements Serializable
 {
   private static final long serialVersionUID = 1L;
 
@@ -45,12 +45,12 @@ public class PermissionHolder implements Serializable
    */
   private Map<String, RoleDAOIF>      authorizedRoleMap;
 
-  public PermissionHolder()
+  public ImmutablePermissionHolder()
   {
     this.isAdmin = false;
   }
 
-  public PermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user)
+  public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user)
   {
     this.isAdmin = false;
     this.permissions = Collections.unmodifiableMap(permissions);
@@ -60,7 +60,7 @@ public class PermissionHolder implements Serializable
     this.authorizedRoleMap = Collections.unmodifiableMap(new HashMap<String, RoleDAOIF>());
   }
 
-  public PermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale)
+  public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale)
   {
     this.isAdmin = false;
     this.permissions = Collections.unmodifiableMap(permissions);
@@ -70,7 +70,7 @@ public class PermissionHolder implements Serializable
     this.authorizedRoleMap = Collections.unmodifiableMap(new HashMap<String, RoleDAOIF>());
   }
 
-  public PermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
+  public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
   {
     this.isAdmin = false;
     this.permissions = Collections.unmodifiableMap(permissions);
@@ -80,7 +80,7 @@ public class PermissionHolder implements Serializable
     this.authorizedRoleMap = Collections.unmodifiableMap(authorizedRoleMap);
   }
 
-  public PermissionHolder(SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
+  public ImmutablePermissionHolder(SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
   {
     this.isAdmin = true;
     this.permissions = Collections.unmodifiableMap(new HashMap<>());
@@ -120,9 +120,9 @@ public class PermissionHolder implements Serializable
     return authorizedRoleMap;
   }
 
-  public PermissionHolder setDimensionKey(String dimensionKey)
+  public ImmutablePermissionHolder setDimensionKey(String dimensionKey)
   {
-    PermissionHolder holder = new PermissionHolder();
+    ImmutablePermissionHolder holder = new ImmutablePermissionHolder();
     holder.dimensionKey = dimensionKey;
     holder.authorizedRoleMap = this.authorizedRoleMap;
     holder.isAdmin = this.isAdmin;

@@ -36,7 +36,7 @@ public class JobViewQuery extends com.runwaysdk.system.scheduler.JobViewQueryBas
     super(queryFactory, viewQueryBuilder);
   }
 
-  class DefaultJobViewBuilder extends com.runwaysdk.query.ViewQueryBuilder
+  static class DefaultJobViewBuilder extends com.runwaysdk.query.ViewQueryBuilder
   {
     public DefaultJobViewBuilder(com.runwaysdk.query.QueryFactory queryFactory)
     {

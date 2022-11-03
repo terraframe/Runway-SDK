@@ -92,12 +92,12 @@ public abstract class ComponentQueryAPIGenerator implements GeneratorIF, ServerM
     String pack = GenerationUtil.getPackageForFileSystem(this.getMdClassIF());
     if (!new File(ServerMarker.SOURCE_DIRECTORY + pack).mkdirs())
     {
-      logger.error("Unable to create [" + ServerMarker.SOURCE_DIRECTORY + pack + "] directory");
+      logger.debug("Unable to create [" + ServerMarker.SOURCE_DIRECTORY + pack + "] directory");
     }
 
     if (!new File(ServerMarker.BASE_DIRECTORY + pack).mkdirs())
     {
-      logger.error("Unable to create [" + ServerMarker.BASE_DIRECTORY + pack + "] directory");
+      logger.debug("Unable to create [" + ServerMarker.BASE_DIRECTORY + pack + "] directory");
     }
   }
 

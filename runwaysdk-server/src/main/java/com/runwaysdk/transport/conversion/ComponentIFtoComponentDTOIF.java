@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.transport.conversion;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
@@ -723,7 +724,14 @@ public abstract class ComponentIFtoComponentDTOIF
     {
       if (oValue != null && !mdAttributeIF.isSystem())
       {
-        value = ( (String) oValue ).getBytes();
+        try
+        {
+          value = ( (String) oValue ).getBytes("UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+          throw new ProgrammingErrorException(e);
+        }
       }
     }
     else if (oValue != null && !mdAttributeIF.isSystem())

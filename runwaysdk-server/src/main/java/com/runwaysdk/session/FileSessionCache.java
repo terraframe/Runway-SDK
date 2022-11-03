@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -38,6 +38,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -63,6 +65,8 @@ import com.runwaysdk.util.FileIO;
  */
 public class FileSessionCache extends ManagedUserSessionCache
 {
+  private static Logger        logger    = LoggerFactory.getLogger(FileSessionCache.class);
+
   private static final int     MAX_DPETH = 6;
 
   /**
@@ -97,7 +101,8 @@ public class FileSessionCache extends ManagedUserSessionCache
    *          Fully qualified path of the root directory
    */
   @Inject
-  public FileSessionCache(@Named("rootDirectory") String rootDirectory)
+  public FileSessionCache(@Named("rootDirectory")
+  String rootDirectory)
   {
     super();
 
@@ -108,12 +113,9 @@ public class FileSessionCache extends ManagedUserSessionCache
     // Make the root directory
     File rootDirectoryFile = new File(rootDirectory);
 
-    boolean directoryCreated = rootDirectoryFile.mkdirs();
-
-    if (!directoryCreated)
+    if (!rootDirectoryFile.mkdirs())
     {
-      String errMsg = "Error creating the directory for storing serialized sessions";
-      new FileWriteException(errMsg, rootDirectoryFile);
+      logger.debug("Error creating the directory for storing serialized sessions: " + rootDirectoryFile.getAbsolutePath());
     }
 
     // Make the public session
@@ -156,7 +158,12 @@ public class FileSessionCache extends ManagedUserSessionCache
       String directory = this.getDirectory(sessionId);
 
       // Create the directory structure and get the session file
-      new File(directory).mkdirs();
+      File dir = new File(directory);
+      if (!dir.mkdirs())
+      {
+        logger.debug("Unable to create the directory: " + directory);
+      }
+
       File file = new File(directory + sessionId);
       boolean exists = file.exists();
 
@@ -488,7 +495,10 @@ public class FileSessionCache extends ManagedUserSessionCache
       FileIO.deleteDirectory(directory);
 
       // Recreate the root directory
-      directory.mkdir();
+      if (!directory.mkdir())
+      {
+        logger.debug("Error creating the directory: " + directory.getAbsolutePath());
+      }
 
       // Add the public session back into the cache
       this.addSession(publicSession);
@@ -545,9 +555,12 @@ public class FileSessionCache extends ManagedUserSessionCache
       {
         File[] files = directory.listFiles();
 
-        for (File file : files)
+        if (files != null)
         {
-          cleanUpDirectory(file, time);
+          for (File file : files)
+          {
+            cleanUpDirectory(file, time);
+          }
         }
       }
       else
@@ -679,7 +692,7 @@ public class FileSessionCache extends ManagedUserSessionCache
    *
    * @author Justin Smethie
    */
-  class ResolvedObjectInputStream extends ObjectInputStream
+  static class ResolvedObjectInputStream extends ObjectInputStream
   {
     public ResolvedObjectInputStream(InputStream in) throws IOException
     {
@@ -729,18 +742,18 @@ public class FileSessionCache extends ManagedUserSessionCache
   public Map<String, SessionIF> getAllSessions()
   {
     sessionCacheLock.lock();
-    
+
     try
     {
       Collection<SessionIF> sessions = new FileSessionIterator().getAll();
-      
+
       HashMap<String, SessionIF> map = new HashMap<String, SessionIF>();
-      
+
       for (SessionIF ses : sessions)
       {
         map.put(ses.getOid(), ses);
       }
-      
+
       return map;
     }
     finally
@@ -793,26 +806,32 @@ public class FileSessionCache extends ManagedUserSessionCache
 
         File[] subdirectories = directory.listFiles(filter);
 
-        for (File subdirectory : subdirectories)
+        if (subdirectories != null)
         {
-          this.loadSetFromDirectory(subdirectory, sessionIds, ( depth + 1 ));
+          for (File subdirectory : subdirectories)
+          {
+            this.loadSetFromDirectory(subdirectory, sessionIds, ( depth + 1 ));
+          }
         }
       }
       else
       {
         File[] sessions = directory.listFiles();
 
-        for (File session : sessions)
+        if (sessions != null)
         {
-          if (session.isFile())
+          for (File session : sessions)
           {
-            String sessionId = session.getName();
+            if (session.isFile())
+            {
+              String sessionId = session.getName();
 
-            sessionIds.add(sessionId);
-          }
-          else
-          {
-            throw new ProgrammingErrorException("Expecting only session");
+              sessionIds.add(sessionId);
+            }
+            else
+            {
+              throw new ProgrammingErrorException("Expecting only session");
+            }
           }
         }
       }
@@ -833,15 +852,15 @@ public class FileSessionCache extends ManagedUserSessionCache
     /**
      * @see com.runwaysdk.session.SessionIterator#remove()
      */
-//    @Override
-//    public void remove()
-//    {
-//      this.initialize();
-//
-//      this.iterator.remove();
-//
-//      FileSessionCache.this.closeSession(this.sessionId);
-//    }
+    // @Override
+    // public void remove()
+    // {
+    // this.initialize();
+    //
+    // this.iterator.remove();
+    //
+    // FileSessionCache.this.closeSession(this.sessionId);
+    // }
 
     /**
      * @see com.runwaysdk.session.SessionIterator#hasNext()
@@ -875,7 +894,7 @@ public class FileSessionCache extends ManagedUserSessionCache
 
         sesses.add(session);
       }
-      
+
       this.close();
 
       return sesses;

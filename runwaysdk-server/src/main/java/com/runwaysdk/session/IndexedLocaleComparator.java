@@ -3,21 +3,22 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
@@ -27,12 +28,14 @@ import java.util.Locale;
  * on language, country, and variant with any of the {@link Locale}s supported
  * by the system is the best fit. In the case of a tie the {@link Locale} with a
  * lower index is choosen. This is due to the assumption that the primary
- * {@link Locale} is first in the array. 
+ * {@link Locale} is first in the array.
  * 
- *  @author Justin Smethie
+ * @author Justin Smethie
  */
-public class IndexedLocaleComparator implements Comparator<IndexedLocale>
+public class IndexedLocaleComparator implements Comparator<IndexedLocale>, Serializable
 {
+  private static final long  serialVersionUID = 8122230930701266693L;
+
   private Collection<Locale> supportedLocales;
 
   public IndexedLocaleComparator(Collection<Locale> supportedLocales)
@@ -52,6 +55,6 @@ public class IndexedLocaleComparator implements Comparator<IndexedLocale>
 
     // multiple the matches by -1 such that the IndexedLocale with the
     // highest number of matches is sorted earlier in the list
-    return -1 *  m1.compareTo(m2);
+    return -1 * m1.compareTo(m2);
   }
 }

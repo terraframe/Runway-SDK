@@ -91,7 +91,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
       DownstreamJobRelationship rel = lDownstreamRel.get(0);
       ExecutableJob downstream = rel.getChild();
       
-      if ( (error == null) || (error != null && rel.getTriggerOnFailure()) )
+      if ( (error == null) || (rel.getTriggerOnFailure()) )
       {
         downstream.executableJobStart();
       }
@@ -384,7 +384,7 @@ public abstract class ExecutableJob extends ExecutableJobBase
     String oid = this.getDisplayLabel().getValue();
     String desc = this.getDescription().getValue();
 
-    if (oid != null && desc != null && oid == desc)
+    if (oid != null && desc != null && oid.equals(desc))
     {
       return "[" + clazz + "] - " + desc;
     }

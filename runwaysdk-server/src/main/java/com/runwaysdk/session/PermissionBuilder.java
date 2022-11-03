@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -31,9 +31,13 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.Operation;
@@ -51,6 +55,8 @@ import com.runwaysdk.util.FileIO;
 
 public final class PermissionBuilder extends AbstractPermissionBuilder implements PermissionBuilderIF
 {
+  private static Logger logger = LoggerFactory.getLogger(PermissionBuilder.class);
+
   public PermissionBuilder(ActorDAOIF actor)
   {
     super(actor);
@@ -90,13 +96,11 @@ public final class PermissionBuilder extends AbstractPermissionBuilder implement
   {
     // Get a list of all objects the user has permissions on
     HashMap<String, RelationshipDAOIF> permissions = this.getManager().getPermissions(this.getActor());
-    Set<String> keySet = permissions.keySet();
+    Set<Entry<String, RelationshipDAOIF>> entrySet = permissions.entrySet();
 
-    for (String key : keySet)
+    for (Entry<String, RelationshipDAOIF> entry : entrySet)
     {
-      RelationshipDAOIF reference = permissions.get(key);
-
-      this.addPermissions(this.getActor(), reference);
+      this.addPermissions(this.getActor(), entry.getValue());
     }
 
     return this.getMap();
@@ -261,8 +265,12 @@ public final class PermissionBuilder extends AbstractPermissionBuilder implement
 
     try
     {
-      file.getParentFile().mkdirs();
-      
+      File parent = file.getParentFile();
+      if (!parent.mkdirs())
+      {
+        logger.debug("Unable to crate directory: " + parent.getAbsolutePath());
+      }
+
       ObjectOutput output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
       try
@@ -279,18 +287,18 @@ public final class PermissionBuilder extends AbstractPermissionBuilder implement
       throw new FileWriteException(file, ex);
     }
   }
-  
+
   public void cleanup()
   {
     File file = new File(this.getSerializedFilePath());
-    
-    if(file.exists())
+
+    if (file.exists())
     {
       try
       {
-        FileIO.deleteFile(file);      
+        FileIO.deleteFile(file);
       }
-      catch(IOException e)
+      catch (IOException e)
       {
         throw new FileWriteException(file, e);
       }

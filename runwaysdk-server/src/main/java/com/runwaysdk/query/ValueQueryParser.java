@@ -78,7 +78,7 @@ public class ValueQueryParser
     /**
      * A single entry in the chain.
      */
-    private final class Entry
+    private static final class Entry
     {
       private Entry            nextInChain;
 

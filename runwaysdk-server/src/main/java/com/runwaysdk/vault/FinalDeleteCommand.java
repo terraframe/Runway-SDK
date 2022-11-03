@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.vault;
 
@@ -26,9 +26,8 @@ import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.util.FileIO;
 
 /**
- * An undoable command which deletes a file.  Due
- * to the fact that the command is undoable the delete
- * occurs at the very end of a transaction.
+ * An undoable command which deletes a file. Due to the fact that the command is
+ * undoable the delete occurs at the very end of a transaction.
  *
  * @author Justin Smethie
  */
@@ -66,14 +65,15 @@ public class FinalDeleteCommand implements Command
       }
     }
 
-    //If there are no files in the directory remove the directory from the file system
+    // If there are no files in the directory remove the directory from the file
+    // system
     File dir = new File(directory);
 
     if (dir.exists() && dir.isDirectory())
     {
       File[] files = dir.listFiles();
 
-      if (files.length == 0)
+      if (files != null && files.length == 0)
       {
         try
         {
@@ -112,6 +112,8 @@ public class FinalDeleteCommand implements Command
    * transaction, this action is performed at the end of the transaction.
    */
   @Override
-  public void doFinally(){}
+  public void doFinally()
+  {
+  }
 
 }

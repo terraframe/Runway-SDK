@@ -21,7 +21,6 @@ package com.runwaysdk.session;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.Element;
@@ -57,58 +56,46 @@ public abstract class PermissionEntity implements Serializable
   /**
    *
    */
-  private static final long   serialVersionUID = 347902374534234L;
+  private static final long            serialVersionUID = 347902374534234L;
 
   /**
    * Guards to ensure that invariants between multiple state fields hold.
    */
-  private final ReentrantLock permissionLock   = new ReentrantLock();
+  private final CloseableReentrantLock permissionLock   = new CloseableReentrantLock();
 
-  private PermissionHolder    holder;
+  private ImmutablePermissionHolder    holder;
 
   /**
    * Constructs an empty permissions mapping
    */
   public PermissionEntity()
   {
-    this(new PermissionHolder());
+    this(new ImmutablePermissionHolder());
   }
 
-  public PermissionEntity(PermissionHolder holder)
+  public PermissionEntity(ImmutablePermissionHolder holder)
   {
     this.holder = holder;
   }
 
-  protected ReentrantLock getPermissionLock()
+  protected CloseableReentrantLock getPermissionLock()
   {
     return permissionLock;
   }
 
-  protected PermissionHolder getHolder()
+  protected ImmutablePermissionHolder getHolder()
   {
-    this.permissionLock.lock();
-
-    try
+    try (CloseableReentrantLock lock = permissionLock.open())
     {
       return holder;
     }
-    finally
-    {
-      this.permissionLock.unlock();
-    }
   }
 
-  protected void setHolder(PermissionHolder holder)
+  protected void setHolder(ImmutablePermissionHolder holder)
   {
-    this.permissionLock.lock();
-
-    try
+    try (CloseableReentrantLock lock = permissionLock.open())
     {
       this.holder = holder;
-    }
-    finally
-    {
-      this.permissionLock.unlock();
     }
   }
 
@@ -338,7 +325,7 @@ public abstract class PermissionEntity implements Serializable
 
   protected Set<Operation> getOperations(Mutable component, MdClassDAOIF mdClassIF)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     Set<Operation> operations = this.getTypeOperations(mdClassIF);
 
@@ -363,7 +350,7 @@ public abstract class PermissionEntity implements Serializable
 
   private Set<Operation> getTypeOperations(MdTypeDAOIF mdTypeIF)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     Set<Operation> operations = new TreeSet<Operation>();
 
@@ -437,7 +424,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected Set<Operation> getRelationshipOperations(Business business, String mdRelationshipId)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     Set<Operation> operations = new TreeSet<Operation>();
 
@@ -495,7 +482,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected Set<Operation> getEdgeOperations(VertexObject vertex, String mdEdgeId)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     Set<Operation> operations = new TreeSet<Operation>();
 
@@ -568,7 +555,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkAttributeTypeAccess(Operation operation, MdAttributeDAOIF mdAttribute)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     if (holder.isAdmin())
     {
@@ -688,7 +675,7 @@ public abstract class PermissionEntity implements Serializable
       {
         String key = DomainTupleDAO.buildKey(domainId, mdAttribute.getOid(), null);
 
-        PermissionHolder holder = this.getHolder();
+        ImmutablePermissionHolder holder = this.getHolder();
 
         if (holder.getPermissions().containsKey(key))
         {
@@ -701,7 +688,7 @@ public abstract class PermissionEntity implements Serializable
 
   protected Set<Operation> getAttributeOperations(MdAttributeDAOIF mdAttribute)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     Set<Operation> operations = new TreeSet<Operation>();
 
@@ -829,7 +816,7 @@ public abstract class PermissionEntity implements Serializable
    */
   protected boolean checkMethodAccess(Operation operation, MdMethodDAOIF mdMethod)
   {
-    PermissionHolder holder = this.getHolder();
+    ImmutablePermissionHolder holder = this.getHolder();
 
     if (holder.isAdmin())
     {

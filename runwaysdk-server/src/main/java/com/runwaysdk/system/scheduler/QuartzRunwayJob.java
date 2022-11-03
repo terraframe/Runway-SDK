@@ -71,7 +71,7 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
   
   protected ExecutableJob execJob;
   
-  protected static HashMap<String, Thread> runningThreads = new HashMap<String, Thread>();
+  protected static final HashMap<String, Thread> runningThreads = new HashMap<String, Thread>();
   
   /**
    * This constructor is invoked directly by Quartz. Do not invoke it because the job will not be configured properly!
@@ -487,6 +487,12 @@ public class QuartzRunwayJob implements org.quartz.Job, org.quartz.TriggerListen
       JobKey hisKey = ( (QuartzRunwayJob) obj ).buildJobKey();
       
       return myKey.equals(hisKey);
+  }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.buildJobKey().hashCode();
   }
 
 }

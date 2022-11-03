@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /**
 *
@@ -58,15 +58,15 @@ import com.runwaysdk.system.metadata.BackupReadException;
 public class SchedulerTest
 {
 
-  private static final boolean     HALT          = false;
+  private static final boolean     HALT               = false;
 
-  protected static ClientSession   systemSession = null;
+  protected static ClientSession   systemSession      = null;
 
-  protected static ClientRequestIF clientRequest = null;
-  
-  private static final Integer TEST_JOB_RUN_TIME = 2000;
-  
-  private static final Integer QUEUE_JOB_RUN_TIME = 3000;
+  protected static ClientRequestIF clientRequest      = null;
+
+  private static final Integer     TEST_JOB_RUN_TIME  = 2000;
+
+  private static final Integer     QUEUE_JOB_RUN_TIME = 3000;
 
   // TEST BOILERPLATE
 
@@ -166,6 +166,8 @@ public class SchedulerTest
    */
   public static class TestJob implements ExecutableJobIF
   {
+    private static final long serialVersionUID = -2521312017230865033L;
+
     /**
      * Execution method that modifies its associated TestRecord.
      */
@@ -190,19 +192,22 @@ public class SchedulerTest
       TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.recordOnce();
     }
-    
+
     @Override
     public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return new TestQuartzJob(execJob);
     }
   }
-  
+
   /*
-   * Test job that only allows one to be running at the same time. Subsequent jobs will be queued.
+   * Test job that only allows one to be running at the same time. Subsequent
+   * jobs will be queued.
    */
   public static class TestQueueingQuartzJob implements ExecutableJobIF
   {
+    private static final long serialVersionUID = 2272422907993275971L;
+
     /**
      * Execution method that modifies its associated TestRecord.
      */
@@ -225,86 +230,88 @@ public class SchedulerTest
       history.unlock();
 
       TestRecord testRecord = TestRecord.records.get(oid);
-//      testRecord.recordOnce();
+      // testRecord.recordOnce();
       testRecord.record();
     }
-    
+
     @Override
     public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return new QueueingQuartzJob(execJob);
     }
   }
-  
+
   public static class TestQuartzJob extends QuartzRunwayJob implements Job
   {
     public TestQuartzJob()
     {
       super();
     }
-    
+
     public TestQuartzJob(ExecutableJob execJob)
     {
       super(execJob);
     }
-    
+
     @Override
     public void jobExecutionVetoed(JobExecutionContext context)
     {
       throw new RuntimeException("Job execution was vetoed");
     }
-    
+
     @Override
     public void triggerMisfired(Trigger trigger)
     {
       super.triggerMisfired(trigger);
-      
-//      System.out.println("Trigger misfired");
+
+      // System.out.println("Trigger misfired");
     }
 
     @Override
     public void triggerComplete(Trigger trigger, JobExecutionContext context, CompletedExecutionInstruction triggerInstructionCode)
     {
       super.triggerComplete(trigger, context, triggerInstructionCode);
-      
-//      System.out.println("triggerComplete");
+
+      // System.out.println("triggerComplete");
     }
 
     @Override
     public void jobToBeExecuted(JobExecutionContext context)
     {
       super.jobToBeExecuted(context);
-      
-//      System.out.println("jobToBeExecuted");
+
+      // System.out.println("jobToBeExecuted");
     }
-    
+
     @Override
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException)
     {
       super.jobWasExecuted(context, jobException);
-      
-//      System.out.println("jobWasExecuted");
+
+      // System.out.println("jobWasExecuted");
     }
-    
+
     @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context)
     {
-//      System.out.println("vetoJobExecution");
-      
+      // System.out.println("vetoJobExecution");
+
       return super.vetoJobExecution(trigger, context);
     }
-    
+
     @Override
     public void triggerFired(Trigger trigger, JobExecutionContext context)
     {
       super.triggerFired(trigger, context);
-      
-//      System.out.println("Trigger fired");
+
+      // System.out.println("Trigger fired");
     }
   }
 
   public static class TestSmartErrorJob implements ExecutableJobIF
   {
+    private static final long serialVersionUID = 7266458675048660074L;
+
     @Override
     public void execute(ExecutionContext executionContext)
     {
@@ -317,27 +324,29 @@ public class SchedulerTest
         e.printStackTrace();
         throw new RuntimeException(e);
       }
-      
+
       ExecutableJob job = executionContext.getJob();
       String oid = job.getOid();
-      
+
       TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.record();
-      
+
       BackupReadException ex = new BackupReadException();
       ex.setLocation("/test/123");
       throw ex;
     }
-    
+
     @Override
     public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
   }
-  
+
   public static class TestRunwayErrorJob implements ExecutableJobIF
   {
+    private static final long serialVersionUID = 2706463980305581321L;
+
     @Override
     public void execute(ExecutionContext executionContext) throws Throwable
     {
@@ -350,25 +359,27 @@ public class SchedulerTest
         e.printStackTrace();
         throw new RuntimeException(e);
       }
-      
+
       ExecutableJob job = executionContext.getJob();
       String oid = job.getOid();
-      
+
       TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.record();
-      
+
       throw buildRunwayJobError();
     }
-    
+
     @Override
     public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
   }
-  
+
   public static class TestArithmeticErrorJob implements ExecutableJobIF
   {
+    private static final long serialVersionUID = 2646565360100497145L;
+
     @Override
     public void execute(ExecutionContext executionContext) throws Throwable
     {
@@ -381,24 +392,24 @@ public class SchedulerTest
         e.printStackTrace();
         throw new RuntimeException(e);
       }
-      
+
       ExecutableJob job = executionContext.getJob();
       String oid = job.getOid();
-      
+
       TestRecord testRecord = TestRecord.records.get(oid);
       testRecord.record();
-      
+
       int fail = 10 / 0;
       System.out.println(fail);
     }
-    
+
     @Override
     public QuartzRunwayJob createQuartzJob(ExecutableJob execJob)
     {
       return null;
     }
   }
-  
+
   @BeforeClass
   @Request
   public static void classSetUp()
@@ -458,24 +469,25 @@ public class SchedulerTest
       jhr.getChild().delete();
     }
   }
-  
+
   /**
-   * Tests to make sure that if a queued job is running, and it gets deleted while its running,
-   * that it is properly removed from the queue so that jobs don't end up permanently queued
-   * waiting on a job which is no longer running.
+   * Tests to make sure that if a queued job is running, and it gets deleted
+   * while its running, that it is properly removed from the queue so that jobs
+   * don't end up permanently queued waiting on a job which is no longer
+   * running.
    * 
-   * This test is expected to produce three DataNotFoundException's, as the SchedulerManager
-   * attempts to instantiate the ExecutableJob after it runs, but is unable to fetch it from
-   * the database because it has been deleted.
+   * This test is expected to produce three DataNotFoundException's, as the
+   * SchedulerManager attempts to instantiate the ExecutableJob after it runs,
+   * but is unable to fetch it from the database because it has been deleted.
    * 
-   * @throws InterruptedException 
+   * @throws InterruptedException
    */
   @Test
   @Request
   public void testDeleteRunningQueueingJob() throws InterruptedException
   {
     ExecutableJob job = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
-    
+
     try
     {
       job.apply();
@@ -483,13 +495,13 @@ public class SchedulerTest
       TestRecord tr = TestRecord.newRecord(job);
 
       JobHistory history = job.start();
-      
+
       this.waitUntilRunning(history);
-      
+
       Assert.assertEquals(1, QuartzRunwayJob.runningThreads.size());
-      
+
       job.delete();
-      
+
       int sleepNum = 0;
       while (QuartzRunwayJob.runningThreads.size() == 1)
       {
@@ -497,18 +509,18 @@ public class SchedulerTest
         {
           throw new RuntimeException("Maxed out waiting for the thread to die.");
         }
-        
+
         Thread.sleep(1000);
         sleepNum++;
       }
-      
+
       Assert.assertEquals(0, QuartzRunwayJob.runningThreads.size());
       Assert.assertEquals(0, QueueingQuartzJob.queueMap.get(QueueingQuartzJob.class.getName()).size());
     }
     finally
     {
       Thread.sleep(500);
-      
+
       try
       {
         ExecutableJob.get(job.getOid()).delete();
@@ -517,7 +529,7 @@ public class SchedulerTest
       {
         // This is OK. Ignore
       }
-      
+
       clearHistory();
     }
   }
@@ -546,15 +558,15 @@ public class SchedulerTest
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
-        
+
         OIterator<? extends JobHistory> it = job.getAllJobHistory();
         Assert.assertTrue(it.hasNext());
-        
+
         while (it.hasNext())
         {
           JobHistory history = it.next();
           Assert.assertTrue(!it.hasNext());
-          
+
           Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), history.getStatus().get(0).getEnumName());
           Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
           Assert.assertNotNull(history.getEndTime());
@@ -597,18 +609,18 @@ public class SchedulerTest
 
       Assert.assertNotNull(startTime);
       Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
-      
+
       this.waitUntilRunning(history);
-      
+
       history = JobHistory.get(history.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
 
       wait(tr, 10);
-      
+
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         Thread.sleep(500);
-        
+
         JobHistory updated = JobHistory.getByKey(history.getKey());
         Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
@@ -661,14 +673,14 @@ public class SchedulerTest
           return;
         }
       }
-      
+
       // Modify the CRON string to never run
       job = ExecutableJob.get(job.getOid());
       job.setCronExpression("");
       job.apply();
-      
+
       // Wait till the job is no longer running
-      Thread.sleep((long) (TEST_JOB_RUN_TIME*1.5));
+      Thread.sleep((long) ( TEST_JOB_RUN_TIME * 1.5 ));
 
       // Make sure the job never starts up again.
       waitTime = 0;
@@ -727,7 +739,7 @@ public class SchedulerTest
 
       Assert.assertEquals(1, new JobHistoryQuery(new QueryFactory()).getCount());
 
-      Thread.sleep(TEST_JOB_RUN_TIME*2);
+      Thread.sleep(TEST_JOB_RUN_TIME * 2);
 
       JobHistory.clearHistory();
 
@@ -764,27 +776,28 @@ public class SchedulerTest
       // Start both jobs
       JobHistory hist1 = job1.start();
       JobHistory hist2 = job2.start();
-      
+
       // Wait for one of them to be running
       waitUntilRunning(hist1);
-      
+
       // Assert that hist1 is running and hist2 is queued
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist1.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist2.getStatus().get(0).getEnumName());
-      
+
       // Wait for history 2 to be running
       waitUntilRunning(hist2);
-      
+
       // Assert job one is now finished and job two is running
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
       Assert.assertEquals(hist1.getStatus().get(0).getEnumName(), AllJobStatus.SUCCESS.getEnumName());
       Assert.assertEquals(hist2.getStatus().get(0).getEnumName(), AllJobStatus.RUNNING.getEnumName());
-      
-      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last one to finish
-      
+
+      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last
+                                                          // one to finish
+
       // Assert both jobs are now success
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
@@ -805,7 +818,7 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   @Request
   @Test
   public void testQueueSameJobs() throws InterruptedException
@@ -820,27 +833,28 @@ public class SchedulerTest
       // Start both jobs
       JobHistory hist1 = job1.start();
       JobHistory hist2 = job1.start();
-      
+
       // Wait for one of them to be running
       waitUntilRunning(hist1);
-      
+
       // Assert that hist1 is running and hist2 is queued
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist1.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist2.getStatus().get(0).getEnumName());
-      
+
       // Wait for history 2 to be running
       waitUntilRunning(hist2);
-      
+
       // Assert job one is now finished and job two is running
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
       Assert.assertEquals(hist1.getStatus().get(0).getEnumName(), AllJobStatus.SUCCESS.getEnumName());
       Assert.assertEquals(hist2.getStatus().get(0).getEnumName(), AllJobStatus.RUNNING.getEnumName());
-      
-      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last one to finish
-      
+
+      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last
+                                                          // one to finish
+
       // Assert both jobs are now success
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
@@ -859,7 +873,7 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   @Request
   @Test
   public void testQueueManyJobs() throws InterruptedException
@@ -868,7 +882,7 @@ public class SchedulerTest
     job1.getDisplayLabel().setValue("testQueue1");
     job1.apply();
     TestRecord tr1 = TestRecord.newRecord(job1);
-    
+
     ExecutableJob job2 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
     job2.getDisplayLabel().setValue("testQueue2");
     job2.apply();
@@ -880,14 +894,14 @@ public class SchedulerTest
       JobHistory hist11 = job1.start();
       JobHistory hist12 = job1.start();
       JobHistory hist13 = job1.start();
-      
+
       JobHistory hist21 = job2.start();
       JobHistory hist22 = job2.start();
       JobHistory hist23 = job2.start();
-      
+
       // Wait for one of them to be running
       waitUntilRunning(hist11);
-      
+
       // Assert that hist1 is running and hist2 is queued
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -901,10 +915,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Wait for history to be running
       waitUntilRunning(hist12);
-      
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -918,10 +932,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Wait for history to be running
       waitUntilRunning(hist13);
-      
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -935,10 +949,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Wait for history to be running
       waitUntilRunning(hist21);
-      
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -952,10 +966,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Wait for history to be running
       waitUntilRunning(hist22);
-      
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -969,10 +983,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Wait for history to be running
       waitUntilRunning(hist23);
-      
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -986,9 +1000,10 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
-      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last one to finish
-      
+
+      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last
+                                                          // one to finish
+
       // Assert job one is now finished and job two is running
       hist11 = JobHistory.get(hist11.getOid());
       hist12 = JobHistory.get(hist12.getOid());
@@ -1002,7 +1017,7 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist21.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist22.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.SUCCESS.getEnumName(), hist23.getStatus().get(0).getEnumName());
-      
+
       // Assert both jobs are now success
       Assert.assertEquals(3, tr1.getCount());
       Assert.assertEquals(3, tr2.getCount());
@@ -1019,7 +1034,7 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   private void waitUntilRunning(JobHistory hist) throws InterruptedException
   {
     int waitTime = 0;
@@ -1030,7 +1045,7 @@ public class SchedulerTest
       {
         break;
       }
-      
+
       Thread.sleep(10);
 
       waitTime += 10;
@@ -1040,10 +1055,10 @@ public class SchedulerTest
         return;
       }
     }
-    
+
     Thread.sleep(100);
   }
-  
+
   @Test
   @Request
   public void testQueueMultithreading() throws InterruptedException
@@ -1051,29 +1066,30 @@ public class SchedulerTest
     ExecutableJob job1 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
     job1.getDisplayLabel().setValue("testMultithreadedJob");
     job1.apply();
-    
+
     TestRecord tr = TestRecord.newRecord(job1);
-    
+
     Queue<JobHistory> pool = new ConcurrentLinkedQueue<JobHistory>();
-    
+
     int threadJobs = 10;
-    
-    Thread t1 = new Thread(new Runnable(){
+
+    Thread t1 = new Thread(new Runnable()
+    {
       @Override
       @Request
       public void run()
       {
         int i = threadJobs;
-        
+
         while (i > 0)
         {
-          synchronized(pool)
+          synchronized (pool)
           {
             JobHistory history = job1.start();
-            
+
             pool.add(history);
           }
-          
+
           try
           {
             Thread.sleep(new Random().nextInt(3) * 1000);
@@ -1082,28 +1098,29 @@ public class SchedulerTest
           {
             e.printStackTrace();
           }
-          
+
           i = i - 1;
         }
       }
     });
-    
-    Thread t2 = new Thread(new Runnable(){
+
+    Thread t2 = new Thread(new Runnable()
+    {
       @Override
       @Request
       public void run()
       {
         int i = threadJobs;
-        
+
         while (i > 0)
         {
-          synchronized(pool)
+          synchronized (pool)
           {
             JobHistory history = job1.start();
-            
+
             pool.add(history);
           }
-          
+
           try
           {
             Thread.sleep(new Random().nextInt(3) * 1000);
@@ -1112,22 +1129,22 @@ public class SchedulerTest
           {
             e.printStackTrace();
           }
-          
+
           i = i - 1;
         }
       }
     });
-    
+
     t1.start();
     t2.start();
-    
+
     Thread.sleep(1000);
-    
+
     while (true)
     {
       Thread.sleep(10);
-      
-      synchronized(pool)
+
+      synchronized (pool)
       {
         if (pool.size() == 0)
         {
@@ -1140,22 +1157,22 @@ public class SchedulerTest
             break;
           }
         }
-        
+
         JobHistory jh = JobHistory.get(pool.peek().getOid());
         jh.lock();
-        
+
         AllJobStatus status = jh.getStatus().get(0);
-        
+
         try
         {
           if (status.equals(AllJobStatus.RUNNING) || status.equals(AllJobStatus.NEW) || status.equals(AllJobStatus.QUEUED))
           {
             Iterator<JobHistory> it = pool.iterator();
-            
+
             while (it.hasNext())
             {
               JobHistory itHist = it.next();
-              
+
               if (!itHist.getOid().equals(jh.getOid()))
               {
                 Assert.assertTrue("Expected QUEUED or NEW but was " + itHist.getStatus().get(0).getEnumName(), itHist.getStatus().get(0).equals(AllJobStatus.QUEUED) || itHist.getStatus().get(0).equals(AllJobStatus.NEW));
@@ -1177,22 +1194,22 @@ public class SchedulerTest
         }
       }
     }
-    
+
     Assert.assertEquals(threadJobs * 2, tr.getCount());
   }
-  
+
   private JobHistoryRecord getRecord(ExecutableJob execJob, JobHistory hist)
   {
     return hist.getJobRel(execJob).getAll().get(0);
   }
-  
+
   @Test
   @Request
   public void testMultiStageJob() throws Exception
   {
-    
+
   }
-  
+
   /**
    * Tests a job which errors out.
    * 
@@ -1216,34 +1233,34 @@ public class SchedulerTest
 
       Assert.assertNotNull(startTime);
       Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
-      
+
       this.waitUntilRunning(history);
-      
+
       history = JobHistory.get(history.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
 
       wait(tr, 10);
-      
+
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         Thread.sleep(1000);
-        
+
         JobHistory updated = JobHistory.getByKey(history.getKey());
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
         Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
-        
+
         BackupReadException ex = new BackupReadException();
         ex.setLocation("/test/123");
-        
+
         String json = updated.getErrorJson();
-        
+
         JSONObject jo = new JSONObject(json);
         Assert.assertEquals(ex.getType(), jo.get("type"));
-        
+
         Assert.assertEquals(2, jo.getJSONArray("attributes").length());
-        
+
         String msg = ex.localize(Session.getCurrentLocale());
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
@@ -1261,7 +1278,7 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   @Request
   @Test
   public void testArithmeticJobError() throws Throwable
@@ -1280,24 +1297,24 @@ public class SchedulerTest
 
       Assert.assertNotNull(startTime);
       Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
-      
+
       this.waitUntilRunning(history);
-      
+
       history = JobHistory.get(history.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
 
       wait(tr, 10);
-      
+
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         Thread.sleep(1000);
-        
+
         JobHistory updated = JobHistory.getByKey(history.getKey());
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
         Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
-        
+
         ArithmeticException ex = null;
         try
         {
@@ -1308,13 +1325,13 @@ public class SchedulerTest
         {
           ex = e;
         }
-        
+
         String json = updated.getErrorJson();
         System.out.println(json);
-        
+
         JSONObject jo = new JSONObject(json);
         Assert.assertEquals(ex.getClass().getName(), jo.get("type"));
-        
+
         String msg = ex.getMessage();
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
@@ -1332,21 +1349,21 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   private static RunwayException buildRunwayJobError()
   {
-//    LinkageError le = new LinkageError();
-//    
-//    List<ProblemIF> problems = new ArrayList<ProblemIF>();
-//    problems.add(new WKTParsingProblem());
-//    
-//    ProblemException probEx = new ProblemException(le, problems);
-//    
-//    return probEx;
-    
+    // LinkageError le = new LinkageError();
+    //
+    // List<ProblemIF> problems = new ArrayList<ProblemIF>();
+    // problems.add(new WKTParsingProblem());
+    //
+    // ProblemException probEx = new ProblemException(le, problems);
+    //
+    // return probEx;
+
     return new SchedulerJobCannotResumeException("");
   }
-  
+
   @Request
   @Test
   public void testRunwayJobError() throws Throwable
@@ -1365,32 +1382,32 @@ public class SchedulerTest
 
       Assert.assertNotNull(startTime);
       Assert.assertTrue("Expected status of NEW or RUNNING", history.getStatus().get(0).equals(AllJobStatus.RUNNING) || history.getStatus().get(0).equals(AllJobStatus.NEW));
-      
+
       this.waitUntilRunning(history);
-      
+
       history = JobHistory.get(history.getOid());
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), history.getStatus().get(0).getEnumName());
 
       wait(tr, 10);
-      
+
       if (tr.isExecuted() && tr.getCount() == 1)
       {
         Thread.sleep(1000);
-        
+
         JobHistory updated = JobHistory.getByKey(history.getKey());
         Assert.assertEquals(AllJobStatus.FAILURE.getEnumName(), updated.getStatus().get(0).getEnumName());
         Assert.assertEquals(0, SchedulerManager.getRunningJobs().size());
         Assert.assertNotNull(updated.getEndTime());
         Assert.assertTrue(updated.getStartTime() + " was expected to be after " + updated.getEndTime(), updated.getEndTime().after(startTime) || updated.getEndTime().equals(startTime));
-        
+
         String json = updated.getErrorJson();
         System.out.println(json);
-        
+
         RunwayException rwEx = buildRunwayJobError();
-        
+
         JSONObject jo = new JSONObject(json);
         Assert.assertEquals(rwEx.getClass().getName(), jo.get("type"));
-        
+
         String msg = rwEx.getLocalizedMessage();
         Assert.assertEquals(msg, jo.get("message"));
         Assert.assertEquals(msg, updated.getLocalizedError(Session.getCurrentLocale()));
@@ -1408,7 +1425,7 @@ public class SchedulerTest
       clearHistory();
     }
   }
-  
+
   @Request
   @Test
   public void testDeleteQueuedHistory() throws InterruptedException
@@ -1423,7 +1440,7 @@ public class SchedulerTest
     job2.apply();
     TestRecord tr2 = TestRecord.newRecord(job2);
     String job2Oid = job2.getOid();
-    
+
     ExecutableJob job3 = QualifiedTypeJob.newInstance(TestQueueingQuartzJob.class);
     job3.getDisplayLabel().setValue("testQueue3");
     job3.apply();
@@ -1435,10 +1452,10 @@ public class SchedulerTest
       JobHistory hist1 = job1.start();
       JobHistory hist2 = job2.start();
       JobHistory hist3 = job3.start();
-      
+
       // Wait for the first one to be running
       waitUntilRunning(hist1);
-      
+
       // Assert that hist1 is running and the rest are queued
       hist1 = JobHistory.get(hist1.getOid());
       hist2 = JobHistory.get(hist2.getOid());
@@ -1446,22 +1463,23 @@ public class SchedulerTest
       Assert.assertEquals(AllJobStatus.RUNNING.getEnumName(), hist1.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist2.getStatus().get(0).getEnumName());
       Assert.assertEquals(AllJobStatus.QUEUED.getEnumName(), hist3.getStatus().get(0).getEnumName());
-      
+
       // Delete the 2nd job
       hist2.delete();
       job2.delete();
-      
+
       // Wait for the third one to be running
       waitUntilRunning(hist3);
-      
+
       // Assert job one is now finished, and job three is running
       hist1 = JobHistory.get(hist1.getOid());
       hist3 = JobHistory.get(hist3.getOid());
       Assert.assertEquals(hist1.getStatus().get(0).getEnumName(), AllJobStatus.SUCCESS.getEnumName());
       Assert.assertEquals(hist3.getStatus().get(0).getEnumName(), AllJobStatus.RUNNING.getEnumName());
-      
-      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last one to finish
-      
+
+      Thread.sleep(SchedulerTest.QUEUE_JOB_RUN_TIME * 2); // Wait for the last
+                                                          // one to finish
+
       // Assert both jobs are now success
       hist1 = JobHistory.get(hist1.getOid());
       hist3 = JobHistory.get(hist3.getOid());
@@ -1481,7 +1499,7 @@ public class SchedulerTest
       ExecutableJob.get(job1.getOid()).delete();
       ExecutableJob.get(job3.getOid()).delete();
       clearHistory();
-      
+
       ExecutableJobQuery ejq = new ExecutableJobQuery(new QueryFactory());
       ejq.WHERE(ejq.getOid().EQ(job2Oid));
       List<? extends ExecutableJob> jobs = ejq.getIterator().getAll();

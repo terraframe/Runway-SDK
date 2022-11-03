@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.vault;
 
@@ -25,35 +25,41 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.SystemException;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.util.FileIO;
 
 public class WriteFileCommand implements Command
 {
+  private static Logger logger       = LoggerFactory.getLogger(WriteFileCommand.class);
+
   /**
    * The directory of the file being written
    */
-  private String      directory;
+  private String        directory;
 
   /**
    * The fully qualified path of the file being written
    */
-  private String      path;
+  private String        path;
 
   /**
    * The number of bytes in 'existing'
    */
-  private long        existingSize = 0;
+  private long          existingSize = 0;
 
-  private long        size         = 0;
+  private long          size         = 0;
 
   /**
    * The FileIF corresponding to the file being written
    */
-  private FileIF      fileIF;
+  private FileIF        fileIF;
 
-  private InputStream stream;
+  private InputStream   stream;
 
   public WriteFileCommand(String directory, String path, InputStream stream, FileIF fileIF)
   {
@@ -75,16 +81,16 @@ public class WriteFileCommand implements Command
   /**
    * Copies the contents of a file in to a temporary file
    *
-   * @param file The file to copy
+   * @param file
+   *          The file to copy
    */
   private final void copyToTemp(File file)
   {
-    try
+    try (InputStream inputStream = new FileInputStream(file))
     {
-      InputStream inputStream = new FileInputStream(file);
       File tempFile = new File(file.getAbsolutePath() + ".temp");
 
-      existingSize = FileIO.write(new FileOutputStream(tempFile), inputStream);
+      existingSize = IOUtils.copy(inputStream, new FileOutputStream(tempFile));
 
       // Ensure that the temp file is deleted at the end of the transaction
       FinalDeleteCommand command = new FinalDeleteCommand(tempFile.getAbsolutePath(), directory);
@@ -112,7 +118,10 @@ public class WriteFileCommand implements Command
     // Create the directory structure if needed
     if (!dir.exists())
     {
-      dir.mkdirs();
+      if (!dir.mkdirs())
+      {
+        logger.debug("Unable to create directory: " + dir.getAbsolutePath());
+      }
     }
 
     File file = new File(path);
@@ -222,7 +231,9 @@ public class WriteFileCommand implements Command
    * transaction, this action is performed at the end of the transaction.
    */
   @Override
-  public void doFinally(){}
+  public void doFinally()
+  {
+  }
 
   public long getSize()
   {

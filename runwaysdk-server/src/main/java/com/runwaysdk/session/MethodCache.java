@@ -19,6 +19,7 @@
 package com.runwaysdk.session;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.runwaysdk.business.Business;
@@ -420,9 +421,9 @@ public class MethodCache
     try
     {
       //Unregister all Methods from the PermissionManager
-      for(String key : cache.keySet())
+      for(Entry<String, MethodSession> entry : cache.entrySet())
       {
-        MethodSession methodSession = cache.get(key);
+        MethodSession methodSession = entry.getValue();
         methodSession.unregister();
       }
       

@@ -80,7 +80,7 @@ public class MethodSession extends PermissionEntity implements Serializable
   {
     Map<String, Set<Operation>> permissions = method.getOperations().getPermissions();
 
-    this.setHolder(new PermissionHolder(permissions, method));
+    this.setHolder(new ImmutablePermissionHolder(permissions, method));
 
   }
 

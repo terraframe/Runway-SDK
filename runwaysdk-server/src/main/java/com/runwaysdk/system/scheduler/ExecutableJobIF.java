@@ -21,6 +21,8 @@
  */
 package com.runwaysdk.system.scheduler;
 
+import java.io.Serializable;
+
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
  * 
@@ -39,7 +41,7 @@ package com.runwaysdk.system.scheduler;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public interface ExecutableJobIF
+public interface ExecutableJobIF extends Serializable
 {
   public void execute(ExecutionContext executionContext) throws Throwable;
   

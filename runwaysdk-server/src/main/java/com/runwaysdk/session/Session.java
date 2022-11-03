@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
@@ -48,6 +49,7 @@ import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
+import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.database.ServerIDGenerator;
 import com.runwaysdk.dataaccess.metadata.DomainTupleDAO;
@@ -81,6 +83,16 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
   private static int             comparatorOffset  = 1;
 
   /**
+   * The number of milliseconds in a second
+   */
+  public static final long       SECOND            = 1000;
+
+  /**
+   * The time to live for the session
+   */
+  private static volatile long   timeToLive        = CommonProperties.getSessionTime() * SECOND;
+
+  /**
    * The unique oid of the session
    */
   private volatile String        oid;
@@ -90,16 +102,6 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    * expires.
    */
   private long                   expirationTime;
-
-  /**
-   * The number of milliseconds in a second
-   */
-  public static final long       SECOND            = 1000;
-
-  /**
-   * The time to live for the session
-   */
-  private static volatile long   timeToLive        = CommonProperties.getSessionTime() * SECOND;
 
   /**
    * Key: object Id Value: Mutable
@@ -686,7 +688,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     {
       if (user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
-        this.setHolder(new PermissionHolder(PermissionCache.getPublicPermissions(), user, locale));
+        this.setHolder(new ImmutablePermissionHolder(PermissionCache.getPublicPermissions(), user, locale));
       }
       else
       {
@@ -702,14 +704,14 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
         // If the user is an administrator there is no need to load permissions
         if (user.isAdministrator())
         {
-          this.setHolder(new PermissionHolder(user, locale, dimensionKey, authorizedRoleMap));
+          this.setHolder(new ImmutablePermissionHolder(user, locale, dimensionKey, authorizedRoleMap));
         }
         else
         {
           PermissionMap map = user.getOperations();
           map.join(new PermissionMap(PermissionCache.getPublicPermissions()), false);
 
-          this.setHolder(new PermissionHolder(map.getPermissions(), user, locale, dimensionKey, authorizedRoleMap));
+          this.setHolder(new ImmutablePermissionHolder(map.getPermissions(), user, locale, dimensionKey, authorizedRoleMap));
         }
       }
     }
@@ -790,11 +792,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
 
     Map<String, RoleDAOIF> map = this.getHolder().getAuthorizedRoleMap();
 
-    for (String roleName : map.keySet())
+    for (Entry<String, RoleDAOIF> entry : map.entrySet())
     {
-      RoleDAOIF roleDAOIF = map.get(roleName);
-
-      roleMap.put(roleName, roleDAOIF.getDisplayLabel(this.getLocale()));
+      roleMap.put(entry.getKey(), entry.getValue().getDisplayLabel(this.getLocale()));
     }
 
     return roleMap;
@@ -818,14 +818,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   void setExpirationTime(long time)
   {
-    this.getPermissionLock().lock();
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
       this.expirationTime = time;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
     }
   }
 
@@ -888,15 +883,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setCloseOnEndOfRequest(boolean closeOnEndOfRequest)
   {
-    this.getPermissionLock().lock();
-
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
       this.closeOnEndOfRequest = closeOnEndOfRequest;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
     }
   }
 
@@ -907,15 +896,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean closeOnEndOfRequest()
   {
-    this.getPermissionLock().lock();
-
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
       return this.closeOnEndOfRequest;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
     }
   }
 
@@ -927,18 +910,13 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public void setFirstMdMethodDAOIF(MdMethodDAOIF mdMethodDAOIF)
   {
-    this.getPermissionLock().lock();
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
       // Only set it once for the request
       if (this.firstMethodInRequest == null || mdMethodDAOIF == null)
       {
         this.firstMethodInRequest = mdMethodDAOIF;
       }
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
     }
   }
 
@@ -960,14 +938,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected long getExpiration()
   {
-    this.getPermissionLock().lock();
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
       return expirationTime;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
     }
   }
 
@@ -976,14 +949,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void renew()
   {
-    this.getPermissionLock().lock();
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
-      expirationTime = System.currentTimeMillis() + timeToLive;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
+      this.expirationTime = System.currentTimeMillis() + timeToLive;
     }
   }
 
@@ -992,14 +960,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   protected void expire()
   {
-    this.getPermissionLock().lock();
-    try
+    try (CloseableReentrantLock lock = this.getPermissionLock().open())
     {
-      expirationTime = System.currentTimeMillis() - 1;
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
+      this.expirationTime = System.currentTimeMillis() - 1;
     }
   }
 
@@ -1010,15 +973,9 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean isExpired(long time)
   {
-    this.getPermissionLock().lock();
-    try
-    {
-      return ( ( expirationTime != -1 ) && ( expirationTime < time ) );
-    }
-    finally
-    {
-      this.getPermissionLock().unlock();
-    }
+    long expiration = this.getExpiration();
+
+    return ( ( expiration != -1 ) && ( expiration < time ) );
   }
 
   /**
@@ -1031,51 +988,37 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public int compareTo(Session s0)
   {
-    this.getPermissionLock().lock();
-    try
-    {
-      // IMPORTANT: This ordering works for the PriorityQueue implementation in
-      // Java 1.6 but it must be reversed to work with the PriorityQueue
-      // implementation in Java 1.5
-      if (expirationTime == -1 || s0.getExpiration() < expirationTime)
-      {
-        return -1 * comparatorOffset; // Java 1.5: return 1;
-      }
-      else if (s0.getExpiration() == -1 || s0.getExpiration() > expirationTime)
-      {
-        return 1 * comparatorOffset; // Java 1.5: return -1;
-      }
+    long expiration = this.getExpiration();
 
-      return this.getOid().compareTo(s0.getOid());
-    }
-    finally
+    // IMPORTANT: This ordering works for the PriorityQueue implementation in
+    // Java 1.6 but it must be reversed to work with the PriorityQueue
+    // implementation in Java 1.5
+    if (expiration == -1 || s0.getExpiration() < expiration)
     {
-      this.getPermissionLock().unlock();
+      return -1 * comparatorOffset; // Java 1.5: return 1;
     }
+    else if (s0.getExpiration() == -1 || s0.getExpiration() > expiration)
+    {
+      return 1 * comparatorOffset; // Java 1.5: return -1;
+    }
+
+    return this.getOid().compareTo(s0.getOid());
   }
 
   public boolean equals(Object s0)
   {
-    this.getPermissionLock().lock();
-    try
+    if (! ( s0 instanceof Session ))
     {
-      if (! ( s0 instanceof Session ))
-      {
-        return false;
-      }
-
-      if (this.compareTo((Session) s0) == 0)
-      {
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      return false;
     }
-    finally
+
+    if (this.compareTo((Session) s0) == 0)
     {
-      this.getPermissionLock().unlock();
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
 
