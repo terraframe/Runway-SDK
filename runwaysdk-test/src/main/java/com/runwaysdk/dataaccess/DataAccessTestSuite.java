@@ -31,7 +31,6 @@ import com.runwaysdk.dataaccess.io.ExcelImporterTest;
 import com.runwaysdk.dataaccess.io.InstanceImportTest;
 import com.runwaysdk.dataaccess.io.SAXParseTest;
 import com.runwaysdk.dataaccess.io.VersionTest;
-import com.runwaysdk.dataaccess.resolver.ResolverTest;
 import com.runwaysdk.dataaccess.resolver.TransactionImportTest;
 import com.runwaysdk.dataaccess.schemamanager.MergeTest;
 
@@ -71,7 +70,6 @@ import com.runwaysdk.dataaccess.schemamanager.MergeTest;
   TransientAttributeMultiReferenceTest.class,
   TransientAttributeMultiTermTest.class,
 //   ResolverTest.class,
-   MdMobileFormTest.class,
   ExcelImporterNoSourceTest.class,
   
 })
