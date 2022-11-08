@@ -170,6 +170,18 @@ entries:
     - title: Value Queries
       url: /querybuilder_valuequery.html
       output: web, pdf
+  
+  - title: Runway Development
+    output: web, pdf
+    folderitems:
+    
+    - title: Introduction
+      url: /runwaydev_intro.html
+      output: web, pdf
+      
+    - title: Metadata.xml
+      url: /runwaydev_metadataxml.html
+      output: web, pdf
 
   # - title: Release Notes
   #   output: web, pdf
