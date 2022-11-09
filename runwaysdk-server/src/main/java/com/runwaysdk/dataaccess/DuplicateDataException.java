@@ -182,6 +182,26 @@ public class DuplicateDataException extends DataAccessException
     this.localizedAttrLabels = localizedAttrLabels2;
     this.valueList = valueList2;
   }
+  
+  public MdClassDAOIF getMdClassDAOIF()
+  {
+    return mdClassDAOIF;
+  }
+
+  public void setMdClassDAOIF(MdClassDAOIF mdClassDAOIF)
+  {
+    this.mdClassDAOIF = mdClassDAOIF;
+  }
+
+  public List<String> getLocalizedAttrLabels()
+  {
+    return localizedAttrLabels;
+  }
+
+  public void setLocalizedAttrLabels(List<String> localizedAttrLabels)
+  {
+    this.localizedAttrLabels = localizedAttrLabels;
+  }
 
   /**
    * Returns the list of attribute(s) which the system was attempting to set and
