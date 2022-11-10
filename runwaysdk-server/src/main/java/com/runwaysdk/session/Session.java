@@ -165,7 +165,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
       throw new NoLocaleException(msg, user);
     }
 
-    this.reloadPermissions(user, locale, dimensionKey);
+    this.buildPermissionHolder(user, locale, dimensionKey);
   }
 
   /*
@@ -670,7 +670,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     return this.oid.hashCode();
   }
 
-  private void reloadPermissions(SingleActorDAOIF user, Locale locale, String dimensionKey)
+  private void buildPermissionHolder(SingleActorDAOIF user, Locale locale, String dimensionKey)
   {
     if (locale == null)
     {
@@ -717,9 +717,19 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
     }
   }
 
+  public void reloadPermissions()
+  {
+    this.buildPermissionHolder(this.getUser(), this.getLocale(), this.getHolder().getDimensionKey());
+  }
+
+  public void setLocale(Locale locale)
+  {
+    this.buildPermissionHolder(this.getUser(), locale, this.getHolder().getDimensionKey());
+  }
+
   public void setUser(SingleActorDAOIF user)
   {
-    this.reloadPermissions(user, this.getLocale(), this.getHolder().getDimensionKey());
+    this.buildPermissionHolder(user, this.getLocale(), this.getHolder().getDimensionKey());
   }
 
   /**

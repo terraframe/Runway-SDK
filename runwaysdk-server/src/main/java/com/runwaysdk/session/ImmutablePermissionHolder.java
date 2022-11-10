@@ -13,7 +13,7 @@ import com.runwaysdk.business.rbac.SingleActorDAOIF;
 
 public class ImmutablePermissionHolder implements Serializable
 {
-  private static final long serialVersionUID = 1L;
+  private static final long           serialVersionUID = 1L;
 
   /**
    * A hash map of the users metadata permissions
@@ -52,7 +52,7 @@ public class ImmutablePermissionHolder implements Serializable
 
   public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user)
   {
-    this.isAdmin = false;
+    this.isAdmin = user.isAdministrator();    
     this.permissions = Collections.unmodifiableMap(permissions);
     this.user = user;
     this.locale = null;
@@ -62,7 +62,7 @@ public class ImmutablePermissionHolder implements Serializable
 
   public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale)
   {
-    this.isAdmin = false;
+    this.isAdmin = user.isAdministrator();    
     this.permissions = Collections.unmodifiableMap(permissions);
     this.user = user;
     this.locale = locale;
@@ -72,7 +72,7 @@ public class ImmutablePermissionHolder implements Serializable
 
   public ImmutablePermissionHolder(Map<String, Set<Operation>> permissions, SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
   {
-    this.isAdmin = false;
+    this.isAdmin = user.isAdministrator();    
     this.permissions = Collections.unmodifiableMap(permissions);
     this.user = user;
     this.locale = locale;
@@ -82,7 +82,7 @@ public class ImmutablePermissionHolder implements Serializable
 
   public ImmutablePermissionHolder(SingleActorDAOIF user, Locale locale, String dimensionKey, Map<String, RoleDAOIF> authorizedRoleMap)
   {
-    this.isAdmin = true;
+    this.isAdmin = user.isAdministrator();    
     this.permissions = Collections.unmodifiableMap(new HashMap<>());
     this.user = user;
     this.locale = locale;
