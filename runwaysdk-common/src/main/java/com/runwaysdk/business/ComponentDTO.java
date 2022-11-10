@@ -759,4 +759,10 @@ public abstract class ComponentDTO implements ComponentDTOIF, Cloneable, Seriali
     ComponentDTOIF comp = (ComponentDTOIF) obj;
     return this.getOid().equals(comp.getOid());
   }
+  
+  @Override
+  public int hashCode()
+  {
+    return this.getOid().hashCode();
+  }
 }
