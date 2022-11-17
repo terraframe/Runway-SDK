@@ -1,8 +1,9 @@
 package com.runwaysdk.session;
 
+import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CloseableReentrantLock extends ReentrantLock implements AutoCloseable
+public class CloseableReentrantLock extends ReentrantLock implements AutoCloseable, Serializable
 {
 
   private static final long serialVersionUID = 7581534074544018067L;

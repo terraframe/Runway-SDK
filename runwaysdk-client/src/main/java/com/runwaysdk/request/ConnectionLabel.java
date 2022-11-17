@@ -18,13 +18,17 @@
  */
 package com.runwaysdk.request;
 
+import java.io.Serializable;
+
 /**
  * Class to hold information about the different connections to be used with
  * proxies.
  */
-public class ConnectionLabel
+public class ConnectionLabel implements Serializable
 {
-  public enum Type {
+  private static final long serialVersionUID = 1L;
+
+  public enum Type implements Serializable {
     
     /**
      * The allowed value (in XML) to denote a Java ClientRequest

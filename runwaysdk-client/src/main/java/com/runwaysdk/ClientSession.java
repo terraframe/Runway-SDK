@@ -18,6 +18,7 @@
  */
 package com.runwaysdk;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import com.runwaysdk.constants.ClientRequestIF;
@@ -25,8 +26,10 @@ import com.runwaysdk.constants.UserInfo;
 import com.runwaysdk.request.ClientRequestManager;
 import com.runwaysdk.request.ConnectionLabel;
 
-public class ClientSession
+public class ClientSession implements Serializable
 {
+  private static final long serialVersionUID = 1L;
+
   /**
    * The label of the clientRequest
    */

@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.web;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -27,8 +28,10 @@ import com.runwaysdk.ClientSession;
 import com.runwaysdk.request.ClientRequestManager;
 import com.runwaysdk.request.ConnectionLabel;
 
-public class WebClientSession extends ClientSession implements HttpSessionBindingListener
+public class WebClientSession extends ClientSession implements HttpSessionBindingListener, Serializable
 {
+  private static final long serialVersionUID = 1L;
+
   /**
    * Creates a session on the server that is logged in as the anonymous public user.
    *
