@@ -219,9 +219,7 @@ public class Session extends PermissionEntity implements Comparable<Session>, Se
    */
   public boolean hasUser()
   {
-    UserDAOIF publicUser = UserDAO.getPublicUser();
-
-    return !this.getHolder().getUser().equals(publicUser);
+    return !this.getHolder().getUser().getOid().equals(UserDAOIF.PUBLIC_USER_ID);
   }
 
   /*

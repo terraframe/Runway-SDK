@@ -214,7 +214,6 @@ public abstract class ManagedUserSessionCache extends SessionCache
       String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
       SingleActorDAOIF userOld = session.getUser();
 
       if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
@@ -225,19 +224,19 @@ public abstract class ManagedUserSessionCache extends SessionCache
 
       // If the session already has a user, we need to decrement the session
       // count.
-      if (!user.equals(publicUser) && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + username + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
       }
 
-      if (userOld != null && !userOld.equals(publicUser))
+      if (userOld != null && !userOld.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
         this.decrementUserLoginCount(userOld);
       }
 
       //Increment the users session count
-      if(!user.equals(publicUser))
+      if(!userId.equals(UserDAOIF.PUBLIC_USER_ID))
       {
         userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
@@ -273,7 +272,6 @@ public abstract class ManagedUserSessionCache extends SessionCache
       
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
       SingleActorDAOIF userOld = session.getUser();
       
       if(!userSessions.containsKey(userId) && userSessions.size() >= usersLimit)
@@ -292,19 +290,19 @@ public abstract class ManagedUserSessionCache extends SessionCache
       
       // If the session already has a user, we need to decrement the session
       // count.
-      if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && sessionLimit != -1 && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
       }
       
-      if (userOld != null && !userOld.equals(publicUser))
+      if (userOld != null && !userOld.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
         this.decrementUserLoginCount(userOld);
       }
       
       //Increment the users session count
-      if(!user.equals(publicUser))
+      if(!userId.equals(UserDAOIF.PUBLIC_USER_ID))
       {
         userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }
@@ -373,9 +371,8 @@ public abstract class ManagedUserSessionCache extends SessionCache
     // Remove one from the total amount of sessions allocated
     // to a user if the user is not anonymous
     SingleActorDAOIF user = session.getUser();
-    UserDAOIF publicUser = UserDAO.getPublicUser();
 
-    if (!user.getOid().equals(publicUser.getOid()))
+    if (!user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
     {
       decrementUserLoginCount(user);
     }
@@ -419,10 +416,9 @@ public abstract class ManagedUserSessionCache extends SessionCache
     sessionCacheLock.lock();
     try
     {
-      UserDAOIF publicUser = UserDAO.getPublicUser();
       SingleActorDAOIF user = session.getUser();
 
-      if (user != null && !user.equals(publicUser))
+      if (user != null && !user.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
         int currentAmount = this.getUserSessionCount(user.getOid());
 
@@ -453,7 +449,6 @@ public abstract class ManagedUserSessionCache extends SessionCache
       String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
       Session session = this.getSession(sessionId);
       SingleActorDAOIF userOld = session.getUser();
 
@@ -463,20 +458,20 @@ public abstract class ManagedUserSessionCache extends SessionCache
         throw new ProgrammingErrorException(msg);
       }
 
-      if (!user.equals(publicUser) && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + user.getUsername() + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
       }
 
       // If the session already has a user, we need to decrement the session count.
-      if (userOld != null && !userOld.equals(publicUser))
+      if (userOld != null && !userOld.getOid().equals(UserDAOIF.PUBLIC_USER_ID))
       {
         this.decrementUserLoginCount(userOld);
       }
 
       //Increment the users session count
-      if(!user.equals(publicUser))
+      if(!userId.equals(UserDAOIF.PUBLIC_USER_ID))
       {
         userSessions.put(user.getOid(), Integer.valueOf(currentAmount + 1));
       }

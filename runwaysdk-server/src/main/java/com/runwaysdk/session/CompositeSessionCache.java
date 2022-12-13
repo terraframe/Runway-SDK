@@ -154,7 +154,6 @@ public abstract class CompositeSessionCache extends SessionCache
 
       int sessionLimit = user.getSessionLimit();
       int currentAmount = getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
 
       // If the session already has a user, we need to decrement the session
       // count.
@@ -166,7 +165,7 @@ public abstract class CompositeSessionCache extends SessionCache
 
       // If the session already has a user, we need to decrement the session
       // count.
-      if (!user.equals(publicUser) && sessionLimit != -1 && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && sessionLimit != -1 && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + user.getSingleActorName() + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
@@ -222,9 +221,8 @@ public abstract class CompositeSessionCache extends SessionCache
       String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = this.getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
 
-      if (!user.equals(publicUser) && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + username + "] already has the maximum number sessions opened [" + sessionLimit + "].";
         throw new MaximumSessionsException(devMessage, user);
@@ -348,11 +346,10 @@ public abstract class CompositeSessionCache extends SessionCache
       String userId = user.getOid();
       int sessionLimit = user.getSessionLimit();
       int currentAmount = this.getUserSessionCount(userId);
-      UserDAOIF publicUser = UserDAO.getPublicUser();
 
       // If the session already has a user, we need to decrement the session
       // count.
-      if (!user.equals(publicUser) && currentAmount >= sessionLimit)
+      if (!userId.equals(UserDAOIF.PUBLIC_USER_ID) && currentAmount >= sessionLimit)
       {
         String devMessage = "The user [" + user.getUsername() + "] already has the maximum number sessions opened";
         throw new MaximumSessionsException(devMessage, user);
