@@ -151,7 +151,7 @@ public class DelegateCompiler extends AbstractCompiler
      * javac must be executed first because its common generated class files
      * must be on the classpath of the ajc compiler.
      */
-//    javac.execute();
+    javac.execute();
     ajc.execute();
   }
 
