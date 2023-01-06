@@ -724,7 +724,7 @@ public class ImportManager
     }
   }
 
-  public HandlerFactoryIF getFactory(TagContext context, String localName)
+  public HandlerFactoryIF getFactory(TagContext context, String qName)
   {
     TagHandlerIF handler = context.getHandler();
     String key = handler.getKey();
@@ -735,7 +735,7 @@ public class ImportManager
 
       for (HandlerFactoryIF factory : factories)
       {
-        if (factory.supports(context, localName))
+        if (factory.supports(context, qName))
         {
           return factory;
         }

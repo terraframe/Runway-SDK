@@ -25,7 +25,7 @@ import org.xml.sax.Attributes;
 
 public class TagContext
 {
-  private String              localName;
+  private String              qName;
 
   private Attributes          attributes;
 
@@ -38,13 +38,13 @@ public class TagContext
   private boolean             parse;
 
   /**
-   * @param localName
+   * @param qName
    * @param attributes
    * @param current
    */
-  public TagContext(String localName, Attributes attributes, TagContext parent, TagHandlerIF handler)
+  public TagContext(String qName, Attributes attributes, TagContext parent, TagHandlerIF handler)
   {
-    this.localName = localName;
+    this.qName = qName;
     this.attributes = attributes;
     this.parent = parent;
     this.handler = handler;
@@ -53,11 +53,11 @@ public class TagContext
   }
 
   /**
-   * @return the localName
+   * @return the qName
    */
   public String getLocalName()
   {
-    return localName;
+    return qName;
   }
 
   /**

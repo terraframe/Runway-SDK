@@ -57,7 +57,7 @@ public class DeleteEntityHandler extends TagHandler implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
     String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);

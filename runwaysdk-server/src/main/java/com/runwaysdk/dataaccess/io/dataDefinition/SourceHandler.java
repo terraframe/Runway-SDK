@@ -49,7 +49,7 @@ public class SourceHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     context.setObject(this.attributeName, new StringBuilder());
   }
@@ -60,9 +60,9 @@ public class SourceHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(this.tag))
+    if (qName.equals(this.tag))
     {
       MdTypeDAO mdType = (MdTypeDAO) context.getObject(MdTypeInfo.CLASS);
       StringBuilder builder = (StringBuilder) context.getObject(this.attributeName);

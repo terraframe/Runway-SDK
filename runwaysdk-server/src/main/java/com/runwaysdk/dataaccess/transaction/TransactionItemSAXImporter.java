@@ -102,9 +102,9 @@ public class TransactionItemSAXImporter extends XMLHandlerWithResolver
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_ACTION_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_ACTION_TAG))
     {
       this.transItemActionHandler = new TransactionItemActionSAXImporter(reader, this, manager);
       reader.setContentHandler(transItemActionHandler);
@@ -116,13 +116,13 @@ public class TransactionItemSAXImporter extends XMLHandlerWithResolver
     // entities. As such we must ensure that the component site of the incoming
     // entity is not the same as the current site before passing off parsing to
     // the appropriate handler.
-    else if (localName.equals(XMLTags.OBJECT_TAG) && !this.componentSite.equals(CommonProperties.getDomain()))
+    else if (qName.equals(XMLTags.OBJECT_TAG) && !this.componentSite.equals(CommonProperties.getDomain()))
     {
       InstanceHandler iHandler = new InstanceHandler(this.componentSeq, reader, this, manager, this.getResolver(), attributes, this.ignoreSeq);
       reader.setContentHandler(iHandler);
       reader.setErrorHandler(iHandler);
     }
-    else if (localName.equals(XMLTags.RELATIONSHIP_TAG) && !this.componentSite.equals(CommonProperties.getDomain()))
+    else if (qName.equals(XMLTags.RELATIONSHIP_TAG) && !this.componentSite.equals(CommonProperties.getDomain()))
     {
       RelationshipHandler handler = new RelationshipHandler(this.componentSeq, reader, this, manager, this.getResolver(), attributes, this.ignoreSeq);
       reader.setContentHandler(handler);
@@ -136,7 +136,7 @@ public class TransactionItemSAXImporter extends XMLHandlerWithResolver
    */
   public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_TAG))
     {
       ActionEnumDAO actionEnumDAO = this.transItemActionHandler.getActionEnumDAO();
 
@@ -237,7 +237,7 @@ class TransactionItemActionSAXImporter extends XMLHandler
    */
   public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_ACTION_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_ACTION_TAG))
     {
       // Remove all white spaces before and after the text
       String attributeValue = buffer.toString().trim();

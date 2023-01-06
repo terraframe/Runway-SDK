@@ -57,7 +57,7 @@ public class AttributeEnumerationHandler extends TagHandler implements TagHandle
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       String attributeName = (String) context.getObject(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
       String structAttributeName = (String) context.getObject(StructAttributeHandler.STRUCT_ATTRIBUTE_NAME);
@@ -110,7 +110,7 @@ public class AttributeEnumerationHandler extends TagHandler implements TagHandle
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String attributeName = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
 

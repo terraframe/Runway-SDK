@@ -56,7 +56,7 @@ public class EdgeHandler extends TagHandler implements TagHandlerIF, HandlerFact
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
     String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
@@ -75,9 +75,9 @@ public class EdgeHandler extends TagHandler implements TagHandlerIF, HandlerFact
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.EDGE_TAG))
+    if (qName.equals(XMLTags.EDGE_TAG))
     {
       GraphObjectDAO object = (GraphObjectDAO) context.getObject(EntityInfo.CLASS);
       object.apply();

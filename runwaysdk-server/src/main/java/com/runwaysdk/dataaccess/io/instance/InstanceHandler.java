@@ -111,11 +111,11 @@ public class InstanceHandler extends ElementHandler
   /* (non-Javadoc)
    * @see com.runwaysdk.dataaccess.io.instance.EntityHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
-    if(localName.equals(XMLTags.OBJECT_TAG))
+    if(qName.equals(XMLTags.OBJECT_TAG))
     {
-      super.endElement(namespaceURI, localName, fullName);
+      super.endElement(namespaceURI, localName, qName);
     }
   }
 }

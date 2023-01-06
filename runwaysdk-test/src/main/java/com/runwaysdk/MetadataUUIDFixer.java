@@ -35,6 +35,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -45,7 +48,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -77,9 +79,9 @@ public class MetadataUUIDFixer
       // <value>xybe6y9kczkjsi3pdmqmqrjcpfd2frwo</value>
       // <definingComponent>com.runwaysdk.system.metadata.MdType</definingComponent>
       // </attribute>
-      DOMParser parser = new DOMParser();
-      parser.parse(new InputSource(new FileReader(new File(dir, infile))));
-      Document doc = parser.getDocument();
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();   
+      DocumentBuilder builder =  factory.newDocumentBuilder(); 
+      Document doc = builder.parse(new InputSource(new FileReader(new File(dir, infile))));
 
       XPath xPath = XPathFactory.newInstance().newXPath();
       NodeList results = (NodeList) xPath.compile("//name[.=\"rootId\"]").evaluate(doc, XPathConstants.NODESET);
@@ -181,7 +183,7 @@ public class MetadataUUIDFixer
       transformer.transform(source, new StreamResult(new File(dir, outfile)));
 
     }
-    catch (SAXException | IOException | XPathExpressionException | TransformerException e)
+    catch (SAXException | IOException | XPathExpressionException | TransformerException | ParserConfigurationException e)
     {
       e.printStackTrace();
     }
@@ -275,9 +277,9 @@ public class MetadataUUIDFixer
 
     try
     {
-      DOMParser parser = new DOMParser();
-      parser.parse(new InputSource(new FileReader(new File(dir, infile))));
-      Document doc = parser.getDocument();
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();   
+      DocumentBuilder builder =  factory.newDocumentBuilder(); 
+      Document doc = builder.parse(new InputSource(new FileReader(new File(dir, infile))));
 
       XPath xPath = XPathFactory.newInstance().newXPath();
       NodeList results = (NodeList) xPath.compile("//attributeName[.=\"oid\"]").evaluate(doc, XPathConstants.NODESET);
@@ -336,7 +338,7 @@ public class MetadataUUIDFixer
       transformer.transform(source, new StreamResult(new File(dir, outfile)));
 
     }
-    catch (SAXException | IOException | XPathExpressionException | TransformerException e)
+    catch (SAXException | IOException | XPathExpressionException | TransformerException | ParserConfigurationException e)
     {
       e.printStackTrace();
     }

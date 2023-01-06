@@ -46,7 +46,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdIndexDAO mdIndex = (MdIndexDAO) context.getObject(MdIndexInfo.CLASS);
 
@@ -92,7 +92,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     String indexName = (String) context.getObject(MdIndexInfo.INDEX_NAME);
 
@@ -101,7 +101,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -110,7 +110,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     MdIndexDAO mdIndex = MdIndexDAO.newInstance();
     String active = attributes.getValue(XMLTags.INDEX_ACTIVE_ATTRIBUTE);
@@ -161,7 +161,7 @@ public class MdIndexHandler extends TagHandler implements TagHandlerIF, HandlerF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdIndexDAO mdIndex = (MdIndexDAO) context.getObject(MdIndexInfo.CLASS);
     String active = (String) context.getObject(MdIndexInfo.ACTIVE);

@@ -118,8 +118,6 @@ import com.runwaysdk.transport.metadata.AttributeMdDTO;
 import com.runwaysdk.transport.metadata.AttributeNumberMdDTO;
 import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 
-import sun.security.provider.Sun;
-
 @SuppressWarnings("unchecked")
 public abstract class SessionComponentGenTest
 {
@@ -986,7 +984,7 @@ public abstract class SessionComponentGenTest
     collectionClass.getMethod("setAHash", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    MessageDigest digest = MessageDigest.getInstance("MD5", new Sun());
+    MessageDigest digest = MessageDigest.getInstance("MD5", "SUN");
     digest.update(in.getBytes());
 
     String oid = (String) collectionClass.getMethod("getOid").invoke(object);

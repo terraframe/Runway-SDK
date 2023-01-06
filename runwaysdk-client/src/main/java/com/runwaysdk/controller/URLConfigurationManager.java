@@ -198,6 +198,8 @@ public class URLConfigurationManager
     if (stream != null)
     {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      dbFactory.setValidating(false);
+      
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
       Document doc = dBuilder.parse(stream);
 

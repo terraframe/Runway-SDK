@@ -112,11 +112,11 @@ public abstract class SchemaElement extends ElementObservable
     return xmlAttributes;
   }
 
-  public String getXMLAttributeValue(String localName)
+  public String getXMLAttributeValue(String qName)
   {
-    if (xmlAttributes.containsKey(localName))
+    if (xmlAttributes.containsKey(qName))
     {
-      return xmlAttributes.get(localName);
+      return xmlAttributes.get(qName);
     }
 
     return null;

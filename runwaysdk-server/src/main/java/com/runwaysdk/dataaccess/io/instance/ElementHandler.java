@@ -116,23 +116,23 @@ public class ElementHandler extends XMLHandlerWithResolver implements UncaughtEx
    * Passes control to the appropiate handler for INSTANCE_VALUE_TAG,
    * SELECTOR_TAG, and COMPOSITION_REF_TAG tags.
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException
   {
     if (!skipProcessing)
     {
-      if (localName.equals(XMLTags.VALUE_TAG))
+      if (qName.equals(XMLTags.VALUE_TAG))
       {
         ValueHandler handler = new EntityValueHandler(reader, this, manager, attributes, elementDAO, this);
         reader.setContentHandler(handler);
         reader.setErrorHandler(handler);
       }
-      else if (localName.equals(XMLTags.ENUMERATION_TAG))
+      else if (qName.equals(XMLTags.ENUMERATION_TAG))
       {
         EnumerationHandler sHandler = new ElementEnumerationHandler(reader, this, manager, elementDAO, attributes);
         reader.setContentHandler(sHandler);
         reader.setErrorHandler(sHandler);
       }
-      else if (localName.equals(XMLTags.STRUCT_REF_TAG))
+      else if (qName.equals(XMLTags.STRUCT_REF_TAG))
       {
         StructHandler cHandler = new StructHandler(reader, this, manager, elementDAO, attributes, this);
         reader.setContentHandler(cHandler);
@@ -149,7 +149,7 @@ public class ElementHandler extends XMLHandlerWithResolver implements UncaughtEx
    * attributes defined, and then returns control to the handler which passed
    * control.
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
     if (!skipProcessing)
     {

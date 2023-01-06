@@ -53,7 +53,7 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -62,7 +62,7 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -71,7 +71,7 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdExcpetion to import, if this is a create then a new instance of MdProblem is imported
     MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) this.getManager().getEntityDAO(this.type, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
@@ -111,7 +111,7 @@ public abstract class MdLocalizableHandler extends TagHandler implements TagHand
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdLocalizableDAO mdLocalizable = (MdLocalizableDAO) context.getObject(MdTypeInfo.CLASS);
 

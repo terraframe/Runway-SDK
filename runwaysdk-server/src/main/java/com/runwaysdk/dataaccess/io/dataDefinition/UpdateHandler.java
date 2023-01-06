@@ -72,7 +72,7 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     this.getManager().enterUpdateState();
   }
@@ -86,7 +86,7 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     this.getManager().leavingCurrentState();
   }
@@ -99,8 +99,8 @@ public class UpdateHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    return localName.equals(XMLTags.UPDATE_TAG);
+    return qName.equals(XMLTags.UPDATE_TAG);
   }
 }

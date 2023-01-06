@@ -175,6 +175,8 @@ public class XMLExporter
     try
     {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      factory.setValidating(false);
+      
       DocumentBuilder builder = factory.newDocumentBuilder();
       document = builder.newDocument();
 

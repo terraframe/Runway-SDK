@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.io.instance;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
@@ -37,7 +39,7 @@ public abstract class XMLHandlerWithResolver extends XMLHandler
     this.resolver = resolver;
   }
 
-  public XMLHandlerWithResolver(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException
+  public XMLHandlerWithResolver(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation);
 

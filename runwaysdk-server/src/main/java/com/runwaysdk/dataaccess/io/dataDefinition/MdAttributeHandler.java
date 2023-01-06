@@ -144,7 +144,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
      * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdAttributeDAO mdAttribute = (MdAttributeDAO) context.getObject(MdAttributeInfo.CLASS);
       MdTermDAOIF mdTerm = ( (TermAttributeDAOIF) mdAttribute ).getReferenceMdBusinessDAO();
@@ -262,7 +262,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
      * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdClassDAO mdClass = this.getMdClass(context);
       String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);

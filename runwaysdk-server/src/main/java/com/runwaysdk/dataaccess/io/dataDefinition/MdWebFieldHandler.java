@@ -113,7 +113,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdWebFormDAO mdForm = (MdWebFormDAO) context.getObject(MdTypeInfo.CLASS);
       MdFieldDAO mdField = (MdFieldDAO) context.getObject(MdFieldInfo.CLASS);
@@ -164,7 +164,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdWebFormDAO mdForm = this.getMdForm(context);
       String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
@@ -523,7 +523,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     context.setObject(ConditionListIF.CONDITIONS, new ConditionHolder());
     context.setObject(GROUPS, new LinkedList<GroupAttribute>());
@@ -536,7 +536,7 @@ public class MdWebFieldHandler extends TagHandler implements TagHandlerIF, Handl
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     ConditionHolder holder = (ConditionHolder) context.getObject(ConditionListIF.CONDITIONS);
     LinkedList<GroupAttribute> groups = (LinkedList<GroupAttribute>) context.getObject(GROUPS);

@@ -52,7 +52,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
    * runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -61,7 +61,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -74,15 +74,15 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdEdgeDAO to import, if this is a create then a new instance
     // of MdEdgeDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdEdgeDAO mdEdgeDAO = this.createMdEdge(localName, name);
+    MdEdgeDAO mdEdgeDAO = this.createMdEdge(qName, name);
 
-    this.importMdEdge(mdEdgeDAO, localName, attributes);
+    this.importMdEdge(mdEdgeDAO, qName, attributes);
 
     // Make sure the class has not already been defined
     if (!this.getManager().isCreated(mdEdgeDAO.definesType()))
@@ -95,7 +95,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
     context.setObject(MdTypeInfo.CLASS, mdEdgeDAO);
   }
 
-  private final MdEdgeDAO createMdEdge(String localName, String name)
+  private final MdEdgeDAO createMdEdge(String qName, String name)
   {
     return (MdEdgeDAO) this.getManager().getEntityDAO(MdEdgeInfo.CLASS, name).getEntityDAO();
   }
@@ -109,7 +109,7 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
    *          The attributes of an class tag
    * @return MdEdgeDAO from the parse of the class tag attributes.
    */
-  private final void importMdEdge(MdEdgeDAO mdEdgeDAO, String localName, Attributes attributes)
+  private final void importMdEdge(MdEdgeDAO mdEdgeDAO, String qName, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -173,9 +173,9 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_EDGE_TAG))
+    if (qName.equals(XMLTags.MD_EDGE_TAG))
     {
       MdEdgeDAO mdEdgeDAO = (MdEdgeDAO) context.getObject(MdTypeInfo.CLASS);
 

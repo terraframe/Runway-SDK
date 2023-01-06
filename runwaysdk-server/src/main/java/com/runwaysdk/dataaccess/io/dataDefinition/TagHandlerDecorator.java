@@ -56,9 +56,9 @@ public class TagHandlerDecorator implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
-    this.handler.onStartElement(localName, attributes, context);
+    this.handler.onStartElement(qName, attributes, context);
   }
 
   /*
@@ -67,9 +67,9 @@ public class TagHandlerDecorator implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    this.handler.onEndElement(uri, localName, name, context);
+    this.handler.onEndElement(uri, qName, name, context);
   }
 
   /*
@@ -100,8 +100,8 @@ public class TagHandlerDecorator implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#modifiesState(java.lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    return this.handler.modifiesState(localName);
+    return this.handler.modifiesState(qName);
   }
 }

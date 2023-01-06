@@ -50,7 +50,7 @@ public class MethodPermissionHandler extends TagHandler implements TagHandlerIF,
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       List<ActorDAO> actors = (List<ActorDAO>) context.getObject("actors");
 
@@ -83,7 +83,7 @@ public class MethodPermissionHandler extends TagHandler implements TagHandlerIF,
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     List<ActorDAO> actors = new LinkedList<ActorDAO>();
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);

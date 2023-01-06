@@ -33,15 +33,15 @@ public class CreateDecorator extends TagHandlerDecorator implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerDecorator#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    if (qName.equals(XMLTags.CREATE_TAG))
     {
       this.getManager().enterCreateState();
     }
     else
     {
-      super.onStartElement(localName, attributes, context);
+      super.onStartElement(qName, attributes, context);
     }
   }
 
@@ -52,15 +52,15 @@ public class CreateDecorator extends TagHandlerDecorator implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    if (qName.equals(XMLTags.CREATE_TAG))
     {
       this.getManager().leavingCurrentState();
     }
     else
     {
-      super.onEndElement(uri, localName, name, context);
+      super.onEndElement(uri, qName, name, context);
     }
   }
 
@@ -70,15 +70,15 @@ public class CreateDecorator extends TagHandlerDecorator implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    if (localName.equals(XMLTags.CREATE_TAG))
+    if (qName.equals(XMLTags.CREATE_TAG))
     {
       return true;
     }
     else
     {
-      return super.modifiesState(localName);
+      return super.modifiesState(qName);
     }
   }
 

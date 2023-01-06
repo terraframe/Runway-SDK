@@ -49,7 +49,7 @@ public abstract class MdGraphClassHandler extends TagHandler implements TagHandl
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public abstract void onStartElement(String localName, Attributes attributes, TagContext context);
+  public abstract void onStartElement(String qName, Attributes attributes, TagContext context);
 
   /*
    * (non-Javadoc)
@@ -60,5 +60,5 @@ public abstract class MdGraphClassHandler extends TagHandler implements TagHandl
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public abstract void onEndElement(String uri, String localName, String name, TagContext context);
+  public abstract void onEndElement(String uri, String qName, String name, TagContext context);
 }

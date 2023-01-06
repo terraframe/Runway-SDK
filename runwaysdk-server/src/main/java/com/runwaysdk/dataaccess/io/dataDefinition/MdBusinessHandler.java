@@ -60,7 +60,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -69,7 +69,7 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -79,15 +79,15 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdBusinessDAO to import, if this is a create then a new instance
     // of MdBusinessDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdBusinessDAO mdBusinessDAO = this.createMdBusiness(localName, name);
+    MdBusinessDAO mdBusinessDAO = this.createMdBusiness(qName, name);
 
-    this.importMdBusiness(mdBusinessDAO, localName, attributes);
+    this.importMdBusiness(mdBusinessDAO, qName, attributes);
 
     // Make sure the class has not already been defined
     if (!this.getManager().isCreated(mdBusinessDAO.definesType()))
@@ -100,9 +100,9 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
     context.setObject(MdTypeInfo.CLASS, mdBusinessDAO);
   }
 
-  private final MdBusinessDAO createMdBusiness(String localName, String name)
+  private final MdBusinessDAO createMdBusiness(String qName, String name)
   {
-    if (localName.equals(XMLTags.MD_TERM_TAG))
+    if (qName.equals(XMLTags.MD_TERM_TAG))
     {
       return (MdTermDAO) this.getManager().getEntityDAO(MdTermInfo.CLASS, name).getEntityDAO();
     }
@@ -119,9 +119,9 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
    *          The attributes of an class tag
    * @return MdBusinessDAO from the parse of the class tag attributes.
    */
-  private final void importMdBusiness(MdBusinessDAO mdBusinessDAO, String localName, Attributes attributes)
+  private final void importMdBusiness(MdBusinessDAO mdBusinessDAO, String qName, Attributes attributes)
   {
-    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG))
+    if (qName.equals(XMLTags.ENUMERATION_MASTER_TAG))
     {
       // Find the database OID of the default EnumerationMaster
       mdBusinessDAO.setValue(MdBusinessInfo.SUPER_MD_BUSINESS, EnumerationMasterInfo.ID_VALUE);
@@ -198,9 +198,9 @@ public class MdBusinessHandler extends MdEntityHandler implements TagHandlerIF, 
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.ENUMERATION_MASTER_TAG) || localName.equals(XMLTags.MD_BUSINESS_TAG) || localName.equals(XMLTags.MD_TERM_TAG))
+    if (qName.equals(XMLTags.ENUMERATION_MASTER_TAG) || qName.equals(XMLTags.MD_BUSINESS_TAG) || qName.equals(XMLTags.MD_TERM_TAG))
     {
       MdBusinessDAO mdBusinessDAO = (MdBusinessDAO) context.getObject(MdTypeInfo.CLASS);
 

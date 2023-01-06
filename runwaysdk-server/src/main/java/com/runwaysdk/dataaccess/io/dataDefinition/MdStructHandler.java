@@ -54,7 +54,7 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdStructDAO mdStruct = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -63,7 +63,7 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -72,7 +72,7 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     MdStructDAO mdStructDAO = (MdStructDAO) this.getManager().getEntityDAO(MdStructInfo.CLASS, attributes.getValue(XMLTags.NAME_ATTRIBUTE)).getEntityDAO();
     // Import the required attributes and Breakup the type into a package and
@@ -135,7 +135,7 @@ public class MdStructHandler extends MdEntityHandler implements TagHandlerIF, Ha
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdStructDAO mdStructDAO = (MdStructDAO) context.getObject(MdTypeInfo.CLASS);
 

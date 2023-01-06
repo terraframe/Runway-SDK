@@ -65,7 +65,7 @@ public class TimestampHandler extends TagHandler implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     if (action.equals(Action.CREATE))
     {

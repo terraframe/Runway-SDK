@@ -47,7 +47,7 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
    * runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdClassificationDAO mdVertexDAO = (MdClassificationDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -56,7 +56,7 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -69,16 +69,16 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdClassificationDAO to import, if this is a create then a new
     // instance
     // of MdClassificationDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdClassificationDAO mdVertexDAO = this.createMdClassification(localName, name);
+    MdClassificationDAO mdVertexDAO = this.createMdClassification(qName, name);
 
-    this.importMdClassification(mdVertexDAO, localName, attributes);
+    this.importMdClassification(mdVertexDAO, qName, attributes);
 
     // Make sure the class has not already been defined
     if (!this.getManager().isCreated(mdVertexDAO.definesType()))
@@ -91,7 +91,7 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
     context.setObject(MdTypeInfo.CLASS, mdVertexDAO);
   }
 
-  protected MdClassificationDAO createMdClassification(String localName, String name)
+  protected MdClassificationDAO createMdClassification(String qName, String name)
   {
     return (MdClassificationDAO) this.getManager().getEntityDAO(MdClassificationInfo.CLASS, name).getEntityDAO();
   }
@@ -110,7 +110,7 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
    *          The attributes of an class tag
    * @return MdClassificationDAO from the parse of the class tag attributes.
    */
-  private final void importMdClassification(MdClassificationDAO mdClassificationDAO, String localName, Attributes attributes)
+  private final void importMdClassification(MdClassificationDAO mdClassificationDAO, String qName, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -145,9 +145,9 @@ public class MdClassificationHandler extends TagHandler implements TagHandlerIF,
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(getTag()))
+    if (qName.equals(getTag()))
     {
       MdClassificationDAO mdClassificationDAO = (MdClassificationDAO) context.getObject(MdTypeInfo.CLASS);
 

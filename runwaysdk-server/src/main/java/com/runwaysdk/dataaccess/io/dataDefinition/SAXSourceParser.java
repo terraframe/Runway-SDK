@@ -27,6 +27,10 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -35,7 +39,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.io.RunwayClasspathEntityResolver;
@@ -116,15 +119,16 @@ public class SAXSourceParser extends DefaultHandler
    *          fully qualified path of the schema file
    * 
    * @throws SAXException
+   * @throws ParserConfigurationException 
    */
-  public SAXSourceParser(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
+  public SAXSourceParser(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     this.reader = createReader();
 
     this.init(new ImportManager(source, schemaLocation), plugins);
   }
 
-  public SAXSourceParser(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
+  public SAXSourceParser(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     filter.setParent(this.createReader());
     this.reader = filter;
@@ -132,7 +136,7 @@ public class SAXSourceParser extends DefaultHandler
     this.init(new ImportManager(source, schemaLocation), plugins);
   }
 
-  public SAXSourceParser(ImportManager manager, ImportPluginIF... plugins) throws SAXException
+  public SAXSourceParser(ImportManager manager, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     this.reader = createReader();
 
@@ -142,12 +146,12 @@ public class SAXSourceParser extends DefaultHandler
   private void init(ImportManager manager, ImportPluginIF... plugins) throws SAXException
   {
     this.manager = manager;
-    this.reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
-    this.reader.setFeature(VALIDATION_FEATURE_ID, true);
-    this.reader.setEntityResolver(new RunwayClasspathEntityResolver());
+//    this.reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+//    this.reader.setFeature(VALIDATION_FEATURE_ID, true);
+//    this.reader.setEntityResolver(new RunwayClasspathEntityResolver());
+//    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, manager.getSchemaLocation());
     this.reader.setContentHandler(this);
     this.reader.setErrorHandler(this);
-    this.reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, manager.getSchemaLocation());
 
     this.stack = new Stack<TagContext>();
 
@@ -157,9 +161,15 @@ public class SAXSourceParser extends DefaultHandler
     }
   }
 
-  protected XMLReader createReader() throws SAXException
+  protected XMLReader createReader() throws SAXException, ParserConfigurationException
   {
-    return XMLReaderFactory.createXMLReader(READER);
+    SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+    parserFactory.setValidating(false);
+    parserFactory.setNamespaceAware(false);
+    parserFactory.setSchema(null);
+    
+    SAXParser parser = parserFactory.newSAXParser();
+    return parser.getXMLReader();
   }
 
   /**
@@ -246,16 +256,16 @@ public class SAXSourceParser extends DefaultHandler
 
     if (context != null)
     {
-      HandlerFactoryIF factory = this.manager.getFactory(context, localName);
+      HandlerFactoryIF factory = this.manager.getFactory(context, qName);
 
       if (factory != null)
       {
-        TagHandlerIF cHandler = factory.getHandler(localName, attributes, context.getHandler(), manager);
-        TagContext cContext = this.createContext(localName, attributes, context, cHandler);
+        TagHandlerIF cHandler = factory.getHandler(qName, attributes, context.getHandler(), manager);
+        TagContext cContext = this.createContext(qName, attributes, context, cHandler);
 
         if (this.process(cContext))
         {
-          cHandler.onStartElement(localName, attributes, cContext);
+          cHandler.onStartElement(qName, attributes, cContext);
         }
 
         this.stack.push(cContext);
@@ -268,7 +278,7 @@ public class SAXSourceParser extends DefaultHandler
     else
     {
       TagHandlerIF cHandler = this.manager.getRoot();
-      TagContext cContext = this.createContext(localName, attributes, null, cHandler);
+      TagContext cContext = this.createContext(qName, attributes, null, cHandler);
 
       this.stack.push(cContext);
     }
@@ -311,7 +321,7 @@ public class SAXSourceParser extends DefaultHandler
 
       if (this.process(context))
       {
-        current.onEndElement(uri, localName, qName, context);
+        current.onEndElement(uri, qName, qName, context);
       }
 
       this.stack.pop();
@@ -328,9 +338,9 @@ public class SAXSourceParser extends DefaultHandler
     return null;
   }
 
-  protected TagContext createContext(String localName, Attributes attributes, TagContext context, TagHandlerIF cHandler)
+  protected TagContext createContext(String qName, Attributes attributes, TagContext context, TagHandlerIF cHandler)
   {
-    return new TagContext(localName, attributes, context, cHandler);
+    return new TagContext(qName, attributes, context, cHandler);
   }
 
   /**
@@ -366,6 +376,9 @@ public class SAXSourceParser extends DefaultHandler
   @Override
   public void error(SAXParseException exception)
   {
+    // Ignore the error
+//    exception.printStackTrace();
+    
     StreamSource streamSource = this.manager.getStreamSource();
 
     if (streamSource != null)

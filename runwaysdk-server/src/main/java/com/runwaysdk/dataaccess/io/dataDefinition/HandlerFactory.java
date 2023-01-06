@@ -49,9 +49,9 @@ public class HandlerFactory implements HandlerFactoryIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#supports(java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
-    return this.handlers.containsKey(localName);
+    return this.handlers.containsKey(qName);
   }
 
   /*
@@ -60,9 +60,9 @@ public class HandlerFactory implements HandlerFactoryIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#getHandler( java.lang.String, org.xml.sax.Attributes, org.xml.sax.XMLReader, com.runwaysdk.dataaccess.io.XMLHandler,
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
-  public TagHandlerIF getHandler(String localName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
+  public TagHandlerIF getHandler(String qName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
   {
-    return this.handlers.get(localName);
+    return this.handlers.get(qName);
   }
 
 }

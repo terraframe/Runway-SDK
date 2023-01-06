@@ -46,9 +46,9 @@ public class SchemaIndexHandler extends AbstractSchemaHandler
   }
   
   @Override
-  protected void initRootElement(Attributes attributes, String localName)
+  protected void initRootElement(Attributes attributes, String qName)
   {
-    root = schema.createSchemaIndex(attributes, localName);
+    root = schema.createSchemaIndex(attributes, qName);
   }
 
   @Override

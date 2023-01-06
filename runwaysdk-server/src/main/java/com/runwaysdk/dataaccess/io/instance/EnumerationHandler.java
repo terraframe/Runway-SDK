@@ -55,9 +55,9 @@ public abstract class EnumerationHandler extends XMLHandler
    * (non-Javadoc)
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if(localName.equals(XMLTags.VALUE_TAG))
+    if(qName.equals(XMLTags.VALUE_TAG))
     {
       String value = attributes.getValue(XMLTags.ATTRIBUTE_VALUE_TAG);
 
@@ -73,9 +73,9 @@ public abstract class EnumerationHandler extends XMLHandler
    *  (non-Javadoc)
    * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
-    if(localName.equals(XMLTags.ENUMERATION_TAG))
+    if(qName.equals(XMLTags.ENUMERATION_TAG))
     {
       reader.setContentHandler( previousHandler );
       reader.setErrorHandler( previousHandler );

@@ -299,14 +299,14 @@ public class MergeSchema extends ImportManager implements SchemaVisitable, Eleme
    * 
    * @param attributes
    *          Attributes of the SchemaIndex
-   * @param localName
+   * @param qName
    *          Name of the SchemaIndex tag
    * 
    * @return
    */
-  public SchemaIndex createSchemaIndex(Attributes attributes, String localName)
+  public SchemaIndex createSchemaIndex(Attributes attributes, String qName)
   {
-    SchemaIndex schemaIndex = new SchemaIndex(attributes, localName, createElement);
+    SchemaIndex schemaIndex = new SchemaIndex(attributes, qName, createElement);
 
     this.registerDependency(schemaIndex);
 

@@ -44,7 +44,7 @@ public class FieldConditionHandler extends TagHandler implements TagHandlerIF, H
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       ConditionListIF conditions = (ConditionListIF) context.getObject(ConditionListIF.CONDITIONS);
       MdFieldDAO mdField = (MdFieldDAO) context.getObject(MdFieldInfo.CLASS);
@@ -66,13 +66,13 @@ public class FieldConditionHandler extends TagHandler implements TagHandlerIF, H
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       ConditionListIF conditions = (ConditionListIF) context.getObject(ConditionListIF.CONDITIONS);
       MdFieldDAO mdField = (MdFieldDAO) context.getObject(MdFieldInfo.CLASS);
       MdWebFormDAO mdForm = (MdWebFormDAO) context.getObject(MdTypeInfo.CLASS);
 
-      conditions.addCondition(new ConditionAttribute(localName, attributes, mdForm, mdField));
+      conditions.addCondition(new ConditionAttribute(qName, attributes, mdForm, mdField));
     }
   }
 
@@ -92,12 +92,12 @@ public class FieldConditionHandler extends TagHandler implements TagHandlerIF, H
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       ConditionListIF conditions = (ConditionListIF) context.getObject(ConditionListIF.CONDITIONS);
       MdFieldDAO mdField = (MdFieldDAO) context.getObject(MdFieldInfo.CLASS);
 
-      CompositeConditionAttribute condition = new CompositeConditionAttribute(localName, mdField);
+      CompositeConditionAttribute condition = new CompositeConditionAttribute(qName, mdField);
 
       conditions.addCondition(condition);
 

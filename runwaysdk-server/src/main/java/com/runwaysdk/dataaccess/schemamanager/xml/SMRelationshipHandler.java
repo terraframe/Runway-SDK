@@ -49,35 +49,35 @@ public class SMRelationshipHandler extends AbstractSchemaHandler
   }
 
   @Override
-  protected void dispatchChildHandler(Attributes attributes, String localName)
+  protected void dispatchChildHandler(Attributes attributes, String qName)
   {
-    if (localName.equals(XMLTags.PARENT_TAG))
+    if (qName.equals(XMLTags.PARENT_TAG))
     {
-      relationship().setParent(importParticipant(attributes, localName));
+      relationship().setParent(importParticipant(attributes, qName));
     }
-    else if (localName.equals(XMLTags.CHILD_TAG))
+    else if (qName.equals(XMLTags.CHILD_TAG))
     {
-      relationship().setChild(importParticipant(attributes, localName));
+      relationship().setChild(importParticipant(attributes, qName));
     }
-    else if (localName.equals(XMLTags.ATTRIBUTES_TAG) || localName.equals(XMLTags.MD_METHOD_TAG) ||  localName.equals(XMLTags.CREATE_TAG))
+    else if (qName.equals(XMLTags.ATTRIBUTES_TAG) || qName.equals(XMLTags.MD_METHOD_TAG) ||  qName.equals(XMLTags.CREATE_TAG))
     {
-      childHandler = SMHandlerFactory.getHandler(schema, reader, this, localName, attributes);
+      childHandler = SMHandlerFactory.getHandler(schema, reader, this, qName, attributes);
       reader.setContentHandler(childHandler);
       reader.setErrorHandler(childHandler);
     }
   }
 
   @Override
-  protected void initRootElement(Attributes attributes, String localName)
+  protected void initRootElement(Attributes attributes, String qName)
   {
-    root = schema().createSchemaRelationship(attributes, localName);
+    root = schema().createSchemaRelationship(attributes, qName);
   }
 
   @Override
-  protected void returnToParentHandler(String localName)
+  protected void returnToParentHandler(String qName)
   {
     schema.notifyObserversRelationshipCreated((SchemaRelationship) root);
-    super.returnToParentHandler(localName);
+    super.returnToParentHandler(qName);
   }
 
 }

@@ -21,6 +21,8 @@ package com.runwaysdk.dataaccess.transaction;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,9 +54,10 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
    * @param exportSeq
    * 
    * @throws SAXException
+   * @throws ParserConfigurationException 
    * @throws FileNotFoundException
    */
-  public TransactionRecordSAXImporter(File transactionExportXMLFile, String schemaLocation, IConflictResolver resolver, String importSite, Long exportSeq) throws SAXException
+  public TransactionRecordSAXImporter(File transactionExportXMLFile, String schemaLocation, IConflictResolver resolver, String importSite, Long exportSeq) throws SAXException, ParserConfigurationException
   {
     super(new FileStreamSource(transactionExportXMLFile), schemaLocation, resolver);
 
@@ -64,7 +67,7 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
 
     reader.setContentHandler(this);
     reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+//    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
   }
 
   /**
@@ -86,9 +89,9 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTION_ITEM_TAG))
     {
       TransactionItemSAXImporter transItemHandler = new TransactionItemSAXImporter(reader, this, manager, this.getResolver(), attributes);
       this.lastTransItemHandler = transItemHandler;
@@ -104,7 +107,7 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
    */
   public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
     {
       ImportLogDAO.setLastExportSeqFromSite(this.importSite, exportSeq);
       reader.setContentHandler(this);
@@ -131,12 +134,13 @@ public class TransactionRecordSAXImporter extends XMLHandlerWithResolver
       importer = new TransactionRecordSAXImporter(transactionExportXMLFile, schemaLocation, resolver, importSite, exportSeq);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
     catch (RunwayException ex)
     {      
+      ex.printStackTrace();
       if (importer != null && importer.getLastTransactionItemHandler() != null)
       {
         String componentSite = importer.getLastTransactionItemHandler().getComponentSite();

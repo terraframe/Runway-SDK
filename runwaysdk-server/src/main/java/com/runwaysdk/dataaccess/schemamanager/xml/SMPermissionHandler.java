@@ -46,7 +46,7 @@ public class SMPermissionHandler extends AbstractSchemaHandler
   }
 
   @Override
-  protected void initRootElement(Attributes attributes, String localName)
+  protected void initRootElement(Attributes attributes, String qName)
   {
 
   }

@@ -55,7 +55,7 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
@@ -101,9 +101,9 @@ public class RelationshipHandler extends TagHandler implements TagHandlerIF, Han
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.RELATIONSHIP_TAG))
+    if (qName.equals(XMLTags.RELATIONSHIP_TAG))
     {
       EntityDAO object = (EntityDAO) context.getObject(EntityInfo.CLASS);
 

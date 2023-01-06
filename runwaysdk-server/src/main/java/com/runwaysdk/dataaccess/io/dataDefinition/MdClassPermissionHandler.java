@@ -52,7 +52,7 @@ public class MdClassPermissionHandler extends TagHandler implements TagHandlerIF
      * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       String attributeName = attributes.getValue(XMLTags.PERMISSION_ATTRIBUTE_NAME);
       String dimension = attributes.getValue(XMLTags.DIMENSION_ATTRIBUTE);
@@ -111,7 +111,7 @@ public class MdClassPermissionHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
 

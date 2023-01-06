@@ -100,14 +100,14 @@ public class StructHandler extends XMLHandler
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
     // Load in an Attribute value of the AttributeStruct
-    if (localName.equals(XMLTags.VALUE_TAG))
+    if (qName.equals(XMLTags.VALUE_TAG))
     {
       ValueHandler handler = new StructValueHandler(reader, this, manager, attributeStruct, attributes, exceptionHandler);
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
     }
     // Load in an AttributeEnumeration of the AttributeStruct
-    else if (localName.equals(XMLTags.ENUMERATION_TAG))
+    else if (qName.equals(XMLTags.ENUMERATION_TAG))
     {
       EnumerationHandler handler = new StructEnumerationHandler(reader, this, manager, attributeStruct, attributes);
       reader.setContentHandler(handler);

@@ -39,7 +39,7 @@ public class CreateOrUpdateHandler extends CreateHandler implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     this.getManager().enterCreateOrUpdateState();
   }
@@ -50,7 +50,7 @@ public class CreateOrUpdateHandler extends CreateHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     this.getManager().leavingCurrentState();
   }
@@ -61,8 +61,8 @@ public class CreateOrUpdateHandler extends CreateHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    return localName.equals(XMLTags.CREATE_OR_UPDATE_TAG);
+    return qName.equals(XMLTags.CREATE_OR_UPDATE_TAG);
   }
 }

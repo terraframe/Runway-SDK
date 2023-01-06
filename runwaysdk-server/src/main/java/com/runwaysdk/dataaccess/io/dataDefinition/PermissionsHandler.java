@@ -40,7 +40,7 @@ public class PermissionsHandler extends TagHandler implements TagHandlerIF, Hand
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     this.getManager().enterPermissionsState();
   }
@@ -51,7 +51,7 @@ public class PermissionsHandler extends TagHandler implements TagHandlerIF, Hand
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     this.getManager().leavingCurrentState();
   }
@@ -62,8 +62,8 @@ public class PermissionsHandler extends TagHandler implements TagHandlerIF, Hand
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    return localName.equals(XMLTags.PERMISSIONS_TAG);
+    return qName.equals(XMLTags.PERMISSIONS_TAG);
   }
 }
