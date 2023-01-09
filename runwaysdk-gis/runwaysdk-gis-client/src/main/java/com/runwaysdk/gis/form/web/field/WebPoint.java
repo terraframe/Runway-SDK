@@ -22,11 +22,11 @@ import com.runwaysdk.form.web.WebFormVisitor;
 import com.runwaysdk.form.web.field.WebAttribute;
 import com.runwaysdk.gis.AttributePointParseExceptionDTO;
 import com.runwaysdk.gis.form.web.metadata.WebPointMd;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 public class WebPoint extends WebAttribute
 {

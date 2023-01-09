@@ -22,11 +22,11 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiLineStringParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiLineStringIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 public class AttributeMultiLineString extends AttributeGeometry implements AttributeMultiLineStringIF
 {

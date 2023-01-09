@@ -22,8 +22,8 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.transport.metadata.AttributeMultiPolygonMdDTO;
 import com.runwaysdk.gis.transport.metadata.GISCommonAttributeFacade;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public class AttributeMultiPolygonDTO extends AttributeGeometryDTO
 {

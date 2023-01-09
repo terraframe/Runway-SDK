@@ -22,11 +22,11 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiPolygonParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiPolygonIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 public class AttributeMultiPolygon extends AttributeGeometry implements AttributeMultiPolygonIF
 {

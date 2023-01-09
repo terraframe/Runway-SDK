@@ -22,7 +22,7 @@ import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
 import com.runwaysdk.gis.transport.metadata.AttributeShapeMdDTO;
 import com.runwaysdk.gis.transport.metadata.GISCommonAttributeFacade;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class AttributeShapeDTO extends AttributeGeometryDTO
 {

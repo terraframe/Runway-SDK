@@ -240,12 +240,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.transport.metadata.AttributeCharacterMdDTO) getAttributeDTO(GEOID).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.LineString getGeoLine()
+  public org.locationtech.jts.geom.LineString getGeoLine()
   {
-    return (com.vividsolutions.jts.geom.LineString)getObjectValue(GEOLINE);
+    return (org.locationtech.jts.geom.LineString)getObjectValue(GEOLINE);
   }
   
-  public void setGeoLine(com.vividsolutions.jts.geom.LineString value)
+  public void setGeoLine(org.locationtech.jts.geom.LineString value)
   {
     if(value == null)
     {
@@ -277,12 +277,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.gis.transport.metadata.AttributeLineStringMdDTO) getAttributeDTO(GEOLINE).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.MultiLineString getGeoMultiLine()
+  public org.locationtech.jts.geom.MultiLineString getGeoMultiLine()
   {
-    return (com.vividsolutions.jts.geom.MultiLineString)getObjectValue(GEOMULTILINE);
+    return (org.locationtech.jts.geom.MultiLineString)getObjectValue(GEOMULTILINE);
   }
   
-  public void setGeoMultiLine(com.vividsolutions.jts.geom.MultiLineString value)
+  public void setGeoMultiLine(org.locationtech.jts.geom.MultiLineString value)
   {
     if(value == null)
     {
@@ -314,12 +314,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.gis.transport.metadata.AttributeMultiLineStringMdDTO) getAttributeDTO(GEOMULTILINE).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.MultiPoint getGeoMultiPoint()
+  public org.locationtech.jts.geom.MultiPoint getGeoMultiPoint()
   {
-    return (com.vividsolutions.jts.geom.MultiPoint)getObjectValue(GEOMULTIPOINT);
+    return (org.locationtech.jts.geom.MultiPoint)getObjectValue(GEOMULTIPOINT);
   }
   
-  public void setGeoMultiPoint(com.vividsolutions.jts.geom.MultiPoint value)
+  public void setGeoMultiPoint(org.locationtech.jts.geom.MultiPoint value)
   {
     if(value == null)
     {
@@ -351,12 +351,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.gis.transport.metadata.AttributeMultiPointMdDTO) getAttributeDTO(GEOMULTIPOINT).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.MultiPolygon getGeoMultiPolygon()
+  public org.locationtech.jts.geom.MultiPolygon getGeoMultiPolygon()
   {
-    return (com.vividsolutions.jts.geom.MultiPolygon)getObjectValue(GEOMULTIPOLYGON);
+    return (org.locationtech.jts.geom.MultiPolygon)getObjectValue(GEOMULTIPOLYGON);
   }
   
-  public void setGeoMultiPolygon(com.vividsolutions.jts.geom.MultiPolygon value)
+  public void setGeoMultiPolygon(org.locationtech.jts.geom.MultiPolygon value)
   {
     if(value == null)
     {
@@ -388,12 +388,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.gis.transport.metadata.AttributeMultiPolygonMdDTO) getAttributeDTO(GEOMULTIPOLYGON).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.Point getGeoPoint()
+  public org.locationtech.jts.geom.Point getGeoPoint()
   {
-    return (com.vividsolutions.jts.geom.Point)getObjectValue(GEOPOINT);
+    return (org.locationtech.jts.geom.Point)getObjectValue(GEOPOINT);
   }
   
-  public void setGeoPoint(com.vividsolutions.jts.geom.Point value)
+  public void setGeoPoint(org.locationtech.jts.geom.Point value)
   {
     if(value == null)
     {
@@ -425,12 +425,12 @@ public abstract class GeoEntityDTOBase extends com.runwaysdk.business.ontology.T
     return (com.runwaysdk.gis.transport.metadata.AttributePointMdDTO) getAttributeDTO(GEOPOINT).getAttributeMdDTO();
   }
   
-  public com.vividsolutions.jts.geom.Polygon getGeoPolygon()
+  public org.locationtech.jts.geom.Polygon getGeoPolygon()
   {
-    return (com.vividsolutions.jts.geom.Polygon)getObjectValue(GEOPOLYGON);
+    return (org.locationtech.jts.geom.Polygon)getObjectValue(GEOPOLYGON);
   }
   
-  public void setGeoPolygon(com.vividsolutions.jts.geom.Polygon value)
+  public void setGeoPolygon(org.locationtech.jts.geom.Polygon value)
   {
     if(value == null)
     {

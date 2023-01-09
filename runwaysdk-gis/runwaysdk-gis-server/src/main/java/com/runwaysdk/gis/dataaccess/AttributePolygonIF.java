@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.dataaccess;
 
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 
 public interface AttributePolygonIF extends AttributeGeometryIF
 {

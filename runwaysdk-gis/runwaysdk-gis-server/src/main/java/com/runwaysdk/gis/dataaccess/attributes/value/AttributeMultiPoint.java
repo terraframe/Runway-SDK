@@ -23,8 +23,8 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.gis.dataaccess.AttributeMultiPointIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPoint;
 
 public class AttributeMultiPoint extends AttributeGeometry implements AttributeMultiPointIF
 {

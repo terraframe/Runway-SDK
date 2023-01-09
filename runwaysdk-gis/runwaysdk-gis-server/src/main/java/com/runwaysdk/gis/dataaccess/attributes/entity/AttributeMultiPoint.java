@@ -22,11 +22,11 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributeMultiPointParseException;
 import com.runwaysdk.gis.dataaccess.AttributeMultiPointIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 public class AttributeMultiPoint extends AttributeGeometry implements AttributeMultiPointIF
 {

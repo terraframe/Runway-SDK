@@ -117,7 +117,7 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class OrientDBImpl implements GraphDB
 {
@@ -470,7 +470,7 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass != null)
     {
-      Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+      Iterator<?> i = oClass.getInvolvedIndexes(attributeName).iterator();
 
       return i.hasNext();
     }

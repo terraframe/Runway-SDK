@@ -22,7 +22,7 @@ import com.runwaysdk.format.Format;
 import com.runwaysdk.format.FormatFactory;
 import com.runwaysdk.format.StandardFormat;
 import com.runwaysdk.gis.constants.GISConstants;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * FormatFactory and Plugin to format/parse geometry values.

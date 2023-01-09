@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.dataaccess;
 
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 public interface AttributePointIF extends AttributeGeometryIF
 {

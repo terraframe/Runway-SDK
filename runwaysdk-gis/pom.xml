@@ -34,6 +34,7 @@
   <modules>
     <module>runwaysdk-gis-client</module>
     <module>runwaysdk-gis-common</module>
+    <module>runwaysdk-postgis-jdbc-jts</module>
     <module>runwaysdk-gis-server</module>
     <module>runwaysdk-gis-web</module>
   </modules>

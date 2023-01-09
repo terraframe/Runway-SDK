@@ -22,8 +22,8 @@ import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.transport.metadata.AttributeLineStringMdDTO;
 import com.runwaysdk.gis.transport.metadata.GISCommonAttributeFacade;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 
 public class AttributeLineStringDTO extends AttributeGeometryDTO
 {

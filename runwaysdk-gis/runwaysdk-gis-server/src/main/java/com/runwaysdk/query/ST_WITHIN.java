@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class ST_WITHIN extends Condition
 {

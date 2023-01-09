@@ -27,7 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
 import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.transport.metadata.AttributeMultiPolygonMdDTO;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public class MdAttributeMultiPolygonDAO extends MdAttributeGeometryDAO implements MdAttributeMultiPolygonDAOIF
 {

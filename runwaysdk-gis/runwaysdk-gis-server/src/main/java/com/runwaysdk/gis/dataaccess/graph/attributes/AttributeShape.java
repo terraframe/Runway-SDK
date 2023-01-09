@@ -23,7 +23,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.gis.AttributePolygonParseException;
 import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
 import com.runwaysdk.session.Session;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class AttributeShape extends Attribute
 {

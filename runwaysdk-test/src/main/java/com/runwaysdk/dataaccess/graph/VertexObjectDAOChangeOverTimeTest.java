@@ -61,7 +61,7 @@ import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
 import com.runwaysdk.gis.dataaccess.metadata.MdAttributePointDAO;
 import com.runwaysdk.session.Request;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 public class VertexObjectDAOChangeOverTimeTest
 {

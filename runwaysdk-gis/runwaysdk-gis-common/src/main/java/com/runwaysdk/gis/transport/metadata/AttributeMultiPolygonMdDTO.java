@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.transport.metadata;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public class AttributeMultiPolygonMdDTO extends AttributeGeometryMdDTO
 {

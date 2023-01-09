@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 import javax.sql.DataSource;
@@ -79,6 +81,7 @@ import com.runwaysdk.constants.MdAttributeTextInfo;
 import com.runwaysdk.constants.MdAttributeTimeInfo;
 import com.runwaysdk.constants.MdAttributeUUIDInfo;
 import com.runwaysdk.dataaccess.AttributeIF;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.DuplicateGraphPathException;
 import com.runwaysdk.dataaccess.EntityDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
@@ -157,6 +160,19 @@ public class PostgreSQL extends AbstractDatabase
     pgRootDataSource.setUser(rootUser);
     pgRootDataSource.setPassword(rootPass);
     this.rootDataSource = (DataSource) pgRootDataSource;
+    
+//    Properties props = new Properties();
+//    props.setProperty("user", "fred");
+//    props.setProperty("password", "secret");
+//    props.setProperty("ssl", "true");
+//    try
+//    {
+//      this.rootDataSource = DriverManager.getConnection(this.getDatabaseUrl(rootDb), props);
+//    }
+//    catch (SQLException e)
+//    {
+//      throw new CoreException(e);
+//    }   
   }
 
   protected synchronized void getDataSource()

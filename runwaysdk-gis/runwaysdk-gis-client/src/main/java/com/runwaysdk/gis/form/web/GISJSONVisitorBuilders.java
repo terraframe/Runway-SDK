@@ -28,7 +28,7 @@ import com.runwaysdk.form.web.WebFormComponent;
 import com.runwaysdk.gis.constants.GISConstants;
 import com.runwaysdk.gis.constants.MdWebPointInfo;
 import com.runwaysdk.gis.form.web.field.WebPoint;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 public class GISJSONVisitorBuilders implements JSONFormVisitor.PluginIF
 {

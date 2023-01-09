@@ -41,9 +41,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
-      <artifactId>postgis-jts</artifactId>
-      <version>1.5.3</version>
+      <groupId>com.runwaysdk</groupId>
+      <artifactId>runwaysdk-postgis-jdbc-jts</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

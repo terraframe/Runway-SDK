@@ -22,12 +22,12 @@ import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.gis.AttributePointParseException;
 import com.runwaysdk.gis.dataaccess.AttributePointIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 
 public class AttributePoint extends AttributeGeometry implements AttributePointIF
 {

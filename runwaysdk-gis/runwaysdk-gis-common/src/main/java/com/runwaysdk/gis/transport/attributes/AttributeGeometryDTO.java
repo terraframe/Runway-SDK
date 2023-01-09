@@ -19,7 +19,7 @@
 package com.runwaysdk.gis.transport.attributes;
 
 import com.runwaysdk.transport.attributes.AttributeDTO;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public abstract class AttributeGeometryDTO extends AttributeDTO
 {

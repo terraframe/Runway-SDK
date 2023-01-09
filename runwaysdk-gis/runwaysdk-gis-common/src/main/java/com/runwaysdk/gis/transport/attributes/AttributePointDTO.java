@@ -22,8 +22,8 @@ import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.transport.metadata.AttributePointMdDTO;
 import com.runwaysdk.gis.transport.metadata.GISCommonAttributeFacade;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 public class AttributePointDTO extends AttributeGeometryDTO
 {
