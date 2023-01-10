@@ -218,18 +218,18 @@ public class MdAttributeCharacterDAO extends MdAttributePrimitiveDAO implements 
   {
     super.validate();
 
-    AttributeInteger attributeSize = (AttributeInteger) this.getAttributeIF(MdAttributeCharacterInfo.SIZE);
-    if (attributeSize.isModified() && !attributeSize.getValue().trim().equals(""))
-    {
-      int charLength = Integer.parseInt(attributeSize.getValue());
-      int maxCharLength = MdAttributeCharacterInfo.MAX_CHARACTER_SIZE;
-
-      if (charLength > maxCharLength)
-      {
-        String error = "Attribute [" + attributeSize.getName() + "] on type [" + attributeSize.getDefiningClassType() + "] may not exceed " + maxCharLength + " characters in length.";
-        throw new AttributeLengthCharacterException(error, attributeSize, maxCharLength);
-      }
-    }
+//    AttributeInteger attributeSize = (AttributeInteger) this.getAttributeIF(MdAttributeCharacterInfo.SIZE);
+//    if (attributeSize.isModified() && !attributeSize.getValue().trim().equals(""))
+//    {
+//      int charLength = Integer.parseInt(attributeSize.getValue());
+//      int maxCharLength = MdAttributeCharacterInfo.MAX_CHARACTER_SIZE;
+//
+//      if (charLength > maxCharLength)
+//      {
+//        String error = "Attribute [" + attributeSize.getName() + "] on type [" + attributeSize.getDefiningClassType() + "] may not exceed " + maxCharLength + " characters in length.";
+//        throw new AttributeLengthCharacterException(error, attributeSize, maxCharLength);
+//      }
+//    }
   }
 
   /**
