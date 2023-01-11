@@ -22,8 +22,8 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.transport.metadata.AttributeMultiPointMdDTO;
 import com.runwaysdk.gis.transport.metadata.GISCommonAttributeFacade;
 import com.runwaysdk.transport.attributes.AttributeDTOFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPoint;
 
 public class AttributeMultiPointDTO extends AttributeGeometryDTO
 {

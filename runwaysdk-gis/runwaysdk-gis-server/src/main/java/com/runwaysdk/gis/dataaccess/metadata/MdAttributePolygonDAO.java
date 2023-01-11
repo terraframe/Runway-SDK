@@ -27,7 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.gis.transport.metadata.AttributePolygonMdDTO;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 
 public class MdAttributePolygonDAO extends MdAttributeGeometryDAO implements MdAttributePolygonDAOIF
 {

@@ -23,7 +23,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.gis.AttributePolygonParseException;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.session.Session;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Polygon;
 
 public class AttributePolygon extends Attribute
 {

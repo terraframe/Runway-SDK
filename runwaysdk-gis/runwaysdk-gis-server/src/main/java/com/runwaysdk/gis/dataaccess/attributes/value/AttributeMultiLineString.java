@@ -23,8 +23,8 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.gis.dataaccess.AttributeMultiLineStringIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
 
 public class AttributeMultiLineString extends AttributeGeometry implements AttributeMultiLineStringIF
 {

@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.runwaysdk</groupId>
+    <artifactId>runwaysdk-gis</artifactId>
+    <version>3.6.2-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>runwaysdk-postgis-jdbc-jts</artifactId>
+  <packaging>jar</packaging>
+  <name>runwaysdk-postgis-jdbc-jts</name>
+  <url>${runway.url}</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.postgis</groupId>
+      <artifactId>postgis-jdbc-jts</artifactId>
+      <version>2021.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.postgis</groupId>
+      <artifactId>postgis-jdbc</artifactId>
+      <version>2021.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  
+    <!-- Transitive dependencies pulled from postgis-jdbc-jts -->
+    <dependency>
+        <groupId>org.locationtech.jts</groupId>
+        <artifactId>jts-core</artifactId>
+        <version>1.18.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.locationtech.spatial4j</groupId>
+        <artifactId>spatial4j</artifactId>
+        <version>0.8</version>
+    </dependency>
+    
+    <!-- Transitive dependencies pulled from postgis-jdbc -->
+    <dependency>
+        <groupId>net.postgis</groupId>
+        <artifactId>postgis-geometry</artifactId>
+        <version>2021.1.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.5.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+              <phase>process-resources</phase>
+              <goals>
+                  <goal>unpack</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>net.postgis</groupId>
+                    <artifactId>postgis-jdbc-jts</artifactId>
+                    <version>2021.1.0</version>   
+                  </artifactItem>
+                  <artifactItem>
+                    <groupId>net.postgis</groupId>
+                    <artifactId>postgis-jdbc</artifactId>
+                    <version>2021.1.0</version>
+                  </artifactItem>
+                </artifactItems>
+                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                <excludes>META-INF/services/java.sql.Driver</excludes>
+              </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.4.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>net.postgis:postgis-jdbc</artifact>
+                  <excludes>
+                    <exclude>META-INF/services/java.sql.Driver</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+    </plugins>
+  </build>
+</project>

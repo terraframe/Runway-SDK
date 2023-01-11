@@ -23,7 +23,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.gis.AttributeMultiLineStringParseException;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
 import com.runwaysdk.session.Session;
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 public class AttributeMultiLineString extends Attribute
 {

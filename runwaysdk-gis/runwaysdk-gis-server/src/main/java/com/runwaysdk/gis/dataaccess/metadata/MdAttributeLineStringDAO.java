@@ -27,7 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
 import com.runwaysdk.gis.constants.MdAttributeLineStringInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.transport.metadata.AttributeLineStringMdDTO;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.LineString;
 
 public class MdAttributeLineStringDAO extends MdAttributeGeometryDAO implements MdAttributeLineStringDAOIF
 {

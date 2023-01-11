@@ -21,7 +21,7 @@ package com.runwaysdk.gis.dataaccess.attributes.entity;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.gis.dataaccess.AttributeGeometryIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public abstract class AttributeGeometry extends Attribute implements AttributeGeometryIF
 {

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.transport.metadata;
 
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Point;
 
 public class AttributePointMdDTO extends AttributeGeometryMdDTO
 {

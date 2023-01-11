@@ -23,7 +23,7 @@ import com.runwaysdk.dataaccess.graph.attributes.Attribute;
 import com.runwaysdk.gis.AttributeMultiPointParseException;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.session.Session;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPoint;
 
 public class AttributeMultiPoint extends Attribute
 {

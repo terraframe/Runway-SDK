@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.dataaccess;
 
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPoint;
 
 public interface AttributeMultiPointIF extends AttributeGeometryIF
 {

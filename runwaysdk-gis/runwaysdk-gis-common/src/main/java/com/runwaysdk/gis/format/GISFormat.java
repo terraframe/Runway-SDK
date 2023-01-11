@@ -23,8 +23,8 @@ import java.util.Locale;
 import com.runwaysdk.format.AbstractFormat;
 import com.runwaysdk.format.FormatException;
 import com.runwaysdk.format.ParseException;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 public class GISFormat extends AbstractFormat<Geometry>
 {

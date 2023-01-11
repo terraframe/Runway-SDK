@@ -23,8 +23,8 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.gis.dataaccess.AttributePolygonIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 
 public class AttributePolygon extends AttributeGeometry implements AttributePolygonIF
 {

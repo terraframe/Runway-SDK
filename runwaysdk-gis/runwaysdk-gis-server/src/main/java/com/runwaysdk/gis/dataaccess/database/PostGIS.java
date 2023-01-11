@@ -25,6 +25,7 @@ import java.util.LinkedList;
 
 import javax.sql.DataSource;
 
+import org.locationtech.jts.geom.Geometry;
 import org.postgresql.PGConnection;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
@@ -40,7 +41,11 @@ import com.runwaysdk.gis.constants.MdAttributeMultiPolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributePointInfo;
 import com.runwaysdk.gis.constants.MdAttributePolygonInfo;
 import com.runwaysdk.gis.constants.MdAttributeShapeInfo;
-import com.vividsolutions.jts.geom.Geometry;
+
+import net.postgis.jdbc.DriverWrapper;
+import net.postgis.jdbc.PGbox2d;
+import net.postgis.jdbc.PGbox3d;
+import net.postgis.jdbc.jts.JtsGeometry;
 
 public class PostGIS extends PostgreSQL
 {
@@ -56,6 +61,12 @@ public class PostGIS extends PostgreSQL
   {
     super();
   }
+/*
+  protected String getDatabaseUrl(String databaseName)
+  {
+    return DriverWrapper.POSTGIS_PROTOCOL + "://" + DatabaseProperties.getServerName() + ":" + DatabaseProperties.getPort() + "/" + databaseName;
+  }
+  */
 
   /**
    * Installs the runway core. This entails creating a new database and a user
@@ -169,12 +180,12 @@ public class PostGIS extends PostgreSQL
 
   public static PGConnection mapColumnTypes(PGConnection pgConn) throws SQLException
   {
-    pgConn.addDataType("geometry", org.postgis.jts.JtsGeometry.class);
-    pgConn.addDataType("public.geometry", org.postgis.jts.JtsGeometry.class);
-    pgConn.addDataType("\"public\".\"geometry\"", org.postgis.jts.JtsGeometry.class);
-    pgConn.addDataType("PGgeometry", org.postgis.jts.JtsGeometry.class);
-    pgConn.addDataType("box3d", org.postgis.PGbox3d.class);
-    pgConn.addDataType("box2d", org.postgis.PGbox2d.class);
+    pgConn.addDataType("geometry", JtsGeometry.class);
+    pgConn.addDataType("public.geometry", JtsGeometry.class);
+    pgConn.addDataType("\"public\".\"geometry\"", JtsGeometry.class);
+    pgConn.addDataType("PGgeometry", JtsGeometry.class);
+    pgConn.addDataType("box3d", PGbox3d.class);
+    pgConn.addDataType("box2d", PGbox2d.class);
 
     return pgConn;
   }

@@ -21,8 +21,8 @@ package com.runwaysdk.query;
 import java.util.Map;
 import java.util.Set;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 
 public class StatementGeometry extends StatementPrimitive
 {

@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.transport.metadata;
 
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 public class AttributeMultiLineStringMdDTO extends AttributeGeometryMdDTO
 {

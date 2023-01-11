@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.dataaccess;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.MultiPolygon;
 
 public interface AttributeMultiPolygonIF extends AttributeGeometryIF
 {

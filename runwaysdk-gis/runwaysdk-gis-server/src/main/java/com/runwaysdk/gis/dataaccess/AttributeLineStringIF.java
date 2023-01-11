@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.gis.dataaccess;
 
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.LineString;
 
 public interface AttributeLineStringIF extends AttributeGeometryIF
 {

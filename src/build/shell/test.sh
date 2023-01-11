@@ -23,10 +23,10 @@ sudo rm -r /docker-tmp || true
 sudo mkdir -p /docker-tmp/test-results && sudo chmod -R 777 /docker-tmp/test-results
 
 sudo docker rm -f $(docker ps -a -q --filter="name=postgres") || true
-sudo docker run --name postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 mdillon/postgis:9.5
+sudo docker run --name postgres -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgis/postgis:14-3.2
   
 sudo docker rm -f $(docker ps -a -q --filter="name=orientdb") || true
-sudo docker run -d --name orientdb -p 2424:2424 -p 2480:2480  -e ORIENTDB_ROOT_PASSWORD=root orientdb:3.0.25
+sudo docker run -d --name orientdb -p 2424:2424 -p 2480:2480  -e ORIENTDB_ROOT_PASSWORD=root orientdb:3.0
 
 sudo docker build -t runwaysdk-test .
 

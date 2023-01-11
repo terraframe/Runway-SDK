@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.5.17-SNAPSHOT</version>
+    <version>3.6.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-orientdb</artifactId>
@@ -16,12 +16,66 @@
     <dependency>
       <groupId>com.orientechnologies</groupId>
       <artifactId>orientdb-client</artifactId>
-      <version>3.0.42</version>
+      <version>3.0.44</version>
     </dependency>
     <dependency>
       <groupId>com.orientechnologies</groupId>
-      <artifactId>orientdb-spatial</artifactId>
-      <version>3.0.0RC2</version>
+      <artifactId>orientdb-lucene</artifactId>
+      <version>3.0.44</version>
+      <exclusions>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-spatial</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-memory</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-highlighter</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-analyzers-common</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-backward-codecs</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-facet</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-queries</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-misc</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-codecs</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-spatial-extras</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>com.orientechnologies</groupId>
+      		<artifactId>orientdb-server</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-core</artifactId>
+      	</exclusion>
+      	<exclusion>
+      		<groupId>org.apache.lucene</groupId>
+      		<artifactId>lucene-queryparser</artifactId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.runwaysdk</groupId>

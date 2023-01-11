@@ -23,7 +23,7 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.gis.dataaccess.AttributeGeometryIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 public class AttributeShape extends AttributeGeometry implements AttributeGeometryIF
 {

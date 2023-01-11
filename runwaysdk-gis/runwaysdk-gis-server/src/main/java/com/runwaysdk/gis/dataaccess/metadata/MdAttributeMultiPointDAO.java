@@ -27,7 +27,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeDAOVisitor;
 import com.runwaysdk.gis.constants.MdAttributeMultiPointInfo;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiPointDAOIF;
 import com.runwaysdk.gis.transport.metadata.AttributeMultiPointMdDTO;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPoint;
 
 public class MdAttributeMultiPointDAO extends MdAttributeGeometryDAO implements MdAttributeMultiPointDAOIF
 {

@@ -23,8 +23,8 @@ import java.util.Set;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.gis.dataaccess.AttributeLineStringIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 
 public class AttributeLineString extends AttributeGeometry implements AttributeLineStringIF
 {
