@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -41,6 +41,7 @@ import org.junit.runner.RunWith;
 
 import com.runwaysdk.ClasspathTestRunner;
 import com.runwaysdk.DomainErrorException;
+import com.runwaysdk.RunwayException;
 import com.runwaysdk.RunwayExceptionDTO;
 import com.runwaysdk.business.rbac.Authenticate;
 import com.runwaysdk.business.rbac.MethodActorDAO;
@@ -157,13 +158,12 @@ public class MultiThreadTestSuite
     multiThreadMdBusiness1.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Type for testing that the core is thread safe.");
     multiThreadMdBusiness1.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     multiThreadMdBusiness1.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    
-    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String oid)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(oid);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new " + multiThreadMdBusiness1.definesType()
-    + "();\n" + "    object.setValue(\"someInt\", \"1\");\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
 
+    String classStubSource = "package " + multiThreadMdBusiness1.getPackage() + ";\n" + "\n" + "\n" + "public class " + multiThreadMdBusiness1.getTypeName() + " extends " + multiThreadMdBusiness1.getTypeName() + TypeGeneratorInfo.BASE_SUFFIX + "\n" + "{\n" + "\n" + "  public " + multiThreadMdBusiness1.getTypeName() + "()\n" + "  {\n" + "    super();\n" + "  }\n" + "\n" + "  public static " + multiThreadMdBusiness1.getTypeName() + " get(String oid)\n" + "  {\n" + "    return (" + multiThreadMdBusiness1.getTypeName() + ") " + Business.class.getName() + ".get(oid);\n" + "  }\n" + "\n" + "  " + "@" + Authenticate.class.getName() + "\n" + "  public static void someStaticMethod() \n" + "  {\n" + "    " + multiThreadMdBusiness1.definesType() + " object = new "
+        + multiThreadMdBusiness1.definesType() + "();\n" + "    object.setValue(\"someInt\", \"1\");\n" + "    object.apply();\n" + "    object.delete();\n" + "  }\n" + "}";
 
     multiThreadMdBusiness1.setValue(MdBusinessInfo.STUB_SOURCE, classStubSource);
-    
+
     // multiThreadMdBusiness1.setValue(MdEntityInfo.CACHE_ALGORITHM,
     // EntityCache.EVERYTHING.getOid());
     multiThreadMdBusiness1.apply();
@@ -429,10 +429,31 @@ public class MultiThreadTestSuite
    * @return
    */
   @Request(RequestType.SESSION)
-  public static void lockCommonObjectWithUserLock(String sessionId)
+  public static boolean lockCommonObjectWithUserLock(String sessionId)
+  {
+    try
+    {
+      Business busObject = Business.get(testType1ObjectId);
+      busObject.lock();
+
+      return true;
+    }
+    catch (Exception e)
+    {
+      return false;
+    }
+  }
+
+  /**
+   * 
+   * @param sessionId
+   * @return
+   */
+  @Request(RequestType.SESSION)
+  public static void unlockCommonObjectWithUserLock(String sessionId)
   {
     Business busObject = Business.get(testType1ObjectId);
-    busObject.lock();
+    busObject.unlock();
   }
 
   /**
@@ -729,10 +750,23 @@ public class MultiThreadTestSuite
           {
             try
             {
-              lockCommonObjectWithUserLock(sessionId);
-              returnValue = updateCommonObjectWithUserLock2(sessionId);
-              Facade.logout(sessionId);
-              return returnValue;
+              boolean locked = lockCommonObjectWithUserLock(sessionId);
+
+              try
+              {
+                if (locked)
+                {
+                  returnValue = updateCommonObjectWithUserLock2(sessionId);
+                  Facade.logout(sessionId);
+                  return returnValue;
+                }
+              }
+              catch (Throwable e)
+              {
+                unlockCommonObjectWithUserLock(sessionId);
+
+                throw e;
+              }
             }
             catch (Throwable e)
             {
@@ -1036,10 +1070,23 @@ public class MultiThreadTestSuite
           {
             try
             {
-              lockCommonObjectWithUserLock(sessionId);
-              returnValue = updateCommonObjectWithUserLock2(sessionId);
-              Facade.logout(sessionId);
-              return returnValue;
+              boolean locked = lockCommonObjectWithUserLock(sessionId);
+
+              try
+              {
+                if (locked)
+                {
+                  returnValue = updateCommonObjectWithUserLock2(sessionId);
+                  Facade.logout(sessionId);
+                  return returnValue;
+                }
+              }
+              catch (Throwable e)
+              {
+                unlockCommonObjectWithUserLock(sessionId);
+
+                throw e;
+              }
             }
             catch (Throwable e)
             {
@@ -1202,10 +1249,23 @@ public class MultiThreadTestSuite
           {
             try
             {
-              lockCommonObjectWithUserLock(sessionId);
-              returnValue = updateCommonObjectWithUserLock2(sessionId);
-              Facade.logout(sessionId);
-              return returnValue;
+              boolean locked = lockCommonObjectWithUserLock(sessionId);
+
+              try
+              {
+                if (locked)
+                {
+                  returnValue = updateCommonObjectWithUserLock2(sessionId);
+                  Facade.logout(sessionId);
+                  return returnValue;
+                }
+              }
+              catch (Throwable e)
+              {
+                unlockCommonObjectWithUserLock(sessionId);
+
+                throw e;
+              }
             }
             catch (Throwable e)
             {
@@ -1339,10 +1399,22 @@ public class MultiThreadTestSuite
           {
             try
             {
-              lockCommonObjectWithUserLock(sessionId);
-              updateCommonObjectWithUserLock2(sessionId);
-              Facade.logout(sessionId);
-              return 0;
+              boolean locked = lockCommonObjectWithUserLock(sessionId);
+              try
+              {
+                if (locked)
+                {
+                  updateCommonObjectWithUserLock2(sessionId);
+                  Facade.logout(sessionId);
+                  return 0;
+                }
+              }
+              catch (Throwable e)
+              {
+                unlockCommonObjectWithUserLock(sessionId);
+
+                throw e;
+              }
             }
             catch (Throwable e)
             {
@@ -1746,7 +1818,7 @@ public class MultiThreadTestSuite
    * 
    */
   @Request
-//  @Test
+  // @Test
   public void testSessionChangeMethodWritePermissions() throws Exception
   {
     Business busObject = BusinessFacade.newBusiness(multiThreadMdBusiness1.definesType());
