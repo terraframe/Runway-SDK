@@ -39,6 +39,10 @@ public interface GraphDB
 
   public GraphRequest getGraphDBRequest();
 
+  public GraphDDLCommandAction createEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, String superClassName);
+  
+  public GraphDDLCommandAction deleteEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className);
+  
   /**
    * Creates a vertex class in the Graph Database. The convention is that the
    * name of the class is the same as the name of the table in the relational
@@ -97,7 +101,7 @@ public interface GraphDB
    * @return {@link GraphDDLCommandAction} so that it can be closed or committed
    *         in the command object.
    */
-  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String parentVertexClass, String childVertexClass);
+  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String superClassName, String parentVertexClass, String childVertexClass);
 
   /**
    * Deletes a class in the Graph Database. The convention is that the name of

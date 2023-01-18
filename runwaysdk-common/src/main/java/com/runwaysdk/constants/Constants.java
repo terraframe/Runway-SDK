@@ -65,7 +65,7 @@ public class Constants
 
   public static final String SYSTEM_BUSINESS_PACKAGE       = ROOT_PACKAGE + ".business";
 
-  public static final String SYSTEM_GRAPH_PACKAGE          = ROOT_PACKAGE + ".graph";
+  public static final String SYSTEM_GRAPH_PACKAGE          = METADATA_PACKAGE + ".graph";
 
   public static final String GENERATION_BUSINESS_PACKAGE   = SYSTEM_BUSINESS_PACKAGE + ".generation";
 

@@ -25,6 +25,7 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.orientechnologies.orient.core.record.OElement;
 import com.orientechnologies.orient.core.record.OVertex;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 
 /**
  * This class exists to test for the existence of a critical blocking bug discovered in versions 3.2.13 and 3.1.20 of OrientDB.
@@ -85,9 +86,9 @@ public class OrientDBEmbeddedAttributeTest
   public static void createSchema(ODatabaseSession session) throws Throwable
   {
     OClass oClass = session.createVertexClass(VERTEX_CLASS_NAME);
-    OClass embeddedClass = session.createVertexClass(EMBEDDED_CLASS_NAME);
-    oClass.createProperty(EMBEDDED_ATTRIBUTE_NAME, OType.EMBEDDED, embeddedClass);
-    embeddedClass.createProperty(EMBEDDED_ATTRIBUTE_TEXT, OType.STRING);
+    //OClass embeddedClass = session.createVertexClass(EMBEDDED_CLASS_NAME);
+    oClass.createProperty(EMBEDDED_ATTRIBUTE_NAME, OType.EMBEDDED);
+    // embeddedClass.createProperty(EMBEDDED_ATTRIBUTE_TEXT, OType.STRING);
   }
   
   public static void testEmbedded(ODatabaseSession session) throws Throwable
@@ -96,23 +97,24 @@ public class OrientDBEmbeddedAttributeTest
     OVertex outerVertex = session.newVertex(VERTEX_CLASS_NAME);
     
     // Create new embedded
-    OVertex embeddedVertex = session.newVertex(EMBEDDED_CLASS_NAME);
+    // OVertex embeddedVertex = session.newVertex(EMBEDDED_CLASS_NAME);
+    ODocument document = new ODocument();
     
-    outerVertex.setProperty(EMBEDDED_ATTRIBUTE_NAME, embeddedVertex);
+    outerVertex.setProperty(EMBEDDED_ATTRIBUTE_NAME, document);
     outerVertex.save();
     
     // Update
     OVertex outerVertex2 = session.load(outerVertex.getIdentity());
-    OElement embeddedVertex2 = outerVertex2.getProperty(EMBEDDED_ATTRIBUTE_NAME);
-    embeddedVertex2.setProperty(EMBEDDED_ATTRIBUTE_TEXT, "123");
-    outerVertex2.setProperty(EMBEDDED_ATTRIBUTE_NAME, embeddedVertex2.getRecord());
+    ODocument embeddedDocument = outerVertex2.getProperty(EMBEDDED_ATTRIBUTE_NAME);
+    embeddedDocument.setProperty(EMBEDDED_ATTRIBUTE_TEXT, "123");
+    outerVertex2.setProperty(EMBEDDED_ATTRIBUTE_NAME, embeddedDocument.getRecord());
     outerVertex2.save(); // Error is thrown here
     
     // Read
     OVertex outerVertex3 = session.load(outerVertex.getIdentity());
-    OElement embeddedVertex3 = outerVertex3.getProperty(EMBEDDED_ATTRIBUTE_NAME);
+    OElement embeddedDocument3 = outerVertex3.getProperty(EMBEDDED_ATTRIBUTE_NAME);
     
-    String embeddedTextValue = embeddedVertex3.getProperty(EMBEDDED_ATTRIBUTE_TEXT);
+    String embeddedTextValue = embeddedDocument3.getProperty(EMBEDDED_ATTRIBUTE_TEXT);
     
     if (!embeddedTextValue.equals("123"))
     {

@@ -116,6 +116,24 @@ public class GraphDBService
 
     return ddlGraphRequest;
   }
+  
+  /**
+   * @param superClassName
+   *          TODO
+   * @see GraphDB#createEmbeddedClass(GraphRequest, GraphRequest, String, String)
+   */
+  public GraphDDLCommandAction createEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDBRequest, String className, String superClassName)
+  {
+    return this.graphDB.createEmbeddedClass(graphRequest, graphDBRequest, className, superClassName);
+  }
+  
+  /**
+   * @see GraphDB#deleteEmbeddedClass(GraphRequest, GraphRequest, String)
+   */
+  public GraphDDLCommandAction deleteEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDBRequest, String className)
+  {
+    return this.graphDB.deleteEmbeddedClass(graphRequest, graphDBRequest, className);
+  }
 
   /**
    * @param superClassName
@@ -139,9 +157,9 @@ public class GraphDBService
    * @see GraphDB#createEdgeClass(GraphRequest, GraphRequest, String, String,
    *      String)
    */
-  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String parentVertexClass, String childVertexClass)
+  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String superClassName, String parentVertexClass, String childVertexClass)
   {
-    return this.graphDB.createEdgeClass(graphRequest, graphDDLRequest, edgeClass, parentVertexClass, childVertexClass);
+    return this.graphDB.createEdgeClass(graphRequest, graphDDLRequest, edgeClass, superClassName, parentVertexClass, childVertexClass);
   }
 
   /**

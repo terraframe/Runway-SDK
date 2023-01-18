@@ -21,6 +21,15 @@ package com.runwaysdk.dataaccess.io;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -238,15 +247,8 @@ import com.runwaysdk.system.gis.geo.UniversalInput;
 import com.runwaysdk.system.gis.geo.UniversalView;
 import com.runwaysdk.system.metadata.FieldConditionDAO;
 import com.runwaysdk.system.metadata.MdTerm;
+import com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClassDAO;
 import com.runwaysdk.vault.VaultDAO;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
 
 /**
  * Defines some utility methods to build test fixtures for the test cases.
@@ -1862,6 +1864,17 @@ public class TestFixtureFactory
     mdVertex.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdVertex Attributes Test");
 
     return mdVertex;
+  }
+  
+  public static MdEmbeddedGraphClassDAO createMdEmbeddedGraph(String name)
+  {
+    MdEmbeddedGraphClassDAO mdEmbeddedGraphClassDAO = MdEmbeddedGraphClassDAO.newInstance();
+    mdEmbeddedGraphClassDAO.setValue(MdVertexInfo.NAME, name);
+    mdEmbeddedGraphClassDAO.setValue(MdVertexInfo.PACKAGE, TestFixConst.TEST_PACKAGE);
+    mdEmbeddedGraphClassDAO.setStructValue(MdVertexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "mdVertex Set Test");
+    mdEmbeddedGraphClassDAO.setStructValue(MdVertexInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "Set mdVertex Attributes Test");
+
+    return mdEmbeddedGraphClassDAO;
   }
 
   public static MdClassificationDAO createMdClassification(String name)

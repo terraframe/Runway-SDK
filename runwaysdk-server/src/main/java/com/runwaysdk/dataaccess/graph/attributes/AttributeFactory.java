@@ -47,6 +47,7 @@ import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeFactory.PluginIF;
+import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 
 public class AttributeFactory
@@ -158,7 +159,7 @@ public class AttributeFactory
 
       String embeddedType = ( (MdGraphClassDAOIF) mdAttributeEmbeddedDAOIF.getEmbeddedMdClassDAOIF() ).definesType();
 
-      VertexObjectDAO vertexObjectDAO = VertexObjectDAO.newInstance(embeddedType);
+      EmbeddedGraphObjectDAO embeddedObjectDAO = EmbeddedGraphObjectDAO.newInstance(embeddedType);
 
       if (mdAttributeDAOIF instanceof MdAttributeLocalCharacterEmbeddedDAOIF)
       {
@@ -169,7 +170,7 @@ public class AttributeFactory
         attribute = new AttributeEmbedded(mdAttributeDAOIF, definingType);
       }
 
-      attribute.setValue(vertexObjectDAO);
+      attribute.setValue(embeddedObjectDAO);
     }
 
     if (attribute == null)

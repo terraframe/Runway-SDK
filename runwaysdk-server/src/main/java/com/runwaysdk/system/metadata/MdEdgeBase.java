@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1809423937)
+@com.runwaysdk.business.ClassSignature(hash = 654336844)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -31,7 +13,9 @@ public abstract class MdEdgeBase extends com.runwaysdk.system.metadata.MdGraphCl
   public final static String CLASS = "com.runwaysdk.system.metadata.MdEdge";
   public final static java.lang.String CHILDMDVERTEX = "childMdVertex";
   public final static java.lang.String PARENTMDVERTEX = "parentMdVertex";
-  private static final long serialVersionUID = -1809423937;
+  public final static java.lang.String SUPERMDEDGE = "superMdEdge";
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 654336844;
   
   public MdEdgeBase()
   {
@@ -142,9 +126,147 @@ public abstract class MdEdgeBase extends com.runwaysdk.system.metadata.MdGraphCl
     }
   }
   
+  public com.runwaysdk.system.metadata.MdEdge getSuperMdEdge()
+  {
+    if (getValue(SUPERMDEDGE).trim().equals(""))
+    {
+      return null;
+    }
+    else
+    {
+      return com.runwaysdk.system.metadata.MdEdge.get(getValue(SUPERMDEDGE));
+    }
+  }
+  
+  public String getSuperMdEdgeOid()
+  {
+    return getValue(SUPERMDEDGE);
+  }
+  
+  public void validateSuperMdEdge()
+  {
+    this.validateAttribute(SUPERMDEDGE);
+  }
+  
+  public static com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF getSuperMdEdgeMd()
+  {
+    com.runwaysdk.dataaccess.MdClassDAOIF mdClassIF = com.runwaysdk.dataaccess.metadata.MdClassDAO.getMdClassDAO(com.runwaysdk.system.metadata.MdEdge.CLASS);
+    return (com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF)mdClassIF.definesAttribute(SUPERMDEDGE);
+  }
+  
+  public void setSuperMdEdge(com.runwaysdk.system.metadata.MdEdge value)
+  {
+    if(value == null)
+    {
+      setValue(SUPERMDEDGE, "");
+    }
+    else
+    {
+      setValue(SUPERMDEDGE, value.getOid());
+    }
+  }
+  
+  public void setSuperMdEdgeId(java.lang.String oid)
+  {
+    if(oid == null)
+    {
+      setValue(SUPERMDEDGE, "");
+    }
+    else
+    {
+      setValue(SUPERMDEDGE, oid);
+    }
+  }
+  
   protected String getDeclaredType()
   {
     return CLASS;
+  }
+  
+  public com.runwaysdk.system.metadata.graph.EdgeInheritance addsubEdgeClasses(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    return (com.runwaysdk.system.metadata.graph.EdgeInheritance) addChild(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  public void removesubEdgeClasses(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    removeAllChildren(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdEdge> getAllsubEdgeClasses()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdEdge>) getChildren(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance> getAllsubEdgeClassesRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance>) getChildRelationships(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.metadata.graph.EdgeInheritance getsubEdgeClassesRel(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance>) getRelationshipsWithChild(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
+  }
+  
+  public com.runwaysdk.system.metadata.graph.EdgeInheritance addsuperEdgeClass(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    return (com.runwaysdk.system.metadata.graph.EdgeInheritance) addParent(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  public void removesuperEdgeClass(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    removeAllParents(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdEdge> getAllsuperEdgeClass()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.MdEdge>) getParents(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance> getAllsuperEdgeClassRel()
+  {
+    return (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance>) getParentRelationships(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public com.runwaysdk.system.metadata.graph.EdgeInheritance getsuperEdgeClassRel(com.runwaysdk.system.metadata.MdEdge mdEdge)
+  {
+    com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance> iterator = (com.runwaysdk.query.OIterator<? extends com.runwaysdk.system.metadata.graph.EdgeInheritance>) getRelationshipsWithParent(mdEdge, com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    try
+    {
+      if (iterator.hasNext())
+      {
+        return iterator.next();
+      }
+      else
+      {
+        return null;
+      }
+    }
+    finally
+    {
+      iterator.close();
+    }
   }
   
   public static MdEdge get(String oid)

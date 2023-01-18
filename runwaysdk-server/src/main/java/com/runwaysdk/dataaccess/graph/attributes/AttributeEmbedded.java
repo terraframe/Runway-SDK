@@ -25,11 +25,11 @@ import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
-import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.MdEmbeddedGraphClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeSet;
 import com.runwaysdk.dataaccess.attributes.AttributeTypeException;
+import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 
 public class AttributeEmbedded extends Attribute
 {
@@ -117,7 +117,7 @@ public class AttributeEmbedded extends Attribute
     }
     else
     {
-      VertexObjectDAO object = VertexObjectDAO.newInstance((MdVertexDAOIF) this.getMdAttributeConcrete().getEmbeddedMdClassDAOIF());
+      EmbeddedGraphObjectDAO object = EmbeddedGraphObjectDAO.newInstance((MdEmbeddedGraphClassDAOIF) this.getMdAttributeConcrete().getEmbeddedMdClassDAOIF());
       object.setValue(attributeName, value);
 
       this.setValue(object, startDate, endDate);

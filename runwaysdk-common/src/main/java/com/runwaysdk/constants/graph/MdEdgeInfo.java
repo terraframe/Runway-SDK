@@ -41,4 +41,9 @@ public interface MdEdgeInfo extends MdGraphClassInfo
    * Child {@link MdVertexInfo} in the edge definition.
    */
   public static final String CHILD_MD_VERTEX   = "childMdVertex";  
+  
+  /**
+   * Super class attribute name
+   */
+  public static final String SUPER_MD_RELATIONSHIP = "superMdEdge";
 }

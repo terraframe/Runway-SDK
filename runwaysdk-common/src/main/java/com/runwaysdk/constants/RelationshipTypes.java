@@ -165,7 +165,17 @@ public enum RelationshipTypes {
   /**
    * Relationship that defines inheritance between vertex classes.
    */
-  VERTEX_INHERITANCE(Constants.METADATA_PACKAGE + "." + "VertexInheritance", "12b33fd5-1697-31b0-8807-e6063e000067", "vertex_inheritance");
+  VERTEX_INHERITANCE(Constants.METADATA_PACKAGE + "." + "VertexInheritance", "12b33fd5-1697-31b0-8807-e6063e000067", "vertex_inheritance"),
+  
+  /**
+   * Relationship that defines inheritance between edge classes.
+   */
+  EDGE_INHERITANCE(Constants.SYSTEM_GRAPH_PACKAGE + "." + "EdgeInheritance", "b2989c40-558b-35e3-a996-ea587f000067", "edge_inheritance"),
+  
+  /**
+   * Relationship that defines inheritance between embedded graph classes.
+   */
+  EMBEDDED_GRAPH_INHERITANCE(Constants.SYSTEM_GRAPH_PACKAGE + "." + "EmbeddedGraphInheritance", "d69aa92e-076c-3f36-b80a-c7172b000067", "embedded_graph_inheritance");
   
   
   private String relationshipType;

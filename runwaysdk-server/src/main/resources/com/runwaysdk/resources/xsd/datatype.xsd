@@ -68,6 +68,7 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdGraphEmbedded" type="mdGraphEmbedded" />
       <xs:element name="mdClassification" type="mdClassification" />      
       <xs:element name="mdEdge" type="mdEdge" />            
       <xs:element name="object" type="entity" minOccurs="0" maxOccurs="unbounded" />
@@ -103,6 +104,7 @@
       <xs:element name="mdUtil" type="mdSession" />
       <xs:element name="mdWebForm" type="mdWebForm" />
       <xs:element name="mdVertex" type="mdVertex" />
+      <xs:element name="mdGraphEmbedded" type="mdGraphEmbedded" />
       <xs:element name="mdClassification" type="mdClassification" />
       <xs:element name="mdEdge" type="mdEdge" />      
       <xs:element name="timestamp" type="timestamp" />
@@ -1544,12 +1546,33 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:complexType name="mdGraphEmbeddedBase">
+    <xs:complexContent>
+      <xs:extension base="mdGraphClass">
+        <!--extends: The name of the mdGraphClass being extended -->
+        <xs:attribute name="extends" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="mdGraphEmbedded">
+    <xs:complexContent>
+      <xs:extension base="mdGraphEmbeddedBase">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="create" type="mdGraphClassOptions" minOccurs="0" maxOccurs="1" />
+        </xs:choice>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
   <xs:complexType name="mdEdgeBase">
     <xs:complexContent>
       <xs:extension base="mdGraphClass">
         <xs:attribute name="parent" type="xs:string" />
         <xs:attribute name="child" type="xs:string" />
+        <!--extends: The name of the mdEdge being extended -->
+        <xs:attribute name="extends" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

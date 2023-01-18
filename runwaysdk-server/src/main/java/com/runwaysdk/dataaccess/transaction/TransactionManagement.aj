@@ -32,6 +32,7 @@ import com.runwaysdk.business.generation.GenerationFacade;
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.LocalProperties;
+import com.runwaysdk.constants.RunwayProperties;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.MdTypeDAOIF;
@@ -303,10 +304,10 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
         continue;
       }
       
- // Heads up: test
       // Do not generate source if this is a test environment or Runway development and the type is a system type.
-      if ((LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment()) 
-          && mdTypeIF.isSystemPackage())
+      if (!RunwayProperties.getIsImportWorking() &&
+          (LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment()) && 
+          mdTypeIF.isSystemPackage())
       {
         continue;
       }

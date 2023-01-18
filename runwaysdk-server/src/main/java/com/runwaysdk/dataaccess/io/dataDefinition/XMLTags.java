@@ -1021,6 +1021,8 @@ public interface XMLTags
   public static final String   MD_TABLE_TAG                     = "mdTable";
 
   public static final String   MD_VERTEX_TAG                    = "mdVertex";
+  
+  public static final String   MD_GRAPH_EMBEDDED_TAG            = "mdGraphEmbedded";
 
   public static final String   MD_CLASSIFICATION_TAG            = "mdClassification";
 

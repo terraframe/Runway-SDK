@@ -394,7 +394,7 @@
                   <executable>java</executable>
                   <mainClass>com.runwaysdk.dataaccess.io.CreateDomainModel</mainClass>
                   <arguments>
-                    <argument>${basedir}/src/main/domain</argument>
+                    <argument>${basedir}/src/main/domain/working</argument>
                   </arguments>
                 </configuration>
               </execution>

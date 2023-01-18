@@ -102,7 +102,7 @@ public class GraphDBBalk implements GraphDB
    *      String)
    */
   @Override
-  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String parentVertexClass, String childVertexClass)
+  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String superClass, String parentVertexClass, String childVertexClass)
   {
     return new GraphDDLCommandAction()
     {
@@ -117,6 +117,28 @@ public class GraphDBBalk implements GraphDB
    */
   @Override
   public GraphDDLCommandAction deleteEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
+  {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+  
+  @Override
+  public GraphDDLCommandAction createEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className, String superClassName)
+  {
+    return new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+      }
+    };
+  }
+
+  @Override
+  public GraphDDLCommandAction deleteEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
   {
     return new GraphDDLCommandAction()
     {

@@ -1,24 +1,6 @@
-/**
- * Copyright (c) 2022 TerraFrame, Inc. All rights reserved.
- *
- * This file is part of Runway SDK(tm).
- *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.runwaysdk.system.metadata;
 
-@com.runwaysdk.business.ClassSignature(hash = -1596881354)
+@com.runwaysdk.business.ClassSignature(hash = -1287315901)
 /**
  * This class is generated automatically.
  * DO NOT MAKE CHANGES TO IT - THEY WILL BE OVERWRITTEN
@@ -102,6 +84,29 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX, mdAttributeIF, this, alias, displayLabel);
 
   }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge()
+  {
+    return getSuperMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE);
+
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE, mdAttributeIF, this, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias, String displayLabel)
+  {
+
+    com.runwaysdk.dataaccess.MdAttributeDAOIF mdAttributeIF = this.getComponentQuery().getMdAttributeROfromMap(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE);
+
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.getComponentQuery().internalAttributeFactory(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE, mdAttributeIF, this, alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -113,6 +118,10 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     else if (name.equals(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX)) 
     {
        return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -145,6 +154,238 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
   }
 
 
+  public com.runwaysdk.query.Condition superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.getBusinessQuery().isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.getBusinessQuery().isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.getBusinessQuery().isChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.getBusinessQuery().isChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.getBusinessQuery().isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.getBusinessQuery().isNotChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.getBusinessQuery().isNotChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.getBusinessQuery().isParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.getBusinessQuery().isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.getBusinessQuery().isParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.getBusinessQuery().isParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isNotParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.getBusinessQuery().isNotParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.getBusinessQuery().isNotParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.getBusinessQuery().isNotParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
 /**
  * Interface that masks all type unsafe query methods and defines all type safe methods.
  * This type is used when a join is performed on this class as a reference.
@@ -158,10 +399,65 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex();
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex(String alias);
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge();
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias, String displayLabel);
 
     public com.runwaysdk.query.BasicCondition EQ(com.runwaysdk.system.metadata.MdEdge mdEdge);
 
     public com.runwaysdk.query.BasicCondition NE(com.runwaysdk.system.metadata.MdEdge mdEdge);
+
+
+  public com.runwaysdk.query.Condition subEdgeClasses();
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses();
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses();
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses();
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition superEdgeClass();
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass();
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass();
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass();
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery);
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery);
 
   }
 
@@ -227,6 +523,255 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX,  alias, displayLabel);
 
   }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge()
+  {
+    return getSuperMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE,  alias, displayLabel);
+
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.isParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.isParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.isParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.isParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isNotParentIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isNotParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isNotParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.isNotParentIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasChild(mdEdgeQuery));
+
+    return this.isNotParentIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.isNotParentIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_subEdgeClasses(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasChild(mdEdgeQuery));
+    return this.isNotParentIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.isChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.isChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.isChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.isChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass()
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isNotChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    return this.isNotChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.isNotChildIn(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery)
+  {
+    com.runwaysdk.query.QueryFactory queryFactory = this.getQueryFactory();
+    com.runwaysdk.business.RelationshipQuery relationshipQuery = queryFactory.relationshipQuery(com.runwaysdk.system.metadata.graph.EdgeInheritance.CLASS);
+    relationshipQuery.AND(relationshipQuery.hasParent(mdEdgeQuery));
+
+    return this.isNotChildIn_SUBSELECT(relationshipQuery);
+  }
+
+  public com.runwaysdk.query.Condition NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.isNotChildIn(edgeInheritanceQuery);
+  }
+
+  public com.runwaysdk.query.Condition SUBSELECT_NOT_IN_superEdgeClass(com.runwaysdk.system.metadata.MdEdgeQuery mdEdgeQuery, com.runwaysdk.system.metadata.graph.EdgeInheritanceQuery edgeInheritanceQuery)
+  {
+    edgeInheritanceQuery.AND(edgeInheritanceQuery.hasParent(mdEdgeQuery));
+    return this.isNotChildIn_SUBSELECT(edgeInheritanceQuery);
+  }
+
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -238,6 +783,10 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     else if (name.equals(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX)) 
     {
        return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {
@@ -260,6 +809,9 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex();
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex(String alias);
     public com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF getParentMdVertex(String alias, String displayLabel);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge();
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias);
+    public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias, String displayLabel);
 
     public com.runwaysdk.query.Condition containsAny(com.runwaysdk.system.metadata.MdEdge ... mdEdge);
     public com.runwaysdk.query.Condition notContainsAny(com.runwaysdk.system.metadata.MdEdge ... mdEdge);
@@ -378,6 +930,23 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     return (com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX,  alias, displayLabel);
 
   }
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge()
+  {
+    return getSuperMdEdge(null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE, alias, null);
+
+  }
+ 
+  public com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF getSuperMdEdge(String alias, String displayLabel)
+  {
+    return (com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReferenceIF)this.get(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE,  alias, displayLabel);
+
+  }
   protected com.runwaysdk.query.AttributeReference referenceFactory( com.runwaysdk.dataaccess.MdAttributeRefDAOIF mdAttributeIF, String attributeNamespace, String definingTableName, String definingTableAlias,  com.runwaysdk.dataaccess.MdBusinessDAOIF referenceMdBusinessIF, String referenceTableAlias, com.runwaysdk.query.ComponentQuery rootQuery, java.util.Set<com.runwaysdk.query.Join> tableJoinSet, String userDefinedAlias, String userDefinedDisplayLabel)
   {
     String name = mdAttributeIF.definesAttribute();
@@ -389,6 +958,10 @@ public  class MdEdgeQuery extends com.runwaysdk.system.metadata.MdGraphClassQuer
     else if (name.equals(com.runwaysdk.system.metadata.MdEdge.PARENTMDVERTEX)) 
     {
        return new com.runwaysdk.system.metadata.MdVertexQuery.MdVertexQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
+    }
+    else if (name.equals(com.runwaysdk.system.metadata.MdEdge.SUPERMDEDGE)) 
+    {
+       return new com.runwaysdk.system.metadata.MdEdgeQuery.MdEdgeQueryReference((com.runwaysdk.dataaccess.MdAttributeRefDAOIF)mdAttributeIF, attributeNamespace, definingTableName, definingTableAlias, referenceMdBusinessIF, referenceTableAlias, rootQuery, tableJoinSet, userDefinedAlias, userDefinedDisplayLabel);
     }
     else 
     {

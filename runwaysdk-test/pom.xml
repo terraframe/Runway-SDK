@@ -127,10 +127,16 @@
                   <executable>java</executable>
                   <mainClass>com.runwaysdk.dataaccess.io.Versioning</mainClass>
                   <arguments>
-                    <argument>${project.basedir}/src/main/domain</argument>
+                    <argument>${project.basedir}/src/main/domain/working</argument>
                     <argument />
                     <argument>false</argument>
                   </arguments>
+                  <systemProperties>
+                    <systemProperty>
+                      <key>runway.importWorking</key>
+                      <value>true</value>
+                    </systemProperty>
+                  </systemProperties>
                 </configuration>
               </execution>
             </executions>
@@ -162,7 +168,7 @@
                   <executable>java</executable>
                   <mainClass>com.runwaysdk.dataaccess.io.UndoAll</mainClass>
                   <arguments>
-                    <argument>${project.basedir}/src/main/domain</argument>
+                    <argument>${project.basedir}/src/main/domain/working</argument>
                     <argument />
                     <argument>false</argument>
                   </arguments>

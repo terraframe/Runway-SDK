@@ -75,6 +75,7 @@ import com.runwaysdk.constants.RelationshipInfo;
 import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.ServerProperties;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdEmbeddedGraphClassInfo;
 import com.runwaysdk.constants.graph.MdGraphClassInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.AttributeLocalIF;
@@ -92,6 +93,7 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdElementDAOIF;
+import com.runwaysdk.dataaccess.MdEmbeddedGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdExceptionDAOIF;
@@ -1866,6 +1868,22 @@ public class ObjectCache
     }
 
     return (MdEdgeDAOIF) mdClassIF;
+  }
+  
+  /**
+   * @see MdEmbeddedGraphClassDAO#getMdEmbeddedGraphClassDAO(String)
+   */
+  public static MdEmbeddedGraphClassDAOIF getMdEmbeddedGraphClassDAO(String classType)
+  {
+    MdClassDAOIF mdClassIF = getMdClassDAO(classType);
+
+    if (! ( mdClassIF instanceof MdEmbeddedGraphClassDAOIF ))
+    {
+      String errmsg = "Type [" + classType + "] is not an [" + MdEmbeddedGraphClassInfo.CLASS + "].";
+      throw new UnexpectedTypeException(errmsg);
+    }
+
+    return (MdEmbeddedGraphClassDAOIF) mdClassIF;
   }
 
   /**

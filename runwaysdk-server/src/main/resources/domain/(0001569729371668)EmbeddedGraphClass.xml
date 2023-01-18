@@ -1,0 +1,48 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+      <mdBusiness 
+        label="MdEmbeddedGraphClass" 
+        name="com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClass" 
+        extends="com.runwaysdk.system.metadata.MdGraphClass"
+        isAbstract="false"
+        generateController="false" >
+        <attributes>
+          <reference name="superMdEmbedded" type="com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClass" label="Super MdEmbedded" description="The super class" required="false" />
+        </attributes>
+      </mdBusiness>
+      <mdTree 
+        name="com.runwaysdk.system.metadata.graph.EdgeInheritance"
+         label="Edge Inheritance"
+         extends="com.runwaysdk.system.metadata.MetadataRelationship"
+         composition="false" >
+        <parent cardinality="1" name="com.runwaysdk.system.metadata.MdEdge" method="superEdgeClass"/>
+        <child cardinality="*" name="com.runwaysdk.system.metadata.MdEdge" method="subEdgeClasses"/>
+      </mdTree>
+      <mdTree
+        name="com.runwaysdk.system.metadata.graph.EmbeddedGraphInheritance" 
+         label="Embedded Graph Inheritance" 
+         extends="com.runwaysdk.system.metadata.MetadataRelationship"
+         composition="false" >
+        <parent cardinality="1" name="com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClass" method="superEmbeddedClass"/>
+        <child cardinality="*" name="com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClass" method="subEmbeddedClasses"/>
+      </mdTree>
+    </create>
+    <update>
+      <mdBusiness name="com.runwaysdk.system.metadata.MdEdge">
+        <create>
+	        <attributes>
+	          <reference name="superMdEdge" type="com.runwaysdk.system.metadata.MdEdge" label="Super MdEdge" description="The super edge class" required="false" />
+	        </attributes>
+        </create>
+      </mdBusiness>
+    </update>
+  </doIt>
+  <undoIt>
+    <delete>
+      <object key="com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClass" type="com.runwaysdk.system.metadata.MdBusiness"></object>
+      <object key="com.runwaysdk.system.metadata.graph.EdgeInheritance" type="com.runwaysdk.system.metadata.MdTree"></object>
+      <object key="com.runwaysdk.system.metadata.graph.EmbeddedGraphInheritance" type="com.runwaysdk.system.metadata.MdTree"></object>
+    </delete>
+  </undoIt>
+</version>

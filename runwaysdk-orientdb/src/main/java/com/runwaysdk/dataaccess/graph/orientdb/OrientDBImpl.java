@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.spatial4j.shape.Shape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,12 +86,14 @@ import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeUUIDDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdEmbeddedGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.StaleEntityException;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
@@ -117,7 +121,6 @@ import com.runwaysdk.gis.dataaccess.MdAttributeMultiPolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePointDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributePolygonDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
-import org.locationtech.jts.geom.Geometry;
 
 public class OrientDBImpl implements GraphDB
 {
@@ -362,7 +365,7 @@ public class OrientDBImpl implements GraphDB
    *      String)
    */
   @Override
-  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String parentVertexClass, String childVertexClass)
+  public GraphDDLCommandAction createEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String edgeClass, String superClassName, String parentVertexClass, String childVertexClass)
   {
     GraphDDLCommandAction action = new GraphDDLCommandAction()
     {
@@ -381,6 +384,18 @@ public class OrientDBImpl implements GraphDB
           if (oClass == null)
           {
             oClass = db.createEdgeClass(edgeClass);
+            
+            if (superClassName != null)
+            {
+              OClass e = db.getMetadata().getSchema().getClass(superClassName);
+
+              if (e == null)
+              {
+                throw new ProgrammingErrorException("Unable to find graph database class [" + superClassName + "]");
+              }
+
+              oClass.addSuperClass(e);
+            }
 
             // Add constraints to parent and child vertex classes.
             // create property myE.out LINK A
@@ -418,6 +433,63 @@ public class OrientDBImpl implements GraphDB
    */
   @Override
   public GraphDDLCommandAction deleteEdgeClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
+  {
+    return deleteClass(graphRequest, graphDDLRequest, className, false);
+  }
+  
+  /**
+   * @see GraphDB#createEmbeddedClass(GraphRequest, GraphRequest, String, String)
+   */
+  @Override
+  public GraphDDLCommandAction createEmbeddedClass(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String superClassName)
+  {
+    GraphDDLCommandAction action = new GraphDDLCommandAction()
+    {
+      public void execute()
+      {
+        OrientDBRequest ddlOrientDBRequest = (OrientDBRequest) ddlGraphDBRequest;
+        ODatabaseSession db = ddlOrientDBRequest.getODatabaseSession();
+
+        // make sure the DDL graph request is current on the active thread.
+        db.activateOnCurrentThread();
+
+        try
+        {
+          OClass oClass = db.getClass(className);
+
+          if (oClass == null)
+          {
+            if (StringUtils.isEmpty(superClassName))
+            {
+              oClass = db.createClass(className);
+            }
+            else
+            {
+              oClass = db.createClass(className, superClassName);
+            }
+
+            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
+            sequenceLibrary.createSequence(className + "Seq", SEQUENCE_TYPE.ORDERED, new OSequence.CreateParams().setStart(0L));
+          }
+        }
+        finally
+        {
+          // make sure the DML graph request is current on the active thread.
+          OrientDBRequest orientDBRequest = (OrientDBRequest) graphRequest;
+          db = orientDBRequest.getODatabaseSession();
+          db.activateOnCurrentThread();
+        }
+      }
+    };
+
+    return action;
+  }
+  
+  /**
+   * @see GraphDB#deleteEmbeddedClass(GraphRequest, GraphRequest, String)
+   */
+  @Override
+  public GraphDDLCommandAction deleteEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDDLRequest, String className)
   {
     return deleteClass(graphRequest, graphDDLRequest, className, false);
   }
@@ -671,7 +743,7 @@ public class OrientDBImpl implements GraphDB
 
           for (String attr : attrs)
           {
-            Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attr).iterator();
+            Iterator<OIndex> i = oClass.getInvolvedIndexes(attr).iterator();
 
             while (i.hasNext())
             {
@@ -792,11 +864,11 @@ public class OrientDBImpl implements GraphDB
             // Clear the index if it is set to none.
             else
             {
-              Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+              Iterator<OIndex> i = oClass.getInvolvedIndexes(attributeName).iterator();
 
               while (i.hasNext())
               {
-                OIndex<?> oIndex = i.next();
+                OIndex oIndex = i.next();
 
                 String indexType = oIndex.getType();
 
@@ -839,11 +911,11 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass != null)
     {
-      Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+      Iterator<OIndex> i = oClass.getInvolvedIndexes(attributeName).iterator();
 
       while (i.hasNext())
       {
-        OIndex<?> oIndex = i.next();
+        OIndex oIndex = i.next();
         if (oIndex.isUnique())
         {
           returnValue = IndexTypes.UNIQUE_INDEX;
@@ -872,11 +944,11 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass != null)
     {
-      Iterator<OIndex<?>> i = oClass.getInvolvedIndexes(attributeName).iterator();
+      Iterator<OIndex> i = oClass.getInvolvedIndexes(attributeName).iterator();
 
       while (i.hasNext())
       {
-        OIndex<?> oIndex = i.next();
+        OIndex oIndex = i.next();
 
         if (!oIndex.getType().equals(INDEX_TYPE.SPATIAL.name()))
         {
@@ -1036,9 +1108,13 @@ public class OrientDBImpl implements GraphDB
 
       this.populateDAO(vertex, graphObjectDAO);
     }
-    else
+    else if (graphObjectDAO instanceof EdgeObjectDAO)
     {
       this.addEdge(request, (EdgeObjectDAO) graphObjectDAO);
+    }
+    else if (graphObjectDAO instanceof EmbeddedGraphObjectDAO)
+    {
+      throw new UnsupportedOperationException();
     }
   }
 
@@ -1049,6 +1125,11 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
 
     OElement element = db.load((ORID) graphObjectDAO.getRID());
+    
+    if (graphObjectDAO instanceof EmbeddedGraphObjectDAO)
+    {
+      throw new UnsupportedOperationException();
+    }
 
     // Validate the sequence number
     if (graphObjectDAO instanceof VertexObjectDAO)
@@ -1390,7 +1471,15 @@ public class OrientDBImpl implements GraphDB
 
       return vertexDAO;
     }
-    else
+    else if (mdGraph instanceof MdEmbeddedGraphClassDAOIF)
+    {
+      EmbeddedGraphObjectDAO embeddedDAO = EmbeddedGraphObjectDAO.newInstance((MdEmbeddedGraphClassDAOIF) mdGraph);
+
+      populateDAO(element, embeddedDAO);
+
+      return embeddedDAO;
+    }
+    else if (mdGraph instanceof MdEdgeDAOIF)
     {
       MdEdgeDAOIF mdEdge = (MdEdgeDAOIF) mdGraph;
       OEdge edge = element.asEdge().get();
@@ -1406,6 +1495,10 @@ public class OrientDBImpl implements GraphDB
       populateDAO(edge, edgeDAO);
 
       return edgeDAO;
+    }
+    else
+    {
+      throw new UnsupportedOperationException();
     }
   }
 
@@ -1455,16 +1548,16 @@ public class OrientDBImpl implements GraphDB
           AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
           GraphObjectDAO embedGraphObjectDAO = (GraphObjectDAO) attributeEmbedded.getObjectValue();
 
-          if (value instanceof OVertex)
+          if (value instanceof OElement)
           {
-            OVertex embedOVertex = (OVertex) value;
+            OElement embedOElement = (OElement) value;
 
-            this.populateDAO(embedOVertex, embedGraphObjectDAO);
+            this.populateDAO(embedOElement, embedGraphObjectDAO);
           }
 
           if (mdClass.isEnableChangeOverTime())
           {
-            MdVertexDAOIF embeddedVertex = (MdVertexDAOIF) embedGraphObjectDAO.getMdGraphClassDAO();
+            MdEmbeddedGraphClassDAOIF embeddedObject = (MdEmbeddedGraphClassDAOIF) embedGraphObjectDAO.getMdGraphClassDAO();
 
             List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
 
@@ -1477,7 +1570,7 @@ public class OrientDBImpl implements GraphDB
               OElement vElement = element.getProperty(OrientDBConstant.VALUE);
               String oid = element.getProperty(OrientDBConstant.OID);
 
-              VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
+              EmbeddedGraphObjectDAO votDAO = EmbeddedGraphObjectDAO.newInstance(embeddedObject);
               this.populateDAO(vElement, votDAO);
 
               attribute.setValueInternal(oid, votDAO, startDate, endDate);
@@ -1505,7 +1598,7 @@ public class OrientDBImpl implements GraphDB
 
     if (mdAttribute instanceof MdAttributeEmbeddedDAOIF)
     {
-      MdVertexDAOIF embeddedVertex = (MdVertexDAOIF) ( (MdAttributeEmbeddedDAOIF) mdAttribute ).getEmbeddedMdClassDAOIF();
+      MdEmbeddedGraphClassDAOIF embeddedClass = (MdEmbeddedGraphClassDAOIF) ( (MdAttributeEmbeddedDAOIF) mdAttribute ).getEmbeddedMdClassDAOIF();
 
       List<OElement> elements = vertex.getProperty(columnName + OrientDBConstant.COT_SUFFIX);
       attribute.clearValuesOverTime();
@@ -1520,7 +1613,7 @@ public class OrientDBImpl implements GraphDB
           OElement vElement = element.getProperty(OrientDBConstant.VALUE);
           String oid = element.getProperty(OrientDBConstant.OID);
 
-          VertexObjectDAO votDAO = VertexObjectDAO.newInstance(embeddedVertex);
+          EmbeddedGraphObjectDAO votDAO = EmbeddedGraphObjectDAO.newInstance(embeddedClass);
           this.populateDAO(vElement, votDAO);
 
           attribute.setValueInternal(oid, votDAO, startDate, endDate);
@@ -1653,7 +1746,7 @@ public class OrientDBImpl implements GraphDB
         String embeddedClassName = ( (MdGraphClassDAOIF) mdAttributeEmbedded.getEmbeddedMdClassDAOIF() ).getDBClassName();
         String columnName = mdAttributeEmbedded.getColumnName();
 
-        OVertex innerVertex = null;
+        OElement innerElement = null;
 
         AttributeEmbedded attributeEmbedded = (AttributeEmbedded) attribute;
         GraphObjectDAO embeddedObject = (GraphObjectDAO) attributeEmbedded.getObjectValue();
@@ -1664,23 +1757,23 @@ public class OrientDBImpl implements GraphDB
 
           if (oElement == null)
           {
-            innerVertex = db.newVertex(embeddedClassName);
+            innerElement = db.newElement(embeddedClassName);
           }
-          else if (oElement instanceof OVertex)
+          else if (oElement instanceof OElement)
           {
-            innerVertex = (OVertex) oElement;
+            innerElement = (OElement) oElement;
           }
 
-          if (innerVertex != null)
+          if (innerElement != null)
           {
             // persist the values on the inner embedded object
-            this.populateElement(db, embeddedObject, innerVertex);
+            this.populateElement(db, embeddedObject, innerElement);
           }
         }
         // else embeddedObject == null- if there is no embedded object, then set
         // the propperty to null
 
-        element.setProperty(columnName, innerVertex);
+        element.setProperty(columnName, innerElement);
 
         if (mdClass.isEnableChangeOverTime())
         {
@@ -1743,13 +1836,13 @@ public class OrientDBImpl implements GraphDB
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
-    List<OVertex> documents = new LinkedList<OVertex>();
+    List<OElement> documents = new LinkedList<OElement>();
 
     for (ValueOverTime vot : valuesOverTime)
     {
       if (vot.getValue() != null)
       {
-        OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
+        OElement document = db.newElement(OrientDBConstant.CHANGE_OVER_TIME);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
@@ -1766,7 +1859,7 @@ public class OrientDBImpl implements GraphDB
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
-    List<OVertex> documents = new LinkedList<OVertex>();
+    List<OElement> documents = new LinkedList<OElement>();
 
     for (ValueOverTime vot : valuesOverTime)
     {
@@ -1775,7 +1868,7 @@ public class OrientDBImpl implements GraphDB
       if (value != null)
       {
 
-        OVertex document = db.newVertex(OrientDBConstant.CHANGE_OVER_TIME);
+        OElement document = db.newElement(OrientDBConstant.CHANGE_OVER_TIME);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.OID, vot.getOid());
@@ -1811,13 +1904,13 @@ public class OrientDBImpl implements GraphDB
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
-    List<OVertex> documents = new LinkedList<OVertex>();
+    List<OElement> documents = new LinkedList<OElement>();
 
     for (ValueOverTime vot : valuesOverTime)
     {
       if (vot.getValue() != null)
       {
-        OVertex document = db.newVertex(OrientDBConstant.ENUM_CHANGE_OVER_TIME);
+        OElement document = db.newElement(OrientDBConstant.ENUM_CHANGE_OVER_TIME);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, vot.getValue());
@@ -1834,11 +1927,11 @@ public class OrientDBImpl implements GraphDB
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
-    List<OVertex> documents = new LinkedList<OVertex>();
+    List<OElement> documents = new LinkedList<OElement>();
 
     for (ValueOverTime vot : valuesOverTime)
     {
-      OVertex document = db.newVertex(geometryClassName + OrientDBConstant.COT_SUFFIX);
+      OElement document = db.newElement(geometryClassName + OrientDBConstant.COT_SUFFIX);
       document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
       document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
       document.setProperty(OrientDBConstant.OID, vot.getOid());
@@ -1860,16 +1953,16 @@ public class OrientDBImpl implements GraphDB
   {
     ValueOverTimeCollection valuesOverTime = attribute.getValuesOverTime();
     valuesOverTime.validate();
-    List<OVertex> documents = new LinkedList<OVertex>();
+    List<OElement> documents = new LinkedList<OElement>();
 
     for (ValueOverTime vot : valuesOverTime)
     {
       if (vot.getValue() != null)
       {
-        OVertex votVertex = db.newVertex(embeddedClassName);
+        OElement votVertex = db.newElement(embeddedClassName);
         this.populateElement(db, (GraphObjectDAO) vot.getValue(), votVertex);
 
-        OVertex document = db.newVertex(embeddedClassName + OrientDBConstant.COT_SUFFIX);
+        OElement document = db.newElement(embeddedClassName + OrientDBConstant.COT_SUFFIX);
         document.setProperty(OrientDBConstant.START_DATE, vot.getStartDate());
         document.setProperty(OrientDBConstant.END_DATE, vot.getEndDate());
         document.setProperty(OrientDBConstant.VALUE, votVertex);
@@ -1944,7 +2037,7 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass == null)
     {
-      oClass = db.createVertexClass(OrientDBConstant.CHANGE_OVER_TIME);
+      oClass = db.createClass(OrientDBConstant.CHANGE_OVER_TIME);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.ANY);
@@ -1960,7 +2053,7 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass == null)
     {
-      oClass = db.createVertexClass(OrientDBConstant.ENUM_CHANGE_OVER_TIME);
+      oClass = db.createClass(OrientDBConstant.ENUM_CHANGE_OVER_TIME);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, OType.EMBEDDEDSET, OType.STRING);
@@ -1976,7 +2069,7 @@ public class OrientDBImpl implements GraphDB
 
     if (oClass == null)
     {
-      oClass = db.createVertexClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
+      oClass = db.createClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.VALUE, type, vClass);

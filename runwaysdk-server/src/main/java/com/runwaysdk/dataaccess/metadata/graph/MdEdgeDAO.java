@@ -26,12 +26,14 @@ import java.util.Map;
 
 import com.runwaysdk.business.generation.GenerationUtil;
 import com.runwaysdk.business.generation.GeneratorIF;
+import com.runwaysdk.constants.RelationshipTypes;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
 import com.runwaysdk.constants.graph.MdVertexInfo;
 import com.runwaysdk.dataaccess.BusinessDAO;
 import com.runwaysdk.dataaccess.Command;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
+import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeReference;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
@@ -94,7 +96,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   }
 
   /**
-   * Always returns true because Edge classes do not inherit from one another
+   * Returns true if this class is the root class of a hierarchy, false
    * otherwise.
    * 
    * @return true if this class is the root class of a hierarchy, false
@@ -103,7 +105,15 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   @Override
   public boolean isRootOfHierarchy()
   {
-    return true;
+    String superMdViewId = this.getAttributeIF(MdEdgeInfo.SUPER_MD_RELATIONSHIP).getValue();
+    if (superMdViewId.trim().equals(""))
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   /**
@@ -125,7 +135,15 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   @Override
   public List<MdEdgeDAOIF> getSubClasses()
   {
-    return new LinkedList<MdEdgeDAOIF>();
+    List<RelationshipDAOIF> subClassRelationshipArray = this.getChildren(RelationshipTypes.EDGE_INHERITANCE.getType());
+
+    List<MdEdgeDAOIF> mdViewList = new LinkedList<MdEdgeDAOIF>();
+    for (RelationshipDAOIF relationship : subClassRelationshipArray)
+    {
+      mdViewList.add((MdEdgeDAOIF) relationship.getChild());
+    }
+
+    return mdViewList;
   }
 
   /**
@@ -153,7 +171,15 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
    */
   public MdEdgeDAOIF getSuperClass()
   {
-    return null;
+    if (!this.isRootOfHierarchy())
+    {
+      String superMdVertexId = this.getAttributeIF(MdEdgeInfo.SUPER_MD_RELATIONSHIP).getValue();
+      return MdEdgeDAO.get(superMdVertexId);
+    }
+    else
+    {
+      return null;
+    }
   }
 
   /**
@@ -174,7 +200,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   @Override
   public boolean isExtendable()
   {
-    return false;
+    return true;
   }
 
   // Nothing special happening here yet.
@@ -195,6 +221,16 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   protected void createClassInDB()
   {
     String edgeClass = this.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
+    
+    String superMdEdgeOid = this.getAttributeIF(MdEdgeInfo.SUPER_MD_RELATIONSHIP).getValue();
+    String superClassName = null;
+
+    if (superMdEdgeOid != null && superMdEdgeOid.length() > 0)
+    {
+      MdEdgeDAOIF mdEdge = MdEdgeDAO.get(superMdEdgeOid);
+
+      superClassName = mdEdge.getDBClassName();
+    }
 
     MdVertexDAOIF parentMdVertex = MdVertexDAO.get(this.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX).getValue());
     String parentVertexClass = parentMdVertex.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
@@ -205,7 +241,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, parentVertexClass, childVertexClass);
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, superClassName, parentVertexClass, childVertexClass);
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().deleteEdgeClass(graphRequest, graphDDLRequest, edgeClass);
 
     GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, false);
@@ -216,6 +252,16 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
   protected void deleteClassInDB()
   {
     String edgeClass = this.getAttributeIF(MdEdgeInfo.DB_CLASS_NAME).getValue();
+    
+    String superMdEdgeOid = this.getAttributeIF(MdEdgeInfo.SUPER_MD_RELATIONSHIP).getValue();
+    String superClassName = null;
+
+    if (superMdEdgeOid != null && superMdEdgeOid.length() > 0)
+    {
+      MdEdgeDAOIF mdEdge = MdEdgeDAO.get(superMdEdgeOid);
+
+      superClassName = mdEdge.getDBClassName();
+    }
 
     MdVertexDAOIF paretMdVertex = MdVertexDAO.get(this.getAttributeIF(MdEdgeInfo.PARENT_MD_VERTEX).getValue());
     String parentVertexClass = paretMdVertex.getAttributeIF(MdVertexInfo.DB_CLASS_NAME).getValue();
@@ -227,7 +273,7 @@ public class MdEdgeDAO extends MdGraphClassDAO implements MdEdgeDAOIF
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().deleteEdgeClass(graphRequest, graphDDLRequest, edgeClass);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, parentVertexClass, childVertexClass);
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEdgeClass(graphRequest, graphDDLRequest, edgeClass, superClassName, parentVertexClass, childVertexClass);
 
     GraphDDLCommand command = new GraphDDLCommand(doItAction, undoItAction, true);
     command.doIt();

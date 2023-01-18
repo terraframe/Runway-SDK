@@ -26,6 +26,7 @@ import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalEmbeddedDAO;
 import com.runwaysdk.session.LocaleManager;
+import com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClassDAO;
 
 public class MdAttributeLocalEmbedded_G extends MdAttributeEmbedded_G
 {
@@ -55,9 +56,9 @@ public class MdAttributeLocalEmbedded_G extends MdAttributeEmbedded_G
 
     if (embeddedAttribute.getValue().trim().equals(""))
     {
-      MdVertexDAO mdVertexDAO = (MdVertexDAO) MdVertexDAO.getMdVertexDAO(MdAttributeLocalEmbeddedInfo.EMBEDDED_LOCAL_VALUE);
+      MdEmbeddedGraphClassDAO mdEmbeddedDAO = (MdEmbeddedGraphClassDAO) MdEmbeddedGraphClassDAO.getMdEmbeddedGraphClassDAO(MdAttributeLocalEmbeddedInfo.EMBEDDED_LOCAL_VALUE);
 
-      embeddedAttribute.setValue(mdVertexDAO.getOid());
+      embeddedAttribute.setValue(mdEmbeddedDAO.getOid());
     }
   }
 

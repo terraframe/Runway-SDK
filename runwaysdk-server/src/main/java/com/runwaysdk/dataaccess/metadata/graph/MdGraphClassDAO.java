@@ -49,7 +49,7 @@ import com.runwaysdk.system.metadata.MdAttributeIndices;
 import com.runwaysdk.system.metadata.MdAttributeLocal;
 import com.runwaysdk.system.metadata.MdAttributeLocalCharacterEmbedded;
 
-public abstract class MdGraphClassDAO extends MdClassDAO implements MdGraphClassDAOIF
+abstract public class MdGraphClassDAO extends MdClassDAO implements MdGraphClassDAOIF
 {
 
   /**

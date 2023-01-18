@@ -22,12 +22,15 @@ import org.xml.sax.Attributes;
 
 import com.runwaysdk.constants.MdTypeInfo;
 import com.runwaysdk.constants.graph.MdEdgeInfo;
+import com.runwaysdk.constants.graph.MdEmbeddedGraphClassInfo;
+import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.database.BusinessDAOFactory;
 import com.runwaysdk.dataaccess.io.ImportManager;
 import com.runwaysdk.dataaccess.metadata.MdTypeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdEdgeDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
+import com.runwaysdk.system.metadata.graph.MdEmbeddedGraphClassDAO;
 
 public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, HandlerFactoryIF
 {
@@ -99,6 +102,11 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
   {
     return (MdEdgeDAO) this.getManager().getEntityDAO(MdEdgeInfo.CLASS, name).getEntityDAO();
   }
+  
+  protected String getTag()
+  {
+    return XMLTags.MD_EDGE_TAG;
+  }
 
   /**
    * Creates an MdEdgeDAO from the parse of the class tag attributes.
@@ -127,6 +135,24 @@ public class MdEdgeHandler extends MdGraphClassHandler implements TagHandlerIF, 
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.EXPORTED, attributes, XMLTags.EXPORTED_ATTRIBUTE);
     ImportManager.setValue(mdEdgeDAO, MdEdgeInfo.ENABLE_CHANGE_OVER_TIME, attributes, XMLTags.ENABLE_CHANGE_OVER_TIME);
 
+    // Import optional super/extends
+    String extend = attributes.getValue(XMLTags.EXTENDS_ATTRIBUTE);
+
+    if (extend != null)
+    {
+      // Ensure the parent class has already been defined in the database
+      if (!MdTypeDAO.isDefined(extend))
+      {
+        // The type is not defined in the database, check if it is defined
+        // in the further down in the xml document.
+        String[] search_tags = { getTag() };
+        SearchHandler.searchEntity(this.getManager(), search_tags, XMLTags.NAME_ATTRIBUTE, extend, mdEdgeDAO.definesType());
+      }
+
+      MdEdgeDAOIF mdEdgeIF = MdEdgeDAO.getMdEdgeDAO(extend);
+      mdEdgeDAO.setValue(MdEdgeInfo.SUPER_MD_RELATIONSHIP, mdEdgeIF.getOid());
+    }
+    
     // Import optional reference attributes
     String parent = attributes.getValue(XMLTags.PARENT_TAG);
 
