@@ -36,6 +36,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.localization.LocalizationFacade;
 
@@ -315,10 +316,10 @@ public class ValueOverTimeCollection implements Collection<ValueOverTime>
       
       return true;
     }
-    else if ((val1 instanceof VertexObjectDAO && val2 instanceof VertexObjectDAO) && ((VertexObjectDAO)val1).getType().equals("com.runwaysdk.graph.EmbeddedLocalValue") && ((VertexObjectDAO)val2).getType().equals("com.runwaysdk.graph.EmbeddedLocalValue"))
+    else if ((val1 instanceof GraphObjectDAO && val2 instanceof GraphObjectDAO) && ((GraphObjectDAO)val1).getType().equals("com.runwaysdk.graph.EmbeddedLocalValue") && ((GraphObjectDAO)val2).getType().equals("com.runwaysdk.graph.EmbeddedLocalValue"))
     {
-      VertexObjectDAO embedded1 = ((com.runwaysdk.dataaccess.graph.VertexObjectDAO)val1);
-      VertexObjectDAO embedded2 = ((com.runwaysdk.dataaccess.graph.VertexObjectDAO)val2);
+      GraphObjectDAO embedded1 = ((com.runwaysdk.dataaccess.graph.GraphObjectDAO)val1);
+      GraphObjectDAO embedded2 = ((com.runwaysdk.dataaccess.graph.GraphObjectDAO)val2);
       
       final String dl1 = (String) embedded1.getObjectValue(com.runwaysdk.constants.MdAttributeLocalInfo.DEFAULT_LOCALE);
       final String dl2 = (String) embedded2.getObjectValue(com.runwaysdk.constants.MdAttributeLocalInfo.DEFAULT_LOCALE);

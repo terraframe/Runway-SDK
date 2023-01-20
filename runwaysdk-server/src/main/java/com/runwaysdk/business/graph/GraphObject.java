@@ -32,6 +32,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.attributes.AttributeException;
+import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
@@ -214,13 +215,13 @@ public abstract class GraphObject implements Mutable
   /**
    * @see GraphObjectDAOIF#getEmbeddedComponent(String)
    */
-  public GraphObject getEmbeddedComponent(String attributeName)
+  public EmbeddedGraphObject getEmbeddedComponent(String attributeName)
   {
     ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName);
 
-    if (componentDAO instanceof VertexObjectDAO)
+    if (componentDAO instanceof EmbeddedGraphObjectDAO)
     {
-      return VertexObject.instantiate((VertexObjectDAO) componentDAO);
+      return EmbeddedGraphObject.instantiate((EmbeddedGraphObjectDAO) componentDAO);
     }
     else
     {
@@ -231,7 +232,7 @@ public abstract class GraphObject implements Mutable
   /**
    * @see GraphObjectDAOIF#getEmbeddedComponent(String)
    */
-  public GraphObject getEmbeddedComponent(String attributeName, Date date)
+  public EmbeddedGraphObject getEmbeddedComponent(String attributeName, Date date)
   {
     ComponentDAO componentDAO = this.graphObjectDAO.getEmbeddedComponentDAO(attributeName, date);
 
@@ -239,9 +240,9 @@ public abstract class GraphObject implements Mutable
     {
       return null;
     }
-    else if (componentDAO instanceof VertexObjectDAO)
+    else if (componentDAO instanceof EmbeddedGraphObjectDAO)
     {
-      return VertexObject.instantiate((VertexObjectDAO) componentDAO);
+      return EmbeddedGraphObject.instantiate((EmbeddedGraphObjectDAO) componentDAO);
     }
     else
     {

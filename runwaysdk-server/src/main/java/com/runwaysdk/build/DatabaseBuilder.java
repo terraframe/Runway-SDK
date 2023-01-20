@@ -18,8 +18,10 @@
  */
 package com.runwaysdk.build;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -27,6 +29,7 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +58,8 @@ import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.cache.ObjectCache;
 import com.runwaysdk.dataaccess.cache.globalcache.ehcache.CacheShutdown;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.io.TimeFormat;
 import com.runwaysdk.dataaccess.io.dataDefinition.ImportPluginIF;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXSourceParser;
@@ -114,7 +119,7 @@ public class DatabaseBuilder
 {
   private static Logger            logger                                     = LoggerFactory.getLogger(DatabaseBuilder.class);
 
-  public static final List<String> supportedExtensions                        = toList("sql,xml,java");
+  public static final List<String> supportedExtensions                        = toList("osql,sql,xml,java");
 
   public static final String       RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY = com.runwaysdk.dataaccess.database.Database.VERSION_TIMESTAMP_PROPERTY;
 
@@ -496,6 +501,21 @@ public class DatabaseBuilder
             String sql = IOUtils.toString(stream, "UTF-8");
 
             com.runwaysdk.dataaccess.database.Database.executeStatement(sql);
+          }
+        }
+        else if (resource.getNameExtension().equals("osql"))
+        {
+          ObjectCache.shutdownGlobalCache();
+
+          try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openNewStream())))
+          {
+            GraphDBService service = GraphDBService.getInstance();
+            GraphRequest request = service.getGraphDBRequest();
+            GraphRequest ddlRequest = service.getDDLGraphDBRequest();
+            
+            reader.lines().forEach((String line) -> {
+              service.ddlCommand(request, ddlRequest, line, new HashMap<String, Object>()).execute();
+            });
           }
         }
         else if (resource.getNameExtension().equals("xml"))

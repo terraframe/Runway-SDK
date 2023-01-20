@@ -27,6 +27,7 @@ import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDimensionDAOIF;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
+import com.runwaysdk.dataaccess.MdEmbeddedGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdMethodDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdSessionDAOIF;
@@ -184,7 +185,7 @@ public class OperationManager
       businessDAO = ( (MdClassDimensionDAOIF) businessDAO ).definingMdClass();
     }
 
-    if (businessDAO instanceof MdBusinessDAOIF || businessDAO instanceof MdStructDAOIF || businessDAO instanceof MdVertexDAOIF)
+    if (businessDAO instanceof MdBusinessDAOIF || businessDAO instanceof MdStructDAOIF || businessDAO instanceof MdVertexDAOIF || businessDAO instanceof MdEmbeddedGraphClassDAOIF)
     {
       return mdBusinessOperations;
     }

@@ -2063,16 +2063,16 @@ public class OrientDBImpl implements GraphDB
     return oClass;
   }
 
-  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass vClass, OType type)
+  public static OClass getOrCreateChangeOverTime(ODatabaseSession db, OClass embeddedClass, OType type)
   {
-    OClass oClass = db.getClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
+    OClass oClass = db.getClass(embeddedClass.getName() + OrientDBConstant.COT_SUFFIX);
 
     if (oClass == null)
     {
-      oClass = db.createClass(vClass.getName() + OrientDBConstant.COT_SUFFIX);
+      oClass = db.createClass(embeddedClass.getName() + OrientDBConstant.COT_SUFFIX);
       oClass.createProperty(OrientDBConstant.START_DATE, OType.DATETIME);
       oClass.createProperty(OrientDBConstant.END_DATE, OType.DATETIME);
-      oClass.createProperty(OrientDBConstant.VALUE, type, vClass);
+      oClass.createProperty(OrientDBConstant.VALUE, type, embeddedClass);
       oClass.createProperty(OrientDBConstant.OID, OType.STRING);
     }
 
