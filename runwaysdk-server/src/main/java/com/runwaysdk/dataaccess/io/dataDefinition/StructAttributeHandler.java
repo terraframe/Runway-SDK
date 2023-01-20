@@ -41,7 +41,7 @@ public class StructAttributeHandler extends TagHandler implements TagHandlerIF, 
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String structName = attributes.getValue(XMLTags.ENTITY_ATTRIBUTE_NAME_ATTRIBUTE);
 

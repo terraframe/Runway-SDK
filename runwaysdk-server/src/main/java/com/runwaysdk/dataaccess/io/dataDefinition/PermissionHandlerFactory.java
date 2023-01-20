@@ -28,7 +28,7 @@ public class PermissionHandlerFactory implements HandlerFactoryIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#getHandler(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF, com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public TagHandlerIF getHandler(String localName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
+  public TagHandlerIF getHandler(String qName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
   {
     // TODO Auto-generated method stub
     return null;
@@ -38,7 +38,7 @@ public class PermissionHandlerFactory implements HandlerFactoryIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#supports(java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     // TODO Auto-generated method stub
     return false;
@@ -50,17 +50,17 @@ public class PermissionHandlerFactory implements HandlerFactoryIF
 //   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#supports(java.lang.String)
 //   */
 //  @Override
-//  public boolean supports(String localName)
+//  public boolean supports(String qName)
 //  {
-//    if (localName.equals(XMLTags.USER_TAG))
+//    if (qName.equals(XMLTags.USER_TAG))
 //    {
 //      return true;
 //    }
-//    else if (localName.equals(XMLTags.ROLE_TAG))
+//    else if (qName.equals(XMLTags.ROLE_TAG))
 //    {
 //      return true;
 //    }
-//    else if (localName.equals(XMLTags.METHOD_TAG))
+//    else if (qName.equals(XMLTags.METHOD_TAG))
 //    {
 //      return true;
 //    }
@@ -74,17 +74,17 @@ public class PermissionHandlerFactory implements HandlerFactoryIF
 //   * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactoryIF#getHandler (java.lang.String, org.xml.sax.Attributes, org.xml.sax.XMLReader, com.runwaysdk.dataaccess.io.XMLHandler,
 //   * com.runwaysdk.dataaccess.io.ImportManager)
 //   */
-//  public XMLHandler getHandler(String localName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
+//  public XMLHandler getHandler(String qName, Attributes attributes, TagHandlerIF prev, ImportManager manager)
 //  {
-//    if (localName.equals(XMLTags.USER_TAG))
+//    if (qName.equals(XMLTags.USER_TAG))
 //    {
 //      return new UserPermissionHandler(attributes, reader, prev, manager);
 //    }
-//    else if (localName.equals(XMLTags.ROLE_TAG))
+//    else if (qName.equals(XMLTags.ROLE_TAG))
 //    {
 //      return new RolePermissionHandler(attributes, reader, prev, manager);
 //    }
-//    else if (localName.equals(XMLTags.METHOD_TAG))
+//    else if (qName.equals(XMLTags.METHOD_TAG))
 //    {
 //      return new MethodPermissionHandler(attributes, reader, prev, manager);
 //    }

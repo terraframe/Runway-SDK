@@ -246,19 +246,19 @@ public class SMXMLTags implements XMLTags
     return instanceElementTags.contains(tag);
   }
 
-  public static boolean isRelationshipTag(String localName)
+  public static boolean isRelationshipTag(String qName)
   {
-    return relationshipTags.contains(localName);
+    return relationshipTags.contains(qName);
   }
 
-  public static boolean isEnumItemModificationTag(String localName)
+  public static boolean isEnumItemModificationTag(String qName)
   {
-    return enumItemModificationTags.contains(localName);
+    return enumItemModificationTags.contains(qName);
   }
 
-  public static boolean isPermissionHolderTag(String localName)
+  public static boolean isPermissionHolderTag(String qName)
   {
-    return permissionHolderTags.contains(localName);
+    return permissionHolderTags.contains(qName);
   }
 
   public static boolean isPermissionActionTag(String tag)

@@ -23,9 +23,9 @@ import org.xml.sax.Attributes;
 public class EnumItemModification extends KeyedElement
 {
 
-  public EnumItemModification(Attributes attributes, String localName)
+  public EnumItemModification(Attributes attributes, String qName)
   {
-    super(attributes, localName);
+    super(attributes, qName);
   }
 
   public <T> T accept(SchemaVisitor<T> v)

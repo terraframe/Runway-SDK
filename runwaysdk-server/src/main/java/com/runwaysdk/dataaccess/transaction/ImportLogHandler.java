@@ -41,7 +41,7 @@ public class ImportLogHandler extends XMLHandler
 
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_LOG_SITE))
+    if (qName.equals(XMLTransactionTags.XML_LOG_SITE))
     {
       String sourceSite = attributes.getValue(XMLTransactionTags.XML_LOG_SOURCE_SITE);
       String lastExportSeq = attributes.getValue(XMLTransactionTags.XML_LOG_LAST_EXPORT_SEQ);
@@ -104,7 +104,7 @@ public class ImportLogHandler extends XMLHandler
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_IMPORT_LOG))
+    if (qName.equals(XMLTransactionTags.XML_IMPORT_LOG))
     {
       reader.setContentHandler(previousHandler);
       reader.setErrorHandler(previousHandler);

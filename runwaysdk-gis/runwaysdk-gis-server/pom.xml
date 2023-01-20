@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-gis</artifactId>
-    <version>3.6.2-SNAPSHOT</version>
+    <version>3.7.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>runwaysdk-gis-server</artifactId>
@@ -81,7 +81,7 @@
 
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>dev.aspectj</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj.plugin.version}</version>
         <dependencies>

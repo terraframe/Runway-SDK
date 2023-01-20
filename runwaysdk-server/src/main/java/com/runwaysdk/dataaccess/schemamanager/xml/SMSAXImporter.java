@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.schemamanager.xml;
 
 import java.io.File;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
@@ -39,26 +41,27 @@ public class SMSAXImporter extends XMLHandler
    * @param source
    * @param schemaLocation
    * @throws SAXException
+   * @throws ParserConfigurationException 
    */
-  private SMSAXImporter(StreamSource source, String schemaLocation) throws SAXException
+  private SMSAXImporter(StreamSource source, String schemaLocation) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation);
 
     reader.setContentHandler(this);
     reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+//    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
   }
 
-  private SMSAXImporter(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
+  private SMSAXImporter(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, filter);
 
     reader.setContentHandler(this);
     reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+//    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
   }
 
-  public SMSAXImporter(File file, String schemaLocation) throws SAXException
+  public SMSAXImporter(File file, String schemaLocation) throws SAXException, ParserConfigurationException
   {
     this(new FileStreamSource(file), schemaLocation);
 
@@ -66,7 +69,7 @@ public class SMSAXImporter extends XMLHandler
     ( (MergeSchema) manager ).addTimestamp(file);
   }
 
-  public SMSAXImporter(File file, String schemaLocation, MergeSchema manager) throws SAXException
+  public SMSAXImporter(File file, String schemaLocation, MergeSchema manager) throws SAXException, ParserConfigurationException
   {
     this(new FileStreamSource(file), schemaLocation);
 
@@ -74,7 +77,7 @@ public class SMSAXImporter extends XMLHandler
     manager.addTimestamp(file);
   }
 
-  public SMSAXImporter(File file, String schemaLocation, MergeSchema manager, XMLFilter filter) throws SAXException
+  public SMSAXImporter(File file, String schemaLocation, MergeSchema manager, XMLFilter filter) throws SAXException, ParserConfigurationException
   {
     this(new FileStreamSource(file), schemaLocation, filter);
 
@@ -87,9 +90,9 @@ public class SMSAXImporter extends XMLHandler
    * 
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException
   {
-    DefaultHandler handler = getHandler(localName, attributes);
+    DefaultHandler handler = getHandler(qName, attributes);
 
     // Pass control of the parsin to the new handler
     if (handler != null)
@@ -99,9 +102,9 @@ public class SMSAXImporter extends XMLHandler
     }
   }
 
-  protected DefaultHandler getHandler(String localName, Attributes attributes)
+  protected DefaultHandler getHandler(String qName, Attributes attributes)
   {
-    return new SMRootHandlerFactory().getHandler(reader, this, manager, localName, attributes);
+    return new SMRootHandlerFactory().getHandler(reader, this, manager, qName, attributes);
   }
 
   public synchronized static void runImport(File file, String xsdLocation, MergeSchema manager)
@@ -112,7 +115,7 @@ public class SMSAXImporter extends XMLHandler
       importer.begin();
 
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -126,7 +129,7 @@ public class SMSAXImporter extends XMLHandler
       importer.begin();
 
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

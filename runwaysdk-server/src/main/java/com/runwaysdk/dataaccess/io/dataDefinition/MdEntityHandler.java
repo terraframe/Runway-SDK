@@ -46,7 +46,7 @@ public abstract class MdEntityHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public abstract void onStartElement(String localName, Attributes attributes, TagContext context);
+  public abstract void onStartElement(String qName, Attributes attributes, TagContext context);
 
   /*
    * (non-Javadoc)
@@ -54,5 +54,5 @@ public abstract class MdEntityHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public abstract void onEndElement(String uri, String localName, String name, TagContext context);
+  public abstract void onEndElement(String uri, String qName, String name, TagContext context);
 }

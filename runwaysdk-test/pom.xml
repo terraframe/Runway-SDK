@@ -26,7 +26,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.6.2-SNAPSHOT</version>
+    <version>3.7.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-test</artifactId>
@@ -236,7 +236,7 @@
 
       <!-- This plugin weaves aspects on build -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>dev.aspectj</groupId>        
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj.plugin.version}</version>
         <dependencies>

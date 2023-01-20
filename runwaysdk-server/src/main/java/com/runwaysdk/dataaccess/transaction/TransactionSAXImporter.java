@@ -23,6 +23,8 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -56,9 +58,10 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
    * @param resolver
    *          Resolver to use when conflicts arise during the import
    * @throws SAXException
+   * @throws ParserConfigurationException 
    * @throws FileNotFoundException 
    */
-  public TransactionSAXImporter(File exportXMLFile, String schemaLocation, IConflictResolver resolver) throws SAXException
+  public TransactionSAXImporter(File exportXMLFile, String schemaLocation, IConflictResolver resolver) throws SAXException, ParserConfigurationException
   {
     super(new FileStreamSource(exportXMLFile), schemaLocation, resolver);
 
@@ -69,7 +72,7 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
 
     reader.setContentHandler(this);
     reader.setErrorHandler(this);
-    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
+//    reader.setProperty(EXTERNAL_SCHEMA_PROPERTY, schemaLocation);
   }
 
   public void addTaskListener(ITaskListener listener)
@@ -99,9 +102,9 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTIONS_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTIONS_TAG))
     {
       this.importSite = attributes.getValue(XMLTransactionTags.XML_TRANSACTIONS_SITE_ATTR);
       this.numberOfTransactions = Long.parseLong(attributes.getValue(XMLTransactionTags.XML_TRANSACTIONS_NUM_OF_TRANS_ATTR));
@@ -129,20 +132,20 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
         throw new SynchronizationSequenceGapException(errMsg, this.importSite, lastSequenceImported, startingExportSequence, neededImportSequence);
       }
     }
-    else if (localName.equals(XMLTransactionTags.XML_TRANSACTIONS_PROPERTY))
+    else if (qName.equals(XMLTransactionTags.XML_TRANSACTIONS_PROPERTY))
     {
       String name = attributes.getValue(XMLTransactionTags.XML_TRANSACTIONS_NAME);
       String value = attributes.getValue(XMLTransactionTags.XML_TRANSACTIONS_VALUE);
 
       this.firePropertyEventEvent(name, value);
     }
-    else if (localName.equals(XMLTransactionTags.XML_IMPORT_LOG))
+    else if (qName.equals(XMLTransactionTags.XML_IMPORT_LOG))
     {
       ImportLogHandler handler = new ImportLogHandler(attributes, this.reader, this, this.manager);
       reader.setContentHandler(handler);
       reader.setErrorHandler(handler);
     }
-    else if (localName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
+    else if (qName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
     {
       if (this.isFirstTransaction)
       {
@@ -202,7 +205,7 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
    */
   public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTransactionTags.XML_TRANSACTIONS_TAG) || localName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
+    if (qName.equals(XMLTransactionTags.XML_TRANSACTIONS_TAG) || qName.equals(XMLTransactionTags.XML_TRANSACTION_RECORD_TAG))
     {
       reader.setContentHandler(this);
       reader.setErrorHandler(this);
@@ -242,7 +245,7 @@ public class TransactionSAXImporter extends XMLHandlerWithResolver
 
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

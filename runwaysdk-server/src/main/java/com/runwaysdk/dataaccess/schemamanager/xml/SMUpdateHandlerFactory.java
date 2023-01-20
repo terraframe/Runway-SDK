@@ -28,7 +28,7 @@ import com.runwaysdk.dataaccess.schemamanager.model.MergeSchema;
 public class SMUpdateHandlerFactory
 {
 
-  public AbstractSchemaHandler getHandler(String localName, Attributes attributes, XMLReader reader, AbstractSchemaHandler handler, ImportManager manager)
+  public AbstractSchemaHandler getHandler(String qName, Attributes attributes, XMLReader reader, AbstractSchemaHandler handler, ImportManager manager)
   {
     if (! ( manager instanceof MergeSchema ))
     {
@@ -37,29 +37,29 @@ public class SMUpdateHandlerFactory
 
     MergeSchema schema = (MergeSchema) manager;
 
-    if (SMXMLTags.isClassTag(localName))
+    if (SMXMLTags.isClassTag(qName))
     {
-      return new SMClassHandler(schema, reader, handler, localName, attributes);
+      return new SMClassHandler(schema, reader, handler, qName, attributes);
     }
-    else if (SMXMLTags.isRelationshipTag(localName))
+    else if (SMXMLTags.isRelationshipTag(qName))
     {
-      return new SMRelationshipHandler(attributes, reader, handler, schema, localName);
+      return new SMRelationshipHandler(attributes, reader, handler, schema, qName);
     }
 
     // Handle the create tag that may appear inside another update tag
-    else if (localName.equals(XMLTags.CREATE_TAG))
+    else if (qName.equals(XMLTags.CREATE_TAG))
     {
       return new SMCreateGroupHandler(reader, handler, schema);
     }
-    else if (localName.equals(XMLTags.OBJECT_TAG) || localName.equals(XMLTags.RELATIONSHIP_TAG))
+    else if (qName.equals(XMLTags.OBJECT_TAG) || qName.equals(XMLTags.RELATIONSHIP_TAG))
     {
       // return new GenericChildElementHandler(attributes, reader, handler,
-      // schema, localName);
-      return new InstanceElementHandler(attributes, reader, handler, schema, localName);
+      // schema, qName);
+      return new InstanceElementHandler(attributes, reader, handler, schema, qName);
     }
-    else if (localName.equals(XMLTags.MD_ENUMERATION_TAG))
+    else if (qName.equals(XMLTags.MD_ENUMERATION_TAG))
     {
-      return new SMEnumerationHandler(attributes, reader, handler, schema, localName);
+      return new SMEnumerationHandler(attributes, reader, handler, schema, qName);
     }
     // Everything else did not have their semantics preserved, Use
     // NonRenderableElementHandler for all the other tags.

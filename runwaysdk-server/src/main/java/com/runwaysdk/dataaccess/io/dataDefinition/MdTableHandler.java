@@ -49,7 +49,7 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
    * runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdTableDAO mdTableDAO = (MdTableDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -58,7 +58,7 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -71,15 +71,15 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdTableDAO to import, if this is a create then a new instance
     // of MdTableDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdTableDAO mdTableDAO = this.createMdTable(localName, name);
+    MdTableDAO mdTableDAO = this.createMdTable(qName, name);
 
-    this.importMdTable(mdTableDAO, localName, attributes);
+    this.importMdTable(mdTableDAO, qName, attributes);
 
     // Make sure the class has not already been defined
     if (!this.getManager().isCreated(mdTableDAO.definesType()))
@@ -92,7 +92,7 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
     context.setObject(MdTypeInfo.CLASS, mdTableDAO);
   }
 
-  private final MdTableDAO createMdTable(String localName, String name)
+  private final MdTableDAO createMdTable(String qName, String name)
   {
     return (MdTableDAO) this.getManager().getEntityDAO(MdTableInfo.CLASS, name).getEntityDAO();
   }
@@ -106,7 +106,7 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
    *          The attributes of an class tag
    * @return MdTableDAO from the parse of the class tag attributes.
    */
-  private final void importMdTable(MdTableDAO mdTableDAO, String localName, Attributes attributes)
+  private final void importMdTable(MdTableDAO mdTableDAO, String qName, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -138,9 +138,9 @@ public class MdTableHandler extends TagHandler implements TagHandlerIF, HandlerF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.MD_TABLE_TAG))
+    if (qName.equals(XMLTags.MD_TABLE_TAG))
     {
       MdTableDAO mdTableDAO = (MdTableDAO) context.getObject(MdTypeInfo.CLASS);
 

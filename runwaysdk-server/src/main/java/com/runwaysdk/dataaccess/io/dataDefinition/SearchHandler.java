@@ -18,6 +18,8 @@
  */
 package com.runwaysdk.dataaccess.io.dataDefinition;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,8 +55,9 @@ public class SearchHandler extends SAXSourceParser
    * @param cause
    *          TODO
    * @throws SAXException
+   * @throws ParserConfigurationException 
    */
-  protected SearchHandler(ImportManager manager, SearchCriteriaIF criteria, String cause) throws SAXException
+  protected SearchHandler(ImportManager manager, SearchCriteriaIF criteria, String cause) throws SAXException, ParserConfigurationException
   {
     super(manager);
 
@@ -79,10 +82,10 @@ public class SearchHandler extends SAXSourceParser
   protected boolean process(TagContext context)
   {
     TagHandlerIF handler = context.getHandler();
-    String localName = context.getLocalName();
+    String qName = context.getLocalName();
 
     boolean parse = context.isParse();
-    boolean modifiesState = handler.modifiesState(localName);
+    boolean modifiesState = handler.modifiesState(qName);
 
     return ( parse || modifiesState );
   }
@@ -94,13 +97,13 @@ public class SearchHandler extends SAXSourceParser
    * com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerIF)
    */
   @Override
-  protected TagContext createContext(String localName, Attributes attributes, TagContext parent, TagHandlerIF handler)
+  protected TagContext createContext(String qName, Attributes attributes, TagContext parent, TagHandlerIF handler)
   {
-    TagContext context = super.createContext(localName, attributes, parent, handler);
+    TagContext context = super.createContext(qName, attributes, parent, handler);
 
     if (parent != null)
     {
-      boolean parse = ( !defined && criteria.check(localName, attributes) ) || parent.isParse();
+      boolean parse = ( !defined && criteria.check(qName, attributes) ) || parent.isParse();
       context.setParse(parse);
     }
     else
@@ -133,7 +136,7 @@ public class SearchHandler extends SAXSourceParser
       SearchHandler searcher = new SearchHandler(manager, criteria, cause);
       searcher.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

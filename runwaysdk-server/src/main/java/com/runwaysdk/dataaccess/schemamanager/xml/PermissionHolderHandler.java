@@ -41,9 +41,9 @@ public class PermissionHolderHandler extends AbstractSchemaHandler
   }
 
   @Override
-  protected void initRootElement(Attributes attributes, String localName)
+  protected void initRootElement(Attributes attributes, String qName)
   {
-    root = schema.createPermissionHolder(attributes, localName);
+    root = schema.createPermissionHolder(attributes, qName);
 
     schema.registerDependency((PermissionHolder) root);
   }

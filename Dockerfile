@@ -17,7 +17,7 @@
 # License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-FROM maven:3-openjdk-8
+FROM maven:3-openjdk-11
 
 ENV DATA_ACCESS=true
 ENV BUSINESS=true

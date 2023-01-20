@@ -126,7 +126,7 @@ public class NullElement extends ElementObservable implements KeyedElementIF
   }
 
   @Override
-  public String getXMLAttributeValue(String localName)
+  public String getXMLAttributeValue(String qName)
   {
     throw new RuntimeException("Method should never be invoked");
   }

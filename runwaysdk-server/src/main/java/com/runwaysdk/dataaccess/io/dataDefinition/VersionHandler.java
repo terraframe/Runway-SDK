@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
@@ -55,12 +57,12 @@ public class VersionHandler extends SAXSourceParser
    */
   public static final String VERSION_XSD = XMLConstants.VERSION_XSD;
 
-  public VersionHandler(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
+  public VersionHandler(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, plugins);
   }
 
-  public VersionHandler(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
+  public VersionHandler(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, filter, plugins);
   }
@@ -123,7 +125,7 @@ public class VersionHandler extends SAXSourceParser
         new VersionHandler(new FileStreamSource(file), null, plugins).begin();
       }
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -171,7 +173,7 @@ public class VersionHandler extends SAXSourceParser
         new VersionHandler(new ResourceStreamSource(xmlRes), null, plugins).begin();
       }
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

@@ -56,7 +56,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -91,7 +91,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -119,7 +119,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onEndElement(String uri, String localName, String name, TagContext context)
+    public void onEndElement(String uri, String qName, String name, TagContext context)
     {
       MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -144,7 +144,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
      * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandlerDecorator#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
      */
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -154,7 +154,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
         mdRelationship.apply();
       }
 
-      super.onStartElement(localName, attributes, context);
+      super.onStartElement(qName, attributes, context);
     }
   }
 
@@ -177,7 +177,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdRelationshipDAO mdRelationship = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -186,7 +186,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -195,11 +195,11 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String key = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdRelationshipDAO mdRelationshipDAO = this.createMdRelationship(localName, key);
+    MdRelationshipDAO mdRelationshipDAO = this.createMdRelationship(qName, key);
     this.importMdRelationship(mdRelationshipDAO, attributes);
 
     context.setObject(MdTypeInfo.CLASS, mdRelationshipDAO);
@@ -332,7 +332,7 @@ public class MdRelationshipHandler extends MdEntityHandler implements TagHandler
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdRelationshipDAO mdRelationshipDAO = (MdRelationshipDAO) context.getObject(MdTypeInfo.CLASS);
 

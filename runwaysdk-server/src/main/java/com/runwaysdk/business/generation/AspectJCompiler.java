@@ -45,6 +45,8 @@ public class AspectJCompiler extends AbstractCompiler
 
   private LinkedList<String> infos;
 
+  private LinkedList<String> usages;
+
   /**
    * Sets default values for the compiler (most notably -aspectpath)
    */
@@ -55,6 +57,7 @@ public class AspectJCompiler extends AbstractCompiler
     errors = new LinkedList<String>();
     warnings = new LinkedList<String>();
     infos = new LinkedList<String>();
+    usages = new LinkedList<String>();
 
     if (LocalProperties.isRunwayEnvironment())
     {
@@ -121,7 +124,7 @@ public class AspectJCompiler extends AbstractCompiler
     warnings.clear();
     infos.clear();
 
-    if (0 < Main.bareMain(args, false, fails, errors, warnings, infos))
+    if (0 < Main.bareMain(args, false, fails, errors, warnings, infos, usages))
     {
       // We have errors
       StringBuilder message = new StringBuilder();

@@ -45,7 +45,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdWebFormDAO mdForm = (MdWebFormDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -54,7 +54,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -63,7 +63,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdWebForm to import, if this is a create then a new instance of
     // MdWebForm is imported
@@ -130,7 +130,7 @@ public class MdWebFormHandler extends TagHandler implements TagHandlerIF, Handle
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdWebFormDAO mdForm = (MdWebFormDAO) context.getObject(MdTypeInfo.CLASS);
 

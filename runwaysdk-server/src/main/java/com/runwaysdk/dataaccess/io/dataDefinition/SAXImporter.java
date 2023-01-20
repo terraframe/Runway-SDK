@@ -20,6 +20,8 @@ package com.runwaysdk.dataaccess.io.dataDefinition;
 
 import java.io.File;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 
@@ -41,12 +43,12 @@ import com.runwaysdk.session.Request;
  */
 public class SAXImporter extends SAXSourceParser
 {
-  public SAXImporter(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException
+  public SAXImporter(StreamSource source, String schemaLocation, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, plugins);
   }
 
-  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException
+  public SAXImporter(StreamSource source, String schemaLocation, XMLFilter filter, ImportPluginIF... plugins) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, filter, plugins);
   }
@@ -82,7 +84,7 @@ public class SAXImporter extends SAXSourceParser
       SAXImporter importer = new SAXImporter(new FileStreamSource(file), schemaLocation, plugins);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -98,7 +100,7 @@ public class SAXImporter extends SAXSourceParser
       SAXImporter importer = new SAXImporter(source, schemaLocation, plugins);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -140,7 +142,7 @@ public class SAXImporter extends SAXSourceParser
       SAXImporter importer = new SAXImporter(new StringStreamSource(xml.trim()), xsd, plugins);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

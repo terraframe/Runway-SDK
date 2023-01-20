@@ -46,15 +46,15 @@ public class SMXMLFilter extends XMLFilterImpl
   private boolean isBlocked = true;
 
   @Override
-  public void startElement(String uri, String localName, String name, Attributes atts)
+  public void startElement(String uri, String localName, String qName, Attributes atts)
       throws SAXException
   {
     
-    if (localName.equals(passTag)) {
+    if (qName.equals(passTag)) {
       unblock();
     }
     if (!isBlocked()) {
-      super.startElement(uri, localName, name, atts);
+      super.startElement(uri, qName, qName, atts);
     }
       
   }
@@ -70,14 +70,14 @@ public class SMXMLFilter extends XMLFilterImpl
   }
 
   @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
+  public void endElement(String uri, String qName, String name) throws SAXException
   {
-    if (localName.equals(passTag)) {
+    if (qName.equals(passTag)) {
       block();
     }
     // TODO Auto-generated method stub
     if (!isBlocked()) {
-      super.endElement(uri, localName, name); 
+      super.endElement(uri, qName, name); 
     }
      
   }

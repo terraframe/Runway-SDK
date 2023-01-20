@@ -127,11 +127,11 @@ public class RelationshipHandler extends ElementHandler
    * com.runwaysdk.dataaccess.io.instance.EntityHandler#endElement(java.lang
    * .String, java.lang.String, java.lang.String)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTags.RELATIONSHIP_TAG))
+    if (qName.equals(XMLTags.RELATIONSHIP_TAG))
     {
-      super.endElement(namespaceURI, localName, fullName);
+      super.endElement(namespaceURI, localName, qName);
     }
   }
 }

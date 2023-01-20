@@ -50,7 +50,7 @@ public class AttributeHandler extends TagHandler implements TagHandlerIF, Handle
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     Object obj = context.getObject(EntityInfo.CLASS);
 

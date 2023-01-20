@@ -51,7 +51,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
    * runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdVertexDAO mdVertexDAO = (MdVertexDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -60,7 +60,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -73,15 +73,15 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdVertexDAO to import, if this is a create then a new instance
     // of MdVertexDAO is imported
     String name = attributes.getValue(XMLTags.NAME_ATTRIBUTE);
 
-    MdVertexDAO mdVertexDAO = this.createMdVertex(localName, name);
+    MdVertexDAO mdVertexDAO = this.createMdVertex(qName, name);
 
-    this.importMdVertex(mdVertexDAO, localName, attributes);
+    this.importMdVertex(mdVertexDAO, qName, attributes);
 
     // Make sure the class has not already been defined
     if (!this.getManager().isCreated(mdVertexDAO.definesType()))
@@ -94,7 +94,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
     context.setObject(MdTypeInfo.CLASS, mdVertexDAO);
   }
 
-  protected MdVertexDAO createMdVertex(String localName, String name)
+  protected MdVertexDAO createMdVertex(String qName, String name)
   {
     return (MdVertexDAO) this.getManager().getEntityDAO(MdVertexInfo.CLASS, name).getEntityDAO();
   }
@@ -113,7 +113,7 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
    *          The attributes of an class tag
    * @return MdVertexDAO from the parse of the class tag attributes.
    */
-  private final void importMdVertex(MdVertexDAO mdVertexDAO, String localName, Attributes attributes)
+  private final void importMdVertex(MdVertexDAO mdVertexDAO, String qName, Attributes attributes)
   {
     // Import the required attributes and Breakup the type into a package and
     // name
@@ -160,9 +160,9 @@ public class MdVertexHandler extends MdGraphClassHandler implements TagHandlerIF
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(getTag()))
+    if (qName.equals(getTag()))
     {
       MdVertexDAO mdVertexDAO = (MdVertexDAO) context.getObject(MdTypeInfo.CLASS);
 

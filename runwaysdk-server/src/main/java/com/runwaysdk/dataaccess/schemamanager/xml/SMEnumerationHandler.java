@@ -31,17 +31,17 @@ import com.runwaysdk.dataaccess.schemamanager.model.SchemaEnumeration;
 public class SMEnumerationHandler extends AbstractSchemaHandler
 {
 
-  public SMEnumerationHandler(Attributes attributes, XMLReader reader, AbstractSchemaHandler previousHandler, MergeSchema schema, String localName)
+  public SMEnumerationHandler(Attributes attributes, XMLReader reader, AbstractSchemaHandler previousHandler, MergeSchema schema, String qName)
   {
-    super(schema, reader, previousHandler, localName, attributes);
+    super(schema, reader, previousHandler, qName, attributes);
 
   }
 
-  protected void initRootElement(Attributes attributes, String localName)
+  protected void initRootElement(Attributes attributes, String qName)
   {
     if (schema().isCreateState())
     {
-      root = schema().createSchemaEnumeration(attributes, localName);
+      root = schema().createSchemaEnumeration(attributes, qName);
     }
     else if (schema().isUpdateState())
     {
@@ -53,28 +53,28 @@ public class SMEnumerationHandler extends AbstractSchemaHandler
       }
       else
       {
-        throw new SourceElementNotDeclaredException(new SchemaEnumeration(attributes, localName), "");
+        throw new SourceElementNotDeclaredException(new SchemaEnumeration(attributes, qName), "");
       }
     }
 
   }
 
   @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTags.ADD_ENUM_ITEM_TAG))
+    if (qName.equals(XMLTags.ADD_ENUM_ITEM_TAG))
     {
-      EnumItemModification item = new EnumItemModification(attributes, localName);
+      EnumItemModification item = new EnumItemModification(attributes, qName);
       enumeration().addEnumItemAddition(item);
     }
 
-    else if (localName.equals(XMLTags.REMOVE_ENUM_ITEM_TAG))
+    else if (qName.equals(XMLTags.REMOVE_ENUM_ITEM_TAG))
     {
-      EnumItemModification item = new EnumItemModification(attributes, localName);
+      EnumItemModification item = new EnumItemModification(attributes, qName);
       enumeration().addEnumItemDeletion(item);
     }
 
-    else if (localName.equals(XMLTags.INCLUDEALL_TAG))
+    else if (qName.equals(XMLTags.INCLUDEALL_TAG))
     {
       enumeration().setIncludeAll();
     }

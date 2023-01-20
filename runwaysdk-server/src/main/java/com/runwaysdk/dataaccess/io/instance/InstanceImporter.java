@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -42,7 +44,7 @@ import com.runwaysdk.dataaccess.transaction.Transaction;
  */
 public class InstanceImporter extends XMLHandlerWithResolver
 {
-  public InstanceImporter(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException
+  public InstanceImporter(StreamSource source, String schemaLocation, IConflictResolver resolver) throws SAXException, ParserConfigurationException
   {
     super(source, schemaLocation, resolver);
 
@@ -58,15 +60,15 @@ public class InstanceImporter extends XMLHandlerWithResolver
    * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
    *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+  public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException
   {
-    if (localName.equals(XMLTags.OBJECT_TAG))
+    if (qName.equals(XMLTags.OBJECT_TAG))
     {
       InstanceHandler iHandler = new InstanceHandler(reader, this, manager, this.getResolver(), attributes);
       reader.setContentHandler(iHandler);
       reader.setErrorHandler(iHandler);
     }
-    else if (localName.equals(XMLTags.RELATIONSHIP_TAG))
+    else if (qName.equals(XMLTags.RELATIONSHIP_TAG))
     {
       RelationshipHandler handler = new RelationshipHandler(reader, this, manager, this.getResolver(), attributes);
       reader.setContentHandler(handler);
@@ -81,7 +83,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
    * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
    *      java.lang.String, java.lang.String)
    */
-  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
 
   }
@@ -112,7 +114,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), location, resolver);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new CoreException(e);
     }
@@ -150,7 +152,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       InstanceImporter importer = new InstanceImporter(new StringStreamSource(xml.trim()), schemaLocation, resolver);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -207,7 +209,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), schemaLocation, resolver);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }
@@ -224,7 +226,7 @@ public class InstanceImporter extends XMLHandlerWithResolver
       InstanceImporter importer = new InstanceImporter(new FileStreamSource(file), location, resolver);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

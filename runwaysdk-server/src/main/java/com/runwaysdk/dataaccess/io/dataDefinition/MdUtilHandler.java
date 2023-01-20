@@ -47,7 +47,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * @see com.runwaysdk.dataaccess.io.dataDefinition.HandlerFactory#supports(com.runwaysdk.dataaccess.io.dataDefinition.TagContext, java.lang.String)
    */
   @Override
-  public boolean supports(TagContext context, String localName)
+  public boolean supports(TagContext context, String qName)
   {
     MdUtilDAO mdUtil = (MdUtilDAO) context.getObject(MdTypeInfo.CLASS);
 
@@ -56,7 +56,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
       return false;
     }
 
-    return super.supports(context, localName);
+    return super.supports(context, qName);
   }
 
   /*
@@ -65,7 +65,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onStartElement(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     // Get the MdUtil to import, if the action is 'create' then a new instance
     // of MdUtil is used.
@@ -134,7 +134,7 @@ public class MdUtilHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     MdUtilDAO mdUtil = (MdUtilDAO) context.getObject(MdTypeInfo.CLASS);
 

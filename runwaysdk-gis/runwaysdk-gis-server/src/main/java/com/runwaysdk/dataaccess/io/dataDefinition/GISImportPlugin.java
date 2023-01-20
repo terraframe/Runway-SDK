@@ -116,7 +116,7 @@ public class GISImportPlugin implements ImportPluginIF
     }
 
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       String type = attributes.getValue(TYPE);
       String attribute = attributes.getValue(ATTRIBUTE);
@@ -197,7 +197,7 @@ public class GISImportPlugin implements ImportPluginIF
     }
 
     @Override
-    public void onStartElement(String localName, Attributes attributes, TagContext context)
+    public void onStartElement(String qName, Attributes attributes, TagContext context)
     {
       String type = attributes.getValue(TYPE);
       String attribute = attributes.getValue(ATTRIBUTE);
@@ -331,7 +331,7 @@ public class GISImportPlugin implements ImportPluginIF
       super(manager);
     }
 
-    protected final MdGeoVertexDAO createMdVertex(String localName, String name)
+    protected final MdGeoVertexDAO createMdVertex(String qName, String name)
     {
       return (MdGeoVertexDAO) this.getManager().getEntityDAO(MdGeoVertexInfo.CLASS, name).getEntityDAO();
     }

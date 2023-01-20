@@ -49,37 +49,37 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //  }
 //
 //  @Override
-//  public void startElement(String namespaceURI, String localName, String fullName, Attributes attributes) throws SAXException
+//  public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException
 //  {
 //    if (manager.isCreated(mdRelationshipDAO.definesType()))
 //    {
 //      return;
 //    }
 //
-//    if (localName.equals(XMLTags.PARENT_TAG))
+//    if (qName.equals(XMLTags.PARENT_TAG))
 //    {
 //      importParent(attributes);
 //    }
-//    else if (localName.equals(XMLTags.CHILD_TAG))
+//    else if (qName.equals(XMLTags.CHILD_TAG))
 //    {
 //      importChild(attributes);
 //    }
 //    else
 //    {
 //      // cache all the events other than parent and child
-//      cachedEvents.add(new StartSAXEvent(namespaceURI, localName, fullName, attributes));
+//      cachedEvents.add(new StartSAXEvent(namespaceURI, qName, fullName, attributes));
 //    }
 //  }
 //
 //  @Override
-//  public void endElement(String namespaceURI, String localName, String fullName) throws SAXException
+//  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
 //  {
-//    if (!localName.equals(XMLTags.PARENT_TAG) && !localName.equals(XMLTags.CHILD_TAG))
+//    if (!qName.equals(XMLTags.PARENT_TAG) && !qName.equals(XMLTags.CHILD_TAG))
 //    {
-//      cachedEvents.add(new EndSAXEvent(namespaceURI, localName, fullName));
+//      cachedEvents.add(new EndSAXEvent(namespaceURI, qName, fullName));
 //    }
 //
-//    if (localName.equals(XMLTags.MD_RELATIONSHIP_TAG) || localName.equals(XMLTags.MD_TREE_TAG) || localName.equals(XMLTags.MD_GRAPH_TAG) || localName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
+//    if (qName.equals(XMLTags.MD_RELATIONSHIP_TAG) || qName.equals(XMLTags.MD_TREE_TAG) || qName.equals(XMLTags.MD_GRAPH_TAG) || qName.equals(XMLTags.MD_TERM_RELATIONSHIP_TAG))
 //    {
 //      if (!manager.isCreated(mdRelationshipDAO.definesType()))
 //      {
@@ -124,13 +124,13 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //          if (saxEvent instanceof StartSAXEvent)
 //          {
 //            StartSAXEvent startEvent = (StartSAXEvent) saxEvent;
-//            super.startElement(startEvent.uri, startEvent.localName, startEvent.name, startEvent.attributes);
+//            super.startElement(startEvent.uri, startEvent.qName, startEvent.name, startEvent.attributes);
 //          }
 //
 //          else
 //          {
 //            EndSAXEvent endSAXEvent = (EndSAXEvent) saxEvent;
-//            super.endElement(endSAXEvent.uri, endSAXEvent.localName, endSAXEvent.name);
+//            super.endElement(endSAXEvent.uri, endSAXEvent.qName, endSAXEvent.name);
 //          }
 //        }
 //        catch (SAXException e)
@@ -148,14 +148,14 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //  {
 //    protected String uri;
 //
-//    protected String localName;
+//    protected String qName;
 //
 //    protected String name;
 //
-//    public SAXEvent(String uri, String localName, String name)
+//    public SAXEvent(String uri, String qName, String name)
 //    {
 //      this.uri = uri;
-//      this.localName = localName;
+//      this.qName = qName;
 //      this.name = name;
 //    }
 //  }
@@ -165,9 +165,9 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //
 //    protected Attributes attributes;
 //
-//    public StartSAXEvent(String uri, String localName, String name, Attributes attributes)
+//    public StartSAXEvent(String uri, String qName, String name, Attributes attributes)
 //    {
-//      super(uri, localName, name);
+//      super(uri, qName, name);
 //      this.attributes = new AttributesImpl(attributes);
 //    }
 //
@@ -175,9 +175,9 @@ public class MdRelationshipHandlerWithCaching //extends MdRelationshipHandler
 //
 //  private static class EndSAXEvent extends SAXEvent
 //  {
-//    public EndSAXEvent(String uri, String localName, String name)
+//    public EndSAXEvent(String uri, String qName, String name)
 //    {
-//      super(uri, localName, name);
+//      super(uri, qName, name);
 //    }
 //  }
 }

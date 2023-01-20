@@ -28,25 +28,25 @@ public interface TagHandlerIF
   /**
    * Delegation of SAX start element event
    * 
-   * @param localName
+   * @param qName
    * @param attributes
    * @param context
    */
-  public void onStartElement(String localName, Attributes attributes, TagContext context);
+  public void onStartElement(String qName, Attributes attributes, TagContext context);
 
   /**
    * Delegation of SAX end element event
    * 
-   * @param localName
+   * @param qName
    * @param attributes
    * @param context
    */
-  public void onEndElement(String uri, String localName, String name, TagContext context);
+  public void onEndElement(String uri, String qName, String name, TagContext context);
 
   /**
    * Delegation of SAX characters event
    * 
-   * @param localName
+   * @param qName
    * @param attributes
    * @param context
    */
@@ -58,12 +58,12 @@ public interface TagHandlerIF
   public String getKey();
 
   /**
-   * Indicates if the handler will modify the manager state based upon the localName of the tag
+   * Indicates if the handler will modify the manager state based upon the qName of the tag
    * 
-   * @param localName
+   * @param qName
    * @return
    */
-  public boolean modifiesState(String localName);
+  public boolean modifiesState(String qName);
 
   /**
    * @return Manager being used in the import

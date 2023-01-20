@@ -91,7 +91,7 @@ public abstract class AbstractSchemaHandler extends DefaultHandler
     this.schema = schema;
   }
 
-  protected abstract void initRootElement(Attributes attributes, String localName);
+  protected abstract void initRootElement(Attributes attributes, String qName);
 
   public MergeSchema schema()
   {
@@ -99,13 +99,13 @@ public abstract class AbstractSchemaHandler extends DefaultHandler
   }
 
   @Override
-  public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
   {
     if (childHandler != null)
     {
       obtainChildElement();
     }
-    dispatchChildHandler(attributes, localName);
+    dispatchChildHandler(attributes, qName);
   }
 
   /**
@@ -147,7 +147,7 @@ public abstract class AbstractSchemaHandler extends DefaultHandler
   /**
    * returns the control to the parent handler
    */
-  protected void returnToParentHandler(String localName)
+  protected void returnToParentHandler(String qName)
   {
     reader.setContentHandler(parentHandler);
     reader.setErrorHandler(parentHandler);
@@ -155,17 +155,17 @@ public abstract class AbstractSchemaHandler extends DefaultHandler
   }
 
   @Override
-  public void endElement(String uri, String localName, String name)
+  public void endElement(String uri, String localName, String qName)
   {
     /**
      * If the closing tag requires a change of state of the schema perform that
      */
-    if (SMXMLTags.isStateTag(localName))
+    if (SMXMLTags.isStateTag(qName))
     {
       schema.leavingCurrentState();
     }
 
-    if (localName.equals(terminalTag()))
+    if (qName.equals(terminalTag()))
     {
       // If the parsing is at the end of the element and if there is still one
       // more child to obtain
@@ -173,7 +173,7 @@ public abstract class AbstractSchemaHandler extends DefaultHandler
       {
         obtainChildElement();
       }
-      returnToParentHandler(localName);
+      returnToParentHandler(qName);
     }
 
   }

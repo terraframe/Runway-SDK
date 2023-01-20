@@ -141,8 +141,6 @@ import com.runwaysdk.transport.metadata.AttributeStructMdDTO;
 import com.runwaysdk.transport.metadata.AttributeTermMdDTO;
 import com.runwaysdk.util.Base64;
 
-import sun.security.provider.Sun;
-
 @SuppressWarnings("unchecked")
 @RunWith(ClasspathTestRunner.class)
 public class EntityGenTest
@@ -1143,7 +1141,7 @@ public class EntityGenTest
     collectionClass.getMethod("setAHash", String.class).invoke(object, in);
     collectionClass.getMethod("apply").invoke(object);
 
-    MessageDigest digest = MessageDigest.getInstance("MD5", new Sun());
+    MessageDigest digest = MessageDigest.getInstance("MD5", "SUN");
     digest.update(in.getBytes());
     String hash = Base64.encodeToString(digest.digest(), false);
 
@@ -4309,7 +4307,7 @@ public class EntityGenTest
     collectionClass.getMethod("setAHash", String.class).invoke(object, in);
     createDTO.invoke(object);
 
-    MessageDigest digest = MessageDigest.getInstance("MD5", new Sun());
+    MessageDigest digest = MessageDigest.getInstance("MD5", "SUN");
     digest.update(in.getBytes());
     String hash = Base64.encodeToString(digest.digest(), false);
 

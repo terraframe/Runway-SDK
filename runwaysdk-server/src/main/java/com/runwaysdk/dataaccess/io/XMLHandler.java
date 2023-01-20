@@ -18,6 +18,10 @@
  */
 package com.runwaysdk.dataaccess.io;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -25,7 +29,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Parent Handler Class all othere Handlers extend from. Keeps data that is universal to all Handlers.
@@ -83,15 +86,16 @@ public class XMLHandler extends DefaultHandler
    *          fully qualified path of the schema file
    * 
    * @throws SAXException
+   * @throws ParserConfigurationException 
    */
-  public XMLHandler(StreamSource source, String schemaLocation) throws SAXException
+  public XMLHandler(StreamSource source, String schemaLocation) throws SAXException, ParserConfigurationException
   {
     this(new ImportManager(source, schemaLocation));
 
     streamSource = source;
   }
 
-  public XMLHandler(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException
+  public XMLHandler(StreamSource source, String schemaLocation, XMLFilter filter) throws SAXException, ParserConfigurationException
   {
     this(new ImportManager(source, schemaLocation), filter);
 
@@ -104,28 +108,29 @@ public class XMLHandler extends DefaultHandler
    * @param manager
    *          The manager of the import. Contains the filename, schema location, and the status of the import
    * @throws SAXException
+   * @throws ParserConfigurationException 
    */
-  public XMLHandler(ImportManager manager) throws SAXException
+  public XMLHandler(ImportManager manager) throws SAXException, ParserConfigurationException
   {
     reader = createReader();
 
-    reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
-    reader.setFeature(VALIDATION_FEATURE_ID, true);
-    reader.setEntityResolver(new RunwayClasspathEntityResolver());
+//    reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+//    reader.setFeature(VALIDATION_FEATURE_ID, true);
+//    reader.setEntityResolver(new RunwayClasspathEntityResolver());
 
     // Root Handler
     this.previousHandler = null;
     this.manager = manager;
   }
 
-  public XMLHandler(ImportManager manager, XMLFilter filter) throws SAXException
+  public XMLHandler(ImportManager manager, XMLFilter filter) throws SAXException, ParserConfigurationException
   {
     filter.setParent(this.createReader());
     reader = filter;
 
-    reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
-    reader.setFeature(VALIDATION_FEATURE_ID, true);
-    reader.setEntityResolver(new RunwayClasspathEntityResolver());
+//    reader.setFeature(SCHEMA_VALIDATION_FEATURE_ID, true);
+//    reader.setFeature(VALIDATION_FEATURE_ID, true);
+//    reader.setEntityResolver(new RunwayClasspathEntityResolver());
 
     // Root Handler
     this.previousHandler = null;
@@ -137,9 +142,13 @@ public class XMLHandler extends DefaultHandler
 
   }
 
-  protected XMLReader createReader() throws SAXException
+  protected XMLReader createReader() throws SAXException, ParserConfigurationException
   {
-    return XMLReaderFactory.createXMLReader(READER);
+    SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+    parserFactory.setValidating(false);
+
+    SAXParser parser = parserFactory.newSAXParser();
+    return parser.getXMLReader();
   }
 
   /**

@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.6.2-SNAPSHOT</version>
+    <version>3.7.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-server</artifactId>
@@ -104,10 +104,11 @@
       <artifactId>commons-math</artifactId>
       <version>1.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.eclipse.jdt/ecj -->
     <dependency>
-      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <groupId>org.eclipse.jdt</groupId>
       <artifactId>ecj</artifactId>
-      <version>4.4.2</version>
+      <version>3.19.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
@@ -137,11 +138,13 @@
       <version>2.23.1</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/xerces/xercesImpl -->
+<!--    
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>2.12.2</version>
     </dependency>
+!-->    
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
@@ -198,7 +201,7 @@
       <version>3.2.1</version>
     </plugin>        
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>dev.aspectj</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj.plugin.version}</version>
         <dependencies>

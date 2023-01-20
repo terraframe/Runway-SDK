@@ -22,6 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -213,7 +215,7 @@ public class XMLTermExporterTest
       VersionHandler importer = new VersionHandler(new StringStreamSource(xml), "classpath:com/runwaysdk/resources/xsd/version.xsd", plugins);
       importer.begin();
     }
-    catch (SAXException e)
+    catch (SAXException | ParserConfigurationException e)
     {
       throw new XMLParseException(e);
     }

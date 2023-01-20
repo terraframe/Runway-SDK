@@ -42,8 +42,6 @@ import com.runwaysdk.dataaccess.metadata.MdBusinessDAO;
 import com.runwaysdk.session.Request;
 import com.runwaysdk.util.Base64;
 
-import sun.security.provider.Sun;
-
 public class EncryptionTest
 {
   // The oid of different attribute enumeration items (This is only hardcoded for
@@ -124,7 +122,7 @@ public class EncryptionTest
       String manualHash = null;
       try
       {
-        MessageDigest digest = MessageDigest.getInstance("MD5", new Sun());
+        MessageDigest digest = MessageDigest.getInstance("MD5", "SUN");
         digest.update(new String("myPass123_MD5").getBytes());
         manualHash = Base64.encodeToString(digest.digest(), false);
       }
@@ -182,7 +180,7 @@ public class EncryptionTest
       String manualHash = null;
       try
       {
-        MessageDigest digest = MessageDigest.getInstance("SHA-1", new Sun());
+        MessageDigest digest = MessageDigest.getInstance("SHA-1", "SUN");
         digest.update(new String("myPass123_SHA").getBytes());
         manualHash = Base64.encodeToString(digest.digest(), false);
       }

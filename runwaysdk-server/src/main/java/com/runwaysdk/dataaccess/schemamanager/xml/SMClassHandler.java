@@ -60,10 +60,10 @@ public class SMClassHandler extends SMKeyedElementHandler
   }
 
   @Override
-  protected void returnToParentHandler(String localName)
+  protected void returnToParentHandler(String qName)
   {
     schema.notifyObserversClassCreated((SchemaClass) root);
-    super.returnToParentHandler(localName);
+    super.returnToParentHandler(qName);
   }
 
 }

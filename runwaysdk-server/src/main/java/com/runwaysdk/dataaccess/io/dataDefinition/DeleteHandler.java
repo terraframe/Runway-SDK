@@ -51,7 +51,7 @@ public class DeleteHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#processTag(java.lang.String, org.xml.sax.Attributes, com.runwaysdk.dataaccess.io.XMLHandler, com.runwaysdk.dataaccess.io.ImportManager)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     this.getManager().enterDeleteState();
   }
@@ -62,7 +62,7 @@ public class DeleteHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#onEndElement(java.lang.String, java.lang.String, java.lang.String)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
     this.getManager().leavingCurrentState();
   }
@@ -73,8 +73,8 @@ public class DeleteHandler extends TagHandler implements TagHandlerIF
    * @see com.runwaysdk.dataaccess.io.dataDefinition.TagHandler#modifiesState(java.lang.String)
    */
   @Override
-  public boolean modifiesState(String localName)
+  public boolean modifiesState(String qName)
   {
-    return localName.equals(XMLTags.DELETE_TAG);
+    return qName.equals(XMLTags.DELETE_TAG);
   }
 }

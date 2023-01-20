@@ -52,7 +52,7 @@ public class VertexHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onStartElement(String localName, Attributes attributes, TagContext context)
+  public void onStartElement(String qName, Attributes attributes, TagContext context)
   {
     String key = attributes.getValue(XMLTags.KEY_ATTRIBUTE);
     String type = attributes.getValue(XMLTags.TYPE_ATTRIBUTE);
@@ -82,9 +82,9 @@ public class VertexHandler extends TagHandler implements TagHandlerIF, HandlerFa
    * com.runwaysdk.dataaccess.io.dataDefinition.TagContext)
    */
   @Override
-  public void onEndElement(String uri, String localName, String name, TagContext context)
+  public void onEndElement(String uri, String qName, String name, TagContext context)
   {
-    if (localName.equals(XMLTags.VERTEX_TAG))
+    if (qName.equals(XMLTags.VERTEX_TAG))
     {
       VertexObjectDAO object = (VertexObjectDAO) context.getObject(EntityInfo.CLASS);
       String key = (String) context.getObject(EntityInfo.KEY);

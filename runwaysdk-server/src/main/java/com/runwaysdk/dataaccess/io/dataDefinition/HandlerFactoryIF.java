@@ -28,7 +28,7 @@ public interface HandlerFactoryIF
   /**
    * Creates a new handler to parse the given tag which is a child of the {@link XMLTags#RUNWAY_TAG}.
    *
-   * @param localName
+   * @param qName
    *          Name of the tag to parse
    * @param attributes
    *          Attributes of the tag
@@ -38,12 +38,12 @@ public interface HandlerFactoryIF
    *          The {@link XMLHandler} to return control to after the tag
    * @return A new handler to parse the given tag.
    */
-  public TagHandlerIF getHandler(String localName, Attributes attributes, TagHandlerIF prev, ImportManager manager);
+  public TagHandlerIF getHandler(String qName, Attributes attributes, TagHandlerIF prev, ImportManager manager);
 
   /**
    * @param context TODO
-   * @param localName
+   * @param qName
    * @return
    */
-  public boolean supports(TagContext context, String localName);
+  public boolean supports(TagContext context, String qName);
 }

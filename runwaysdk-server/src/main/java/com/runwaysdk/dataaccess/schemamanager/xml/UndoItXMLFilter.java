@@ -40,20 +40,20 @@ public class UndoItXMLFilter extends XMLFilterImpl
   }
 
   @Override
-  public void startElement(String uri, String localName, String name, Attributes atts) throws SAXException
+  public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException
   {
-    if (localName.equals(XMLTags.UNDO_IT_TAG))
+    if (qName.equals(XMLTags.UNDO_IT_TAG))
       unblock();
-    if (!isBlocked() && !localName.equals(XMLTags.UNDO_IT_TAG))
+    if (!isBlocked() && !qName.equals(XMLTags.UNDO_IT_TAG))
     {
       // the parsing is inside the undo it tag
       // construct a start event
-      SchemaEvent event = new StartSchemaEvent(uri, localName, name, atts)
+      SchemaEvent event = new StartSchemaEvent(uri, qName, qName, atts)
       {
         @Override
         public void dispatchAction() throws SAXException
         {
-          parentStartElement(this.uri, this.localName, this.name, this.getAttributes());
+          parentStartElement(this.uri, this.qName, this.name, this.getAttributes());
         }
       };
 
@@ -61,31 +61,31 @@ public class UndoItXMLFilter extends XMLFilterImpl
     }
   }
 
-  private void parentStartElement(String uri, String localName, String name, Attributes atts) throws SAXException
+  private void parentStartElement(String uri, String localName, String qName, Attributes atts) throws SAXException
   {
-    super.startElement(uri, localName, name, atts);
+    super.startElement(uri, qName, qName, atts);
   }
 
-  private void parentEndElement(String uri, String localName, String name) throws SAXException
+  private void parentEndElement(String uri, String localName, String qName) throws SAXException
   {
-    super.endElement(uri, localName, name);
+    super.endElement(uri, qName, qName);
   }
 
   @Override
-  public void endElement(String uri, String localName, String name) throws SAXException
+  public void endElement(String uri, String localName, String qName) throws SAXException
   {
-    if (localName.equals(XMLTags.UNDO_IT_TAG))
+    if (qName.equals(XMLTags.UNDO_IT_TAG))
       block();
-    if (!isBlocked() && !localName.equals(XMLTags.UNDO_IT_TAG))
+    if (!isBlocked() && !qName.equals(XMLTags.UNDO_IT_TAG))
     {
       // the parsing is inside the undo it tag
       // construct a start event
-      SchemaEvent event = new EndSchemaEvent(uri, localName, name)
+      SchemaEvent event = new EndSchemaEvent(uri, qName, qName)
       {
         @Override
         public void dispatchAction() throws SAXException
         {
-          parentEndElement(this.uri, this.localName, this.getName());
+          parentEndElement(this.uri, this.qName, this.getName());
         }
       };
       eventStack.push(event);
@@ -121,14 +121,14 @@ public class UndoItXMLFilter extends XMLFilterImpl
   {
     protected String uri;
 
-    protected String localName;
+    protected String qName;
 
     protected String name;
 
-    public SchemaEvent(String uri, String localName, String name)
+    public SchemaEvent(String uri, String qName, String name)
     {
       this.uri = uri;
-      this.localName = localName;
+      this.qName = qName;
       this.name = name;
     }
     
@@ -146,9 +146,9 @@ public class UndoItXMLFilter extends XMLFilterImpl
 
     protected Attributes attributes;
 
-    public StartSchemaEvent(String uri, String localName, String name, Attributes attributes)
+    public StartSchemaEvent(String uri, String qName, String name, Attributes attributes)
     {
-      super(uri, localName, name);
+      super(uri, qName, name);
       attributes = new AttributesImpl(attributes);
     }
     
@@ -161,9 +161,9 @@ public class UndoItXMLFilter extends XMLFilterImpl
 
   private abstract static class EndSchemaEvent extends SchemaEvent
   {
-    public EndSchemaEvent(String uri, String localName, String name)
+    public EndSchemaEvent(String uri, String qName, String name)
     {
-      super(uri, localName, name);
+      super(uri, qName, name);
     }
 
   }

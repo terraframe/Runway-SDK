@@ -34,7 +34,7 @@ import com.runwaysdk.dataaccess.schemamanager.model.MergeSchema;
 public class SMCreateHandlerFactory
 {
 
-  public AbstractSchemaHandler getHandler(String localName, Attributes attributes, XMLReader reader, AbstractSchemaHandler handler, ImportManager manager)
+  public AbstractSchemaHandler getHandler(String qName, Attributes attributes, XMLReader reader, AbstractSchemaHandler handler, ImportManager manager)
   {
     if (! ( manager instanceof MergeSchema ))
     {
@@ -42,26 +42,26 @@ public class SMCreateHandlerFactory
     }
 
     MergeSchema schema = (MergeSchema) manager;
-    if (SMXMLTags.isClassTag(localName))
+    if (SMXMLTags.isClassTag(qName))
     {
-      return new SMClassHandler(schema, reader, handler, localName, attributes);
+      return new SMClassHandler(schema, reader, handler, qName, attributes);
     }
-    else if (SMXMLTags.isRelationshipTag(localName))
+    else if (SMXMLTags.isRelationshipTag(qName))
     {
-      return new SMRelationshipHandler(attributes, reader, handler, schema, localName);
+      return new SMRelationshipHandler(attributes, reader, handler, schema, qName);
     }
-    else if (SMXMLTags.isInstanceElementTag(localName))
+    else if (SMXMLTags.isInstanceElementTag(qName))
     {
-      return new InstanceElementHandler(attributes, reader, handler, schema, localName);
+      return new InstanceElementHandler(attributes, reader, handler, schema, qName);
     }
-    else if (localName.equals(XMLTags.MD_ENUMERATION_TAG))
+    else if (qName.equals(XMLTags.MD_ENUMERATION_TAG))
     {
-      return new SMEnumerationHandler(attributes, reader, handler, schema, localName);
+      return new SMEnumerationHandler(attributes, reader, handler, schema, qName);
     }
     // Everything else did not have their semantics preserved
-    else if (localName.equals(XMLTags.MD_INDEX_TAG))
+    else if (qName.equals(XMLTags.MD_INDEX_TAG))
     {
-      return new SchemaIndexHandler(attributes, reader, handler, schema, localName);
+      return new SchemaIndexHandler(attributes, reader, handler, schema, qName);
     }
     else
       return null;

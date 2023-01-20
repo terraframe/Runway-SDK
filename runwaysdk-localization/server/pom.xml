@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-localization</artifactId>
-    <version>3.6.2-SNAPSHOT</version>
+    <version>3.7.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>runwaysdk-localization-server</artifactId>
@@ -51,7 +51,7 @@
       </plugin>
       <!-- Weave Aspects -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>dev.aspectj</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj.plugin.version}</version>
         <dependencies>

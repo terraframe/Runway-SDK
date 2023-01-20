@@ -34,7 +34,7 @@ public interface SchemaElementIF extends SchemaVisitable, ElementListener
 
   public Map<String, String> getAttributes();
 
-  public String getXMLAttributeValue(String localName);
+  public String getXMLAttributeValue(String qName);
 
   public Set<SchemaElementIF> children();
 
