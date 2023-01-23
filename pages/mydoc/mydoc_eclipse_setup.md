@@ -63,7 +63,7 @@ Once Eclipse is up and running, you will need to tell it which version of Java t
 2. Install Maven Integration for AspectJ
     * Eclipse does not out of the box know how to weave AspectJ projects if they are derived from a maven pom. This plugin facilitates building AspectJ projects when using Maven.
     * In Eclipse go to ‘help -> Install New Software’
-    * Enter this URL in the input field ‘http://dist.springsource.org/release/AJDT/configurator/’
+    * Enter this URL in the input field ‘https://terraframe.github.io/m2eclipse-ajdt/repository’
     * When it finds "AJDT M2E configurator, check the box and click next to be guided through the rest of the installation.
 3. Install M2E connector, buildhelper
     * Our projects typically contain source code which has been generated via Runway SDK. This source code is separated in a different src directory than is standard and expected via Maven. To facilitate this, we must install a Maven plugin called "buildhelper".
