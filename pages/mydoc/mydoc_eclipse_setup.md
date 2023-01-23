@@ -35,7 +35,7 @@ Once your Eclispe is downloaded and unzipped, you need to open the eclipse.ini f
 2. JVM
    * Since your Java was installed with SDKMan, you will want to tell Eclipse where your Java is located. To do this, add a new line after the -vmargs, and write in the path to your SDKMan current java candidiate, which you can find by running `which java`. This path should look something like `/home/<user>/.sdkman/candidates/java/current/bin/java`
 
-## Installing Java 8 Into Eclipse
+## Installing Java 11 Into Eclipse
 
 Once Eclipse is up and running, you will need to tell it which version of Java to use for compiling and running Runway applications.
 
@@ -44,19 +44,19 @@ Once Eclipse is up and running, you will need to tell it which version of Java t
    * Click add on the right
    * Click "Standard VM"
    * When asked for the JRE home, put the path to the SDKMan candidate, not current. This path will look something like:
-      `/home/<user>/.sdkman/candidates/java/8.0.282.hs-adpt`
-2. Specify the newly installed Java 8 as the default Java 8 execution environment
+      `/home/<user>/.sdkman/candidates/java/11.0.12-open`
+2. Specify the newly installed Java 11 as the default Java 8 execution environment
    * In Eclipse preferences, navigate to: Java -> Instaled JREs -> Execution Environments
-   * Under JavaSE-1.8, left click the box on the right which lists the new Java 8 which you just installed.
+   * Under JavaSE-11, left click the box on the right which lists the new Java 11 which you just installed.
 3. Specify your default Java compiler
    * In Eclipse preferences, navigate to Java -> Compiler
-   * Under 'JDK Compliance', specify the 'Compiler compliance level' to 1.8.
+   * Under 'JDK Compliance', specify the 'Compiler compliance level' to 11.
 
 ## Eclipse Plugins
 
 1. Install AspectJ Development Tools.
     * Runway SDK utilizes source code weaving via AspectJ. In order to properly build our projects, we must install an Eclipse plugin called AspectJ Development Tools.
-    * When you import one of our projects, Eclipe may attempt to automatically install this for you. Resist the urge to have Eclipse automatically do this for you, or to use the Eclipse Marketplace to install AspectJ. There are times when these processes have installed the wrong version for me and it has been tiresome to debug. Instead, [find the latest Eclipse update site via this link](https://github.com/kriegaex/org.aspectj/blob/master/docs/developer/IDE.md#eclipse). This wiki will also tell you which verisons of Eclipse are supported. Once you find the right update site, copy and paste the URL as follows:
+    * When you import one of our projects, Eclipe may attempt to automatically install this for you. Resist the urge to have Eclipse automatically do this for you, or to use the Eclipse Marketplace to install AspectJ. There are times when these processes have installed the wrong version for me and it has been tiresome to debug. Instead, [find the latest Eclipse update site via this link](https://github.com/eclipse/org.aspectj/blob/master/docs/developer/IDE.md). This wiki will also tell you which verisons of Eclipse are supported. Once you find the right update site, copy and paste the URL as follows:
     * * In Eclipse, go to ‘help -> Install New Software’
     * * Enter the URL in the "Work with" input field
     * * When it finds "AspectJ Development Tools (Required)", check the box and click next to be guided through the rest of the installation.
