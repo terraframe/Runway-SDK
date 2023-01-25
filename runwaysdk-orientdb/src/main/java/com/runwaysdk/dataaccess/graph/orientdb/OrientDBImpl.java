@@ -515,7 +515,7 @@ public class OrientDBImpl implements GraphDB
     return this.isClassDefined(graphRequest, className);
   }
 
-  private boolean isClassDefined(GraphRequest graphRequest, String className)
+  public boolean isClassDefined(GraphRequest graphRequest, String className)
   {
     OrientDBRequest ddlOrientLRequest = (OrientDBRequest) graphRequest;
     ODatabaseSession db = ddlOrientLRequest.getODatabaseSession();

@@ -165,6 +165,12 @@ public class GraphDBBalk implements GraphDB
   {
     return false;
   }
+  
+  @Override
+  public boolean isClassDefined(GraphRequest graphRequest, String className)
+  {
+    return false;
+  }
 
   @Override
   public boolean isIndexDefined(GraphRequest graphRequest, String className, String indexName)

@@ -25,8 +25,12 @@ import com.runwaysdk.constants.IndexTypes;
 import com.runwaysdk.constants.MdAttributeConcreteInfo;
 import com.runwaysdk.constants.MdAttributeReferenceInfo;
 import com.runwaysdk.constants.ServerProperties;
+import com.runwaysdk.dataaccess.cache.ObjectCache;
+import com.runwaysdk.dataaccess.database.EntityDAOFactory;
 import com.runwaysdk.dataaccess.metadata.MdAttributeReferenceDAO;
 import com.runwaysdk.dataaccess.transaction.Transaction;
+import com.runwaysdk.dataaccess.transaction.TransactionCache;
+import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
 import com.runwaysdk.query.BusinessDAOQuery;
 import com.runwaysdk.query.OIterator;
 import com.runwaysdk.query.QueryFactory;
@@ -41,6 +45,34 @@ import com.runwaysdk.session.Request;
 public class MigrationUtil
 {
   final static Logger logger = LoggerFactory.getLogger(MigrationUtil.class);
+  
+  @Request
+  public static boolean updateEntityDAOId(EntityDAO entityDAO, String newId)
+  {
+    final String currentId = entityDAO.getOid();
+    
+    if(!newId.equals(currentId))
+    {
+      entityDAO.setOid(newId);
+       
+      if (entityDAO.isAppliedToDB() && entityDAO.hasIdChanged())
+      {
+        ObjectCache.refreshTheEntireCache();
+        
+        EntityDAOFactory.floatObjectIdReferences(entityDAO, entityDAO.getOldId(), newId);
+        
+        TransactionCacheIF cache = TransactionCache.getCurrentTransactionCache();
+        if (cache != null)
+        {
+          cache.changeCacheId(entityDAO.getOldId(), entityDAO);
+        }
+        
+        return true;
+      }
+    }
+    
+    return false;
+  }
   
   /** 
    * Sets all attribute references to have non-unique indexes if they have no index defined.

@@ -1,4 +1,0 @@
-ALTER CLASS embedded_local_value SUPERCLASS -V;
-ALTER CLASS embedded_local_value_cot SUPERCLASS -V;
-ALTER CLASS ChangeOverTime SUPERCLASS -V;
-ALTER CLASS EnumChangeOverTime SUPERCLASS -V;

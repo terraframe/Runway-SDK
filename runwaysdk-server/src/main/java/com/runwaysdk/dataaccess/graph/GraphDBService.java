@@ -190,6 +190,14 @@ public class GraphDBService
   {
     return this.graphDB.isEdgeClassDefined(graphRequest, className);
   }
+  
+  /**
+   * @see GraphDB#isClassDefined(GraphRequest, String)
+   */
+  public boolean isClassDefined(GraphRequest graphRequest, String className)
+  {
+    return this.graphDB.isClassDefined(graphRequest, className);
+  }
 
   /**
    * @param cot

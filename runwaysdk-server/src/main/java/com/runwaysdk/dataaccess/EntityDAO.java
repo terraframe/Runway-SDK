@@ -597,7 +597,7 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   // Called by an aspect
   @SuppressWarnings("unused")
-  private void setOid(String newId)
+  protected void setOid(String newId)
   {
     if (this.isAppliedToDB() && !this.getOid().equals(newId))
     {

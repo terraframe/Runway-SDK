@@ -144,6 +144,18 @@ public interface GraphDB
    *         false otherwise.
    */
   public boolean isEdgeClassDefined(GraphRequest graphRequest, String className);
+  
+  /**
+   * Returns true if the class has been defined in the graph database,
+   * false otherwise.
+   * 
+   * @param graphRequest
+   * @param className
+   *          The name of the table in the graph database.
+   * @return true if the class has been defined in the graph database,
+   *         false otherwise.
+   */
+  public boolean isClassDefined(GraphRequest graphRequest, String className);
 
   /**
    * Adds a character attribute of the given name.

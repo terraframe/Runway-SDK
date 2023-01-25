@@ -969,7 +969,10 @@ public class BusinessDAOFactory
             Database.executeStatementBatch(preparedStatementList);
 
             // Update the transaction cache.
-            cache.updateEntityDAO(entityDAO);
+            if (cache != null)
+            {
+              cache.updateEntityDAO(entityDAO);
+            }
           }
         }
         finally
