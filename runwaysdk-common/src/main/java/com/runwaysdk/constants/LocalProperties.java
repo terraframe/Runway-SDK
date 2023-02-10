@@ -437,7 +437,7 @@ public class LocalProperties
   {
     return getEnvironment().equals(RUNWAY);
   }
-
+  
   /**
    * Checks if the environment is configured for application development using the core.
    * 
@@ -446,6 +446,11 @@ public class LocalProperties
   public static boolean isDevelopEnvironment()
   {
     return getEnvironment().equals(DEVELOP);
+  }
+  
+  public static Boolean getIsImportWorking()
+  {
+    return instance().getBoolean("runway.importWorking", false);
   }
 
   /**

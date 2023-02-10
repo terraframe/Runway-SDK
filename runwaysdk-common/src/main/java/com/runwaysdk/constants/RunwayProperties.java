@@ -111,9 +111,4 @@ public class RunwayProperties
   {
     return instance().getString("runway.src.server");
   }
-  
-  public static Boolean getIsImportWorking()
-  {
-    return instance().getBoolean("runway.importWorking", false);
-  }
 }

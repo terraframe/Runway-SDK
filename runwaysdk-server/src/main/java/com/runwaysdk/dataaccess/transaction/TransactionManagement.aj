@@ -305,7 +305,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       }
       
       // Do not generate source if this is a test environment or Runway development and the type is a system type.
-      if (!RunwayProperties.getIsImportWorking() &&
+      if (!LocalProperties.getIsImportWorking() &&
           (LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment()) && 
           mdTypeIF.isSystemPackage())
       {
