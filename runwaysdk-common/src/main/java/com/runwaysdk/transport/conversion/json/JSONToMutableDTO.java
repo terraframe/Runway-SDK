@@ -60,13 +60,13 @@ public abstract class JSONToMutableDTO extends JSONToComponentDTO
     JSONObject json = getJSON();
 
     // new instance
-    boolean newInstance = Boolean.parseBoolean(json.getString(JSON.ENTITY_DTO_NEW_INSTANCE.getLabel()));
+    boolean newInstance = json.getBoolean(JSON.ENTITY_DTO_NEW_INSTANCE.getLabel());
 
     // writable
-    boolean writable = Boolean.parseBoolean(json.getString(JSON.ENTITY_DTO_WRITABLE.getLabel()));
+    boolean writable = json.getBoolean(JSON.ENTITY_DTO_WRITABLE.getLabel());
 
     // modified
-    boolean modified = Boolean.parseBoolean(json.getString(JSON.ENTITY_DTO_MODIFIED.getLabel()));
+    boolean modified = json.getBoolean(JSON.ENTITY_DTO_MODIFIED.getLabel());
 
     return factoryMethod(toString, type, attributeMap, newInstance, readable, writable, modified);
   }

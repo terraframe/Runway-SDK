@@ -559,7 +559,7 @@ public class JSONFacade
 
         for (int i = 0; i < array.length; i++)
         {
-          Object item = getObjectFromJSON(sessionId, locale, component, jsonArray.getString(i), keepGeneric);
+          Object item = getObjectFromJSON(sessionId, locale, component, String.valueOf(jsonArray.get(i)), keepGeneric);
           array[i] = item;
         }
         return array;
@@ -712,7 +712,7 @@ public class JSONFacade
         arr = new String[jsonArray.length()];
         for (int i = 0; i < jsonArray.length(); i++)
         {
-          arr[i] = jsonArray.getString(i);
+          arr[i] = String.valueOf(jsonArray.get(i));
         }
         return arr;
       }

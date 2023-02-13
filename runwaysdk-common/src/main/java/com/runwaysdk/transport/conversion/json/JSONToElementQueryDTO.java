@@ -56,7 +56,7 @@ public abstract class JSONToElementQueryDTO extends JSONToEntityQueryDTO
     JSONObject json = getJSON();
     
     // isAbstract
-    boolean isAbstract = Boolean.parseBoolean(json.getString(JSON.ELEMENT_QUERY_DTO_ISABSTRACT.getLabel()));
+    boolean isAbstract = json.getBoolean(JSON.ELEMENT_QUERY_DTO_ISABSTRACT.getLabel());
     queryDTO.setAbstract(isAbstract);
     
     return queryDTO;

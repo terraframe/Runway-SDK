@@ -68,7 +68,7 @@ public abstract class JSONToElementDTO extends JSONToEntityDTO
   protected ElementDTO factoryMethod(String toString, String type, Map<String, AttributeDTO> attributeMap,
       boolean newInstance, boolean readable, boolean writable, boolean modified) throws JSONException
   {
-    boolean lockedByCurrentUser = Boolean.parseBoolean(getJSON().getString(JSON.ENTITY_DTO_LOCKED_BY_CURRENT_USER.getLabel()));
+    boolean lockedByCurrentUser = getJSON().getBoolean(JSON.ENTITY_DTO_LOCKED_BY_CURRENT_USER.getLabel());
     
     return factoryMethod(toString, type, attributeMap,
          newInstance, readable, writable, modified, lockedByCurrentUser);

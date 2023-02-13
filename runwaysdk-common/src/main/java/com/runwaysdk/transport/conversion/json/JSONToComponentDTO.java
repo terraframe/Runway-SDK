@@ -97,7 +97,7 @@ public abstract class JSONToComponentDTO extends JSONToDTO
       type = json.getString(JSON.COMPONENT_DTO_TYPE.getLabel());
 
       // readable
-      boolean readable = Boolean.parseBoolean(json.getString(JSON.ENTITY_DTO_READABLE.getLabel()));
+      boolean readable = json.getBoolean(JSON.ENTITY_DTO_READABLE.getLabel());
 
       // attribute map
       Map<String, AttributeDTO> attributeMap = setAttributes();

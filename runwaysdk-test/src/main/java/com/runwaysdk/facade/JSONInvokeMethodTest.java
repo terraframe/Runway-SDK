@@ -197,7 +197,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     JSONObject returnObject = new JSONObject(returnJSON);
 
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
-    BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
+    BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, String.valueOf(jsonArray.get(DTOConversionUtilInfo.JSON_CALLED_OBJECT)));
 
     Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
     Assert.assertEquals(Long.parseLong(input), Long.parseLong(returnDTO.getValue("aLong")));
@@ -254,7 +254,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
 
     for (int i = 0; i < output.length(); i++)
     {
-      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
+      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, String.valueOf(output.get(i)));
 
       Assert.assertEquals(input, dto.getValue("aCharacter"));
       Assert.assertEquals(longInput, dto.getValue("aLong"));
@@ -310,7 +310,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
 
     for (int i = 0; i < output.length(); i++)
     {
-      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
+      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, String.valueOf(output.get(i)));
 
       Assert.assertEquals(input, dto.getValue("aCharacter"));
       Assert.assertEquals(longInput, dto.getValue("aLong"));
@@ -419,7 +419,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
     JSONObject returnObject = new JSONObject(returnJSON);
 
     JSONArray jsonArray = returnObject.getJSONArray(JSONReturnObject.RETURN_VALUE);
-    BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, jsonArray.getString(DTOConversionUtilInfo.JSON_CALLED_OBJECT));
+    BusinessDTO returnDTO = (BusinessDTO) JSONUtil.getComponentDTOFromJSON(clientRequest.getSessionId(), locale, String.valueOf(jsonArray.get(DTOConversionUtilInfo.JSON_CALLED_OBJECT)));
 
     Assert.assertEquals(JSONObject.NULL, jsonArray.get(DTOConversionUtilInfo.JSON_RETURN_OBJECT));
     Assert.assertEquals(Long.parseLong(longInput) + 10L, Long.parseLong(returnDTO.getValue("aLong")));
@@ -476,7 +476,7 @@ public class JSONInvokeMethodTest extends InvokeMethodTestBase
 
     for (int i = 0; i < output.length(); i++)
     {
-      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, output.getString(i));
+      BusinessDTO dto = (BusinessDTO) JSONUtil.getComponentDTOFromJSON("", locale, String.valueOf(output.get(i)));
 
       Assert.assertEquals(input, dto.getValue("aCharacter"));
       Assert.assertEquals(longInput, dto.getValue("aLong"));

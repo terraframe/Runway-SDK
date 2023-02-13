@@ -203,9 +203,9 @@ public abstract class JSONToDTO
       String name = attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_NAME.getLabel());
       String type = attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_TYPE.getLabel());
       String value = getValue();
-      boolean readable = Boolean.parseBoolean(attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_READABLE.getLabel()));
-      boolean writable = Boolean.parseBoolean(attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_WRITABLE.getLabel()));
-      boolean modified = Boolean.parseBoolean(attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_MODIFIED.getLabel()));
+      boolean readable = attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_READABLE.getLabel());
+      boolean writable = attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_WRITABLE.getLabel());
+      boolean modified = attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_MODIFIED.getLabel());
 
       return AttributeDTOFactory.createAttributeDTO(name, type, value, readable, writable, modified);
     }
@@ -244,9 +244,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        Integer value = attribute.getInt(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return value.toString();        
-//        return factory.getFormat(Integer.class).format(value, locale);
+        Integer value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getInt(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        return value == null ? null : value.toString();        
       }
       catch (JSONException e)
       {
@@ -274,9 +273,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        Long value = attribute.getLong(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return value.toString();        
-//        return factory.getFormat(Long.class).format(value, locale);
+        Long value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getLong(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        return value == null ? null : value.toString();        
       }
       catch (JSONException e)
       {
@@ -304,9 +302,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        BigDecimal value = new BigDecimal(attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
-        return value.toString();        
-//        return factory.getFormat(BigDecimal.class).format(value, locale);
+        BigDecimal value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : new BigDecimal(attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()));
+        return value == null ? null : value.toString();        
       }
       catch (JSONException e)
       {
@@ -334,9 +331,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        Double value = attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return value.toString();
-//        return factory.getFormat(Double.class).format(value, locale);
+        Double value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        return value == null ? null : value.toString();
       }
       catch (JSONException e)
       {
@@ -364,9 +360,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        Float value = new Float(attribute.getDouble( ( JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel() )));
-        return value.toString();        
-//        return factory.getFormat(Float.class).format(value, locale);
+        Double value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getDouble(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        return value == null ? null : value.toString();
       }
       catch (JSONException e)
       {
@@ -394,8 +389,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        Boolean value = attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
-        return factory.getFormat(Boolean.class).format(value, locale);
+        Boolean value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getBoolean(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());;
+        return value == null ? null : factory.getFormat(Boolean.class).format(value, locale);
       }
       catch (JSONException e)
       {
@@ -423,7 +418,8 @@ public abstract class JSONToDTO
     {
       try
       {
-        return attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        String value = attribute.isNull(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel()) ? null : attribute.getString(JSON.ENTITY_DTO_ATTRIBUTE_VALUE.getLabel());
+        return value == null ? null : value;
       }
       catch (JSONException e)
       {
