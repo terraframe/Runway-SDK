@@ -33,7 +33,7 @@ Once your Eclispe is downloaded and unzipped, you need to open the eclipse.ini f
       
       -xmx8000m
 2. JVM
-   * Since your Java was installed with SDKMan, you will want to tell Eclipse where your Java is located. To do this, add a new line after the -vmargs, and write in the path to your SDKMan current java candidiate, which you can find by running `which java`. This path should look something like `/home/<user>/.sdkman/candidates/java/current/bin/java`
+   * Since your Java was installed with SDKMan, you will want to tell Eclipse where your Java is located. To do this, add a new line after the -vmargs, and write in the path to your SDKMan current java candidiate, which you can find by running `which java`. This path should look something like `/home/<user>/.sdkman/candidates/java/current/bin/java`. [More information on setting the Eclipse JVM can be found here.](https://wiki.eclipse.org/Eclipse.ini#Specifying_the_JVM)
 
 ## Installing Java 11 Into Eclipse
 
