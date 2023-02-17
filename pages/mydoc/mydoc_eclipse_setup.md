@@ -45,7 +45,7 @@ Once Eclipse is up and running, you will need to tell it which version of Java t
    * Click "Standard VM"
    * When asked for the JRE home, put the path to the SDKMan candidate, not current. This path will look something like:
       `/home/<user>/.sdkman/candidates/java/11.0.12-open`
-2. Specify the newly installed Java 11 as the default Java 8 execution environment
+2. Specify the newly installed Java 11 as the default execution environment
    * In Eclipse preferences, navigate to: Java -> Instaled JREs -> Execution Environments
    * Under JavaSE-11, left click the box on the right which lists the new Java 11 which you just installed.
 3. Specify your default Java compiler
