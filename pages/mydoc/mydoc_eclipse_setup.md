@@ -18,7 +18,7 @@ Personally I have found that it makes sense to unzip Eclipse on Linux to `~/prog
 The Java version you use to run Eclipse will likely be different than that which you use to run Runway applications. For this reason we recommend using [SDKMan!](https://sdkman.io/) to install and manage the various Java versions which you will need to install on your machine.
 
 Once SDKMan is installed, you can use `sdk java list` to list all the available Java verisons. We recommend installing:
-1. Java 8 Open for Runway apps (from Java.net provider)
+1. Java 11 Open for Runway apps (from Java.net provider)
 2. Java 11 Oracle for Eclipse [(The Eclipse foundation recommends only usng Sun or IBM based Java verisons, especially on Linux)](https://wiki.eclipse.org/IRC_FAQ#I_just_installed_Eclipse_on_Linux.2C_but_it_does_not_start._What_is_the_problem.3F)
 3. Maven 3. For use in command-line applications.
 
