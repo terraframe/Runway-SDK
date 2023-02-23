@@ -93,9 +93,9 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   /**
    * Map between the relationship type and the MdBusiness
    */
-  private Map<String, MdBusiness> allPaths;
+  protected Map<String, MdBusiness> allPaths;
 
-  private String                  termClass;
+  protected String                  termClass;
 
   public DatabaseAllPathsStrategy()
   {
@@ -176,7 +176,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   @Transaction
-  private void createTableMetadata(String relationshipType, InitializationStrategyIF strategy)
+  protected void createTableMetadata(String relationshipType, InitializationStrategyIF strategy)
   {
     if (this.allPaths == null || !this.allPaths.containsKey(relationshipType))
     {
@@ -366,7 +366,7 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
   }
 
   @Transaction
-  private void clear(String relationshipType)
+  protected void clear(String relationshipType)
   {
     MdBusiness mdBusiness = this.getAllPaths(relationshipType);
     String allpathsTable = mdBusiness.getTableName();
@@ -660,13 +660,13 @@ public class DatabaseAllPathsStrategy extends DatabaseAllPathsStrategyBase
 
   public class AllPathsDeleteStrategyProvider implements DeleteStrategyProviderIF
   {
-    private String allpaths_table_name;
+    protected String allpaths_table_name;
 
-    private String relationshipType;
+    protected String relationshipType;
 
-    private Long   delRootACount;
+    protected Long   delRootACount;
 
-    private AllPathsDeleteStrategyProvider(Term deleteRoot, String relationshipType)
+    protected AllPathsDeleteStrategyProvider(Term deleteRoot, String relationshipType)
     {
       allpaths_table_name = allPaths.get(relationshipType).getTableName();
 

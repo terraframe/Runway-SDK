@@ -21,6 +21,9 @@ package com.runwaysdk.dataaccess.database;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.runwaysdk.ServerExceptionMessageLocalizer;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.dataaccess.DuplicateDataException;
@@ -35,6 +38,8 @@ import com.runwaysdk.dataaccess.metadata.MdEntityDAO;
 
 public class DuplicateDataDatabaseException extends DuplicateDataException
 {
+  private Logger logger = LoggerFactory.getLogger(DuplicateDataDatabaseException.class);
+  
   /**
    *
    */
@@ -278,51 +283,78 @@ public class DuplicateDataDatabaseException extends DuplicateDataException
    */
   public String getLocalizedMessage()
   {
-    if (this.indexName == null)
+    try
     {
-      return ServerExceptionMessageLocalizer.duplicateDataException(this.getLocale());
-    }
-    else
-    {
-      this.buildErrorStrings();
-
-      StringBuilder values = new StringBuilder();
-      boolean firstIteration = true;
-      for (String value : valueList)
+      if (this.indexName == null)
       {
-        if (!firstIteration)
-        {
-          values.append(", ");
-        }
-        else
-        {
-          firstIteration = false;
-        }
-        values.append("["+value+"]");
-      }
-
-      if (mdAttributeWithIndex != null)
-      {
-        if (valueList.size() > 0)
-        {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
-        }
-        else
-        {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionSingleNoValue(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
-        }
+        return ServerExceptionMessageLocalizer.duplicateDataException(this.getLocale());
       }
       else
       {
-        if (valueList.size() > 0)
+        this.buildErrorStrings();
+  
+        StringBuilder values = new StringBuilder();
+        boolean firstIteration = true;
+        for (String value : valueList)
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
+          if (!firstIteration)
+          {
+            values.append(", ");
+          }
+          else
+          {
+            firstIteration = false;
+          }
+          values.append("["+value+"]");
+        }
+  
+        if (mdAttributeWithIndex != null)
+        {
+          if (valueList.size() > 0)
+          {
+            return ServerExceptionMessageLocalizer.duplicateDataExceptionSingle(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
+          }
+          else
+          {
+            return ServerExceptionMessageLocalizer.duplicateDataExceptionSingleNoValue(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
+          }
         }
         else
         {
-          return ServerExceptionMessageLocalizer.duplicateDataExceptionMultipleNoValues(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
+          if (valueList.size() > 0)
+          {
+            return ServerExceptionMessageLocalizer.duplicateDataExceptionMultiple(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels, values.toString());
+          }
+          else
+          {
+            return ServerExceptionMessageLocalizer.duplicateDataExceptionMultipleNoValues(this.getLocale(), this.mdClassDAOIF.getDisplayLabel(this.getLocale()), this.attributeDisplayLabels);
+          }
         }
       }
+    }
+    catch (Throwable t)
+    {
+      // Fallback code for when localization throws an error
+      
+      logger.error("Error while building localized message for DuplicateDataDatabaseException.", t);
+      
+      String msg = "DuplicateDataDatabaseException";
+      
+      if (this.pkTableName != null)
+      {
+        msg += " the primary key on database table [" + this.pkTableName + "] has been violated";
+      }
+      else
+      {
+        msg += " constraint [" + this.indexName + "] on object was violated";
+      }
+      
+      if (this.mdClassDAOIF != null)
+      {
+        msg += " mdClass is " + this.mdClassDAOIF.definesType();
+      }
+      
+      return msg;
     }
   }
 }
