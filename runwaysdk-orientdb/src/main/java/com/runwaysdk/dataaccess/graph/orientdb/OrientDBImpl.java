@@ -316,8 +316,8 @@ public class OrientDBImpl implements GraphDB
               // oClass.addSuperClass(v);
             }
 
-            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
-            sequenceLibrary.createSequence(className + "Seq", SEQUENCE_TYPE.ORDERED, new OSequence.CreateParams().setStart(0L));
+//            OSequenceLibrary sequenceLibrary = db.getMetadata().getSequenceLibrary();
+//            sequenceLibrary.createSequence(className + "Seq", SEQUENCE_TYPE.ORDERED, new OSequence.CreateParams().setStart(0L));
           }
         }
         finally
@@ -1137,10 +1137,10 @@ public class OrientDBImpl implements GraphDB
       Object oSeq = element.getProperty(BusinessInfo.SEQUENCE);
       Long iSeq = graphObjectDAO.getSequence();
 
-      if (!oSeq.equals(iSeq))
-      {
-        throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
-      }
+//      if (!oSeq.equals(iSeq))
+//      {
+//        throw new StaleEntityException("Sequence numbers do not match", graphObjectDAO);
+//      }
     }
 
     this.populateElement(db, graphObjectDAO, element);
@@ -1157,10 +1157,12 @@ public class OrientDBImpl implements GraphDB
 
   protected void populateSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO, OElement element)
   {
-    OSequence seq = getSequence(db, graphObjectDAO);
-    long next = seq.next();
-
-    element.setProperty(BusinessInfo.SEQUENCE, next);
+//    OSequence seq = getSequence(db, graphObjectDAO);
+////    long next = seq.next();
+//
+    long sequence = graphObjectDAO.getSequence() != null ? graphObjectDAO.getSequence() + 1 : 0;
+    
+    element.setProperty(BusinessInfo.SEQUENCE, sequence);
   }
 
   @Override
@@ -2018,13 +2020,13 @@ public class OrientDBImpl implements GraphDB
     }
   }
 
-  protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)
-  {
-    MdGraphClassDAOIF mdGraphClassDAO = graphObjectDAO.getMdGraphClassDAO();
-    String className = mdGraphClassDAO.getDBClassName();
-
-    return db.getMetadata().getSequenceLibrary().getSequence(className + "Seq");
-  }
+//  protected OSequence getSequence(ODatabaseSession db, GraphObjectDAO graphObjectDAO)
+//  {
+//    MdGraphClassDAOIF mdGraphClassDAO = graphObjectDAO.getMdGraphClassDAO();
+//    String className = mdGraphClassDAO.getDBClassName();
+//
+//    return db.getMetadata().getSequenceLibrary().getSequence(className + "Seq");
+//  }
 
   public static String generateIndexName()
   {

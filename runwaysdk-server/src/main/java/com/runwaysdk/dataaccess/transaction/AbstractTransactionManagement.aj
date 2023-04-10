@@ -1675,7 +1675,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
           log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
         }
       }
-      else
+      else if(!(ex.getClass().getName().contains("OConcurrentModificationException")))
       {
         log.error(RunwayLogUtil.getExceptionLoggableMessage(ex), ex);
       }
