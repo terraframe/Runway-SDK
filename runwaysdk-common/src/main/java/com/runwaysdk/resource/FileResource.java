@@ -98,14 +98,7 @@ public class FileResource implements ApplicationFileResource, ApplicationTreeRes
   @Override
   public CloseableFile openNewFile()
   {
-    if (this.file instanceof CloseableFile)
-    {
-      return (CloseableFile) this.file;
-    }
-    else
-    {
-      return new CloseableFile(this.file, false);
-    }
+    return new CloseableFile(this.file, false);
   }
   
   @Override
