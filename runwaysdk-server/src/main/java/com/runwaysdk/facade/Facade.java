@@ -835,6 +835,15 @@ public class Facade
   {
     SessionFacade.closeSession(sessionId);
   }
+  
+  /**
+   * Returns true if the given sessionId represents a valid, not expired, session.
+   */
+  @Request
+  public static boolean isSessionValid(String sessionId)
+  {
+    return SessionFacade.containsSession(sessionId);
+  }
 
   /**
    * Invokes a method defined by an MdMethod on the given MutableDTO in the

@@ -162,6 +162,12 @@ public interface RemoteAdapter extends Remote
    * @throws RemoteException
    */
   public void logout(String sessionId) throws RemoteException;
+  
+  /**
+   * @see com.runwaysdk.ClientRequest#isSessionValid()
+   * @throws RemoteException
+   */
+  public boolean isSessionValid(String sessionId) throws RemoteException;
 
   /**
    * @see com.runwaysdk.ClientRequest#newBusiness(java.lang.String,

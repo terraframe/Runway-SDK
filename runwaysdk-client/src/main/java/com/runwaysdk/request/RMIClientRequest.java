@@ -61,8 +61,10 @@ import com.runwaysdk.business.StructQueryDTO;
 import com.runwaysdk.business.ViewQueryDTO;
 import com.runwaysdk.business.ontology.TermAndRelDTO;
 import com.runwaysdk.business.ontology.TermDTO;
+import com.runwaysdk.constants.AdapterInfo;
 import com.runwaysdk.constants.CommonProperties;
 import com.runwaysdk.constants.ExceptionConstants;
+import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.ClientConversionFacade;
 import com.runwaysdk.transport.conversion.ConversionFacade;
 import com.runwaysdk.util.DTOConversionUtilInfo;
@@ -489,7 +491,7 @@ public class RMIClientRequest extends ClientRequest
     this.setLoginStatus(username, true);
     return this.getSessionId();
   }
-
+  
   /**
    * @see com.runwaysdk.ClientRequest#setDimension(java.lang.String,
    *      java.lang.String)
@@ -671,6 +673,39 @@ public class RMIClientRequest extends ClientRequest
       throw new RMIClientException(e);
     }
     this.setLoginStatus(false, false);
+  }
+  
+  @Override
+  public boolean isSessionValid()
+  {
+    this.clearNotifications();
+    
+    if (this.getSessionId() == null || this.getSessionId().length() == 0)
+    {
+      return false;
+    }
+    
+    Boolean isValid;
+    
+    try
+    {
+      isValid = rmiAdapter.isSessionValid(this.getSessionId());
+    }
+    catch (MessageExceptionDTO me)
+    {
+      isValid = (Boolean) me.getReturnObject();
+      this.setMessagesConvertToTypeSafe(me);
+    }
+    catch (RuntimeException e)
+    {
+      throw ClientConversionFacade.buildThrowable(e, this, false);
+    }
+    catch (RemoteException e)
+    {
+      throw new RMIClientException(e);
+    }
+    
+    return isValid;
   }
 
   /**

@@ -685,6 +685,42 @@ public class JavaClientRequest extends ClientRequest
 
     this.setLoginStatus(false, false);
   }
+  
+  @Override
+  public boolean isSessionValid()
+  {
+    this.clearNotifications();
+    
+    if (this.getSessionId() == null || this.getSessionId().length() == 0)
+    {
+      return false;
+    }
+    
+    Class<?> javaAdapterClass = LoaderDecorator.load(AdapterInfo.JAVA_ADAPTER_CLASS);
+    
+    Boolean isValid;
+
+    try
+    {
+      isValid = (Boolean) javaAdapterClass.getMethod("isSessionValid", String.class).invoke(null, this.getSessionId());
+    }
+    catch (Throwable e)
+    {
+      RuntimeException rte = ClientConversionFacade.buildThrowable(e, this, false);
+      if (rte instanceof MessageExceptionDTO)
+      {
+        MessageExceptionDTO me = (MessageExceptionDTO) rte;
+        isValid = (Boolean) me.getReturnObject();
+        this.setMessagesConvertToTypeSafe(me);
+      }
+      else
+      {
+        throw rte;
+      }
+    }
+    
+    return isValid;
+  }
 
   /**
    * @see com.runwaysdk.constant.ClientRequestIF#newBusiness(java.lang.String)
