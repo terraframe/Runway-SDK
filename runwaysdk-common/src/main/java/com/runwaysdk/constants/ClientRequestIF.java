@@ -297,13 +297,22 @@ public interface ClientRequestIF extends ClientRequestMarker
   public boolean isPublicUser();
 
   /**
-   * Returns true if the clientRequest is loggedIn, false otherwise. This check
-   * does not hit the server, and as such is only a "best guess" as to whether
-   * or not the user is logged in.
+   * @deprecated
    * 
-   * @return true if the clientRequest is logged in, false otherwise.
+   * This method returns true if the client "thinks" we are still logged in. That is to say,
+   * we have logged in at one point in the past and we haven't explicitly logged out since.
+   * The implementation doesn't even expire the session if it's older than the expire time (bad).
+   * 
+   * Use isSessionValid instead to directly ask the server if we're still logged in.
    */
   public boolean isLoggedIn();
+  
+  /**
+   * If this ClientRequest has never been used to log in (and has no associated Session Id), this
+   * method will immediately return false. If we have a session id, we will ask the server if the
+   * sessionId associated with this ClientRequest is still valid.
+   */
+  public boolean isSessionValid();
 
   /**
    * Returns a DTO representing the object of the user who is logged into the

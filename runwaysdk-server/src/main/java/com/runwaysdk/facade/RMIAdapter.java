@@ -230,6 +230,15 @@ public class RMIAdapter extends UnicastRemoteObject implements RemoteAdapter
   {
     Facade.logout(sessionId);
   }
+  
+  /**
+   * @see com.runwaysdk.request.RemoteAdapter#isSessionValid()
+   */
+  @Override
+  public boolean isSessionValid(String sessionId)
+  {
+    return Facade.isSessionValid(sessionId);
+  }
 
   /**
    * @see com.runwaysdk.request.RemoteAdapter#newBusiness(java.lang.String, java.lang.String)

@@ -21,7 +21,7 @@ package com.runwaysdk.resource;
 import java.io.InputStream;
 
 /**
- * Interface denoting an abstract "file", which may in practice exist on the classpath, in the vault, as a file on the filesystem, or potentially even as a remote resource (like on S3)
+ * Interface denoting an abstract resource, which may in practice exist on the classpath, in the vault, as a file on the filesystem, or potentially even as a remote resource (like on S3)
  * 
  * @author rrowlands
  */
@@ -41,9 +41,9 @@ public interface ApplicationResource extends AutoCloseable
   
   /**
    * Opens a new connection to the resource as a file. Depending on the implementation, a new temporary file may be created
-   * to fulfill the request, which may involve expensive copying of files. If this is not what you want, use 'getUnderlyingFile'
-   * instead, which throws an exception if it cannot invoke performantly. For this reason you should always invoke "close" on the
-   * ApplicationResource when you are done using the file returned by this method.
+   * to fulfill the request, which may involve expensive copying of files. For this reason you should always invoke "close"
+   * on the returned CloseableFile when you are done. If this is not what you want, consider using the ApplicationFileResource
+   * interface which provides 'getUnderlyingFile'.
    */
   public CloseableFile openNewFile();
   

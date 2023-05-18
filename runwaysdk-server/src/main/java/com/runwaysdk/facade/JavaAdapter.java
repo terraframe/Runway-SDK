@@ -206,6 +206,14 @@ public class JavaAdapter
   {
     Facade.logout(sessionId);
   }
+  
+  /**
+   * @see com.runwaysdk.ClientRequest#isSessionValid()
+   */
+  public static Boolean isSessionValid(String sessionId)
+  {
+    return Facade.isSessionValid(sessionId);
+  }
 
   /**
    * @see com.runwaysdk.ClientRequest#newBusiness(java.lang.String,

@@ -408,11 +408,13 @@ public abstract class ClientRequest implements ClientRequestIF
   }
 
   /**
-   * Returns true if the <code>CleintRequest</code> is loggedIn, false
-   * otherwise.
-   *
-   * @return true if the <code>CleintRequest</code> is loggedIn, false
-   *         otherwise.
+   * @deprecated
+   * 
+   * This method returns true if the client "thinks" we are still logged in. That is to say,
+   * we have logged in at one point in the past and we haven't explicitly logged out since.
+   * The implementation doesn't even expire the session if it's older than the expire time (bad).
+   * 
+   * Use isSessionValid instead to directly ask the server if we're still logged in.
    */
   public boolean isLoggedIn()
   {
@@ -482,6 +484,11 @@ public abstract class ClientRequest implements ClientRequestIF
    *
    */
   protected abstract void logout();
+  
+  /**
+   * Asks the server if the sessionId associated with this ClientRequest is still valid.
+   */
+  public abstract boolean isSessionValid();
 
   /**
    * Returns the <code>CleintRequest</code> with a session logged in as the
