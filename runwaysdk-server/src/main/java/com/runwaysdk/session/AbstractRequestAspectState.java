@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -70,6 +70,8 @@ import com.runwaysdk.business.BusinessFacade;
 public class AbstractRequestAspectState
 {
   protected RequestState                        requestState;
+
+  protected boolean                             topLevel                    = true;
 
   protected Set<String>                         setAppLocksSet              = new HashSet<String>();
 
@@ -249,7 +251,7 @@ public class AbstractRequestAspectState
   {
     if (this.isSessionInitialized())
     {
-      EntityDAO entityDAO = (EntityDAO)  BusinessFacade.getEntityDAO(entity);
+      EntityDAO entityDAO = (EntityDAO) BusinessFacade.getEntityDAO(entity);
       SingleActorDAOIF userIF = this.getRequestState().getSession().getUser();
 
       // Check if userIF has a lock on the object.
@@ -995,7 +997,6 @@ public class AbstractRequestAspectState
     }
   }
 
-
   public void throwMessage(Message message)
   {
     if (message instanceof Warning)
@@ -1194,7 +1195,5 @@ public class AbstractRequestAspectState
       checkAttributePermissions((GraphObject) entity, attributeName);
     }
   }
-
-
 
 }

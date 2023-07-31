@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -67,55 +67,73 @@ public class RequestAspectState extends AbstractRequestAspectState
   {
     super();
 
-    this.requestState = new RequestState();
+    RequestState current = RequestState.getCurrentRequestState();
+
+    if (current != null)
+    {
+      this.requestState = current;
+      this.topLevel = false;
+    }
+    else
+    {
+      this.requestState = new RequestState();
+    }
   }
 
   public void openRequest(String _sessionId)
   {
-    this.messageList.clear();
-
-    if (_sessionId == null || _sessionId.trim().equals("") || !SessionFacade.containsSession(_sessionId))
+    if (topLevel)
     {
-      // throw an invalid session exception
-      String errorMsg = "Session [" + _sessionId + "] does not exist or has expired.";
 
-      throw new InvalidSessionException(errorMsg);
+      this.messageList.clear();
+
+      if (_sessionId == null || _sessionId.trim().equals("") || !SessionFacade.containsSession(_sessionId))
+      {
+        // throw an invalid session exception
+        String errorMsg = "Session [" + _sessionId + "] does not exist or has expired.";
+
+        throw new InvalidSessionException(errorMsg);
+      }
+
+      this.getRequestState().setSession(SessionFacade.getSessionForRequest(_sessionId));
+
+      SessionFacade.renewSession(this.getRequestState().getSession().getOid());
     }
-
-    this.getRequestState().setSession(SessionFacade.getSessionForRequest(_sessionId));
-
-    SessionFacade.renewSession(this.getRequestState().getSession().getOid());
   }
 
   public void closeRequest(Object returnObject)
   {
-    if (messageList.size() > 0)
+    if (topLevel)
     {
-      List<MessageDTO> messageDTOList = new LinkedList<MessageDTO>();
-      List<WarningDTO> warningDTOList = new LinkedList<WarningDTO>();
-      List<InformationDTO> informationDTOList = new LinkedList<InformationDTO>();
 
-      for (Message message : messageList)
+      if (messageList.size() > 0)
       {
-        message.setLocale(this.getRequestState().getSession().getLocale());
+        List<MessageDTO> messageDTOList = new LinkedList<MessageDTO>();
+        List<WarningDTO> warningDTOList = new LinkedList<WarningDTO>();
+        List<InformationDTO> informationDTOList = new LinkedList<InformationDTO>();
 
-        if (message instanceof Warning)
+        for (Message message : messageList)
         {
-          WarningToWarningDTO converter = new WarningToWarningDTO(this.getRequestState().getSession().getOid(), (Warning) message, false);
-          WarningDTO warningDTO = converter.populate();
-          warningDTOList.add(warningDTO);
-          messageDTOList.add(warningDTO);
+          message.setLocale(this.getRequestState().getSession().getLocale());
+
+          if (message instanceof Warning)
+          {
+            WarningToWarningDTO converter = new WarningToWarningDTO(this.getRequestState().getSession().getOid(), (Warning) message, false);
+            WarningDTO warningDTO = converter.populate();
+            warningDTOList.add(warningDTO);
+            messageDTOList.add(warningDTO);
+          }
+          else if (message instanceof Information)
+          {
+            InformationToInformationDTO converter = new InformationToInformationDTO(this.getRequestState().getSession().getOid(), (Information) message, false);
+            InformationDTO informationDTO = converter.populate();
+            informationDTOList.add(informationDTO);
+            messageDTOList.add(informationDTO);
+          }
         }
-        else if (message instanceof Information)
-        {
-          InformationToInformationDTO converter = new InformationToInformationDTO(this.getRequestState().getSession().getOid(), (Information) message, false);
-          InformationDTO informationDTO = converter.populate();
-          informationDTOList.add(informationDTO);
-          messageDTOList.add(informationDTO);
-        }
+
+        throw new MessageExceptionDTO(returnObject, messageDTOList, warningDTOList, informationDTOList);
       }
-
-      throw new MessageExceptionDTO(returnObject, messageDTOList, warningDTOList, informationDTOList);
     }
   }
 
@@ -296,53 +314,61 @@ public class RequestAspectState extends AbstractRequestAspectState
 
   public void afterReturning(JoinPoint joinPoint)
   {
-    try
+    if (topLevel)
     {
-      if (this.getRequestState().getSession() != null)
+
+      try
       {
-        ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
-        if (this.getRequestState().getSession().closeOnEndOfRequest())
+        if (this.getRequestState().getSession() != null)
         {
-          SessionFacade.closeSession(this.getRequestState().getSession().getOid());
+          ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
+          if (this.getRequestState().getSession().closeOnEndOfRequest())
+          {
+            SessionFacade.closeSession(this.getRequestState().getSession().getOid());
+
+          }
 
         }
 
+        this.getRequestState().commitAndCloseConnection(joinPoint);
       }
+      finally
+      {
+        ( LockObject.getLockObject() ).releaseAppLocks(setAppLocksSet);
+        setAppLocksSet.clear();
 
-      this.getRequestState().commitAndCloseConnection(joinPoint);
-    }
-    finally
-    {
-      ( LockObject.getLockObject() ).releaseAppLocks(setAppLocksSet);
-      setAppLocksSet.clear();
+        this.idMap.clear();
 
-      this.idMap.clear();
-
-      this.getRequestState().setSession(null);
+        this.getRequestState().setSession(null);
+      }
     }
   }
 
   public void afterThrowing(JoinPoint joinPoint)
   {
-    try
+    if (topLevel)
     {
-      if (this.getRequestState().getSession() != null)
+
+      try
       {
-        ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
-        SessionFacade.endOfRequest(this.getRequestState().getSession().getOid());
+        if (this.getRequestState().getSession() != null)
+        {
+          ( (Session) this.getRequestState().getSession() ).setFirstMdMethodDAOIF(null);
+          SessionFacade.endOfRequest(this.getRequestState().getSession().getOid());
 
+        }
+
+        this.getRequestState().rollbackAndCloseConnection(joinPoint);
       }
+      finally
+      {
+        ( LockObject.getLockObject() ).releaseAppLocks(setAppLocksSet);
+        setAppLocksSet.clear();
 
-      this.getRequestState().rollbackAndCloseConnection(joinPoint);
-    }
-    finally
-    {
-      ( LockObject.getLockObject() ).releaseAppLocks(setAppLocksSet);
-      setAppLocksSet.clear();
+        this.idMap.clear();
 
-      this.idMap.clear();
-
-      this.getRequestState().setSession(null);
+        this.getRequestState().setSession(null);
+      }
     }
   }
 

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.facade;
 
@@ -220,11 +220,15 @@ public abstract class AbstractAdapterTest
 
   protected static BusinessDAO                  littleBillyTables              = null;
 
+  protected static String                       littleBillyTablesId            = null;
+
   protected static ClientSession                systemSession                  = null;
 
   protected static ClientRequestIF              clientRequest                  = null;
 
   protected static MdBusinessDAO                childMdBusiness                = null;
+
+  protected static String                       childMdBusinessId              = null;
 
   protected static String                       childMdBusinessType            = null;
 
@@ -394,7 +398,7 @@ public abstract class AbstractAdapterTest
     littleBillyTables = BusinessDAO.newInstance(testUserType);
     littleBillyTables.setValue(UserInfo.USERNAME, "Billy");
     littleBillyTables.setValue(UserInfo.PASSWORD, "Tables");
-    littleBillyTables.apply();
+    littleBillyTablesId = littleBillyTables.apply();
 
     suitMaster = MdBusinessDAO.newInstance();
     suitMaster.setValue(MdBusinessInfo.NAME, "SuitMaster");
@@ -449,7 +453,7 @@ public abstract class AbstractAdapterTest
     childMdBusiness.setStructValue(MdBusinessInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "temporary junit test object");
     childMdBusiness.setValue(MdBusinessInfo.EXTENDABLE, MdAttributeBooleanInfo.TRUE);
     childMdBusiness.setValue(MdBusinessInfo.ABSTRACT, MdAttributeBooleanInfo.FALSE);
-    childMdBusiness.apply();
+    childMdBusinessId = childMdBusiness.apply();
 
     MdAttributeStructDAO phoneNumber = MdAttributeStructDAO.newInstance();
     phoneNumber.setValue(MdAttributeStructInfo.NAME, "phoneNumber");
@@ -471,7 +475,7 @@ public abstract class AbstractAdapterTest
     mdAttributeCharacterDTO_2.apply();
 
     String source = "package com.test.controller;\n" + "public class ParentTest extends ParentTestBase\n" + "{" + "public ParentTest()" + "{" + "   super();" + "}" + "public static ParentTest get(String oid)" + "{" + "  return (ParentTest) " + Business.class.getName() + ".get(oid);" + "}" + "public String toString()" + "{" + "  return \"" + toStringPrepend + "\" + getOid();" + "}" + "}";
-    
+
     parentMdBusiness = MdBusinessDAO.newInstance();
     parentMdBusiness.setValue(MdBusinessInfo.NAME, "ParentTest");
     parentMdBusiness.setValue(MdBusinessInfo.PACKAGE, pack);
@@ -555,7 +559,7 @@ public abstract class AbstractAdapterTest
     mdIndexDTO.setStructValue(MdIndexInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Test Group Index");
     mdIndexDTO.setValue(MdIndexInfo.MD_ENTITY, parentMdBusiness.getOid());
     mdIndexDTO.apply();
-    
+
     mdIndexDTO.addAttribute(mdAttributeCharGroupIndex1_DTO, 0);
     mdIndexDTO.addAttribute(mdAttributeCharGroupIndex2_DTO, 1);
     mdIndexDTO.setValue(MdIndexInfo.ACTIVE, MdAttributeBooleanInfo.TRUE);
@@ -978,7 +982,7 @@ public abstract class AbstractAdapterTest
     spades.setValue(EnumerationMasterInfo.NAME, "SPADES");
     spades.setStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Spades");
     spades.apply();
-    
+
     suitEnumNames.add(spades.getValue(EnumerationMasterInfo.NAME));
     suitEnumDisplayLabels.add(spades.getStructValue(EnumerationMasterInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE));
 
@@ -2259,7 +2263,6 @@ public abstract class AbstractAdapterTest
   /**
    * Attempts to create an invalid instance of a fake type.
    */
-  @Request
   @Test
   public void testNewInstanceInvalid()
   {
@@ -2313,8 +2316,8 @@ public abstract class AbstractAdapterTest
   }
 
   /**
-   * Ensures that the oid changes between a new <code>BusinessDTO</code> and when
-   * the DTO is applied
+   * Ensures that the oid changes between a new <code>BusinessDTO</code> and
+   * when the DTO is applied
    */
   @Request
   @Test
@@ -2644,7 +2647,6 @@ public abstract class AbstractAdapterTest
   /**
    * Log in an invalid user.
    */
-  @Request
   @Test
   public void testLoginInvalid()
   {
@@ -3852,7 +3854,6 @@ public abstract class AbstractAdapterTest
     }
   }
 
-  @Request
   @Test
   public void testInvalidGrantGrantPermission()
   {
@@ -3863,15 +3864,11 @@ public abstract class AbstractAdapterTest
       tommySession = this.createSession("Tommy", "music");
       tommyRequest = getRequest(tommySession);
 
-      tommyRequest.grantTypePermission(littleBillyTables.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
+      tommyRequest.grantTypePermission(littleBillyTablesId, childMdBusinessId, Operation.WRITE.name());
     }
     catch (GrantTypePermissionExceptionDTO e)
     {
       // we want to land here
-    }
-    catch (Exception e)
-    {
-      Assert.fail(e.getMessage());
     }
     finally
     {
@@ -4173,7 +4170,7 @@ public abstract class AbstractAdapterTest
     try
     {
       clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.READ.name());
-      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());      
+      clientRequest.revokeTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.WRITE.name());
       clientRequest.grantTypePermission(tommyUser.getOid(), childMdBusiness.getOid(), Operation.DELETE.name());
 
       tommySession = this.createSession("Tommy", "music");
@@ -4244,7 +4241,6 @@ public abstract class AbstractAdapterTest
       }
     }
   }
-
 
   @Request
   @Test

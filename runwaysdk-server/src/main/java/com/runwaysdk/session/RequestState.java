@@ -48,6 +48,8 @@ public class RequestState
   {
     try
     {
+//      System.out.println("Get database connection");
+      
       this.conn = Database.getConnectionRaw();
 
       this.graphDBRequest = GraphDBService.getInstance().getGraphDBRequest();

@@ -91,6 +91,8 @@ public aspect RequestManagement extends AbstractRequestManagement
   {
     try
     {
+//      System.out.println("Top Level Permission - Around " + thisJoinPoint.getSignature());
+
       this.getState().openRequest(_sessionId);
 
       Object returnObject = proceed(this.getState().getRequestState().getSession().getOid());
@@ -101,6 +103,8 @@ public aspect RequestManagement extends AbstractRequestManagement
     }
     catch (Throwable ex)
     {
+//      System.out.println("Top Level Permission Exception - Around " + thisJoinPoint.getSignature());
+      
       throw this.getState().handleException(ex);
     }    
   }
@@ -113,22 +117,30 @@ public aspect RequestManagement extends AbstractRequestManagement
     execution (* com.runwaysdk.facade.Facade.changeLogin(String, String, String))
   {
     try
-    {
+    {      
+//      System.out.println("Login - Around " + thisJoinPoint.getSignature());
+      
       return proceed();
     }
     catch (Throwable ex)
     {
+//      System.out.println("Login - Around Exception " + thisJoinPoint.getSignature());
+      
       throw this.getState().processException(ex, Locale.getDefault());
     }
   }
 
   after() returning : topLevelSession()
   {
+//    System.out.println("After top level session " + thisJoinPoint.getSignature());
+    
     this.getState().afterReturning(thisJoinPoint);
   }
 
   after() throwing : topLevelSession()
   {
+//    System.out.println("Throwing top level session " + thisJoinPoint.getSignature());
+    
     this.getState().afterThrowing(thisJoinPoint);
   }
 }

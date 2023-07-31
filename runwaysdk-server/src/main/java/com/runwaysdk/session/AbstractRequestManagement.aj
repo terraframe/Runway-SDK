@@ -223,9 +223,18 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
    * suite.addTest(JSONWebServiceInvokeMethodTest.suite()); //
    * suite.addTest(SeleniumTestSuite.suite());
    */
+//  public pointcut login()
+//  : execution (* com.runwaysdk.facade.Facade.login(String, String, Locale[]))  ||
+//    execution (* com.runwaysdk.facade.Facade.loginUser(String, String))  ||
+//    execution (* com.runwaysdk.facade.Facade.logout(String))  ||
+//    execution (* com.runwaysdk.facade.Facade.changeLogin(String, String, String));
+
+  
+  
   public pointcut topLevelSession()
-    :  enterSession()
+  : enterSession()
     && !cflowbelow(enterSession());
+  //    && !cflowbelow(enterSession());
 
   protected pointcut topLevelPermission(String _sessionId)
   :  (sessionRequest(Request, String)
