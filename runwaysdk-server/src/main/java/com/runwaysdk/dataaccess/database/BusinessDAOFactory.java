@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.runwaysdk.ComponentIF;
+import com.runwaysdk.business.graph.GraphQuery;
 import com.runwaysdk.business.rbac.MethodActorDAO;
 import com.runwaysdk.business.rbac.RoleDAO;
 import com.runwaysdk.business.rbac.RoleDAOIF;
@@ -161,6 +162,7 @@ import com.runwaysdk.dataaccess.MdBusinessDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.MdEntityDAOIF;
 import com.runwaysdk.dataaccess.MdEnumerationDAOIF;
+import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.MdRelationshipDAOIF;
 import com.runwaysdk.dataaccess.MdTableClassIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
@@ -171,6 +173,10 @@ import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeEnumeration;
 import com.runwaysdk.dataaccess.cache.CacheAllBusinessDAOstrategy;
 import com.runwaysdk.dataaccess.cache.DataNotFoundException;
+import com.runwaysdk.dataaccess.graph.GraphDBService;
+import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.GraphRequest;
+import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.metadata.AndFieldConditionDAO;
 import com.runwaysdk.dataaccess.metadata.CharacterConditionDAO;
 import com.runwaysdk.dataaccess.metadata.DateConditionDAO;
@@ -980,6 +986,28 @@ public class BusinessDAOFactory
           if (i != null)
           {
             i.close();
+          }
+        }
+      }
+      else if (mdClassDAOIF instanceof MdGraphClassDAOIF)
+      {
+        MdGraphClassDAOIF mdGraphDAOIF = ( (MdGraphClassDAOIF) mdClassDAOIF );
+        
+        String osql = "SELECT FROM " + mdGraphDAOIF.getDBClassName() + " WHERE " + mdAttrRefDAO.getColumnName() + " = '" + oldId + "'";
+        
+        GraphDBService service = GraphDBService.getInstance();
+        GraphRequest request = service.getGraphDBRequest();
+
+        List<Object> results = service.query(request, osql, new HashMap<String,Object>());
+
+        for (Object result : results)
+        {
+          if (result instanceof GraphObjectDAO)
+          {
+            GraphObjectDAO vobj = (GraphObjectDAO) result;
+            
+            vobj.setValue(mdAttrRefDAO.getColumnName(), newId);
+            vobj.apply();
           }
         }
       }
