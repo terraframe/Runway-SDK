@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.8.7</version>
+    <version>3.8.8-SNAPSHOT</version>
   </parent>
 
   <artifactId>runwaysdk-server</artifactId>
