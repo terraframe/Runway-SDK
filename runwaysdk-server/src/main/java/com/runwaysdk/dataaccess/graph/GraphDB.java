@@ -398,6 +398,8 @@ public interface GraphDB
   public List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF parent, VertexObjectDAOIF child, MdEdgeDAOIF mdEdge);
 
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters);
+  
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType);
 
   public void command(GraphRequest request, String statement, Map<String, Object> parameters);
 
@@ -414,5 +416,6 @@ public interface GraphDB
   public void close();
 
   public GraphDDLCommandAction ddlCommand(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String statement, Map<String, Object> parameters);
+
 
 }

@@ -1221,6 +1221,12 @@ public class OrientDBImpl implements GraphDB
   @Override
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters)
   {
+    return this.query(request, statement, parameters, null);
+  }
+
+  @Override
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType)
+  {
     List<Object> results = new LinkedList<Object>();
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
@@ -1268,7 +1274,7 @@ public class OrientDBImpl implements GraphDB
         }
         else
         {
-          results.add(this.getPropertyValue(result));
+          results.add(this.getPropertyValue(result, resultType));
         }
       }
     }
@@ -1276,7 +1282,7 @@ public class OrientDBImpl implements GraphDB
     return results;
   }
 
-  public Object getPropertyValue(Object value)
+  public Object getPropertyValue(Object value, Class<?> resultType)
   {
     if (value instanceof OResult)
     {
@@ -1295,7 +1301,7 @@ public class OrientDBImpl implements GraphDB
           Shape shape = OShapeFactory.INSTANCE.fromObject(result);
           return OShapeFactory.INSTANCE.toGeometry(shape);
         }
-        else if(names.contains("@version"))
+        else if (resultType != null && VertexObjectDAO.class.isAssignableFrom(resultType))
         {
           MdGraphClassDAOIF mdClass = MdGraphClassDAO.getMdGraphClassByTableName(className);
 
@@ -1318,7 +1324,7 @@ public class OrientDBImpl implements GraphDB
         {
           if (!name.equals("@class"))
           {
-            row.put(name, this.getPropertyValue(result.getProperty(name)));
+            row.put(name, this.getPropertyValue(result.getProperty(name), null));
           }
         }
 
@@ -1328,12 +1334,12 @@ public class OrientDBImpl implements GraphDB
       {
         String name = names.iterator().next();
 
-        return this.getPropertyValue(result.getProperty(name));
+        return this.getPropertyValue(result.getProperty(name), null);
       }
     }
     else if (value instanceof List)
     {
-      return ( (List<?>) value ).stream().map(v -> this.getPropertyValue(v)).collect(Collectors.toList());
+      return ( (List<?>) value ).stream().map(v -> this.getPropertyValue(v, null)).collect(Collectors.toList());
     }
 
     return value;
