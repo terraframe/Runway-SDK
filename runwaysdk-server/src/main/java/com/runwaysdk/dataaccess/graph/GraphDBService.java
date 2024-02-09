@@ -383,6 +383,11 @@ public class GraphDBService
     return this.graphDB.query(request, statement, parameters);
   }
 
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType)
+  {
+    return this.graphDB.query(request, statement, parameters, resultType);
+  }
+  
   public void command(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     this.graphDB.command(request, statement, parameters);

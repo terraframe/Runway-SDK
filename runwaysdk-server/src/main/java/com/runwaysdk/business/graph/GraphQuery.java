@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business.graph;
 
@@ -37,14 +37,14 @@ public class GraphQuery<T>
 
   private Map<String, Object> parameters;
 
+  private Class<?>            forceResultType;
+
   /**
    * @param statement
    */
   public GraphQuery(String statement)
   {
-    super();
-    this.statement = statement;
-    this.parameters = new TreeMap<String, Object>();
+    this(statement, new TreeMap<String, Object>(), null);
   }
 
   /**
@@ -53,9 +53,19 @@ public class GraphQuery<T>
    */
   public GraphQuery(String statement, Map<String, Object> parameters)
   {
+    this(statement, parameters, null);
+  }
+  
+  /**
+   * @param statement
+   * @param parameters
+   */
+  public GraphQuery(String statement, Map<String, Object> parameters, Class<?> forceResultType)
+  {
     super();
     this.statement = statement;
     this.parameters = parameters;
+    this.forceResultType = forceResultType;
   }
 
   public void setParameter(String name, Object value)
@@ -87,7 +97,7 @@ public class GraphQuery<T>
     GraphDBService service = GraphDBService.getInstance();
     GraphRequest request = service.getGraphDBRequest();
 
-    List<Object> results = service.query(request, statement, parameters);
+    List<Object> results = service.query(request, statement, parameters, this.forceResultType);
 
     LinkedList<T> list = new LinkedList<T>();
 
