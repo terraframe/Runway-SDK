@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.attributes;
 
@@ -32,8 +32,6 @@ public class AttributeClassification extends AttributeGraphRef
    * 
    */
   private static final long serialVersionUID = 1L;
-  
-  private boolean isSkipValidation = false;
 
   /**
    * @see Attribute(MdAttributeConcreteDAOIF, String)
@@ -67,12 +65,7 @@ public class AttributeClassification extends AttributeGraphRef
   @Override
   public void setValue(Object value)
   {
-    this.setValue(value, isSkipValidation);
-  }
-  
-  public void setValue(Object value, boolean skipValidation)
-  {
-    if (!skipValidation)
+    if (this.isValidate())
     {
       if (value instanceof VertexObjectDAOIF)
       {
@@ -90,68 +83,64 @@ public class AttributeClassification extends AttributeGraphRef
 
     super.setValue(value);
   }
-  
-  public void setSkipValidation(boolean skip)
-  {
-    this.isSkipValidation = skip;
-  }
-  
-  public boolean getSkipValidation()
-  {
-    return this.isSkipValidation;
-  }
-  
-  // Our super will end up invoking the setValue method above, which ends up validating for us. No need to validate twice.
-//  @Override
-//  public void setValue(Object value, Date startDate, Date endDate)
-//  {
-//    if (value instanceof VertexObjectDAOIF)
-//    {
-//      this.validateRid( ( (VertexObjectDAOIF) value ).getRID(), true);
-//    }
-//    else if (value instanceof VertexObject)
-//    {
-//      this.validateRid( ( (VertexObject) value ).getRID(), true);
-//    }
-//    else if (value instanceof ID)
-//    {
-//      this.validateRid( ( (ID) value ).getRid(), true);
-//    }
-//    
-//    super.setValue(value, startDate, endDate);
-//  }
+
+  // Our super will end up invoking the setValue method above, which ends up
+  // validating for us. No need to validate twice.
+  // @Override
+  // public void setValue(Object value, Date startDate, Date endDate)
+  // {
+  // if (value instanceof VertexObjectDAOIF)
+  // {
+  // this.validateRid( ( (VertexObjectDAOIF) value ).getRID(), true);
+  // }
+  // else if (value instanceof VertexObject)
+  // {
+  // this.validateRid( ( (VertexObject) value ).getRID(), true);
+  // }
+  // else if (value instanceof ID)
+  // {
+  // this.validateRid( ( (ID) value ).getRid(), true);
+  // }
+  //
+  // super.setValue(value, startDate, endDate);
+  // }
 
   public boolean validateRid(Object childRid, boolean throwException)
   {
-    MdAttributeClassificationDAOIF mdAttributeConcrete = this.getMdAttributeConcrete();
+    return validateRid(this.getMdAttributeConcrete(), childRid, throwException);
+  }
 
+  public static boolean validateRid(MdAttributeClassificationDAOIF mdAttributeConcrete, Object childRid, boolean throwException)
+  {
     if (mdAttributeConcrete != null)
     {
-      MdClassificationDAOIF mdClassification = mdAttributeConcrete.getMdClassificationDAOIF();
+      VertexObjectDAOIF root = mdAttributeConcrete.getRoot();
 
-      if (mdClassification != null)
+      return validateRid(mdAttributeConcrete.getMdClassificationDAOIF(), root, childRid, throwException);
+    }
+
+    return true;
+  }
+
+  public static boolean validateRid(MdClassificationDAOIF mdClassification, VertexObjectDAOIF root, Object childRid, boolean throwException)
+  {
+    if (mdClassification != null)
+    {
+      MdEdgeDAOIF mdEdge = mdClassification.getReferenceMdEdgeDAO();
+
+      if (!VertexObjectDAO.isChild(root.getRID(), childRid, mdEdge))
       {
-        VertexObjectDAOIF root = mdAttributeConcrete.getRoot();
-
-        if (root != null)
+        if (throwException)
         {
-          MdEdgeDAOIF mdEdge = mdClassification.getReferenceMdEdgeDAO();
-
-          if (!VertexObjectDAO.isChild(root.getRID(), childRid, mdEdge))
-          {
-            if (throwException)
-            {
-              throw new ClassificationValidationException("Value must be a child of the attribute root");
-            }
-            else
-            {
-              return false;
-            }
-          }
+          throw new ClassificationValidationException("Value must be a child of the attribute root");
+        }
+        else
+        {
+          return false;
         }
       }
     }
-    
+
     return true;
   }
 

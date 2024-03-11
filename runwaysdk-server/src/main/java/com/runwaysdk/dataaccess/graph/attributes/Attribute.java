@@ -80,6 +80,8 @@ public abstract class Attribute implements AttributeIF
 
   protected ValueOverTimeCollection  valuesOverTime;
 
+  private boolean                    validate = true;
+
   /**
    * Creates an attribute with the given name and initializes the value to
    * blank.
@@ -134,6 +136,16 @@ public abstract class Attribute implements AttributeIF
 
     this.value = value;
   }
+  
+  public void setValidate(boolean validate)
+  {
+    this.validate = validate;
+  }
+  
+  public boolean isValidate()
+  {
+    return validate;
+  }  
 
   /**
    * @see AttributeIF#getName()

@@ -300,9 +300,23 @@ public abstract class GraphObject implements Mutable
    */
   public void setValue(String name, Object _object)
   {
-    graphObjectDAO.setValue(name, _object);
+    this.setValue(name, _object, true);
   }
 
+  /**
+   * A generic, type-unsafe setter that takes the attribute name a and value as
+   * an Object.
+   * 
+   * @param name
+   *          String name of the attribute
+   * @param value
+   *          String representation of the value
+   */
+  public void setValue(String name, Object _object, boolean validate)
+  {
+    graphObjectDAO.setValue(name, _object, validate);
+  }
+  
   /**
    * A generic, type-unsafe setter that takes the attribute name a and value as
    * an Object.

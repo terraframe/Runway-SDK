@@ -839,7 +839,6 @@ public class Facade
   /**
    * Returns true if the given sessionId represents a valid, not expired, session.
    */
-  @Request
   public static boolean isSessionValid(String sessionId)
   {
     return SessionFacade.containsSession(sessionId);
