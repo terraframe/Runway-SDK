@@ -382,7 +382,7 @@ public class TransactionState
     {
       if (this.ddlGraphRequest == null)
       {
-        this.ddlGraphRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
+        this.ddlGraphRequest = GraphDBService.getInstance().getDDLGraphDBRequest(false);
       }
 
       return this.ddlGraphRequest;

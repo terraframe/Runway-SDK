@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph;
 
@@ -26,11 +26,14 @@ import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import com.runwaysdk.constants.IndexTypes;
+import com.runwaysdk.dataaccess.CoreException;
 import com.runwaysdk.dataaccess.MdEdgeDAOIF;
 import com.runwaysdk.dataaccess.MdVertexDAOIF;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
+import com.runwaysdk.dataaccess.transaction.TransactionState;
+import com.runwaysdk.session.RequestState;
 
 public class GraphDBService
 {
@@ -98,6 +101,21 @@ public class GraphDBService
 
   public GraphRequest getGraphDBRequest()
   {
+    return this.getGraphDBRequest(true);
+  }
+
+  public GraphRequest getGraphDBRequest(boolean validateRequestState)
+  {
+    if (validateRequestState)
+    {
+      RequestState currentRequestState = RequestState.getCurrentRequestState();
+
+      if (currentRequestState == null)
+      {
+        throw new CoreException("Request state expected.");
+      }
+    }
+
     return this.graphDB.getGraphDBRequest();
   }
 
@@ -111,22 +129,53 @@ public class GraphDBService
    */
   public GraphRequest getDDLGraphDBRequest()
   {
+    return this.getDDLGraphDBRequest(true);
+  }
+
+  /**
+   * This has a different method signature compared to
+   * {@link GraphDBService#getGraphDBRequest} even though it does the same thing
+   * so that aspects will not intercept this call and provide a different
+   * {@link GraphRequest} object. If the calling method is not validating the
+   * transaction state then it is up to the calling method to ensure it is
+   * either in a transaction or to close the request
+   * 
+   * @return
+   */
+  public GraphRequest getDDLGraphDBRequest(boolean validateTransactionState)
+  {
+    // The life cycle of DDL graph connections are managed inside the
+    // transaction management aspect. As such if the system tries to get a
+    // DDL graph request outside of a transaction then the graph database
+    // connection will not be cleaned up. Therefore ensure that all requests
+    // for a DDL graph request are inside of a transaction annotation.
+    if (validateTransactionState)
+    {
+      TransactionState currentTransactionState = TransactionState.getCurrentTransactionState();
+
+      if (currentTransactionState == null)
+      {
+        throw new CoreException("Transaction state expected.");
+      }
+    }
+
     GraphRequest ddlGraphRequest = this.graphDB.getGraphDBRequest();
     ddlGraphRequest.setIsDDLRequest();
 
     return ddlGraphRequest;
   }
-  
+
   /**
    * @param superClassName
    *          TODO
-   * @see GraphDB#createEmbeddedClass(GraphRequest, GraphRequest, String, String)
+   * @see GraphDB#createEmbeddedClass(GraphRequest, GraphRequest, String,
+   *      String)
    */
   public GraphDDLCommandAction createEmbeddedClass(GraphRequest graphRequest, GraphRequest graphDBRequest, String className, String superClassName)
   {
     return this.graphDB.createEmbeddedClass(graphRequest, graphDBRequest, className, superClassName);
   }
-  
+
   /**
    * @see GraphDB#deleteEmbeddedClass(GraphRequest, GraphRequest, String)
    */
@@ -190,7 +239,7 @@ public class GraphDBService
   {
     return this.graphDB.isEdgeClassDefined(graphRequest, className);
   }
-  
+
   /**
    * @see GraphDB#isClassDefined(GraphRequest, String)
    */
@@ -219,13 +268,11 @@ public class GraphDBService
   {
     return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
   }
-  
+
   public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
   {
     return this.graphDB.createGraphReferenceAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassType, required, changeOverTime);
   }
-
-
 
   public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
   {
@@ -274,7 +321,8 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @param context TODO
+   * @param context
+   *          TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
    *      boolean, DeleteContext)
    */
@@ -286,7 +334,8 @@ public class GraphDBService
   /**
    * @param cot
    *          TODO
-   * @param context TODO
+   * @param context
+   *          TODO
    * @see GraphDB#dropAttribute(GraphRequest, GraphRequest, String, String,
    *      boolean, DeleteContext)
    */
@@ -387,7 +436,7 @@ public class GraphDBService
   {
     return this.graphDB.query(request, statement, parameters, resultType);
   }
-  
+
   public void command(GraphRequest request, String statement, Map<String, Object> parameters)
   {
     this.graphDB.command(request, statement, parameters);

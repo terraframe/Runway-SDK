@@ -52,7 +52,7 @@ public class RequestState
       
       this.conn = Database.getConnectionRaw();
 
-      this.graphDBRequest = GraphDBService.getInstance().getGraphDBRequest();
+      this.graphDBRequest = GraphDBService.getInstance().getGraphDBRequest(false);
 
       this.session = null;
       this.mainThread = Thread.currentThread();

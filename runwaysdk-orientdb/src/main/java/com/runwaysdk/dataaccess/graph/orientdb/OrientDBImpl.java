@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -37,10 +37,13 @@ import org.locationtech.spatial4j.shape.Shape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.orientechnologies.orient.core.config.OGlobalConfiguration;
+import com.orientechnologies.orient.core.db.ODatabasePool;
 import com.orientechnologies.orient.core.db.ODatabaseSession;
 import com.orientechnologies.orient.core.db.ODatabaseType;
 import com.orientechnologies.orient.core.db.OrientDB;
 import com.orientechnologies.orient.core.db.OrientDBConfig;
+import com.orientechnologies.orient.core.db.OrientDBConfigBuilder;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.index.OIndex;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
@@ -113,7 +116,6 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEnumerationDAO;
 import com.runwaysdk.dataaccess.metadata.graph.MdGraphClassDAO;
-import com.runwaysdk.dataaccess.metadata.graph.MdVertexDAO;
 import com.runwaysdk.gis.dataaccess.MdAttributeGeometryDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeLineStringDAOIF;
 import com.runwaysdk.gis.dataaccess.MdAttributeMultiLineStringDAOIF;
@@ -125,16 +127,16 @@ import com.runwaysdk.gis.dataaccess.MdAttributeShapeDAOIF;
 
 public class OrientDBImpl implements GraphDB
 {
-  private OrientDB orientDB;
+  private OrientDB      orientDB;
 
-  // private ODatabasePool pool;
+  private ODatabasePool pool;
 
-  private Logger   logger = LoggerFactory.getLogger(OrientDBImpl.class);
+  private Logger        logger = LoggerFactory.getLogger(OrientDBImpl.class);
 
   public OrientDBImpl()
   {
     this.orientDB = this.getRootOrientDB();
-    // this.pool = null;
+    this.pool = null;
   }
 
   @Override
@@ -189,9 +191,7 @@ public class OrientDBImpl implements GraphDB
     String adminUser = OrientDBProperties.getRootUserName();
     String adminPass = OrientDBProperties.getRootUserPassword();
 
-    ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass);
-
-    try
+    try (ODatabaseSession rootSession = orientDB.open(OrientDBProperties.getDatabaseName(), adminUser, adminPass))
     {
       rootSession.activateOnCurrentThread();
 
@@ -221,46 +221,42 @@ public class OrientDBImpl implements GraphDB
 
       logger.info("Created app user with name [" + appUser + "].");
     }
-    finally
-    {
-      rootSession.close();
-    }
   }
 
   @Override
   public void initializeConnectionPool()
   {
-    // OrientDB orientDB = this.getRootOrientDB();
-    //
-    // try
-    // {
-    // OrientDBConfigBuilder poolCfg = OrientDBConfig.builder();
-    // poolCfg.addConfig(OGlobalConfiguration.DB_POOL_MIN, DB_POOL_MIN);
-    // poolCfg.addConfig(OGlobalConfiguration.DB_POOL_MAX, DB_POOL_MAX);
-    //
-    // this.pool = new
-    // ODatabasePool(this.orientDB,OrientDBService.DB_NAME,DB_ADMIN_USER_NAME,DB_ADMIN_USER_PASSWORD,
-    // poolCfg.build());
-    //
-    // }
-    // finally
-    // {
-    // orientDB.close();
-    // }
+    synchronized (this)
+    {
+      if (this.pool == null)
+      {
+        OrientDBConfigBuilder poolCfg = OrientDBConfig.builder();
+        poolCfg.addConfig(OGlobalConfiguration.DB_POOL_MIN, OrientDBProperties.getMinPoolSize());
+        poolCfg.addConfig(OGlobalConfiguration.DB_POOL_MAX, OrientDBProperties.getMaxPoolSize());
+
+        this.pool = new ODatabasePool(this.orientDB, OrientDBProperties.getDatabaseName(), OrientDBProperties.getAppUserName(), OrientDBProperties.getAppUserPassword(), poolCfg.build());
+      }
+    }
   }
 
   @Override
   public void closeConnectionPool()
   {
-    // this.pool.close();
-    //
-    // this.orientDB.close();
     logger.info("Closing the GraphDB connection pool");
+
+    synchronized (this)
+    {
+      this.pool.close();
+
+      this.pool = null;
+    }
   }
 
   @Override
   public void close()
   {
+    this.closeConnectionPool();
+
     this.orientDB.close();
 
     this.orientDB = null;
@@ -269,11 +265,17 @@ public class OrientDBImpl implements GraphDB
   @Override
   public OrientDBRequest getGraphDBRequest()
   {
-    // ODatabaseSession dbSession = this.pool.acquire();
+    if (this.pool == null)
+    {
+      this.initializeConnectionPool();
+    }
 
-    ODatabaseSession dbSession = orientDB.open(OrientDBProperties.getDatabaseName(), OrientDBProperties.getAppUserName(), OrientDBProperties.getAppUserPassword());
+    // ODatabaseSession dbSession =
+    // orientDB.open(OrientDBProperties.getDatabaseName(),
+    // OrientDBProperties.getAppUserName(),
+    // OrientDBProperties.getAppUserPassword());
 
-    return new OrientDBRequest(dbSession);
+    return new OrientDBRequest(this.pool.acquire());
   }
 
   /**

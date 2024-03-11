@@ -103,14 +103,16 @@ public class EmbeddedGraphClassPatcher
     
     GraphDBService service = GraphDBService.getInstance();
     GraphRequest request = service.getGraphDBRequest();
-    GraphRequest ddlRequest = service.getDDLGraphDBRequest();
     
-    for (String clazz : removeVertexClasses)
+    try (GraphRequest ddlRequest = service.getDDLGraphDBRequest(false))
     {
-      if (service.isClassDefined(ddlRequest, clazz))
+      for (String clazz : removeVertexClasses)
       {
-        final String osql = "ALTER CLASS " + clazz + " SUPERCLASS -V;";
-        service.ddlCommand(request, ddlRequest, osql, new HashMap<String, Object>()).execute();
+        if (service.isClassDefined(ddlRequest, clazz))
+        {
+          final String osql = "ALTER CLASS " + clazz + " SUPERCLASS -V;";
+          service.ddlCommand(request, ddlRequest, osql, new HashMap<String, Object>()).execute();
+        }
       }
     }
   }
