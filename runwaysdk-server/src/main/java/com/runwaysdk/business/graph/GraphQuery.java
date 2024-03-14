@@ -24,12 +24,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
-import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.ResultSetConverterIF;
 
 public class GraphQuery<T>
 {
@@ -38,13 +35,15 @@ public class GraphQuery<T>
   private Map<String, Object> parameters;
 
   private Class<?>            forceResultType;
+  
+  private ResultSetConverterIF converter;
 
   /**
    * @param statement
    */
   public GraphQuery(String statement)
   {
-    this(statement, new TreeMap<String, Object>(), null);
+    this(statement, new TreeMap<String, Object>(), (ResultSetConverterIF) null);
   }
 
   /**
@@ -53,7 +52,7 @@ public class GraphQuery<T>
    */
   public GraphQuery(String statement, Map<String, Object> parameters)
   {
-    this(statement, parameters, null);
+    this(statement, parameters, (ResultSetConverterIF) null);
   }
   
   /**
@@ -66,6 +65,14 @@ public class GraphQuery<T>
     this.statement = statement;
     this.parameters = parameters;
     this.forceResultType = forceResultType;
+  }
+  
+  public GraphQuery(String statement, Map<String, Object> parameters, ResultSetConverterIF converter)
+  {
+    super();
+    this.statement = statement;
+    this.parameters = parameters;
+    this.converter = converter;
   }
 
   public void setParameter(String name, Object value)
@@ -97,24 +104,22 @@ public class GraphQuery<T>
     GraphDBService service = GraphDBService.getInstance();
     GraphRequest request = service.getGraphDBRequest();
 
-    List<Object> results = service.query(request, statement, parameters, this.forceResultType);
+    List<Object> results;
+    
+    if (this.converter == null)
+    {
+      results = service.query(request, statement, parameters, this.forceResultType);
+    }
+    else
+    {
+      results = service.query(request, statement, parameters, this.converter);
+    }
 
     LinkedList<T> list = new LinkedList<T>();
 
     for (Object result : results)
     {
-      if (result instanceof VertexObjectDAOIF)
-      {
-        list.add((T) VertexObject.instantiate((VertexObjectDAO) result));
-      }
-      else if (result instanceof EdgeObjectDAOIF)
-      {
-        list.add((T) EdgeObject.instantiate((EdgeObjectDAO) result));
-      }
-      else
-      {
-        list.add((T) result);
-      }
+      list.add((T) result);
     }
 
     return list;
