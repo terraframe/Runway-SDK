@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.runwaysdk.business.rbac.ActorDAOIF;
 import com.runwaysdk.business.rbac.SingleActorDAO;
@@ -564,6 +566,8 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
    */
   public void delete()
   {
+    boolean isLocked = !StringUtils.isBlank(this.entityDAO.getValue(ElementInfo.LOCKED_BY));
+
     // Make sure we avoid a stale entity exception
     this.appLock();
 
@@ -583,6 +587,17 @@ public abstract class Element extends Entity implements MutableWithStructs, Owna
         throw new LockException(errMsg, this, "ExistingLockException");
       }
     }
+
+    // We have to refresh the state of the entity DAO because deleting will
+    // modify its state and if this object is cached the state will then be
+    // persisted even if the commit fails. If the object is already locked
+    // then that means the DAO has already been cloned so we don't need a new
+    // reference
+    if (!isLocked)
+    {
+      this.setDataEntity( ( EntityDAO.get(this.entityDAO.getOid()) ).getEntityDAO());
+    }
+
     super.delete();
 
     this.releaseAppLock();

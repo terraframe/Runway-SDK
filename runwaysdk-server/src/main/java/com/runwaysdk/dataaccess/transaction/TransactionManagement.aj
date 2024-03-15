@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.transaction;
 
@@ -148,44 +148,26 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       addGroupIndexDDLCommand.doIt();
     }
 
-    if (lockedCache == true)
+    // 5. commit DML
+    this.dmlCommit();
+    haveCommited = true;
+
+    if (!this.getState().isRefreshEntireCache())
     {
-      if (!this.getState().isRefreshEntireCache())
-      {
-        // Cache can be corrupt if an error occurs within this if block
-        this.getTransactionCache().updateCaches();
-      }
+      // Cache can be corrupt if an error occurs within this if block
+      this.getTransactionCache().updateCaches();
 
-      // 5. commit DML
-      this.dmlCommit();
-      haveCommited = true;
-
-      if (!this.getState().isRefreshEntireCache())
+      if (lockedCache == true)
       {
         // Since the database committed and there were no errors refreshing
         // the updated caches,
         // it is safe to apply those caches to Cache.
         this.getTransactionCache().applyCollectionCaches();
       }
-      else
-      {
-        ObjectCache.refreshCache();
-      }
     }
     else
     {
-      // 5. commit DML
-      this.dmlCommit();
-      haveCommited = true;
-
-      if (!this.getState().isRefreshEntireCache())
-      {
-        this.getTransactionCache().updateCaches();
-      }
-      else
-      {
-        ObjectCache.refreshCache();
-      }
+      ObjectCache.refreshCache();
     }
 
     // ObjectCacheFacade.commitGlobalCacheTransaction();
@@ -303,11 +285,10 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       {
         continue;
       }
-      
-      // Do not generate source if this is a test environment or Runway development and the type is a system type.
-      if (!LocalProperties.getIsImportWorking() &&
-          (LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment()) && 
-          mdTypeIF.isSystemPackage())
+
+      // Do not generate source if this is a test environment or Runway
+      // development and the type is a system type.
+      if (!LocalProperties.getIsImportWorking() && ( LocalProperties.isTestEnvironment() || LocalProperties.isRunwayEnvironment() ) && mdTypeIF.isSystemPackage())
       {
         continue;
       }
@@ -449,9 +430,11 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
    */
   @Override
   protected void dmlCommit() throws SQLException
-  { 
-    // If an error is generated when the graph database commits, then convert the error 
-    // to a runway error and rollback the transaction for the relational database.
+  {
+    // If an error is generated when the graph database commits, then convert
+    // the error
+    // to a runway error and rollback the transaction for the relational
+    // database.
     try
     {
       this.getGraphDBRequest().commit();
@@ -462,7 +445,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
       {
         SessionIF sessionIF = Session.getCurrentSession();
         java.util.Locale locale;
-      
+
         if (sessionIF == null)
         {
           locale = CommonProperties.getDefaultLocale();
@@ -471,7 +454,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
         {
           locale = sessionIF.getLocale();
         }
-        
+
         throw GraphDBService.getInstance().processException(locale, graphDbEx);
       }
       finally
@@ -481,8 +464,8 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
           this.conn.rollback();
         }
       }
-    }  
-      
+    }
+
     if (this.conn != null)
     {
       this.conn.commit();
@@ -497,7 +480,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   protected void dmlRollback() throws SQLException
   {
     this.getGraphDBRequest().rollback();
-    
+
     if (this.conn != null)
     {
       this.conn.rollback();
