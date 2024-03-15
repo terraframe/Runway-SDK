@@ -167,6 +167,7 @@ import com.runwaysdk.dataaccess.cache.DataNotFoundException;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.orientdb.ResultSetRawConverter;
 import com.runwaysdk.dataaccess.io.TestFixtureFactory.TestFixConst;
 import com.runwaysdk.dataaccess.io.dataDefinition.ExportMetadata;
 import com.runwaysdk.dataaccess.io.dataDefinition.SAXExporter;
@@ -3737,8 +3738,8 @@ public class SAXParseTest
 
     Assert.assertNotNull(mdVertexTest);
 
-    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>("SELECT FROM " + mdVertexTest.getDBClassName());
-    List<VertexObjectDAOIF> results = query.getRawResults();
+    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>("SELECT FROM " + mdVertexTest.getDBClassName(), null, new ResultSetRawConverter());
+    List<VertexObjectDAOIF> results = query.getResults();
 
     Assert.assertEquals(2, results.size());
   }
@@ -3789,9 +3790,9 @@ public class SAXParseTest
     StringBuilder statement = new StringBuilder();
     statement.append("SELECT FROM " + mdVertexTest.getDBClassName());
 
-    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>(statement.toString());
+    GraphQuery<VertexObjectDAOIF> query = new GraphQuery<VertexObjectDAOIF>(statement.toString(), null, new ResultSetRawConverter());
 
-    List<VertexObjectDAOIF> results = query.getRawResults();
+    List<VertexObjectDAOIF> results = query.getResults();
 
     Assert.assertEquals(2, results.size());
 

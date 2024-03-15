@@ -22,6 +22,7 @@ import com.orientechnologies.orient.core.record.impl.OVertexDocument;
 import com.orientechnologies.orient.core.sql.executor.OResult;
 import com.orientechnologies.spatial.shape.OShapeFactory;
 import com.runwaysdk.business.graph.EdgeObject;
+import com.runwaysdk.business.graph.GraphObject;
 import com.runwaysdk.business.graph.VertexObject;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeEmbeddedDAOIF;
@@ -86,17 +87,22 @@ public class ResultSetConverter implements ResultSetConverterIF
       converted = this.getPropertyValue(oresult, resultType);
     }
     
-    if (converted instanceof VertexObjectDAOIF)
+    return convertFromDAO(converted);
+  }
+  
+  protected Object convertFromDAO(Object dao)
+  {
+    if (dao instanceof VertexObjectDAOIF)
     {
-      return VertexObject.instantiate((VertexObjectDAO) converted);
+      return VertexObject.instantiate((VertexObjectDAO) dao);
     }
-    else if (converted instanceof EdgeObjectDAOIF)
+    else if (dao instanceof EdgeObjectDAOIF)
     {
-      return EdgeObject.instantiate((EdgeObjectDAO) converted);
+      return EdgeObject.instantiate((EdgeObjectDAO) dao);
     }
     else
     {
-      return converted;
+      return dao;
     }
   }
   

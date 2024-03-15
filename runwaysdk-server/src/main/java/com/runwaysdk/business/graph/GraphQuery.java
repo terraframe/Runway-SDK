@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.business.graph;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,11 @@ public class GraphQuery<T>
     this.statement = statement;
     this.parameters = parameters;
     this.forceResultType = forceResultType;
+    
+    if (this.parameters == null)
+    {
+      this.parameters = new HashMap<String,Object>();
+    }
   }
   
   public GraphQuery(String statement, Map<String, Object> parameters, ResultSetConverterIF converter)
@@ -73,6 +79,11 @@ public class GraphQuery<T>
     this.statement = statement;
     this.parameters = parameters;
     this.converter = converter;
+    
+    if (this.parameters == null)
+    {
+      this.parameters = new HashMap<String,Object>();
+    }
   }
 
   public void setParameter(String name, Object value)
@@ -114,24 +125,6 @@ public class GraphQuery<T>
     {
       results = service.query(request, statement, parameters, this.converter);
     }
-
-    LinkedList<T> list = new LinkedList<T>();
-
-    for (Object result : results)
-    {
-      list.add((T) result);
-    }
-
-    return list;
-  }
-
-  @SuppressWarnings("unchecked")
-  public List<T> getRawResults()
-  {
-    GraphDBService service = GraphDBService.getInstance();
-    GraphRequest request = service.getGraphDBRequest();
-
-    List<Object> results = service.query(request, statement, parameters);
 
     LinkedList<T> list = new LinkedList<T>();
 
