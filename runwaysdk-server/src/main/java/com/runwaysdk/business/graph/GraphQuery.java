@@ -18,18 +18,16 @@
  */
 package com.runwaysdk.business.graph;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
-import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
+import com.runwaysdk.dataaccess.graph.ResultSetConverterIF;
 
 public class GraphQuery<T>
 {
@@ -38,13 +36,15 @@ public class GraphQuery<T>
   private Map<String, Object> parameters;
 
   private Class<?>            forceResultType;
+  
+  private ResultSetConverterIF converter;
 
   /**
    * @param statement
    */
   public GraphQuery(String statement)
   {
-    this(statement, new TreeMap<String, Object>(), null);
+    this(statement, new TreeMap<String, Object>(), (ResultSetConverterIF) null);
   }
 
   /**
@@ -53,7 +53,7 @@ public class GraphQuery<T>
    */
   public GraphQuery(String statement, Map<String, Object> parameters)
   {
-    this(statement, parameters, null);
+    this(statement, parameters, (ResultSetConverterIF) null);
   }
   
   /**
@@ -66,6 +66,24 @@ public class GraphQuery<T>
     this.statement = statement;
     this.parameters = parameters;
     this.forceResultType = forceResultType;
+    
+    if (this.parameters == null)
+    {
+      this.parameters = new HashMap<String,Object>();
+    }
+  }
+  
+  public GraphQuery(String statement, Map<String, Object> parameters, ResultSetConverterIF converter)
+  {
+    super();
+    this.statement = statement;
+    this.parameters = parameters;
+    this.converter = converter;
+    
+    if (this.parameters == null)
+    {
+      this.parameters = new HashMap<String,Object>();
+    }
   }
 
   public void setParameter(String name, Object value)
@@ -97,36 +115,16 @@ public class GraphQuery<T>
     GraphDBService service = GraphDBService.getInstance();
     GraphRequest request = service.getGraphDBRequest();
 
-    List<Object> results = service.query(request, statement, parameters, this.forceResultType);
-
-    LinkedList<T> list = new LinkedList<T>();
-
-    for (Object result : results)
+    List<Object> results;
+    
+    if (this.converter == null)
     {
-      if (result instanceof VertexObjectDAOIF)
-      {
-        list.add((T) VertexObject.instantiate((VertexObjectDAO) result));
-      }
-      else if (result instanceof EdgeObjectDAOIF)
-      {
-        list.add((T) EdgeObject.instantiate((EdgeObjectDAO) result));
-      }
-      else
-      {
-        list.add((T) result);
-      }
+      results = service.query(request, statement, parameters, this.forceResultType);
     }
-
-    return list;
-  }
-
-  @SuppressWarnings("unchecked")
-  public List<T> getRawResults()
-  {
-    GraphDBService service = GraphDBService.getInstance();
-    GraphRequest request = service.getGraphDBRequest();
-
-    List<Object> results = service.query(request, statement, parameters);
+    else
+    {
+      results = service.query(request, statement, parameters, this.converter);
+    }
 
     LinkedList<T> list = new LinkedList<T>();
 

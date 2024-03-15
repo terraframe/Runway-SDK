@@ -400,6 +400,8 @@ public interface GraphDB
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters);
   
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType);
+  
+  public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, ResultSetConverterIF converter);
 
   public void command(GraphRequest request, String statement, Map<String, Object> parameters);
 
