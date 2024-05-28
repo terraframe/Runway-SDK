@@ -824,7 +824,7 @@ public class AbstractRequestAspectState
   private boolean checkUserDeletePermissions(Mutable mutable, SingleActorDAOIF userIF)
   {
     // Check if userIF has a lock on the object.
-    if (mutable.hasAttribute(ElementInfo.LOCKED_BY))
+    if (mutable instanceof Element && mutable.hasAttribute(ElementInfo.LOCKED_BY))
     {
       Element element = (Element) mutable;
 
