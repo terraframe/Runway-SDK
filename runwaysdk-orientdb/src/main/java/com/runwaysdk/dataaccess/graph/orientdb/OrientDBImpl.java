@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -1213,7 +1213,7 @@ public class OrientDBImpl implements GraphDB
   {
     return this.query(request, statement, parameters, (Class<?>) null);
   }
-  
+
   @Override
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType)
   {
@@ -1228,7 +1228,7 @@ public class OrientDBImpl implements GraphDB
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    
+
     if (converter == null)
     {
       converter = new ResultSetConverter();
@@ -1259,7 +1259,7 @@ public class OrientDBImpl implements GraphDB
       while (rs.hasNext())
       {
         Object converted = converter.convert(request, rs.next());
-        
+
         if (converted != null)
         {
           results.add(converted);
@@ -1333,6 +1333,7 @@ public class OrientDBImpl implements GraphDB
 
   private List<VertexObjectDAOIF> getVertices(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
   {
+    LinkedList<VertexObjectDAOIF> list = new LinkedList<VertexObjectDAOIF>();
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
@@ -1340,14 +1341,15 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.load((ORID) vertexDAO.getRID());
 
-    Iterable<OVertex> targets = vertex.getVertices(direction, edgeClass);
-
-    LinkedList<VertexObjectDAOIF> list = new LinkedList<VertexObjectDAOIF>();
-
-    ResultSetConverter converter = new ResultSetConverter();
-    for (OVertex target : targets)
+    if (vertex != null)
     {
-      list.add((VertexObjectDAOIF) converter.buildDAO(target));
+      Iterable<OVertex> targets = vertex.getVertices(direction, edgeClass);
+
+      ResultSetConverter converter = new ResultSetConverter();
+      for (OVertex target : targets)
+      {
+        list.add((VertexObjectDAOIF) converter.buildDAO(target));
+      }
     }
 
     return list;
@@ -1401,6 +1403,7 @@ public class OrientDBImpl implements GraphDB
 
   private List<EdgeObjectDAOIF> getEdges(GraphRequest request, VertexObjectDAOIF vertexDAO, ODirection direction, MdEdgeDAOIF mdEdge)
   {
+    LinkedList<EdgeObjectDAOIF> list = new LinkedList<EdgeObjectDAOIF>();
     String edgeClass = mdEdge.getValue(MdEdgeInfo.DB_CLASS_NAME);
 
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
@@ -1408,14 +1411,15 @@ public class OrientDBImpl implements GraphDB
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
     OVertex vertex = db.load((ORID) vertexDAO.getRID());
 
-    Iterable<OEdge> targets = vertex.getEdges(direction, edgeClass);
-
-    LinkedList<EdgeObjectDAOIF> list = new LinkedList<EdgeObjectDAOIF>();
-
-    ResultSetConverter converter = new ResultSetConverter();
-    for (OEdge target : targets)
+    if (vertex != null)
     {
-      list.add((EdgeObjectDAOIF) converter.buildDAO(target));
+      Iterable<OEdge> targets = vertex.getEdges(direction, edgeClass);
+
+      ResultSetConverter converter = new ResultSetConverter();
+      for (OEdge target : targets)
+      {
+        list.add((EdgeObjectDAOIF) converter.buildDAO(target));
+      }
     }
 
     return list;
