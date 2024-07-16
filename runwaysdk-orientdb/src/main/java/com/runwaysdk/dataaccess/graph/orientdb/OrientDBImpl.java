@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -88,8 +88,12 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAO;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
+import com.runwaysdk.dataaccess.graph.GraphCharacterFieldProperties;
 import com.runwaysdk.dataaccess.graph.GraphDB;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
+import com.runwaysdk.dataaccess.graph.GraphEmbeddedFieldProperties;
+import com.runwaysdk.dataaccess.graph.GraphFieldProperties;
+import com.runwaysdk.dataaccess.graph.GraphGeometryFieldProperties;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.graph.ResultSetConverterIF;
@@ -548,13 +552,13 @@ public class OrientDBImpl implements GraphDB
   }
 
   /**
-   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
-   *      String, boolean, int, boolean)
+   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest,
+   *      GraphCharacterFieldProperties)
    */
   @Override
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength, boolean cot)
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphCharacterFieldProperties properties)
   {
-    return new OrientDBCreateCharacterAction(graphRequest, ddlGraphDBRequest, className, attributeName, OType.STRING.name(), required, maxLength, cot);
+    return new OrientDBCreateCharacterAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   /**
@@ -577,33 +581,33 @@ public class OrientDBImpl implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot)
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
-    return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required, cot);
+    return new OrientDBCreatePropertyAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   @Override
-  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required, boolean cot)
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
-    return new OrientDBCreateEmbeddedSetPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, required, cot);
+    return new OrientDBCreateEmbeddedSetPropertyAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   @Override
-  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties)
   {
-    return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
+    return new OrientDBCreateEmbeddedPropertyAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   @Override
-  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties)
   {
-    return new OrientDBCreateLinkPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
+    return new OrientDBCreateLinkPropertyAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   @Override
-  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphGeometryFieldProperties properties)
   {
-    return new OrientDBCreateGeometryPropertyAction(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required, cot);
+    return new OrientDBCreateGeometryPropertyAction(graphRequest, ddlGraphDBRequest, properties);
   }
 
   /**
@@ -1213,7 +1217,7 @@ public class OrientDBImpl implements GraphDB
   {
     return this.query(request, statement, parameters, (Class<?>) null);
   }
-  
+
   @Override
   public List<Object> query(GraphRequest request, String statement, Map<String, Object> parameters, Class<?> resultType)
   {
@@ -1228,7 +1232,7 @@ public class OrientDBImpl implements GraphDB
     OrientDBRequest orientDBRequest = (OrientDBRequest) request;
 
     ODatabaseSession db = orientDBRequest.getODatabaseSession();
-    
+
     if (converter == null)
     {
       converter = new ResultSetConverter();
@@ -1259,7 +1263,7 @@ public class OrientDBImpl implements GraphDB
       while (rs.hasNext())
       {
         Object converted = converter.convert(request, rs.next());
-        
+
         if (converted != null)
         {
           results.add(converted);

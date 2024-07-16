@@ -25,6 +25,7 @@ import com.runwaysdk.dataaccess.MdGraphClassDAOIF;
 import com.runwaysdk.dataaccess.graph.GraphDBService;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommand;
 import com.runwaysdk.dataaccess.graph.GraphDDLCommandAction;
+import com.runwaysdk.dataaccess.graph.GraphEmbeddedFieldProperties;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.MdAttributeEmbeddedDAO;
@@ -89,7 +90,7 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
     GraphRequest graphRequest = GraphDBService.getInstance().getGraphDBRequest();
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
-    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required, this.isChangeOverTime());
+    GraphDDLCommandAction doItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, GraphEmbeddedFieldProperties.build(dbClassName, dbAttrName, required, this.isChangeOverTime(), embeddedClassType));
     GraphDDLCommandAction undoItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), new DeleteContext());
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, false);
@@ -113,7 +114,7 @@ public class MdAttributeEmbedded_G extends MdAttributeConcrete_G
     GraphRequest graphDDLRequest = GraphDBService.getInstance().getDDLGraphDBRequest();
 
     GraphDDLCommandAction doItAction = GraphDBService.getInstance().dropAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, this.isChangeOverTime(), context);
-    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, embeddedClassType, required, this.isChangeOverTime());
+    GraphDDLCommandAction undoItAction = GraphDBService.getInstance().createEmbeddedAttribute(graphRequest, graphDDLRequest, GraphEmbeddedFieldProperties.build(dbClassName, dbAttrName, required, this.isChangeOverTime(), embeddedClassType));
 
     GraphDDLCommand graphCommand = new GraphDDLCommand(doItAction, undoItAction, !context.isExecuteImmediately());
     graphCommand.doIt();

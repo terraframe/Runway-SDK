@@ -42,6 +42,8 @@ public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO impl
    * 
    */
   private static final long serialVersionUID = 1887995108615716088L;
+  
+  private boolean createIndex = true;
 
   /**
    * The default constructor, does not set any attributes
@@ -156,4 +158,15 @@ public abstract class MdAttributeGeometryDAO extends MdAttributeConcreteDAO impl
   {
     return com.runwaysdk.query.SelectableGeometry.class.getName();
   }
+  
+  public boolean isCreateIndex()
+  {
+    return this.createIndex;
+  }
+  
+  public void setCreateIndex(boolean createIndex)
+  {
+    this.createIndex = createIndex;
+  }
+
 }

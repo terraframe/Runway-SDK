@@ -162,17 +162,11 @@ public interface GraphDB
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
-   * @param className
-   * @param attributeName
-   * @param required
-   *          true if required, false otherwise.
-   * @param maxLength
-   * @param cot
-   *          TODO
+   * @param properties TODO
    * @return {@link GraphDDLCommandAction} so that it can be closed or committed
    *         in the command object.
    */
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength, boolean cot);
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphCharacterFieldProperties properties);
 
   /**
    * Modifies the maximum length of the character attribute.
@@ -299,61 +293,42 @@ public interface GraphDB
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
-   * @param className
-   * @param attributeName
-   * @param columnType
-   * @param required
-   * @param cot
-   *          TODO
+   * @param properties TODO
    * @return
    */
-  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot);
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties);
 
   /**
    * Adds an embedded attribute of the given name and type.
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
-   * @param className
-   * @param attributeName
-   * @param geometryType
-   * @param required
-   * @param cot
-   *          TODO
+   * @param properties TODO
    * @return
    */
-  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties);
 
   /**
    * Adds an link attribute of the given name and type.
    * 
    * @param graphRequest
    * @param graphDDLRequest
-   * @param dbClassName
-   * @param dbAttrName
-   * @param linkClassType
-   * @param required
-   * @param changeOverTime
+   * @param properties TODO
    * @return
    */
-  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime);
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, GraphEmbeddedFieldProperties properties);
 
   /**
    * Adds a geometry attribute of the given name and type.
    * 
    * @param graphRequest
    * @param ddlGraphDBRequest
-   * @param className
-   * @param attributeName
-   * @param geometryType
-   * @param required
-   * @param cot
-   *          TODO
+   * @param properties TODO
    * @return
    */
-  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot);
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphGeometryFieldProperties properties);
 
-  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required, boolean cot);
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties);
 
   /**
    * Inserts a new object

@@ -200,41 +200,39 @@ public class GraphDBService
   }
 
   /**
-   * @param cot
-   *          TODO
-   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
-   *      String, boolean, int, boolean)
+   * @param properties TODO
+   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, GraphCharacterFieldProperties)
    */
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength, boolean cot)
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphCharacterFieldProperties properties)
   {
-    return this.graphDB.createCharacterAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, required, maxLength, cot);
+    return this.graphDB.createCharacterAttribute(graphRequest, ddlGraphDBRequest, properties);
   }
 
-  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot)
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
-    return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, columnType, required, cot);
+    return this.graphDB.createConcreteAttribute(graphRequest, ddlGraphDBRequest, properties);
   }
 
-  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassType, boolean required, boolean cot)
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties)
   {
-    return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, embeddedClassType, required, cot);
+    return this.graphDB.createEmbeddedAttribute(graphRequest, ddlGraphDBRequest, properties);
   }
   
-  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, GraphEmbeddedFieldProperties properties)
   {
-    return this.graphDB.createGraphReferenceAttribute(graphRequest, graphDDLRequest, dbClassName, dbAttrName, linkClassType, required, changeOverTime);
+    return this.graphDB.createGraphReferenceAttribute(graphRequest, graphDDLRequest, properties);
   }
 
 
 
-  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphGeometryFieldProperties properties)
   {
-    return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, geometryType, required, cot);
+    return this.graphDB.createGeometryAttribute(graphRequest, ddlGraphDBRequest, properties);
   }
 
-  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required, boolean cot)
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
-    return this.graphDB.createSetAttribute(graphRequest, ddlGraphDBRequest, className, attributeName, setType, required, cot);
+    return this.graphDB.createSetAttribute(graphRequest, ddlGraphDBRequest, properties);
   }
 
   /**

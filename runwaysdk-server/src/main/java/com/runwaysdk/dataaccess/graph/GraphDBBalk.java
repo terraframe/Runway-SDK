@@ -179,11 +179,10 @@ public class GraphDBBalk implements GraphDB
   }
 
   /**
-   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, String,
-   *      String, boolean, int, boolean)
+   * @see GraphDB#createCharacterAttribute(GraphRequest, GraphRequest, GraphCharacterFieldProperties)
    */
   @Override
-  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, boolean required, int maxLength, boolean cot)
+  public GraphDDLCommandAction createCharacterAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphCharacterFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {
@@ -316,7 +315,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String columnType, boolean required, boolean cot)
+  public GraphDDLCommandAction createConcreteAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {
@@ -327,7 +326,7 @@ public class GraphDBBalk implements GraphDB
   }
 
   @Override
-  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String setType, boolean required, boolean cot)
+  public GraphDDLCommandAction createSetAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {
@@ -337,7 +336,7 @@ public class GraphDBBalk implements GraphDB
     };
   }
 
-  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
+  public GraphDDLCommandAction createEmbeddedAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {
@@ -348,7 +347,7 @@ public class GraphDBBalk implements GraphDB
   }
   
   @Override
-  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, String dbClassName, String dbAttrName, String linkClassType, boolean required, boolean changeOverTime)
+  public GraphDDLCommandAction createGraphReferenceAttribute(GraphRequest graphRequest, GraphRequest graphDDLRequest, GraphEmbeddedFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {
@@ -360,7 +359,7 @@ public class GraphDBBalk implements GraphDB
 
 
   @Override
-  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String geometryType, boolean required, boolean cot)
+  public GraphDDLCommandAction createGeometryAttribute(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphGeometryFieldProperties properties)
   {
     return new GraphDDLCommandAction()
     {

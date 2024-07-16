@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.graph.orientdb;
 
@@ -24,63 +24,57 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 import com.runwaysdk.dataaccess.ProgrammingErrorException;
+import com.runwaysdk.dataaccess.graph.GraphEmbeddedFieldProperties;
 import com.runwaysdk.dataaccess.graph.GraphRequest;
 
 public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
 {
-  protected String className;
-
-  protected String attributeName;
-
-  private String   embeddedClassName;
-
-  private boolean  required;
-
-  private boolean  cot;
+  private GraphEmbeddedFieldProperties properties;
 
   /**
    * @param className
    * @param attributeName
    * @param embeddedClassName
    * @param required
-   * @param cot
+   * @param cot 
    *          TODO
    */
-  public OrientDBCreateEmbeddedPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, String className, String attributeName, String embeddedClassName, boolean required, boolean cot)
+  public OrientDBCreateEmbeddedPropertyAction(GraphRequest graphRequest, GraphRequest ddlGraphDBRequest, GraphEmbeddedFieldProperties properties)
   {
     super(graphRequest, ddlGraphDBRequest);
 
-    this.className = className;
-    this.attributeName = attributeName;
-    this.embeddedClassName = embeddedClassName;
-    this.required = required;
-    this.cot = cot;
+    this.properties = properties;
+  }
+
+  public GraphEmbeddedFieldProperties getProperties()
+  {
+    return properties;
   }
 
   @Override
   protected void executeDDL(ODatabaseSession db)
   {
-    OClass oClass = db.getClass(this.className);
+    OClass oClass = db.getClass(this.properties.getClassName());
 
     if (oClass != null)
     {
       OSchema schema = db.getMetadata().getSchema();
-      OClass linkClass = schema.getClass(this.embeddedClassName);
+      OClass linkClass = schema.getClass(this.properties.getEmbeddedClassName());
 
       if (linkClass == null)
       {
         throw new ProgrammingErrorException("Unable to find embedded class type");
       }
 
-      OProperty oProperty = oClass.createProperty(this.attributeName, OType.EMBEDDED, linkClass);
+      OProperty oProperty = oClass.createProperty(this.properties.getAttributeName(), OType.EMBEDDED, linkClass);
 
       configure(oProperty);
 
       this.createIndex(oClass, oProperty);
 
-      if (this.cot)
+      if (this.properties.isCot())
       {
-        oClass.createProperty(this.attributeName + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.EMBEDDED));
+        oClass.createProperty(this.properties.getAttributeName() + OrientDBConstant.COT_SUFFIX, OType.EMBEDDEDLIST, OrientDBImpl.getOrCreateChangeOverTime(db, linkClass, OType.EMBEDDED));
       }
     }
   }
@@ -92,7 +86,7 @@ public class OrientDBCreateEmbeddedPropertyAction extends OrientDBDDLAction
 
   protected void configure(OProperty oProperty)
   {
-    oProperty.setMandatory(this.required);
+    oProperty.setMandatory(this.properties.isRequired());
   }
 
 }
