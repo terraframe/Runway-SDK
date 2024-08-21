@@ -475,11 +475,6 @@ public class DatabaseBuilder
         logger.info("Importing [" + resource.getAbsolutePath() + "] (outside of a transaction).");
       }
 
-      if (!alwaysRun(resource))
-      {
-        com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
-      }
-
       // We always want to use the context class loader because it ensures our
       // resource paths are absolute.
       InputStream schema = Thread.currentThread().getContextClassLoader().getResourceAsStream("com/runwaysdk/resources/xsd/schema.xsd");
@@ -532,6 +527,13 @@ public class DatabaseBuilder
         {
           throw new CoreException("Unknown extension [" + resource.getNameExtension() + "].");
         }
+        
+        if (!alwaysRun(resource))
+        {
+          com.runwaysdk.dataaccess.database.Database.addPropertyValue(com.runwaysdk.dataaccess.database.Database.VERSION_NUMBER, MdAttributeCharacterInfo.CLASS, new TimeFormat(timestamp.getTime()).format(), RUNWAY_METADATA_VERSION_TIMESTAMP_PROPERTY);
+        }
+        
+        timestamps.add(timestamp);
       }
       catch (Throwable t)
       {
@@ -570,8 +572,6 @@ public class DatabaseBuilder
           e.printStackTrace();
         }
       }
-
-      timestamps.add(timestamp);
     }
     else
     {
