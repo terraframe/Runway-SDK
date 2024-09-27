@@ -28,7 +28,7 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-public class FileResource implements ApplicationFileResource, ApplicationTreeResource
+public class FileResource implements ApplicationFileResource
 {
   File file;
   
@@ -125,22 +125,44 @@ public class FileResource implements ApplicationFileResource, ApplicationTreeRes
     
     return children.iterator();
   }
+  
+  public Iterator<ApplicationFileResource> getChildrenFiles()
+  {
+    ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
+    
+    for (File file : this.file.listFiles())
+    {
+      children.add(new FileResource(file));
+    }
+    
+    return children.iterator();
+  }
 
   @Override
   public ApplicationTreeResource getParent()
   {
     return new FileResource(this.file.getParentFile());
   }
+  
+  public ApplicationFileResource getParentFile()
+  {
+    return (ApplicationFileResource) this.getParentFile();
+  }
+  
+  @Override
+  public ApplicationTreeResource getChild(String path)
+  {
+    return new FileResource(new File(this.file.getAbsolutePath() + File.separator + path));
+  }
+  
+  public ApplicationFileResource getChildFile(String path)
+  {
+    return (ApplicationFileResource) this.getChild(path);
+  }
 
   @Override
   public boolean exists()
   {
     return this.file.exists();
-  }
-
-  @Override
-  public ApplicationTreeResource getChild(String path)
-  {
-    return new FileResource(new File(this.file.getAbsolutePath() + File.separator + path));
   }
 }

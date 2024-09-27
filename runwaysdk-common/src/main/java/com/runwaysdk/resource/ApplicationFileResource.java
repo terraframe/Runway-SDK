@@ -25,7 +25,7 @@ import java.io.File;
  * 
  * @author rrowlands
  */
-public interface ApplicationFileResource extends ApplicationResource
+public interface ApplicationFileResource extends ApplicationTreeResource
 {
   public File getUnderlyingFile();
   

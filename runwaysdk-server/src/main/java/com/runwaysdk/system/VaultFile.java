@@ -21,6 +21,8 @@ package com.runwaysdk.system;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -30,7 +32,9 @@ import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.VaultFileInfo;
 import com.runwaysdk.resource.ApplicationFileResource;
+import com.runwaysdk.resource.ApplicationTreeResource;
 import com.runwaysdk.resource.CloseableFile;
+import com.runwaysdk.resource.FileResource;
 import com.runwaysdk.resource.ResourceException;
 import com.runwaysdk.session.CreatePermissionException;
 import com.runwaysdk.session.Session;
@@ -190,6 +194,31 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
   public boolean isDirectory()
   {
     return false;
+  }
+  
+  @Override
+  public Iterator<ApplicationTreeResource> getChildren()
+  {
+    ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
+    
+    for (File file : this.getFile().listFiles())
+    {
+      children.add(new FileResource(file));
+    }
+    
+    return children.iterator();
+  }
+
+  @Override
+  public ApplicationTreeResource getParent()
+  {
+    return new FileResource(this.getFile().getParentFile());
+  }
+
+  @Override
+  public ApplicationTreeResource getChild(String path)
+  {
+    return new FileResource(new File(this.getFile().getAbsolutePath() + File.separator + path));
   }
   
 }
