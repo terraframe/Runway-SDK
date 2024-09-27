@@ -35,21 +35,21 @@ public interface ApplicationFileResource extends ApplicationTreeResource
   /**
    * Convenience method.
    * 
-   * @see getChildrenFiles
+   * @see getChildren()
    */
   public Iterator<ApplicationFileResource> getChildrenFiles();
   
   /**
    * Convenience method.
    * 
-   * @see getChildFile
+   * @see getChild()
    */
   public ApplicationFileResource getChildFile(String path);
   
   /**
    * Convenience method.
    * 
-   * @see getParentFile
+   * @see getParent()
    */
   public ApplicationFileResource getParentFile();
 }
