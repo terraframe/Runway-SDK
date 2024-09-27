@@ -126,6 +126,7 @@ public class FileResource implements ApplicationFileResource
     return children.iterator();
   }
   
+  @Override
   public Iterator<ApplicationFileResource> getChildrenFiles()
   {
     ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
@@ -144,6 +145,7 @@ public class FileResource implements ApplicationFileResource
     return new FileResource(this.file.getParentFile());
   }
   
+  @Override
   public ApplicationFileResource getParentFile()
   {
     return (ApplicationFileResource) this.getParentFile();
@@ -155,6 +157,7 @@ public class FileResource implements ApplicationFileResource
     return new FileResource(new File(this.file.getAbsolutePath() + File.separator + path));
   }
   
+  @Override
   public ApplicationFileResource getChildFile(String path)
   {
     return (ApplicationFileResource) this.getChild(path);

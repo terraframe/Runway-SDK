@@ -208,17 +208,42 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
     
     return children.iterator();
   }
+  
+  @Override
+  public Iterator<ApplicationFileResource> getChildrenFiles()
+  {
+    ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
+    
+    for (File file : this.getFile().listFiles())
+    {
+      children.add(new FileResource(file));
+    }
+    
+    return children.iterator();
+  }
 
   @Override
   public ApplicationTreeResource getParent()
   {
     return new FileResource(this.getFile().getParentFile());
   }
+  
+  @Override
+  public ApplicationFileResource getParentFile()
+  {
+    return (ApplicationFileResource) this.getParentFile();
+  }
 
   @Override
   public ApplicationTreeResource getChild(String path)
   {
     return new FileResource(new File(this.getFile().getAbsolutePath() + File.separator + path));
+  }
+  
+  @Override
+  public ApplicationFileResource getChildFile(String path)
+  {
+    return (ApplicationFileResource) this.getChild(path);
   }
   
 }

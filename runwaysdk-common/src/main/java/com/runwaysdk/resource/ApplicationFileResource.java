@@ -19,6 +19,7 @@
 package com.runwaysdk.resource;
 
 import java.io.File;
+import java.util.Iterator;
 
 /**
  * A resource which is ultimately backed by a file on the file-system, but may be wrapped in abstractions which provide additional information (such as a vault file).
@@ -30,4 +31,25 @@ public interface ApplicationFileResource extends ApplicationTreeResource
   public File getUnderlyingFile();
   
   public boolean isDirectory();
+  
+  /**
+   * Convenience method.
+   * 
+   * @see getChildrenFiles
+   */
+  public Iterator<ApplicationFileResource> getChildrenFiles();
+  
+  /**
+   * Convenience method.
+   * 
+   * @see getChildFile
+   */
+  public ApplicationFileResource getChildFile(String path);
+  
+  /**
+   * Convenience method.
+   * 
+   * @see getParentFile
+   */
+  public ApplicationFileResource getParentFile();
 }
