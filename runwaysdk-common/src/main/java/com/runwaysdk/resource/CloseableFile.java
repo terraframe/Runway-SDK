@@ -40,6 +40,8 @@ public class CloseableFile extends File implements AutoCloseable
   
   private boolean deleteOnClose = true;
   
+  private boolean deleteParentToo = false;
+  
   public CloseableFile(File file)
   {
     super(file.toURI());
@@ -70,6 +72,12 @@ public class CloseableFile extends File implements AutoCloseable
     this.setIsDeleteOnClose(deleteOnClose);
   }
   
+  public CloseableFile(URI uri, boolean deleteOnClose, boolean deleteParentToo)
+  {
+    super(uri);
+    this.setIsDeleteOnClose(deleteOnClose, deleteParentToo);
+  }
+  
   public CloseableFile(File parent, String child)
   {
     super(parent, child);
@@ -94,14 +102,20 @@ public class CloseableFile extends File implements AutoCloseable
     this.setIsDeleteOnClose(deleteOnClose);
   }
   
+  protected void setIsDeleteOnClose(boolean deleteOnClose)
+  {
+    setIsDeleteOnClose(deleteOnClose, false);
+  }
+  
   /**
    * Denotes whether or not this CloseableFile should delete itself when close is called.
    * This method is protected because setting "deleteOnClose" to true is an irreversable
    * operation, because it registers the delete with the JVM (which cannot be undone).
    */
-  protected void setIsDeleteOnClose(boolean deleteOnClose)
+  protected void setIsDeleteOnClose(boolean deleteOnClose, boolean deleteParentToo)
   {
     this.deleteOnClose = deleteOnClose;
+    this.deleteParentToo = deleteParentToo;
     
     if (this.deleteOnClose)
     {
@@ -118,7 +132,13 @@ public class CloseableFile extends File implements AutoCloseable
   {
     if (this.isDeleteOnClose())
     {
+      File parent = getParentFile();
+      
       FileUtils.deleteQuietly(this);
+      
+      if (this.deleteParentToo) {
+        FileUtils.deleteQuietly(parent);
+      }
     }
   }
   

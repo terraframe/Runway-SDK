@@ -18,6 +18,7 @@
  */
 package com.runwaysdk.resource;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,15 +94,20 @@ public class StreamResource implements ApplicationResource
   {
     try
     {
-      Path path = Files.createTempFile(this.getBaseName(), "." + this.getNameExtension());
+//      Path path = Files.createTempFile(this.getBaseName(), "." + this.getNameExtension());
       
-      CloseableFile tempFile = new CloseableFile(path.toFile().toURI(), true);
+      // Doing it this way (instead of Files.createTempFile) will give us a file with the exact name we would expect (no auto-generated gibberish)
+      File parent = Files.createTempDirectory(this.getBaseName()).toFile();
+      File child = new File(parent, this.getBaseName() + "." + this.getNameExtension());
+      
+      CloseableFile tempFile = new CloseableFile(child.toURI(), true, true);
       
       try(FileOutputStream fos = new FileOutputStream(tempFile))
       {
         IOUtils.copy(this.openNewStream(), fos);
       }
       
+      parent.deleteOnExit();
       tempFile.deleteOnExit();
       
       return tempFile;
