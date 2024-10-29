@@ -268,9 +268,6 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <complianceLevel>${maven.compiler.target}</complianceLevel>
-          <fork>true</fork>
-          <meminitial>512m</meminitial>
-          <maxmem>1024m</maxmem>
         </configuration>
       </plugin>
 
