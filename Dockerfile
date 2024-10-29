@@ -17,7 +17,7 @@
 # License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-FROM maven:3-openjdk-11
+FROM maven:3-openjdk-17
 
 ENV DATA_ACCESS=true
 ENV BUSINESS=true
@@ -48,6 +48,8 @@ WORKDIR $RUNWAY_WORKSPACE
 
 # Copy the source in
 COPY . $RUNWAY_WORKSPACE
+
+RUN microdnf -y install wget
 
 # Log4j properties
 RUN wget -nv -O $RUNWAY_WORKSPACE/runwaysdk-test/src/main/resources/log4j2.xml https://raw.githubusercontent.com/terraframe/geoprism-cloud/dev/ansible/roles/webserver/files/log4j2.xml
