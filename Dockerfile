@@ -56,7 +56,7 @@ RUN wget -nv -O $RUNWAY_WORKSPACE/runwaysdk-test/src/main/resources/log4j2.xml h
 RUN sed -i -e "s/<Root level=\"error\">/<Root level=\"$LOG_LEVEL\">/g" $RUNWAY_WORKSPACE/runwaysdk-test/src/main/resources/log4j2.xml
 
 # Configure properties files
-RUN echo "appcfg=dev\nproject.basedir=$RUNWAY_WORKSPACE\nmaven.m2=/root/.m2" > $RUNWAY_WORKSPACE/envcfg/envcfg.properties
+RUN printf "appcfg=dev\nproject.basedir=$RUNWAY_WORKSPACE\nmaven.m2=/root/.m2\n" > $RUNWAY_WORKSPACE/envcfg/envcfg.properties
 
 # Generate class files
 RUN mvn clean install
