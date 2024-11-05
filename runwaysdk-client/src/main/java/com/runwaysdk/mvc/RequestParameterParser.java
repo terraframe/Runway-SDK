@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,7 +113,7 @@ public class RequestParameterParser
     {
       Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
 
-      ServletFileUpload upload = this.createServletFileUpload(manager, annotation);
+      JakartaServletFileUpload upload = this.createServletFileUpload(manager, annotation);
 
       try
       {
@@ -163,7 +163,7 @@ public class RequestParameterParser
     }
   }
   
-  private ServletFileUpload createServletFileUpload(RequestManager manager, Endpoint annotation)
+  private JakartaServletFileUpload createServletFileUpload(RequestManager manager, Endpoint annotation)
   {
     try
     {

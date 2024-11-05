@@ -20,9 +20,9 @@ package com.runwaysdk.ontology;
 
 import java.util.zip.GZIPOutputStream;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.runwaysdk.business.ontology.TermDTO;
 import com.runwaysdk.constants.ClientRequestIF;

@@ -27,12 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload2.core.FileUploadException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -58,6 +53,11 @@ import com.runwaysdk.generation.loader.LoaderDecorator;
 import com.runwaysdk.transport.conversion.json.ProblemExceptionDTOToJSON;
 import com.runwaysdk.transport.conversion.json.RunwayExceptionDTOToJSON;
 import com.runwaysdk.web.ServletUtility;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class DispatcherServlet extends HttpServlet implements DispatcherIF
 {

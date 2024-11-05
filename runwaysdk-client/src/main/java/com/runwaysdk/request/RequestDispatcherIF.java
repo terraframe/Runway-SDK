@@ -20,7 +20,7 @@ package com.runwaysdk.request;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 public interface RequestDispatcherIF
 {

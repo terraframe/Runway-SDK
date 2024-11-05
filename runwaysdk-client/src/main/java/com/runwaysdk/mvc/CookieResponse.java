@@ -21,8 +21,8 @@ package com.runwaysdk.mvc;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 
 import com.runwaysdk.controller.RequestManager;
 import com.runwaysdk.request.ServletResponseIF;

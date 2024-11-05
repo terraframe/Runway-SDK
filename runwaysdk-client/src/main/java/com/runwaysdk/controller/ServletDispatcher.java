@@ -22,23 +22,19 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
@@ -56,6 +52,11 @@ import com.runwaysdk.request.RequestDecorator;
 import com.runwaysdk.request.ResponseDecorator;
 import com.runwaysdk.request.ServletRequestIF;
 import com.runwaysdk.request.ServletResponseIF;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ServletDispatcher extends HttpServlet implements DispatcherIF
 {
@@ -256,49 +257,46 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
     }
     else
     {
-      if (ServletFileUpload.isMultipartContent(req))
-      {
-        Map<String, ParameterValue> parameters = new HashMap<String, ParameterValue>();
-
-        // Create a factory for disk-based file items
-        FileItemFactory factory = new DiskFileItemFactory();
-
-        // Create a new file upload handler
-        ServletFileUpload upload = new ServletFileUpload(factory);
-
+      if (JakartaServletFileUpload.isMultipartContent(req)) {
+        Map<String, ParameterValue> parameters = new HashMap<>();
+        
+        DiskFileItemFactory factory;
         try
         {
-          List<FileItem> items = upload.parseRequest(req);
-
-          for (FileItem item : items)
-          {
-            String fieldName = item.getFieldName();
-
-            if (item.isFormField())
-            {
-              String fieldValue = item.getString();
-
-              if (!parameters.containsKey(fieldName))
-              {
-                parameters.put(fieldName, new BasicParameter());
-              }
-
-              ( (BasicParameter) parameters.get(fieldName) ).add(fieldValue);
-            }
-            else if (!item.isFormField() && item.getSize() > 0)
-            {
-              parameters.put(fieldName, new MultipartFileParameter(item));
-            }
-          }
-
-          return parameters;
+          factory = DiskFileItemFactory.builder()
+              .setPath(Files.createTempDirectory(UUID.randomUUID().toString()))
+              .get();
         }
-        catch (FileUploadException e)
+        catch (IOException e)
         {
-          // Change the exception type
           throw new RuntimeException(e);
         }
-      }
+
+        // Create a new file upload handler
+        JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
+
+        try {
+            List<FileItem> items = upload.parseRequest(req);
+
+            for (FileItem item : items) {
+                String fieldName = item.getFieldName();
+
+                if (item.isFormField()) {
+                    String fieldValue = item.getString();
+
+                    parameters.computeIfAbsent(fieldName, k -> new BasicParameter());
+                    ((BasicParameter) parameters.get(fieldName)).add(fieldValue);
+                } else if (!item.isFormField() && item.getSize() > 0) {
+                    parameters.put(fieldName, new MultipartFileParameter(item));
+                }
+            }
+
+            return parameters;
+        } catch (FileUploadException e) {
+            // Change the exception type
+            throw new RuntimeException(e);
+        }
+    }
       else
       {
         String contentType = req.getContentType();

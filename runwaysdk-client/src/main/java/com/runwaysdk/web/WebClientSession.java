@@ -21,8 +21,8 @@ package com.runwaysdk.web;
 import java.io.Serializable;
 import java.util.Locale;
 
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
+import jakarta.servlet.http.HttpSessionBindingEvent;
+import jakarta.servlet.http.HttpSessionBindingListener;
 
 import com.runwaysdk.ClientSession;
 import com.runwaysdk.request.ClientRequestManager;

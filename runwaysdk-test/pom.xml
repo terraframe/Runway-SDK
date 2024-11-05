@@ -67,17 +67,16 @@
       <artifactId>runwaysdk-localization-client</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <version>4.4</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
     <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-catalina</artifactId>
-      <version>8.5.76</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.1.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

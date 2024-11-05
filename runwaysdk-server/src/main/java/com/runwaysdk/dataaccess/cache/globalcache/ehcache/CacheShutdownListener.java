@@ -18,8 +18,8 @@
  */
 package com.runwaysdk.dataaccess.cache.globalcache.ehcache;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 /**
  * A ServletContextListener that shuts down Ehcache.

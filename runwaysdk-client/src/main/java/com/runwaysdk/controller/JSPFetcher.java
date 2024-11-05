@@ -24,10 +24,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class JSPFetcher
 {
@@ -117,7 +117,7 @@ public class JSPFetcher
     {
       exception.printStackTrace(System.out);
       String text = "<pre> ";
-      text += request.getAttribute("javax.servlet.forward.request_uri") + "\n\n";
+      text += request.getAttribute("jakarta.servlet.forward.request_uri") + "\n\n";
       text += "Error in class: ";
       text += exception.getClass().getName() + "\n\n";
       text += exception.getLocalizedMessage() + "\n\n";

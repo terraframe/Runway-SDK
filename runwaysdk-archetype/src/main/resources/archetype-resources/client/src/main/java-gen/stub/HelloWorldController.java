@@ -26,21 +26,21 @@ public class HelloWorldController extends HelloWorldControllerBase implements co
   
   private static final long serialVersionUID = 893027364;
   
-  public HelloWorldController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
+  public HelloWorldController(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
   {
     super(req, resp, isAsynchronous, JSP_DIR, LAYOUT);
   }
   
-  public void cancel(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void cancel(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     dto.unlock();
     this.view(dto.getOid());
   }
-  public void failCancel(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCancel(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.edit(dto.getOid());
   }
-  public void create(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void create(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -52,12 +52,12 @@ public class HelloWorldController extends HelloWorldControllerBase implements co
       this.failCreate(dto);
     }
   }
-  public void failCreate(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCreate(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void delete(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void delete(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -69,33 +69,33 @@ public class HelloWorldController extends HelloWorldControllerBase implements co
       this.failDelete(dto);
     }
   }
-  public void failDelete(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failDelete(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     ${package}.HelloWorldDTO dto = ${package}.HelloWorldDTO.lock(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.view(oid);
   }
-  public void newInstance() throws java.io.IOException, javax.servlet.ServletException
+  public void newInstance() throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     ${package}.HelloWorldDTO dto = new ${package}.HelloWorldDTO(clientRequest);
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void failNewInstance() throws java.io.IOException, javax.servlet.ServletException
+  public void failNewInstance() throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.viewAll();
   }
-  public void update(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void update(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -107,22 +107,22 @@ public class HelloWorldController extends HelloWorldControllerBase implements co
       this.failUpdate(dto);
     }
   }
-  public void failUpdate(${package}.HelloWorldDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failUpdate(${package}.HelloWorldDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     req.setAttribute("item", ${package}.HelloWorldDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.viewAll();
   }
-  public void viewAll() throws java.io.IOException, javax.servlet.ServletException
+  public void viewAll() throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     ${package}.HelloWorldQueryDTO query = ${package}.HelloWorldDTO.getAllInstances(clientRequest, null, true, 20, 1);
@@ -132,18 +132,18 @@ public class HelloWorldController extends HelloWorldControllerBase implements co
     
     render("viewAllComponent.jsp");
   }
-  public void failViewAll() throws java.io.IOException, javax.servlet.ServletException
+  public void failViewAll() throws java.io.IOException, jakarta.servlet.ServletException
   {
     resp.sendError(500);
   }
-  public void viewPage(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber) throws java.io.IOException, javax.servlet.ServletException
+  public void viewPage(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber) throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     ${package}.HelloWorldQueryDTO query = ${package}.HelloWorldDTO.getAllInstances(clientRequest, sortAttribute, isAscending, pageSize, pageNumber);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failViewPage(java.lang.String sortAttribute, java.lang.String isAscending, java.lang.String pageSize, java.lang.String pageNumber) throws java.io.IOException, javax.servlet.ServletException
+  public void failViewPage(java.lang.String sortAttribute, java.lang.String isAscending, java.lang.String pageSize, java.lang.String pageNumber) throws java.io.IOException, jakarta.servlet.ServletException
   {
     resp.sendError(500);
   }

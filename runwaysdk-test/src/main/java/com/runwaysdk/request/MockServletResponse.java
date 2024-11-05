@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 public class MockServletResponse implements ServletResponseIF
 {

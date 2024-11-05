@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import com.runwaysdk.controller.JSPFetcher;
 import com.runwaysdk.controller.RequestManager;

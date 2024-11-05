@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.web;
 
-import javax.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServlet;
 
 public abstract class FileUploadServlet extends HttpServlet
 {

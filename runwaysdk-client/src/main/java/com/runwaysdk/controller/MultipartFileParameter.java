@@ -22,8 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload2.core.DiskFileItem;
+import org.apache.commons.fileupload2.core.FileItem;
 
 public class MultipartFileParameter implements ParameterValue
 {
@@ -96,7 +96,7 @@ public class MultipartFileParameter implements ParameterValue
     // Check actual existence of temporary file.
     if (this.fileItem instanceof DiskFileItem)
     {
-      return ( (DiskFileItem) this.fileItem ).getStoreLocation().exists();
+      return ( (DiskFileItem) this.fileItem ).getPath().toFile().exists();
     }
 
     // Check whether current file size is different than original one.

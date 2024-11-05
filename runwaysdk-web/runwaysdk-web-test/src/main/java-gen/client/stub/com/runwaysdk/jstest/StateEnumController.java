@@ -25,21 +25,21 @@ public class StateEnumController extends StateEnumControllerBase implements com.
   
   private static final long serialVersionUID = -1341897124;
   
-  public StateEnumController(javax.servlet.http.HttpServletRequest req, javax.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
+  public StateEnumController(jakarta.servlet.http.HttpServletRequest req, jakarta.servlet.http.HttpServletResponse resp, java.lang.Boolean isAsynchronous)
   {
     super(req, resp, isAsynchronous, JSP_DIR, LAYOUT);
   }
   
-  public void cancel(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void cancel(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     dto.unlock();
     this.view(dto.getOid());
   }
-  public void failCancel(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCancel(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.edit(dto.getOid());
   }
-  public void create(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void create(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -51,12 +51,12 @@ public class StateEnumController extends StateEnumControllerBase implements com.
       this.failCreate(dto);
     }
   }
-  public void failCreate(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failCreate(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void delete(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void delete(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -68,33 +68,33 @@ public class StateEnumController extends StateEnumControllerBase implements com.
       this.failDelete(dto);
     }
   }
-  public void failDelete(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failDelete(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void edit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void edit(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.jstest.StateEnumDTO dto = com.runwaysdk.jstest.StateEnumDTO.lock(super.getClientRequest(), oid);
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void failEdit(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void failEdit(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.view(oid);
   }
-  public void newInstance() throws java.io.IOException, javax.servlet.ServletException
+  public void newInstance() throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     com.runwaysdk.jstest.StateEnumDTO dto = new com.runwaysdk.jstest.StateEnumDTO(clientRequest);
     req.setAttribute("item", dto);
     render("createComponent.jsp");
   }
-  public void failNewInstance() throws java.io.IOException, javax.servlet.ServletException
+  public void failNewInstance() throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.viewAll();
   }
-  public void update(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void update(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     try
     {
@@ -106,40 +106,40 @@ public class StateEnumController extends StateEnumControllerBase implements com.
       this.failUpdate(dto);
     }
   }
-  public void failUpdate(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, javax.servlet.ServletException
+  public void failUpdate(com.runwaysdk.jstest.StateEnumDTO dto) throws java.io.IOException, jakarta.servlet.ServletException
   {
     req.setAttribute("item", dto);
     render("editComponent.jsp");
   }
-  public void view(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void view(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     req.setAttribute("item", com.runwaysdk.jstest.StateEnumDTO.get(clientRequest, oid));
     render("viewComponent.jsp");
   }
-  public void failView(java.lang.String oid) throws java.io.IOException, javax.servlet.ServletException
+  public void failView(java.lang.String oid) throws java.io.IOException, jakarta.servlet.ServletException
   {
     this.viewAll();
   }
-  public void viewAll() throws java.io.IOException, javax.servlet.ServletException
+  public void viewAll() throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     com.runwaysdk.jstest.StateEnumQueryDTO query = com.runwaysdk.jstest.StateEnumDTO.getAllInstances(clientRequest, null, true, 20, 1);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failViewAll() throws java.io.IOException, javax.servlet.ServletException
+  public void failViewAll() throws java.io.IOException, jakarta.servlet.ServletException
   {
     resp.sendError(500);
   }
-  public void viewPage(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber) throws java.io.IOException, javax.servlet.ServletException
+  public void viewPage(java.lang.String sortAttribute, java.lang.Boolean isAscending, java.lang.Integer pageSize, java.lang.Integer pageNumber) throws java.io.IOException, jakarta.servlet.ServletException
   {
     com.runwaysdk.constants.ClientRequestIF clientRequest = super.getClientRequest();
     com.runwaysdk.jstest.StateEnumQueryDTO query = com.runwaysdk.jstest.StateEnumDTO.getAllInstances(clientRequest, sortAttribute, isAscending, pageSize, pageNumber);
     req.setAttribute("query", query);
     render("viewAllComponent.jsp");
   }
-  public void failViewPage(java.lang.String sortAttribute, java.lang.String isAscending, java.lang.String pageSize, java.lang.String pageNumber) throws java.io.IOException, javax.servlet.ServletException
+  public void failViewPage(java.lang.String sortAttribute, java.lang.String isAscending, java.lang.String pageSize, java.lang.String pageNumber) throws java.io.IOException, jakarta.servlet.ServletException
   {
     resp.sendError(500);
   }

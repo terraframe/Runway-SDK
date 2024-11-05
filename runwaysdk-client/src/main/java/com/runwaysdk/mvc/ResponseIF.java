@@ -20,7 +20,7 @@ package com.runwaysdk.mvc;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import com.runwaysdk.controller.RequestManager;
 
