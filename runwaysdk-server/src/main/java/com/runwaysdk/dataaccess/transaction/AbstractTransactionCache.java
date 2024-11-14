@@ -1865,6 +1865,20 @@ public abstract class AbstractTransactionCache implements TransactionCacheIF
     }
   }
 
+  @Override
+  public boolean hasClassByTableName(String tableName)
+  {
+    this.transactionStateLock.lock();
+    try
+    {
+      return this.updatedMdClassTableNameMap.containsKey(tableName);
+    }
+    finally
+    {
+      this.transactionStateLock.unlock();
+    }
+  }
+  
   /**
    * @see com.runwaysdk.dataaccess.transaction.TransactionCacheIF#getMdClassDAOByRootId(java.lang.String)
    */

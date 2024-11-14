@@ -441,6 +441,8 @@ public interface TransactionCacheIF
   public abstract MdClassDAOIF getMdClassDAOByRootId(String mdClassRootId);
 
   public abstract MdClassDAOIF getMdClassByTableName(String tableName);
+  
+  public abstract boolean hasClassByTableName(String tableName);
 
   /**
    * Returns {@link MdAttributeDAOIF} that was added during this transaction
@@ -779,4 +781,5 @@ public interface TransactionCacheIF
   public abstract void performDDLTable(String tableName);
 
   public abstract void put(EntityDAOIF entityDAO);
+
 }
