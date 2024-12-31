@@ -231,7 +231,7 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
   @Override
   public ApplicationFileResource getParentFile()
   {
-    return (ApplicationFileResource) this.getParentFile();
+    return (ApplicationFileResource) this.getParent();
   }
 
   @Override
