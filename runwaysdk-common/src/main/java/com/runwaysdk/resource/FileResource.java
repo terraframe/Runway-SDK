@@ -118,7 +118,11 @@ public class FileResource implements ApplicationFileResource
   {
     ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
     
-    for (File file : this.file.listFiles())
+    File[] files = new File[0];
+    if (file.isDirectory())
+      files = this.file.listFiles();
+    
+    for (File file : files)
     {
       children.add(new FileResource(file));
     }
@@ -131,7 +135,11 @@ public class FileResource implements ApplicationFileResource
   {
     ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
     
-    for (File file : this.file.listFiles())
+    File[] files = new File[0];
+    if (file.isDirectory())
+      files = this.file.listFiles();
+    
+    for (File file : files)
     {
       children.add(new FileResource(file));
     }
