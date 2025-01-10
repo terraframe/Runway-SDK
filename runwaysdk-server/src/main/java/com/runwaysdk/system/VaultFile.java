@@ -22,7 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -31,6 +32,8 @@ import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.rbac.Operation;
 import com.runwaysdk.business.rbac.SingleActorDAOIF;
 import com.runwaysdk.constants.VaultFileInfo;
+import com.runwaysdk.query.ListOIterator;
+import com.runwaysdk.query.OIterator;
 import com.runwaysdk.resource.ApplicationFileResource;
 import com.runwaysdk.resource.ApplicationTreeResource;
 import com.runwaysdk.resource.CloseableFile;
@@ -197,7 +200,7 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
   }
   
   @Override
-  public Iterator<ApplicationTreeResource> getChildren()
+  public OIterator<ApplicationTreeResource> getChildren()
   {
     ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
     
@@ -206,11 +209,11 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
       children.add(new FileResource(file));
     }
     
-    return children.iterator();
+    return new ListOIterator<ApplicationTreeResource>(children);
   }
   
   @Override
-  public Iterator<ApplicationFileResource> getChildrenFiles()
+  public OIterator<ApplicationFileResource> getChildrenFiles()
   {
     ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
     
@@ -219,31 +222,69 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
       children.add(new FileResource(file));
     }
     
-    return children.iterator();
+    return new ListOIterator<ApplicationFileResource>(children);
   }
 
   @Override
-  public ApplicationTreeResource getParent()
+  public Optional<ApplicationTreeResource> getParent()
   {
-    return new FileResource(this.getFile().getParentFile());
+    var parent = this.getFile().getParentFile();
+    
+    if (parent.exists())
+      return Optional.of(new FileResource(parent));
+    else
+      return Optional.empty();
   }
   
   @Override
-  public ApplicationFileResource getParentFile()
+  public Optional<ApplicationFileResource> getParentFile()
   {
-    return (ApplicationFileResource) this.getParent();
+    var parent = this.getParent();
+    
+    if (parent.isPresent())
+      return Optional.of((ApplicationFileResource) parent.get());
+    else
+      return Optional.empty();
   }
 
   @Override
-  public ApplicationTreeResource getChild(String path)
+  public Optional<ApplicationTreeResource> getChild(String path)
   {
-    return new FileResource(new File(this.getFile().getAbsolutePath() + File.separator + path));
+    var f = new File(this.getFile().getAbsolutePath() + File.separator + path);
+    
+    if (f.exists())
+      return Optional.of(new FileResource(f));
+    else
+      return Optional.empty();
   }
   
   @Override
-  public ApplicationFileResource getChildFile(String path)
+  public Optional<ApplicationFileResource> getChildFile(String path)
   {
-    return (ApplicationFileResource) this.getChild(path);
+    var f = this.getChild(path);
+    
+    if (f.isPresent())
+      return Optional.of((ApplicationFileResource) f.get());
+    else
+      return Optional.empty();
+  }
+
+  @Override
+  public boolean hasChildren()
+  {
+    return getChildren().hasNext();
+  }
+  
+  @Override
+  public void forAllChildren(Consumer<ApplicationTreeResource> action)
+  {
+    throw new UnsupportedOperationException();
+  }
+  
+  @Override
+  public void forAllFileChildren(Consumer<ApplicationFileResource> action)
+  {
+    throw new UnsupportedOperationException();
   }
   
 }

@@ -18,7 +18,10 @@
  */
 package com.runwaysdk.resource;
 
-import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Consumer;
+
+import com.runwaysdk.query.OIterator;
 
 /**
  * An application resource that has relationships with children and parents.
@@ -27,10 +30,17 @@ import java.util.Iterator;
  */
 public interface ApplicationTreeResource extends ApplicationResource
 {
+  public void forAllChildren(Consumer<ApplicationTreeResource> action);
+  
   /**
-   * Gets all children of this tree resource. If this resource does not have any children this method will return an iterator whereby 'hasNext' will return false.
+   * Returns an iterator to traverse the children of this resource. If this resource does not have any children this method will return an iterator whereby 'hasNext' will return false.
    */
-  public Iterator<ApplicationTreeResource> getChildren();
+  public OIterator<ApplicationTreeResource> getChildren();
+  
+  /**
+   * Returns true if the resource has children.
+   */
+  public boolean hasChildren();
   
   /**
    * Returns a new reference of a specific child of this tree resource by path. There is no guarantee that the child actually exists, for that you may call the 'exists'
@@ -38,10 +48,10 @@ public interface ApplicationTreeResource extends ApplicationResource
    * 
    * @return
    */
-  public ApplicationTreeResource getChild(String path);
+  public Optional<ApplicationTreeResource> getChild(String path);
   
   /**
    * Gets the parent of this resource. If this resource does not have a parent this method will return null.
    */
-  public ApplicationTreeResource getParent();
+  public Optional<ApplicationTreeResource> getParent();
 }

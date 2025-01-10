@@ -35,7 +35,7 @@ abstract public class ApplicationTreeResourceTest extends ApplicationResourceTes
   @Test
   public void getChild()
   {
-    Assert.assertFalse(this.treeResource.getChild("/doesNotExist.txt").exists());
+    Assert.assertFalse(this.treeResource.getChild("/doesNotExist.txt").isPresent());
   }
   
 }
