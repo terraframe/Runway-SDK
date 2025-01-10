@@ -204,11 +204,6 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
   {
     ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
     
-    for (File file : this.getFile().listFiles())
-    {
-      children.add(new FileResource(file));
-    }
-    
     return new ListOIterator<ApplicationTreeResource>(children);
   }
   
@@ -217,62 +212,37 @@ public class VaultFile extends VaultFileBase implements ApplicationFileResource
   {
     ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
     
-    for (File file : this.getFile().listFiles())
-    {
-      children.add(new FileResource(file));
-    }
-    
     return new ListOIterator<ApplicationFileResource>(children);
   }
 
   @Override
   public Optional<ApplicationTreeResource> getParent()
   {
-    var parent = this.getFile().getParentFile();
-    
-    if (parent.exists())
-      return Optional.of(new FileResource(parent));
-    else
-      return Optional.empty();
+    return Optional.empty();
   }
   
   @Override
   public Optional<ApplicationFileResource> getParentFile()
   {
-    var parent = this.getParent();
-    
-    if (parent.isPresent())
-      return Optional.of((ApplicationFileResource) parent.get());
-    else
-      return Optional.empty();
+    return Optional.empty();
   }
 
   @Override
   public Optional<ApplicationTreeResource> getChild(String path)
   {
-    var f = new File(this.getFile().getAbsolutePath() + File.separator + path);
-    
-    if (f.exists())
-      return Optional.of(new FileResource(f));
-    else
-      return Optional.empty();
+    return Optional.empty();
   }
   
   @Override
   public Optional<ApplicationFileResource> getChildFile(String path)
   {
-    var f = this.getChild(path);
-    
-    if (f.isPresent())
-      return Optional.of((ApplicationFileResource) f.get());
-    else
-      return Optional.empty();
+    return Optional.empty();
   }
 
   @Override
   public boolean hasChildren()
   {
-    return getChildren().hasNext();
+    return false;
   }
   
   @Override
