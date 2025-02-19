@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.runwaysdk</groupId>
     <artifactId>runwaysdk-root</artifactId>
-    <version>3.8.19</version>
+    <version>3.8.20-SNAPSHOT</version>
   </parent>
   <artifactId>runwaysdk-solr</artifactId>
 
