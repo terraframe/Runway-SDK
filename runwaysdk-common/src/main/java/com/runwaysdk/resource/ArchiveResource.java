@@ -37,6 +37,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.runwaysdk.query.ListOIterator;
 import com.runwaysdk.query.OIterator;
@@ -49,6 +50,8 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   protected ApplicationResource archive;
   
   protected CloseableFile extractedParent = null;
+  
+  protected boolean ignoreMacosx = true;
 
   public ArchiveResource(ApplicationResource archive)
   {
@@ -58,6 +61,11 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   public ApplicationResource getArchive()
   {
     return this.archive;
+  }
+  
+  public void setIgnoreMacOsx(boolean ignore)
+  {
+    this.ignoreMacosx = ignore;
   }
   
   public CloseableFile extract() throws ResourceException
@@ -103,31 +111,40 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
 
         while ( ( entry = (TarArchiveEntry) tarIn.getNextEntry() ) != null)
         {
-          /** If the entry is a directory, create the directory. **/
-          String filename = entry.getName();
-          if (entry.isDirectory())
+          if (StringUtils.isEmpty(entry.getName()) || entry.getName().equals("/") || entry.getName().equals(".") ||
+              entry.getName().startsWith("/") || entry.getName().contains("..") || (this.ignoreMacosx && entry.getName().startsWith("__MACOSX/")))
           {
-            File f = new File(filename);
-            boolean created = f.mkdir();
-            if (!created)
-            {
-              System.out.printf("Unable to create directory '%s', during extraction of archive contents.\n", f.getAbsolutePath());
-            }
+              continue;
           }
-          else
+          
+          var extracted = new File(extractedParent, entry.getName());
+          
+          // Some archives may incorrectly treat directories as files, causing exceptions.
+          if (extracted.isDirectory()) continue;
+          
+          // Ensure the parent directories exist
+          File parentDir = extracted.getParentFile();
+          if (parentDir != null && !parentDir.exists())
           {
-            var extracted = new File(extractedParent, entry.getName());
-            
-            try (FileOutputStream fos = new FileOutputStream(extracted))
-            {
-              int count;
+              parentDir.mkdirs(); // Create directories if they don't exist
+          }
+          
+          // Handle empty directories
+          if (entry.isDirectory()) {
+              File dir = new File(extractedParent, entry.getName());
+              dir.mkdirs();
+              continue;
+          }
+          
+          try (FileOutputStream fos = new FileOutputStream(extracted))
+          {
+            int count;
 
-              try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE))
+            try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE))
+            {
+              while ( ( count = tarIn.read(data, 0, BUFFER_SIZE) ) != -1)
               {
-                while ( ( count = tarIn.read(data, 0, BUFFER_SIZE) ) != -1)
-                {
-                  dest.write(data, 0, count);
-                }
+                dest.write(data, 0, count);
               }
             }
           }
@@ -149,7 +166,30 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
       {
         ZipArchiveEntry entry = entries.nextElement();
         
+        if (StringUtils.isEmpty(entry.getName()) || entry.getName().equals("/") || entry.getName().equals(".") ||
+            entry.getName().startsWith("/") || entry.getName().contains("..") || (this.ignoreMacosx && entry.getName().startsWith("__MACOSX/")))
+        {
+            continue;
+        }
+        
         var extracted = new File(extractedParent, entry.getName());
+        
+        // Some ZIPs may incorrectly treat directories as files, causing exceptions.
+        if (extracted.isDirectory()) continue;
+        
+        // Ensure the parent directories exist
+        File parentDir = extracted.getParentFile();
+        if (parentDir != null && !parentDir.exists())
+        {
+            parentDir.mkdirs(); // Create directories if they don't exist
+        }
+        
+        // Handle empty directories
+        if (entry.isDirectory()) {
+            File dir = new File(extractedParent, entry.getName());
+            dir.mkdirs();
+            continue;
+        }
 
         try (FileOutputStream fos = new FileOutputStream(extracted))
         {
