@@ -23,10 +23,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import com.runwaysdk.query.ListOIterator;
+import com.runwaysdk.query.OIterator;
 
 public class FileResource implements ApplicationFileResource
 {
@@ -114,58 +120,142 @@ public class FileResource implements ApplicationFileResource
   }
 
   @Override
-  public Iterator<ApplicationTreeResource> getChildren()
+  public OIterator<ApplicationTreeResource> getChildren()
   {
     ArrayList<ApplicationTreeResource> children = new ArrayList<ApplicationTreeResource>();
     
-    for (File file : this.file.listFiles())
+    File[] files = new File[0];
+    if (file.isDirectory())
+      files = this.file.listFiles();
+    
+    for (File file : files)
     {
       children.add(new FileResource(file));
     }
     
-    return children.iterator();
+    return new ListOIterator<ApplicationTreeResource>(children);
   }
   
   @Override
-  public Iterator<ApplicationFileResource> getChildrenFiles()
+  public OIterator<ApplicationFileResource> getChildrenFiles()
   {
     ArrayList<ApplicationFileResource> children = new ArrayList<ApplicationFileResource>();
     
-    for (File file : this.file.listFiles())
+    Iterator<ApplicationTreeResource> it = this.getChildren();
+    
+    while (it.hasNext())
     {
-      children.add(new FileResource(file));
+      children.add((FileResource) it.next());
     }
     
-    return children.iterator();
+    return new ListOIterator<ApplicationFileResource>(children);
   }
 
   @Override
-  public ApplicationTreeResource getParent()
+  public Optional<ApplicationTreeResource> getParent()
   {
-    return new FileResource(this.file.getParentFile());
+    return Optional.of(new FileResource(this.file.getParentFile()));
   }
   
   @Override
-  public ApplicationFileResource getParentFile()
+  public Optional<ApplicationFileResource> getParentFile()
   {
-    return (ApplicationFileResource) this.getParentFile();
+    var op = this.getParent();
+    
+    if (op.isPresent())
+      return Optional.of((ApplicationFileResource) op.get());
+    else
+      return Optional.empty();
   }
   
   @Override
-  public ApplicationTreeResource getChild(String path)
+  public Optional<ApplicationTreeResource> getChild(String path)
   {
-    return new FileResource(new File(this.file.getAbsolutePath() + File.separator + path));
+    File f = new File(this.file.getAbsolutePath() + File.separator + path);
+    
+    if (f.exists())
+      return Optional.of(new FileResource(f));
+    else
+      return Optional.empty();
   }
   
   @Override
-  public ApplicationFileResource getChildFile(String path)
+  public Optional<ApplicationFileResource> getChildFile(String path)
   {
-    return (ApplicationFileResource) this.getChild(path);
+    var op = this.getChild(path);
+    
+    if (op.isPresent())
+      return Optional.of((ApplicationFileResource) op.get());
+    else
+      return Optional.empty();
   }
 
   @Override
   public boolean exists()
   {
     return this.file.exists();
+  }
+
+  @Override
+  public boolean hasChildren()
+  {
+    if (!this.file.isDirectory())
+      return false;
+    
+    return this.file.listFiles().length > 0;
+  }
+  
+  /**
+   * Applies the given {@code Consumer} function to every child in the entire subtree
+   * rooted at this {@code ArchiveFileResource}.
+   *
+   * @param action the function that will be executed for each child
+   */
+  @Override
+  public void forAllChildren(Consumer<ApplicationTreeResource> action)
+  {
+    forAllChildrenHelper(this, action);
+  }
+  
+  /**
+   * A private helper that recurses through all children.
+   */
+  private static void forAllChildrenHelper(ApplicationTreeResource resource, Consumer<ApplicationTreeResource> action)
+  {
+    OIterator<ApplicationTreeResource> children = resource.getChildren();
+    
+    while (children.hasNext())
+    {
+      ApplicationTreeResource child = children.next();
+      action.accept(child);
+      forAllChildrenHelper(child, action);
+    }
+  }
+  
+  /**
+   * Applies the given {@code Consumer} function to every child in the entire subtree
+   * rooted at this {@code ArchiveFileResource}.
+   *
+   * @param action the function that will be executed for each child
+   */
+  @Override
+  public void forAllFileChildren(Consumer<ApplicationFileResource> action)
+  {
+    forAllChildrenHelper(this, action);
+  }
+  
+  /**
+   * A private helper that recurses through all children.
+   */
+  private static void forAllChildrenHelper(ApplicationFileResource resource, Consumer<ApplicationFileResource> action)
+  {
+    OIterator<ApplicationFileResource> children = resource.getChildrenFiles();
+    
+    while (children.hasNext())
+    {
+      ApplicationFileResource child = children.next();
+      action.accept(child);
+      forAllChildrenHelper(child, action);
+    }
   }
 }

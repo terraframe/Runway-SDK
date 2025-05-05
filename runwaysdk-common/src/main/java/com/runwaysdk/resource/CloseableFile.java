@@ -132,7 +132,10 @@ public class CloseableFile extends File implements AutoCloseable
   {
     if (this.isDeleteOnClose())
     {
-      File parent = getParentFile();
+      File parent = null;
+      
+      if (this.deleteParentToo)
+        parent = getParentFile();
       
       FileUtils.deleteQuietly(this);
       

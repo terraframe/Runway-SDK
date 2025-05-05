@@ -26,12 +26,16 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
+
+import com.runwaysdk.query.ListOIterator;
+import com.runwaysdk.query.OIterator;
 
 /**
  * Represents a resource on the Classpath, which may or may not actually exist.
@@ -428,20 +432,58 @@ public class ClasspathResource implements ApplicationTreeResource
 
   @SuppressWarnings("unchecked")
   @Override
-  public Iterator<ApplicationTreeResource> getChildren()
+  public OIterator<ApplicationTreeResource> getChildren()
   {
-    return (Iterator<ApplicationTreeResource>)(Object) getResourcesInPackage(this.path).iterator();
+    return new ListOIterator<ApplicationTreeResource>((List<ApplicationTreeResource>) (Object) getResourcesInPackage(this.path));
   }
 
   @Override
-  public ApplicationTreeResource getParent()
+  public Optional<ApplicationTreeResource> getParent()
   {
-    return new ClasspathResource(this.getPackage());
+    return Optional.of(new ClasspathResource(this.getPackage()));
   }
 
   @Override
-  public ApplicationTreeResource getChild(String path)
+  public Optional<ApplicationTreeResource> getChild(String path)
   {
-    return new ClasspathResource(this.getAbsolutePath() + "/" + path);
+    var res = new ClasspathResource(this.getAbsolutePath() + "/" + path);
+    
+    if (res.exists())
+      return Optional.of(res);
+    else
+      return Optional.empty();
+  }
+
+  @Override
+  public boolean hasChildren()
+  {
+    return getChildren().hasNext();
+  }
+  
+  /**
+   * Applies the given {@code Consumer} function to every child in the entire subtree
+   * rooted at this {@code ArchiveFileResource}.
+   *
+   * @param action the function that will be executed for each child
+   */
+  @Override
+  public void forAllChildren(Consumer<ApplicationTreeResource> action)
+  {
+    forAllChildrenHelper(this, action);
+  }
+  
+  /**
+   * A private helper that recurses through all children.
+   */
+  private static void forAllChildrenHelper(ApplicationTreeResource resource, Consumer<ApplicationTreeResource> action)
+  {
+    OIterator<ApplicationTreeResource> children = resource.getChildren();
+    
+    while (children.hasNext())
+    {
+      ApplicationTreeResource child = children.next();
+      action.accept(child);
+      forAllChildrenHelper(child, action);
+    }
   }
 }

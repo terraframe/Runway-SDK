@@ -16,26 +16,57 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.runwaysdk.resource;
+package com.runwaysdk.query;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.Iterator;
+import java.util.List;
 
-abstract public class ApplicationTreeResourceTest extends ApplicationResourceTest
+public class ListOIterator<T> implements OIterator<T>
 {
+    List<T>     list;
 
-  protected ApplicationTreeResource treeResource;
-  
-  public ApplicationTreeResourceTest(ApplicationTreeResource resource)
-  {
-    super(resource);
-    this.treeResource = resource;
-  }
-  
-  @Test
-  public void getChild()
-  {
-    Assert.assertFalse(this.treeResource.getChild("/doesNotExist.txt").isPresent());
-  }
-  
+    Iterator<T> it;
+
+    public ListOIterator(List<T> list)
+    {
+      this.list = list;
+      it = this.list.iterator();
+    }
+
+    @Override
+    public Iterator<T> iterator()
+    {
+      return it;
+    }
+
+    @Override
+    public T next()
+    {
+      return it.next();
+    }
+
+    @Override
+    public void remove()
+    {
+      it.remove();
+    }
+
+    @Override
+    public boolean hasNext()
+    {
+      return it.hasNext();
+    }
+
+    @Override
+    public void close()
+    {
+
+    }
+
+    @Override
+    public List<T> getAll()
+    {
+      return list;
+    }
+
 }
