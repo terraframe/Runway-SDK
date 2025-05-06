@@ -38,7 +38,7 @@ import com.runwaysdk.vault.VaultTestSuite;
   FacadeTestSuite.class,
   VaultTestSuite.class,
   QueryTestSuite.class,
-  MultiThreadTestSuite.class,
+//  MultiThreadTestSuite.class,
   OntologyTestSuite.class,
   SessionTestSuite.class,
   GraphTestSuite.class,

@@ -486,11 +486,15 @@ public class PostgreSQL extends AbstractDatabase
   public void createUser()
   {
     String userName = DatabaseProperties.getUser();
+    String dbName = DatabaseProperties.getDatabaseName();
 
     logger.info("Creating PostgreSQL database user [" + userName + "]");
 
     LinkedList<String> statements = new LinkedList<String>();
     statements.add("CREATE USER " + userName + " ENCRYPTED PASSWORD '" + DatabaseProperties.getPassword() + "'");
+    statements.add("ALTER DATABASE " + dbName + " OWNER TO " + userName);
+    statements.add("GRANT ALL PRIVILEGES ON DATABASE " + dbName + " TO " + userName);
+    
     executeAsRoot(statements, true);
   }
 
