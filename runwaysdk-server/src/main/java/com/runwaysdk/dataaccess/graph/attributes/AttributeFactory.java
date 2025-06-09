@@ -37,6 +37,7 @@ import com.runwaysdk.dataaccess.MdAttributeEnumerationDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeGraphRefDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeJsonDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterEmbeddedDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeReferenceDAOIF;
@@ -136,6 +137,10 @@ public class AttributeFactory
     else if (mdAttributeDAOIF instanceof MdAttributeTextDAOIF)
     {
       attribute = new AttributeText(mdAttributeDAOIF, definingType);
+    }
+    else if (mdAttributeDAOIF instanceof MdAttributeJsonDAOIF)
+    {
+      attribute = new AttributeJson(mdAttributeDAOIF, definingType);
     }
     else if (mdAttributeDAOIF instanceof MdAttributeReferenceDAOIF)
     {

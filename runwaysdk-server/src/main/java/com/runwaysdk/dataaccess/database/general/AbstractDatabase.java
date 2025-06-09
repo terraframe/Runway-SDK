@@ -78,6 +78,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -1359,6 +1360,11 @@ public abstract class AbstractDatabase
     return type;
   }
 
+  public String formatJsonField(String type)
+  {
+    return type;
+  }
+  
   /**
    * Returns the CLOB type formatted for a DDL command to the vendor syntax.
    * 
@@ -3731,6 +3737,17 @@ public abstract class AbstractDatabase
         else
         {
           prepStmt.setBigDecimal(index, new BigDecimal((String) value));
+        }
+      }
+      else if (dataType.equals(MdAttributeJsonInfo.CLASS))
+      {
+        if ( ( (String) value ).trim().equals(""))
+        {
+          prepStmt.setNull(index, java.sql.Types.OTHER);
+        }
+        else
+        {
+          prepStmt.setObject(index, value);
         }
       }
       else if (dataType.equals(MdAttributeTextInfo.CLASS) || dataType.equals(MdAttributeClobInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS))

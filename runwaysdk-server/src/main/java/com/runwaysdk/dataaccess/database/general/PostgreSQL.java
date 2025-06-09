@@ -44,8 +44,10 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.postgresql.ds.common.BaseDataSource;
+import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +71,7 @@ import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -1808,6 +1811,22 @@ public class PostgreSQL extends AbstractDatabase
           prepStmt.setObject(index, UUID.fromString(va));
         }
       }
+      else if (dataType.equals(MdAttributeJsonInfo.CLASS))
+      {
+        String va = (String) value;
+        if (value == null || va.equals(""))
+        {
+          prepStmt.setNull(index, java.sql.Types.OTHER);
+        }
+        else
+        {
+          PGobject object = new PGobject();
+          object.setType("jsonb");
+          object.setValue(va);
+          
+          prepStmt.setObject(index, object);
+        }
+      }
       else if (dataType.equals(MdAttributeFloatInfo.CLASS))
       {
         if ( ( (String) value ).trim().equals(""))
@@ -1924,7 +1943,7 @@ public class PostgreSQL extends AbstractDatabase
     // Encryption
         dataType.equals(MdAttributeHashInfo.CLASS) || dataType.equals(MdAttributeSymmetricInfo.CLASS) ||
         // References
-        dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
+        dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeJsonInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS) || dataType.equals(MdAttributeFileInfo.CLASS) || dataType.equals(MdAttributeEnumerationInfo.CLASS) || dataType.equals(MdAttributeMultiReferenceInfo.CLASS) || dataType.equals(MdAttributeIndicatorInfo.CLASS))
     {
       sqlStmt = "'" + sqlStmt + "'";
 
@@ -1938,7 +1957,7 @@ public class PostgreSQL extends AbstractDatabase
     else if (// Primitive
     dataType.equals(MdAttributeBooleanInfo.CLASS) || dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeIntegerInfo.CLASS) || dataType.equals(MdAttributeLongInfo.CLASS) || dataType.equals(MdAttributeFloatInfo.CLASS) || dataType.equals(MdAttributeDoubleInfo.CLASS) || dataType.equals(MdAttributeDecimalInfo.CLASS) ||
     // Non Primitives
-        dataType.equals(MdAttributeBlobInfo.CLASS))
+        dataType.equals(MdAttributeBlobInfo.CLASS) || dataType.equals(MdAttributeJsonInfo.CLASS))
     {
     }
     else

@@ -1973,6 +1973,18 @@ public class Database
   }
 
   /**
+   * Returns the text type formatted for a DDL command to the vendor syntax.
+   * 
+   * @param type
+   * 
+   * @return
+   */
+  public static String formatJsonField(String type)
+  {
+    return instance().formatTextField(type);
+  }
+  
+  /**
    * Returns the CLOB type formatted for a DDL command to the vendor syntax.
    * 
    * @param type

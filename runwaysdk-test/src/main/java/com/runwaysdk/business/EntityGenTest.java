@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.business;
 
@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -63,6 +64,7 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
@@ -112,6 +114,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFileDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeJsonDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLongDAO;
@@ -162,6 +165,8 @@ public class EntityGenTest
   private static MdAttributeBlobDAO           collectionBlob;
 
   private static MdAttributeCharacterDAO      collectionCharacter;
+
+  private static MdAttributeJsonDAO           collectionJson;
 
   private static MdAttributeCharacterDAO      structCharacter;
 
@@ -239,7 +244,7 @@ public class EntityGenTest
 
   private static String                       relationshipDTO;
 
-//  private static String                       collectionSubDTO;
+  // private static String collectionSubDTO;
 
   private static ClientSession                systemSession   = null;
 
@@ -247,9 +252,9 @@ public class EntityGenTest
 
   private static String                       suitEnumDTO;
 
-//  private boolean                             didSetup        = false;
-//
-//  private boolean                             didTeardown     = false;
+  // private boolean didSetup = false;
+  //
+  // private boolean didTeardown = false;
 
   @Request
   @Before
@@ -641,6 +646,15 @@ public class EntityGenTest
     collectionText.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, collection.getOid());
     collectionText.apply();
 
+    collectionJson = MdAttributeJsonDAO.newInstance();
+    collectionJson.setValue(MdAttributeJsonInfo.NAME, "aJson");
+    collectionJson.setStructValue(MdAttributeJsonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Json");
+    collectionJson.setValue(MdAttributeJsonInfo.REQUIRED, MdAttributeBooleanInfo.FALSE);
+    collectionJson.setValue(MdAttributeJsonInfo.IMMUTABLE, MdAttributeBooleanInfo.FALSE);
+    collectionJson.setStructValue(MdAttributeJsonInfo.DESCRIPTION, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Json Desc");
+    collectionJson.setValue(MdAttributeJsonInfo.DEFINING_MD_CLASS, collection.getOid());
+    collectionJson.apply();
+    
     collectionClob = MdAttributeClobDAO.newInstance();
     collectionClob.setValue(MdAttributeClobInfo.NAME, "aClob");
     collectionClob.setStructValue(MdAttributeClobInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "A Clob");
@@ -663,7 +677,8 @@ public class EntityGenTest
     mdRelationship.apply();
 
     collectionDTO = collection.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
-//    collectionSubDTO = collectionSub.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
+    // collectionSubDTO = collectionSub.definesType() +
+    // ComponentDTOGenerator.DTO_SUFFIX;
     referenceDTO = reference.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     relationshipDTO = mdRelationship.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
     suitEnumDTO = suitEnum.definesType() + ComponentDTOGenerator.DTO_SUFFIX;
@@ -1669,6 +1684,29 @@ public class EntityGenTest
       Assert.fail("Stored and Retrieved Texts have different values.");
   }
 
+  @Request
+  @Test
+  public void testSetJson() throws Exception
+  {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+    
+    Class<?> collectionClass = loader.loadClass(collectionType);
+    Object object = collectionClass.getConstructor().newInstance();
+    
+    JSONObject original = new JSONObject();
+    original.put("testValue", "Test entry");
+
+    
+    collectionClass.getMethod("setAJson", String.class).invoke(object, original.toString());
+    collectionClass.getMethod("apply").invoke(object);
+    
+    String oid = (String) collectionClass.getMethod("getOid").invoke(object);
+    BusinessDAOIF businessDAO = BusinessDAO.get(oid);
+    String out = businessDAO.getValue("aJson");
+    
+    Assert.assertTrue("Stored and Retrieved Jsons have different values.", out.contains(original.getString("testVAlue")));
+  }
+  
   @Request
   @Test
   public void testSetClob() throws Exception
@@ -5286,6 +5324,20 @@ public class EntityGenTest
     checkAttributeMd(collectionText, mdDTO);
   }
 
+  @Request
+  @Test
+  public void testJsonMetadata() throws Exception
+  {
+    GeneratedLoader loader = GeneratedLoader.createClassLoader();
+    
+    Class<?> collectionClass = loader.loadClass(collectionDTO);
+    BusinessDTO object = (BusinessDTO) collectionClass.getConstructor(ClientRequestIF.class).newInstance(clientRequestIF);
+    
+    AttributeMdDTO mdDTO = (AttributeMdDTO) collectionClass.getMethod("getAJsonMd").invoke(object);
+    
+    checkAttributeMd(collectionJson, mdDTO);
+  }
+  
   @Request
   @Test
   public void testClobMetadata() throws Exception

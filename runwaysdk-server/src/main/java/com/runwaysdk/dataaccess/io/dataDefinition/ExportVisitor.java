@@ -62,6 +62,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
@@ -202,6 +203,7 @@ import com.runwaysdk.dataaccess.MetadataDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeCharacter;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeClob;
+import com.runwaysdk.dataaccess.attributes.entity.AttributeJson;
 import com.runwaysdk.dataaccess.attributes.entity.AttributeText;
 import com.runwaysdk.dataaccess.graph.EdgeObjectDAOIF;
 import com.runwaysdk.dataaccess.graph.VertexObjectDAOIF;
@@ -1703,7 +1705,12 @@ public class ExportVisitor extends MarkupVisitor
       String attributeValue = attribute.getValue();
 
       // Do not export system attributes or values that do not have a value
-      if (ATTRIBUTE_MASK.contains( ( attributeName )) || ( attributeValue.equals("") && ! ( attribute instanceof AttributeCharacter ) && ! ( attribute instanceof AttributeText ) && ! ( attribute instanceof AttributeClob ) ))
+      if (ATTRIBUTE_MASK.contains( ( attributeName )) //
+          || ( attributeValue.equals("") // 
+              && ! ( attribute instanceof AttributeCharacter ) //
+              && ! ( attribute instanceof AttributeText ) //
+              && ! ( attribute instanceof AttributeJson ) //
+              && ! ( attribute instanceof AttributeClob ) ))
       {
         continue;
       }
@@ -2700,6 +2707,7 @@ public class ExportVisitor extends MarkupVisitor
     attributeTags.put(MdAttributeDateInfo.CLASS, XMLTags.DATE_TAG);
     attributeTags.put(MdAttributeCharacterInfo.CLASS, XMLTags.CHARACTER_TAG);
     attributeTags.put(MdAttributeTextInfo.CLASS, XMLTags.TEXT_TAG);
+    attributeTags.put(MdAttributeJsonInfo.CLASS, XMLTags.JSON_TAG);
     attributeTags.put(MdAttributeClobInfo.CLASS, XMLTags.CLOB_TAG);
     attributeTags.put(MdAttributeLocalCharacterInfo.CLASS, XMLTags.LOCAL_CHARACTER_TAG);
     attributeTags.put(MdAttributeLocalTextInfo.CLASS, XMLTags.LOCAL_TEXT_TAG);

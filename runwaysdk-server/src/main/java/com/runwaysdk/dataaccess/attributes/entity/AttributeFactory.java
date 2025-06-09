@@ -43,6 +43,7 @@ import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -202,6 +203,10 @@ public class AttributeFactory
     else if (attributeType.equals(MdAttributeTextInfo.CLASS))
     {
       attribute = new AttributeText(attributeName, mdAttributeKey, definingType, (String) attributeValue);
+    }
+    else if (attributeType.equals(MdAttributeJsonInfo.CLASS))
+    {
+      attribute = new AttributeJson(attributeName, mdAttributeKey, definingType, (String) attributeValue);
     }
     else if (attributeType.equals(MdAttributeClobInfo.CLASS))
     {

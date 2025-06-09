@@ -44,6 +44,7 @@ import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterEmbeddedInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalEmbeddedInfo;
@@ -1237,6 +1238,7 @@ public class MdAttributeHandler extends TagHandler implements TagHandlerIF, Hand
     this.addHandler(XMLTags.DOUBLE_TAG, new AttributeDecHandler(manager, MdAttributeDoubleInfo.CLASS));
     this.addHandler(XMLTags.FLOAT_TAG, new AttributeDecHandler(manager, MdAttributeFloatInfo.CLASS));
     this.addHandler(XMLTags.TEXT_TAG, new AttributePrimitiveHandler(manager, MdAttributeTextInfo.CLASS));
+    this.addHandler(XMLTags.JSON_TAG, new AttributeConcreteHandler(manager, MdAttributeJsonInfo.CLASS));
     this.addHandler(XMLTags.CLOB_TAG, new AttributePrimitiveHandler(manager, MdAttributeClobInfo.CLASS));
     this.addHandler(XMLTags.INTEGER_TAG, new AttributeNumberHandler(manager, MdAttributeIntegerInfo.CLASS));
     this.addHandler(XMLTags.LONG_TAG, new AttributeNumberHandler(manager, MdAttributeLongInfo.CLASS));

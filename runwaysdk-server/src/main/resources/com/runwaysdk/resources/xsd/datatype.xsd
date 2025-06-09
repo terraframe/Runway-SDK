@@ -944,6 +944,7 @@
       <xs:element name="char" type="char" />
       <xs:element name="text" type="text" />
       <xs:element name="clob" type="clob" />
+      <xs:element name="json" type="json" />
       <xs:element name="boolean" type="boolean" />
       <xs:element name="integer" type="integer" />
       <xs:element name="long" type="long" />
@@ -1088,6 +1089,10 @@
 
   <!--Represents a Text object in the database -->
   <xs:complexType name="text">
+    <xs:attributeGroup ref="attributePrimitive" />
+  </xs:complexType>
+  
+  <xs:complexType name="json">
     <xs:attributeGroup ref="attributePrimitive" />
   </xs:complexType>
   

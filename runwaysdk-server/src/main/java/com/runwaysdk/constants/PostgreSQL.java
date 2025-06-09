@@ -77,6 +77,7 @@ public class PostgreSQL extends ListResourceBundle
     hashtable.put(MdAttributeCharacterInfo.CLASS, "varchar");
     hashtable.put(MdAttributeFileInfo.CLASS, "varchar");
     hashtable.put(MdAttributeTextInfo.CLASS, "text");
+    hashtable.put(MdAttributeJsonInfo.CLASS, "jsonb");
     hashtable.put(MdAttributeClobInfo.CLASS, "text");
     hashtable.put(MdAttributeBlobInfo.CLASS, "bytea");
     hashtable.put(MdAttributeTimeInfo.CLASS, "time");

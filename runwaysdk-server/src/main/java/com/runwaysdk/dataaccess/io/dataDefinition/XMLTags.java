@@ -190,6 +190,11 @@ public interface XMLTags
   public static final String   TEXT_TAG                         = "text";
 
   /**
+   * The xml tag for an MdAttributeJson
+   */
+  public static final String   JSON_TAG                         = "json";
+  
+  /**
    * The xml tag for an MdAttributeText
    */
   public static final String   CLOB_TAG                         = "clob";

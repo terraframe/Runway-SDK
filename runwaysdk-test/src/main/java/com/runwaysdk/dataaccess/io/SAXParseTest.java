@@ -65,6 +65,7 @@ import com.runwaysdk.constants.MdAttributeFileInfo;
 import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMomentInfo;
@@ -1312,6 +1313,33 @@ public class SAXParseTest
     Assert.assertEquals(attribute.getStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Text Set Test");
   }
 
+  /**
+   * Test setting of attributes on the Json datatype minus any overlapping
+   * attributes from the boolean test.
+   */
+  @Request
+  @Test
+  public void testCreateJson()
+  {
+    MdBusinessDAO mdBusiness1 = TestFixtureFactory.createMdBusiness1();
+    mdBusiness1.setValue(MdBusinessInfo.GENERATE_SOURCE, MdAttributeBooleanInfo.FALSE);
+    mdBusiness1.apply();
+    
+    TestFixtureFactory.addJsonAttribute(mdBusiness1).apply();
+    
+    SAXExporter.export(tempXMLFile, SCHEMA, ExportMetadata.buildCreate(new ComponentIF[] { mdBusiness1 }));
+    
+    TestFixtureFactory.delete(mdBusiness1);
+    
+    SAXImporter.runImport(new File(tempXMLFile));
+    
+    MdElementDAOIF mdEntityIF = MdElementDAO.getMdElementDAO(CLASS);
+    MdAttributeDAOIF attribute = mdEntityIF.definesAttribute("testJson");
+    
+    Assert.assertNotNull(attribute);
+    Assert.assertEquals(attribute.getStructValue(MdAttributeJsonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE), "Json Set Test");
+  }
+  
   /**
    * Test setting of attributes on the text datatype minus any overlapping
    * attributes from the boolean test.

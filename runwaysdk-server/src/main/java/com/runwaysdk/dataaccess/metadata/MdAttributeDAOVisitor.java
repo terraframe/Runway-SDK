@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.MdAttributeFileDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeFloatDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeHashDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeIntegerDAOIF;
+import com.runwaysdk.dataaccess.MdAttributeJsonDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalCharacterDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLocalTextDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeLongDAOIF;
@@ -75,6 +76,8 @@ public interface MdAttributeDAOVisitor
 
   public void visitText(MdAttributeTextDAOIF attribute);
 
+  public void visitJson(MdAttributeJsonDAOIF attribute);
+  
   public void visitClob(MdAttributeClobDAOIF attribute);
 
   public void visitReference(MdAttributeReferenceDAOIF attribute);

@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.io;
 
@@ -68,6 +68,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeGraphReferenceInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
 import com.runwaysdk.constants.MdAttributeMultiReferenceInfo;
@@ -161,6 +162,7 @@ import com.runwaysdk.dataaccess.metadata.MdAttributeFloatDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeGraphReferenceDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeHashDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeIntegerDAO;
+import com.runwaysdk.dataaccess.metadata.MdAttributeJsonDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalCharacterEmbeddedDAO;
 import com.runwaysdk.dataaccess.metadata.MdAttributeLocalTextDAO;
@@ -311,6 +313,8 @@ public class TestFixtureFactory
 
     public static final String ATTRIBUTE_TEXT             = "testText";
 
+    public static final String ATTRIBUTE_JSON             = "testJson";
+
     public static final String ATTRIBUTE_CLOB             = "testClob";
 
     public static final String ATTRIBUTE_INTEGER          = "testInteger";
@@ -326,7 +330,7 @@ public class TestFixtureFactory
     public static final String ATTRIBUTE_DATETIME         = "testDateTime";
 
     public static final String ATTRIBUTE_DATE             = "testDate";
-    
+
     public static final String ATTRIBUTE_BLOB             = "testBlob";
 
     public static final String ATTRIBUTE_TIME             = "testTime";
@@ -354,13 +358,13 @@ public class TestFixtureFactory
     public static final String METHOD_NAME                = "testMethod";
 
     public static final String METHOD_DEFAULT_LOCALE      = "Test Method";
-    
+
     public static final String DIMENSION_D1               = "D1";
-    
+
     public static final String TEST_DOMAIN                = "testDomain";
-    
+
     public static final String TEST_VIEW1                 = "View1";
-    
+
     public static final String TEST_VIEW2                 = "View2";
 
   }
@@ -448,16 +452,18 @@ public class TestFixtureFactory
 
   /**
    * Generates source
+   * 
    * @return
    */
   public static MdBusinessDAO createMdBusiness1()
   {
     return createMdBusiness1(true);
   }
-  
+
   /**
    * 
-   * @param generateSource true to generate source, false otherwise.
+   * @param generateSource
+   *          true to generate source, false otherwise.
    * @return
    */
   public static MdBusinessDAO createMdBusiness1(boolean generateSource)
@@ -492,7 +498,7 @@ public class TestFixtureFactory
   {
     return TestFixtureFactory.createMdBusiness2(null);
   }
-  
+
   public static MdStructDAO createMdStruct1()
   {
     return createMdStruct(TestFixConst.TEST_STRUCT1);
@@ -600,7 +606,7 @@ public class TestFixtureFactory
 
     return mdInformation;
   }
-  
+
   public static MdViewDAO createMdView(String name)
   {
     MdViewDAO mdView = MdViewDAO.newInstance();
@@ -1153,6 +1159,20 @@ public class TestFixtureFactory
     mdAttribute.setValue(MdAttributeTextInfo.NAME, attributeName);
     mdAttribute.setStructValue(MdAttributeTextInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Text Set Test");
     mdAttribute.setValue(MdAttributeTextInfo.DEFINING_MD_CLASS, mdEntity.getOid());
+    return mdAttribute;
+  }
+
+  public static MdAttributeJsonDAO addJsonAttribute(MdClassDAOIF mdEntity)
+  {
+    return addJsonAttribute(mdEntity, TestFixConst.ATTRIBUTE_JSON);
+  }
+
+  public static MdAttributeJsonDAO addJsonAttribute(MdClassDAOIF mdEntity, String attributeName)
+  {
+    MdAttributeJsonDAO mdAttribute = MdAttributeJsonDAO.newInstance();
+    mdAttribute.setValue(MdAttributeJsonInfo.NAME, attributeName);
+    mdAttribute.setStructValue(MdAttributeJsonInfo.DISPLAY_LABEL, MdAttributeLocalInfo.DEFAULT_LOCALE, "Json Set Test");
+    mdAttribute.setValue(MdAttributeJsonInfo.DEFINING_MD_CLASS, mdEntity.getOid());
     return mdAttribute;
   }
 
@@ -1865,7 +1885,7 @@ public class TestFixtureFactory
 
     return mdVertex;
   }
-  
+
   public static MdEmbeddedGraphClassDAO createMdEmbeddedGraph(String name)
   {
     MdEmbeddedGraphClassDAO mdEmbeddedGraphClassDAO = MdEmbeddedGraphClassDAO.newInstance();

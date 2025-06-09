@@ -1,0 +1,23 @@
+<version xsi:noNamespaceSchemaLocation="classpath:com/runwaysdk/resources/xsd/version.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doIt>
+    <create>
+
+      <mdBusiness 
+        name="com.runwaysdk.system.metadata.MdAttributeJson" 
+          extends="com.runwaysdk.system.metadata.MdAttributeConcrete"
+        isAbstract="false" 
+        description="com.runwaysdk.system.metadata.MdAttributeJson" 
+        hasDeterministicId="true" 
+        removable="false" 
+        label="MdAttributeJson" 
+        table="md_attribute_json"
+        extendable="true" 
+        generateController="false" >
+      </mdBusiness>
+
+    </create>
+  </doIt>
+  <undoIt>
+    <delete></delete>
+  </undoIt>
+</version>
