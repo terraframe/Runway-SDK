@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.session;
 
@@ -48,8 +48,8 @@ public class RequestState
   {
     try
     {
-//      System.out.println("Get database connection");
-      
+      // System.out.println("Get database connection");
+
       this.conn = Database.getConnectionRaw();
 
       this.graphDBRequest = GraphDBService.getInstance().getGraphDBRequest();
@@ -95,7 +95,7 @@ public class RequestState
     return this.debug;
   }
 
-  protected Connection getDatabaseConnection()
+  public Connection getDatabaseConnection()
   {
     return this.conn;
   }
@@ -161,7 +161,11 @@ public class RequestState
   protected synchronized void commitAndCloseConnection(JoinPoint joinPoint)
   {
     // Close the graph db connection, but do not commit it
-    this.graphDBRequest.close();
+    if (this.graphDBRequest != null && !this.graphDBRequest.isClosed())
+    {
+      this.graphDBRequest.close();
+    }
+
 
     if (conn != null)
     {
@@ -192,13 +196,46 @@ public class RequestState
   }
 
   /**
+   * Commits and closes the DML database connection.
+   * 
+   * @param joinPoint
+   */
+  public synchronized void close()
+  {
+    // Close the graph db connection, but do not commit it
+    if (this.graphDBRequest != null && !this.graphDBRequest.isClosed())
+    {
+      this.graphDBRequest.close();
+    }
+
+    if (conn != null)
+    {
+      try
+      {
+        if (!conn.isClosed())
+        {
+          conn.close();
+        }
+      }
+      catch (SQLException ex)
+      {
+        throw new DatabaseException(ex);
+      }
+    }
+  }
+
+  /**
    * Rolls back the DML database connection;
    * 
    * @param joinPoint
    */
   protected synchronized void rollbackConnection(JoinPoint joinPoint)
   {
-    this.graphDBRequest.rollback();
+    if (this.graphDBRequest != null && !this.graphDBRequest.isClosed())
+    {
+      this.graphDBRequest.rollback();
+    }
+
 
     if (conn != null)
     {
@@ -228,8 +265,11 @@ public class RequestState
    */
   protected synchronized void rollbackAndCloseConnection(JoinPoint joinPoint)
   {
-    this.graphDBRequest.rollback();
-    this.graphDBRequest.close();
+    if (this.graphDBRequest != null && !this.graphDBRequest.isClosed())
+    {
+      this.graphDBRequest.rollback();
+      this.graphDBRequest.close();
+    }
 
     if (conn != null)
     {
@@ -318,6 +358,11 @@ public class RequestState
   public static RequestState getCurrentRequestState()
   {
     return null;
+  }
+
+  public static RequestState createRequestState()
+  {
+    return new RequestState();
   }
 
   /**

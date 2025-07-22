@@ -28,6 +28,8 @@ public interface GraphRequest
   
   public void close();
   
+  public boolean isClosed();
+  
   public boolean getIsDDLRequest();
   
   public void setIsDDLRequest();
