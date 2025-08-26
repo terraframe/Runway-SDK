@@ -30,6 +30,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.spatial4j.shape.Shape;
 
 import com.orientechnologies.orient.core.db.ODatabaseSession;
+import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.OEdge;
 import com.orientechnologies.orient.core.record.OElement;
@@ -209,6 +210,10 @@ public class ResultSetConverter implements ResultSetConverterIF
 
             ( (AttributeGraphRef) attribute ).setId(new ID(oid, ref.getIdentity()));
           }
+          else if (value instanceof ORecordId)
+          {
+            ( (AttributeGraphRef) attribute ).setId(new ID(null, value));
+          }
         }
         else if (mdAttribute instanceof MdAttributeEnumerationDAO)
         {
@@ -350,6 +355,13 @@ public class ResultSetConverter implements ResultSetConverterIF
 
             attribute.setValueInternal(oid, id, startDate, endDate);
           }
+          else if (value instanceof ORecordId)
+          {
+            ID id = new ID(null, value);
+            
+            attribute.setValueInternal(oid, id, startDate, endDate);
+          }
+          
         }
       }
     }
