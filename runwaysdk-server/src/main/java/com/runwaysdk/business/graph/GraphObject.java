@@ -27,6 +27,7 @@ import com.runwaysdk.ComponentIF;
 import com.runwaysdk.business.BusinessEnumeration;
 import com.runwaysdk.business.Entity;
 import com.runwaysdk.business.Mutable;
+import com.runwaysdk.dataaccess.AttributeIF;
 import com.runwaysdk.dataaccess.ComponentDAO;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeDAOIF;
@@ -35,7 +36,6 @@ import com.runwaysdk.dataaccess.attributes.AttributeException;
 import com.runwaysdk.dataaccess.graph.EmbeddedGraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAO;
 import com.runwaysdk.dataaccess.graph.GraphObjectDAOIF;
-import com.runwaysdk.dataaccess.graph.VertexObjectDAO;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEmbedded;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeEnumeration;
 import com.runwaysdk.dataaccess.graph.attributes.AttributeLocalEmbedded;
@@ -176,6 +176,11 @@ public abstract class GraphObject implements Mutable
   {
     return this.graphObjectDAO.hasAttribute(name);
   }
+  
+  public AttributeIF getObjectAttribute(String name)
+  {
+    return  this.graphObjectDAO.getAttributeIF(name);
+  }
 
   /**
    * Some attributes store objects instead of strings.
@@ -189,7 +194,7 @@ public abstract class GraphObject implements Mutable
   {
     return (T) this.graphObjectDAO.getObjectValue(name);
   }
-
+  
   /**
    * Some attributes store objects instead of strings.
    * 
