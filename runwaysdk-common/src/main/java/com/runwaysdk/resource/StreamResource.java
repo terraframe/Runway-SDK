@@ -100,7 +100,8 @@ public class StreamResource implements ApplicationResource
       File parent = Files.createTempDirectory(this.getBaseName()).toFile();
       File child = new File(parent, this.getBaseName() + "." + this.getNameExtension());
       
-      CloseableFile tempFile = new CloseableFile(child.toURI(), true, true);
+      @SuppressWarnings("resource")
+      CloseableFile tempFile = new CloseableFile(child).deleteParentToo();
       
       try(FileOutputStream fos = new FileOutputStream(tempFile))
       {

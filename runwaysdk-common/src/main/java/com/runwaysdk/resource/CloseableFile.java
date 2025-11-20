@@ -20,6 +20,8 @@ package com.runwaysdk.resource;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -40,7 +42,7 @@ public class CloseableFile extends File implements AutoCloseable
   
   private boolean deleteOnClose = true;
   
-  private boolean deleteParentToo = false;
+  private List<File> alsoDelete = new ArrayList<File>();
   
   public CloseableFile(File file)
   {
@@ -72,12 +74,6 @@ public class CloseableFile extends File implements AutoCloseable
     this.setIsDeleteOnClose(deleteOnClose);
   }
   
-  public CloseableFile(URI uri, boolean deleteOnClose, boolean deleteParentToo)
-  {
-    super(uri);
-    this.setIsDeleteOnClose(deleteOnClose, deleteParentToo);
-  }
-  
   public CloseableFile(File parent, String child)
   {
     super(parent, child);
@@ -102,9 +98,15 @@ public class CloseableFile extends File implements AutoCloseable
     this.setIsDeleteOnClose(deleteOnClose);
   }
   
-  protected void setIsDeleteOnClose(boolean deleteOnClose)
+  public CloseableFile deleteParentToo()
   {
-    setIsDeleteOnClose(deleteOnClose, false);
+    return alsoDelete(getParentFile());
+  }
+  
+  public CloseableFile alsoDelete(File file)
+  {
+    alsoDelete.add(file);
+    return this;
   }
   
   /**
@@ -112,10 +114,9 @@ public class CloseableFile extends File implements AutoCloseable
    * This method is protected because setting "deleteOnClose" to true is an irreversable
    * operation, because it registers the delete with the JVM (which cannot be undone).
    */
-  protected void setIsDeleteOnClose(boolean deleteOnClose, boolean deleteParentToo)
+  protected void setIsDeleteOnClose(boolean deleteOnClose)
   {
     this.deleteOnClose = deleteOnClose;
-    this.deleteParentToo = deleteParentToo;
     
     if (this.deleteOnClose)
     {
@@ -132,15 +133,10 @@ public class CloseableFile extends File implements AutoCloseable
   {
     if (this.isDeleteOnClose())
     {
-      File parent = null;
-      
-      if (this.deleteParentToo)
-        parent = getParentFile();
-      
       FileUtils.deleteQuietly(this);
       
-      if (this.deleteParentToo) {
-        FileUtils.deleteQuietly(parent);
+      for (File also : alsoDelete) {
+        FileUtils.deleteQuietly(also);
       }
     }
   }
