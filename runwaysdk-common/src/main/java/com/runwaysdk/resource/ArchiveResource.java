@@ -275,11 +275,9 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   @Override
   public Collection<ApplicationResource> getContents()
   {
-    File extracted = extract();
-    
     ArrayList<ApplicationResource> result = new ArrayList<ApplicationResource>();
     
-    for (File file : extracted.listFiles())
+    for (File file : extractAndListFiles())
     {
       result.add(new FileResource(file));
     }
@@ -289,11 +287,9 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   
   public List<ApplicationTreeResource> getTreeContents()
   {
-    File extracted = extract();
-    
     List<ApplicationTreeResource> result = new ArrayList<ApplicationTreeResource>();
     
-    for (File file : extracted.listFiles())
+    for (File file : extractAndListFiles())
     {
       result.add(new FileResource(file));
     }
@@ -310,9 +306,7 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   @Override
   public Optional<ApplicationTreeResource> getChild(String path)
   {
-    File extracted = extract();
-    
-    for (File file : extracted.listFiles())
+    for (File file : extractAndListFiles())
     {
       if (file.getName().equals(path))
         return Optional.of(new FileResource(file));
@@ -330,9 +324,14 @@ public class ArchiveResource implements ApplicationCollectionResource, Applicati
   @Override
   public boolean hasChildren()
   {
+    return extractAndListFiles().length > 0;
+  }
+  
+  protected File[] extractAndListFiles()
+  {
     File extracted = extract();
     
-    return extracted.listFiles().length > 0;
+    return extracted.listFiles();
   }
   
   /**
