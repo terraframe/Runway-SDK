@@ -20,6 +20,7 @@ package com.runwaysdk.resource;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -42,11 +43,9 @@ public class ArchiveFileResource extends ArchiveResource implements ApplicationF
   @Override
   public OIterator<ApplicationFileResource> getChildrenFiles()
   {
-    File extracted = extract();
-    
     ArrayList<ApplicationFileResource> result = new ArrayList<ApplicationFileResource>();
     
-    for (File file : extracted.listFiles())
+    for (File file : extractAndListFiles())
     {
       result.add(new FileResource(file));
     }
@@ -57,9 +56,7 @@ public class ArchiveFileResource extends ArchiveResource implements ApplicationF
   @Override
   public Optional<ApplicationFileResource> getChildFile(String path)
   {
-    File extracted = extract();
-    
-    for (File file : extracted.listFiles())
+    for (File file : extractAndListFiles())
     {
       if (file.getName().equals(path))
         return Optional.of(new FileResource(file));
