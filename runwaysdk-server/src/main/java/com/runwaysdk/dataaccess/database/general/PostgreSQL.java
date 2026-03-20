@@ -2010,6 +2010,10 @@ public class PostgreSQL extends AbstractDatabase
     {
       bogusValue = "''";
     }
+    else if (dataType.equals(MdAttributeJsonInfo.CLASS))
+    {
+      bogusValue = "'{}'::jsonb";
+    }
     else if (dataType.equals(MdAttributeUUIDInfo.CLASS) || dataType.equals(MdAttributeStructInfo.CLASS) || dataType.equals(MdAttributeLocalCharacterInfo.CLASS) || dataType.equals(MdAttributeLocalTextInfo.CLASS) || dataType.equals(MdAttributeReferenceInfo.CLASS) || dataType.equals(MdAttributeGraphReferenceInfo.CLASS) || dataType.equals(MdAttributeClassificationInfo.CLASS) || dataType.equals(MdAttributeTermInfo.CLASS))
     {
       bogusValue = "'00000000-0000-0000-0000-000000000000'::uuid";

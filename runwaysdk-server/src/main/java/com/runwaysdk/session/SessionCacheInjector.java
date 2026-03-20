@@ -58,15 +58,22 @@ public class SessionCacheInjector
   {
     Module defaultModule =  new Module()
     {
+      @Request
       public void configure(Binder binder)
+      {
+        SessionCache defaultCache = buildCache();
+
+        binder.bind(SessionCache.class).toInstance(defaultCache);  
+      }
+
+      private SessionCache buildCache()
       {
         SessionCache defaultCache = new BufferedSessionCache(
             new OverflowSessionCache(
                 new MemorySessionCache(100, 100),
                 new FileSessionCache( LocalProperties.getSessionCacheDirectory())),
             new MemorySessionCache());
-
-        binder.bind(SessionCache.class).toInstance(defaultCache);  
+        return defaultCache;
       }
     };
     
