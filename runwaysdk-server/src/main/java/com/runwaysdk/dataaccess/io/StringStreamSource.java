@@ -46,14 +46,7 @@ public class StringStreamSource implements StreamSource
   @Override
   public InputStream getInputStream()
   {
-    try
-    {
-      return IOUtils.toInputStream(this.source, "UTF-8");
-    }
-    catch (IOException e)
-    {
-      throw new ProgrammingErrorException(e);
-    }
+    return IOUtils.toInputStream(this.source, "UTF-8");
   }
 
   @Override
