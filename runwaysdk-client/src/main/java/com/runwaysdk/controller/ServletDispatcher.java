@@ -292,7 +292,7 @@ public class ServletDispatcher extends HttpServlet implements DispatcherIF
             }
 
             return parameters;
-        } catch (FileUploadException e) {
+        } catch (IOException e) {
             // Change the exception type
             throw new RuntimeException(e);
         }

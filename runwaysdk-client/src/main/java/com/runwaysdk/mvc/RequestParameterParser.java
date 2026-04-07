@@ -142,7 +142,7 @@ public class RequestParameterParser
 
         return parameters;
       }
-      catch (FileUploadException e)
+      catch (IOException e)
       {
         // Change the exception type
         throw new RuntimeException(e);
