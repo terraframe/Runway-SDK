@@ -122,7 +122,7 @@ public class StreamResource implements ApplicationResource
   @Override
   public boolean exists()
   {
-    return this.stream == null;
+    return this.stream != null;
   }
 
   @Override
