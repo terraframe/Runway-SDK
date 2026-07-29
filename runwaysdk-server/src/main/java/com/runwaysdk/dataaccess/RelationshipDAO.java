@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 /*
  * Created on Aug 11, 2004
@@ -65,7 +65,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * <b>invariant </b> !parentOid.trim().equals("") <br/>
    */
   private String            parentOid;
-  
+
   /**
    * The old oid of the parent if the parent has changed.
    */
@@ -77,7 +77,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    * <b>invariant </b> !childOid().equals("") <br/>
    */
   private String            childOid;
-  
+
   /**
    * The old oid of the parent if the child has changed.
    */
@@ -128,63 +128,65 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   protected void validate()
   {
-    super.validate();
-
-    // No need to check for cardinality violations if we are simply modifying
-    // attributes
-    // on this relationship.
-    if (!this.isNew() || this.isAppliedToDB())
+    if (this.isValidate())
     {
-      return;
-    }
+      super.validate();
 
-    MdRelationshipDAOIF mdRelationshipIF = this.getMdRelationshipDAO();
-    MdBusinessDAOIF expectedParentMdBusinessDAOIF = mdRelationshipIF.getParentMdBusiness();
-    MdBusinessDAOIF expectedChildMdBusinessDAOIF = mdRelationshipIF.getChildMdBusiness();
-
-    String expectedParentClass = expectedParentMdBusinessDAOIF.definesType();
-    String expectedChildClass = expectedChildMdBusinessDAOIF.definesType();
-
-    String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentOid);
-    String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childOid);
-
-    MdBusinessDAOIF actualParentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
-    MdBusinessDAOIF actualChildMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
-
-    String actualParentClass = actualParentMdBusinessDAOIF.definesType();
-    String actualChildClass = actualChildMdBusinessDAOIF.definesType();
-
-    // Ensure that the parent and child exist
-    BusinessDAO.get(this.parentOid);
-    BusinessDAO.get(this.childOid);
-
-    // Check if the type of the parent matches what is expected
-    if (!expectedParentClass.equals(BusinessInfo.CLASS))
-    {
-      if (!MdElementDAO.isSubEntity(actualParentClass, expectedParentClass))
+      // No need to check for cardinality violations if we are simply modifying
+      // attributes
+      // on this relationship.
+      if (!this.isNew() || this.isAppliedToDB())
       {
-        String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a parent of class [" + expectedParentMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualParentClass + "].";
-        throw new UnexpectedTypeException(error);
+        return;
+      }
+
+      MdRelationshipDAOIF mdRelationshipIF = this.getMdRelationshipDAO();
+      MdBusinessDAOIF expectedParentMdBusinessDAOIF = mdRelationshipIF.getParentMdBusiness();
+      MdBusinessDAOIF expectedChildMdBusinessDAOIF = mdRelationshipIF.getChildMdBusiness();
+
+      String expectedParentClass = expectedParentMdBusinessDAOIF.definesType();
+      String expectedChildClass = expectedChildMdBusinessDAOIF.definesType();
+
+      String parentMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.parentOid);
+      String childMdTypeRootId = IdParser.parseMdTypeRootIdFromId(this.childOid);
+
+      MdBusinessDAOIF actualParentMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(parentMdTypeRootId);
+      MdBusinessDAOIF actualChildMdBusinessDAOIF = (MdBusinessDAOIF) MdBusinessDAO.getMdClassByRootId(childMdTypeRootId);
+
+      String actualParentClass = actualParentMdBusinessDAOIF.definesType();
+      String actualChildClass = actualChildMdBusinessDAOIF.definesType();
+
+      // Ensure that the parent and child exist
+      BusinessDAO.get(this.parentOid);
+      BusinessDAO.get(this.childOid);
+
+      // Check if the type of the parent matches what is expected
+      if (!expectedParentClass.equals(BusinessInfo.CLASS))
+      {
+        if (!MdElementDAO.isSubEntity(actualParentClass, expectedParentClass))
+        {
+          String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a parent of class [" + expectedParentMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualParentClass + "].";
+          throw new UnexpectedTypeException(error);
+        }
+      }
+
+      // Class-check the child against the spec in the Relationship
+      if (!expectedChildClass.equals(BusinessInfo.CLASS))
+      {
+        if (!MdElementDAO.isSubEntity(actualChildClass, expectedChildClass))
+        {
+          String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a child of class [" + expectedChildMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualChildClass + "].";
+          throw new UnexpectedTypeException(error);
+        }
+      }
+
+      this.validateCardinality(mdRelationshipIF);
+
+      for (MdRelationshipDAOIF mdParentMdRelationshipIF : mdRelationshipIF.getSuperClasses())
+      {
+        this.validateCardinality((MdRelationshipDAOIF) mdParentMdRelationshipIF);
       }
     }
-
-    // Class-check the child against the spec in the Relationship
-    if (!expectedChildClass.equals(BusinessInfo.CLASS))
-    {
-      if (!MdElementDAO.isSubEntity(actualChildClass, expectedChildClass))
-      {
-        String error = "Relationship [" + mdRelationshipIF.definesType() + "] requires a child of class [" + expectedChildMdBusinessDAOIF.definesType() + "]. The supplied value is class [" + actualChildClass + "].";
-        throw new UnexpectedTypeException(error);
-      }
-    }
-
-    this.validateCardinality(mdRelationshipIF);
-
-    for (MdRelationshipDAOIF mdParentMdRelationshipIF : mdRelationshipIF.getSuperClasses())
-    {
-      this.validateCardinality((MdRelationshipDAOIF) mdParentMdRelationshipIF);
-    }
-
   }
 
   /**
@@ -251,10 +253,10 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   {
     return this.getAttributeIF(EntityInfo.OID).getValue();
   }
-  
+
   /**
-   * Clears the old ids, to be called only when this object has been applied to the global
-   * cache at the end of a transaction.
+   * Clears the old ids, to be called only when this object has been applied to
+   * the global cache at the end of a transaction.
    */
   public void clearOldRelIds()
   {
@@ -285,11 +287,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   {
     if (this.isAppliedToDB() && !this.getParentOid().equals(newParentOid))
     {
-      this.oldParentOid = this.parentOid;  
+      this.oldParentOid = this.parentOid;
       this.parentOid = newParentOid;
     }
   }
-  
+
   /**
    * @return the oldParentOid
    */
@@ -299,13 +301,14 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * @param oldParentOid the oldParentOid to set
+   * @param oldParentOid
+   *          the oldParentOid to set
    */
   public void setOldParentOid(String oldParentOid)
   {
     this.oldParentOid = oldParentOid;
   }
-  
+
   /**
    * Return true if the child oid has changed, false otherwise.
    * 
@@ -313,8 +316,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public boolean hasChildOidChanged()
   {
-    if (this.oldChildOid != null && 
-        !this.oldChildOid.equals(this.childOid))
+    if (this.oldChildOid != null && !this.oldChildOid.equals(this.childOid))
     {
       return true;
     }
@@ -331,8 +333,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public boolean hasParentOidChanged()
   {
-    if (this.oldParentOid != null && 
-        !this.oldParentOid.equals(this.parentOid))
+    if (this.oldParentOid != null && !this.oldParentOid.equals(this.parentOid))
     {
       return true;
     }
@@ -341,7 +342,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       return false;
     }
   }
-  
+
   /**
    * Returns the parent BusinessDAO in this relationship.
    * 
@@ -379,11 +380,11 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   {
     if (this.isAppliedToDB() && !this.getChildOid().equals(newChildOid))
     {
-      this.oldChildOid = this.childOid;  
+      this.oldChildOid = this.childOid;
       this.childOid = newChildOid;
     }
   }
-  
+
   /**
    * @return the oldChildOid
    */
@@ -393,13 +394,14 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   }
 
   /**
-   * @param oldChildOid the oldChildOid to set
+   * @param oldChildOid
+   *          the oldChildOid to set
    */
   public void setOldChildOid(String oldChildOid)
   {
     this.oldChildOid = oldChildOid;
   }
-  
+
   /**
    * Returns the child BusinessDAO in this relationship.
    * 
@@ -450,12 +452,13 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
   {
     ( LockRelationship.getLockRelationship() ).relLock(this.parentOid, this.childOid);
 
-    if (this.isNew() && !this.isAppliedToDB())
-    {
-      // Ensure that the parent and child exist
-      BusinessDAO.get(this.parentOid);
-      BusinessDAO.get(this.childOid);
-    }
+    // TODO: Why is this function here.  This is already performed in the validation method?
+//    if (this.isNew() && !this.isAppliedToDB())
+//    {
+//      // Ensure that the parent and child exist
+//      BusinessDAO.get(this.parentOid);
+//      BusinessDAO.get(this.childOid);
+//    }
 
     super.save(save);
 
@@ -687,7 +690,7 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
       return this;
     }
   }
-  
+
   /**
    * Facade method.
    * 
@@ -696,9 +699,9 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public static String getOldParentOid(RelationshipDAOIF relationshipDAOIF)
   {
-    return ((RelationshipDAO)relationshipDAOIF).getOldParentOid();
+    return ( (RelationshipDAO) relationshipDAOIF ).getOldParentOid();
   }
-  
+
   /**
    * Facade method.
    * 
@@ -707,6 +710,6 @@ public class RelationshipDAO extends ElementDAO implements RelationshipDAOIF, Se
    */
   public static String getOldChildOid(RelationshipDAOIF relationshipDAOIF)
   {
-    return ((RelationshipDAO)relationshipDAOIF).getOldChildOid();
+    return ( (RelationshipDAO) relationshipDAOIF ).getOldChildOid();
   }
 }

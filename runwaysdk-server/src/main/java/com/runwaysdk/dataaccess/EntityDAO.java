@@ -3,18 +3,18 @@
  *
  * This file is part of Runway SDK(tm).
  *
- * Runway SDK(tm) is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * Runway SDK(tm) is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
  *
- * Runway SDK(tm) is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * Runway SDK(tm) is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Runway SDK(tm). If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess;
 
@@ -1120,17 +1120,20 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
    */
   protected void validate()
   {
-    // Check for unique attribute violations
-    this.uniquenessTest();
-
-    // Check for duplicate sets of attributes
-    this.uniqueAttributeGroupTest();
-
-    if (!this.isNew() && this.isAppliedToDB() == true)
+    if (this.isValidate())
     {
-      // Ensure that the current site is the site of creation, but not on an
-      // import
-      this.validateSite();
+      // Check for unique attribute violations
+      this.uniquenessTest();
+
+      // Check for duplicate sets of attributes
+      this.uniqueAttributeGroupTest();
+
+      if (!this.isNew() && this.isAppliedToDB() == true)
+      {
+        // Ensure that the current site is the site of creation, but not on an
+        // import
+        this.validateSite();
+      }
     }
   }
 
@@ -1596,7 +1599,8 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
     }
     catch (NullPointerException e)
     {
-      // This will occur if the type being reference was of the MdAttribute class
+      // This will occur if the type being reference was of the MdAttribute
+      // class
       attributeExists = false;
     }
 
@@ -1933,10 +1937,12 @@ public abstract class EntityDAO extends ComponentDAO implements EntityDAOIF, Ser
       // trying to modify the object.
       if (!this.onlySystemAttributesAreModified())
       {
-//        String currentDomain = CommonProperties.getDomain();
-//
-//        String msg = "Only the create site can update an object.  Object's site: [" + this.getSiteMaster() + "].  This site: [" + currentDomain + "]";
-//        throw new SiteException(msg, this, currentDomain);
+        // String currentDomain = CommonProperties.getDomain();
+        //
+        // String msg = "Only the create site can update an object. Object's
+        // site: [" + this.getSiteMaster() + "]. This site: [" + currentDomain +
+        // "]";
+        // throw new SiteException(msg, this, currentDomain);
       }
     }
   }

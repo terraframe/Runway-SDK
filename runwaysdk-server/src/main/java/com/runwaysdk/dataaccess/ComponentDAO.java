@@ -40,6 +40,8 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    * The name of this component's type.
    */
   protected String  componentType;
+  
+  protected boolean validate;
 
   /**
    * The default constructor, does not set any attributes
@@ -47,6 +49,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   public ComponentDAO()
   {
     this.componentType = null;
+    this.validate = true;
   }
 
   /**
@@ -293,6 +296,16 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    * <br/><b>Precondition:</b> true <br/><b>Postcondition:</b> true
    */
   abstract public void setIsNew(boolean isNew);
+  
+  public boolean isValidate()
+  {
+    return validate;
+  }
+  
+  public void setValidate(boolean validate)
+  {
+    this.validate = validate;
+  }
 
   /**
    * Returns a LinkedList of MdAttributeIF objects representing metadata for each attribute
