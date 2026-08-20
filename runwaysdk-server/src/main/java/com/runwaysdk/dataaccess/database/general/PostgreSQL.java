@@ -498,6 +498,9 @@ public class PostgreSQL extends AbstractDatabase
     statements.add("ALTER DATABASE " + dbName + " OWNER TO " + userName);
     statements.add("GRANT ALL PRIVILEGES ON DATABASE " + dbName + " TO " + userName);
     
+    if (StringUtils.isNotBlank(DatabaseProperties.getRootUser()))
+      statements.add("GRANT " + userName + " TO " + DatabaseProperties.getRootUser() + ";"); // Grants all privileges of this new user to the root user, just incase the root user isn't a true root (this happens in RDS)
+    
     executeAsRoot(statements, true);
   }
 
