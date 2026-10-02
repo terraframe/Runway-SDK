@@ -98,7 +98,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.10</version>
+      <version>${postgres.version}</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
