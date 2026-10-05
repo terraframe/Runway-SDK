@@ -18,6 +18,13 @@
       <artifactId>orientdb-client</artifactId>
       <version>3.2.51</version>
     </dependency>
+    <!-- Explicitly override orientdb's version of jackson to reduce security vulnerabilities -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.21.7</version>
+    </dependency>
+    
     <dependency>
       <groupId>com.orientechnologies</groupId>
       <artifactId>orientdb-lucene</artifactId>
