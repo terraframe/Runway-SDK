@@ -20,7 +20,7 @@ package com.runwaysdk;
 
 import java.io.File;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.runwaysdk.constants.ExceptionConstants;
 import com.runwaysdk.constants.TypeGeneratorInfo;

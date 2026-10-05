@@ -22,11 +22,12 @@
 package com.runwaysdk.configuration;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.SystemConfiguration;
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.SystemConfiguration;
 
 /*******************************************************************************
  * Copyright (c) 2013 TerraFrame, Inc. All rights reserved. 
@@ -49,21 +50,37 @@ import org.apache.commons.configuration.SystemConfiguration;
 public class InMemoryConfigurator implements ConfigurationReaderIF
 {
   private CompositeConfiguration config;
+  private BaseConfiguration overrides;
   private Configuration interpolated;
   
   private ArrayList<CommonsConfigurationReader> dependencies = new ArrayList<CommonsConfigurationReader>();
   
   public InMemoryConfigurator() {
+    this(System.getenv());
+  }
+  
+  /**
+   * Lookup order (first match wins):
+   * <ol>
+   *   <li>Values set programmatically via {@link #setProperty(String, Object)}</li>
+   *   <li>Java system properties (-D)</li>
+   *   <li>Environment variables (see {@link RelaxedEnvironmentConfiguration} for name mapping)</li>
+   * </ol>
+   * Every configuration resolver places this ahead of runtime properties and .properties files.
+   */
+  InMemoryConfigurator(Map<String, String> environment) {
     config = new CompositeConfiguration();
-    config.setDelimiterParsingDisabled(true);
     
-    BaseConfiguration baseConfig = new BaseConfiguration();
-    baseConfig.setDelimiterParsingDisabled(true);
-    config.addConfiguration(baseConfig);
+    // Values set through setProperty(). This is deliberately NOT the composite's in-memory configuration:
+    // CompositeConfiguration.getList() (used by interpolatedConfiguration()) always ranks its in-memory
+    // configuration last, which would let system properties and environment variables win.
+    overrides = new BaseConfiguration();
+    config.addConfiguration(overrides);
     
     SystemConfiguration sysConfig = new SystemConfiguration();
-    sysConfig.setDelimiterParsingDisabled(true);
     config.addConfiguration(sysConfig);
+    
+    config.addConfiguration(new RelaxedEnvironmentConfiguration(environment));
     
     interpolate();
   }
@@ -132,8 +149,12 @@ public class InMemoryConfigurator implements ConfigurationReaderIF
     return interpolated.containsKey(key);
   }
   
+  /**
+   * Removes all values set through {@link #setProperty(String, Object)}. System properties and environment
+   * variables remain visible.
+   */
   public void clear() {
-    config.clear();
+    overrides.clear();
     interpolate();
   }
   
@@ -143,7 +164,7 @@ public class InMemoryConfigurator implements ConfigurationReaderIF
   @Override
   public void setProperty(String key, Object value)
   {
-    config.setProperty(key, value);
+    overrides.setProperty(key, value);
     interpolate();
   }
   

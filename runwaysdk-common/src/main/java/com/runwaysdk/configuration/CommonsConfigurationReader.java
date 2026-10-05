@@ -23,12 +23,14 @@ package com.runwaysdk.configuration;
 
 import java.net.URL;
 
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.event.ConfigurationEvent;
-import org.apache.commons.configuration.event.ConfigurationListener;
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.event.ConfigurationEvent;
+import org.apache.commons.configuration2.event.EventListener;
+import org.apache.commons.configuration2.io.FileHandler;
 
 import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
 
@@ -50,22 +52,29 @@ import com.runwaysdk.configuration.ConfigurationManager.ConfigGroupIF;
  * You should have received a copy of the GNU Lesser General Public
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF, ConfigurationListener
+public class CommonsConfigurationReader extends AbstractConfigurationReader implements ConfigurationReaderIF, EventListener<ConfigurationEvent>
 {
   private CompositeConfiguration cconfig;
+  
+  /**
+   * Values set through setProperty(). Kept as the first child of cconfig so they take precedence over
+   * every other layer (including environment variables) when interpolated.
+   */
+  private BaseConfiguration overrides = new BaseConfiguration();
+  
   private Configuration interpolated;
   
   public CommonsConfigurationReader(ConfigGroupIF group, String config, CompositeConfiguration _cconfig)
   {
     this.cconfig = _cconfig;
+    this.cconfig.addConfigurationFirst(overrides);
     
     try
     {
       URL resource = ConfigurationManager.getResource(group, config);
       
       PropertiesConfiguration propConfig = new PropertiesConfiguration();
-      propConfig.setDelimiterParsingDisabled(true);
-      propConfig.load(resource);
+      new FileHandler(propConfig).load(resource);
       
       cconfig.addConfiguration(propConfig);
       interpolate();
@@ -137,7 +146,7 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   @Override
   public void setProperty(String key, Object value)
   {
-    cconfig.setProperty(key, value);
+    overrides.setProperty(key, value);
   }
   
   public void interpolate()
@@ -146,10 +155,10 @@ public class CommonsConfigurationReader extends AbstractConfigurationReader impl
   }
 
   /**
-   * @see org.apache.commons.configuration.event.ConfigurationListener#configurationChanged(org.apache.commons.configuration.event.ConfigurationEvent)
+   * @see org.apache.commons.configuration2.event.EventListener#onEvent(org.apache.commons.configuration2.event.Event)
    */
   @Override
-  public void configurationChanged(ConfigurationEvent event)
+  public void onEvent(ConfigurationEvent event)
   {
 //    if (!event.isBeforeUpdate()) {
 //      this.config = ((CompositeConfiguration) this.config).interpolatedConfiguration();

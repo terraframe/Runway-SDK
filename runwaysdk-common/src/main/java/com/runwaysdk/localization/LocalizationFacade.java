@@ -158,7 +158,7 @@ public class LocalizationFacade
       }
     }
     
-    Locale locale = org.apache.commons.lang.LocaleUtils.toLocale(localeString);
+    Locale locale = org.apache.commons.lang3.LocaleUtils.toLocale(localeString);
     
     return locale;
   }

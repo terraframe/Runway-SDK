@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.business.generation.json;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.runwaysdk.business.BusinessFacade;
 import com.runwaysdk.business.Struct;
@@ -68,7 +68,7 @@ public class StructJSGenerator extends EntityJSGenerator
       
     // get the JSON string, but escape all single quotes because the new instance is held
     // in a string wrapped by single quotes (double quotes are used internally within the json)
-    String jsonNewInstance = StringEscapeUtils.escapeJavaScript(JSONFacade.getJSONFromComponentDTO(newInstance).toString());
+    String jsonNewInstance = StringEscapeUtils.escapeEcmaScript(JSONFacade.getJSONFromComponentDTO(newInstance).toString());
     
     method.writeln("if(obj == null)");
     method.openBracketLn();

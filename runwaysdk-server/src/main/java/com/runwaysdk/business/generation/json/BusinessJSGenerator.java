@@ -21,7 +21,7 @@ package com.runwaysdk.business.generation.json;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.runwaysdk.business.Business;
 import com.runwaysdk.business.BusinessDTO;
@@ -328,7 +328,7 @@ public class BusinessJSGenerator extends ElementJSGenerator
 
       // get the JSON string, but escape all single quotes because the new instance is held
       // in a string wrapped by single quotes (double quotes are used internally within the json)
-      String jsonNewInstance = StringEscapeUtils.escapeJavaScript(JSONFacade.getJSONFromComponentDTO(newInstance).toString());
+      String jsonNewInstance = StringEscapeUtils.escapeEcmaScript(JSONFacade.getJSONFromComponentDTO(newInstance).toString());
 
       method.writeln("if(obj == null)");
       method.openBracketLn();

@@ -29,9 +29,10 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.Collection;
 
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -69,7 +70,6 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
   public EnvironmentConfigurationResolver()
   {
     cconfig = new CompositeConfiguration();
-    cconfig.setDelimiterParsingDisabled(true);
     cconfig.addConfiguration(CommonsConfigurationResolver.getInMemoryConfigurator().getImpl());
 
     if (CommonsConfigurationResolver.getIncludeRuntimeProperties())
@@ -206,8 +206,8 @@ public class EnvironmentConfigurationResolver extends CommonsConfigurationResolv
       String sAppCfg = DEFAULT_APP_CFG;
       if (fEnvCfgProps.exists())
       {
-        this.pEnvCfg = new PropertiesConfiguration(fEnvCfgProps);
-        this.pEnvCfg.setDelimiterParsingDisabled(true);
+        this.pEnvCfg = new PropertiesConfiguration();
+        new FileHandler(this.pEnvCfg).load(fEnvCfgProps);
         
         String sPropAppCfg = pEnvCfg.getString("appcfg");
         if (sPropAppCfg != null && sPropAppCfg.length() > 0)

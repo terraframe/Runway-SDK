@@ -21,7 +21,7 @@ package com.runwaysdk.dataaccess.metadata;
 import java.text.Normalizer;
 import java.util.HashSet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ReservedWords contains a list of restricted words (generally database related) that other

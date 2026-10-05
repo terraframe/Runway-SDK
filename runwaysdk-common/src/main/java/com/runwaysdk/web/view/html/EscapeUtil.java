@@ -18,10 +18,19 @@
  */
 package com.runwaysdk.web.view.html;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.NumericEntityEscaper;
 
 public class EscapeUtil
 {
+  /**
+   * HTML 4 named entities, plus numeric entities for any other non-ASCII character. This matches the output
+   * of commons-lang 2's StringEscapeUtils.escapeHtml(); commons-text's escapeHtml4() alone would leave those
+   * characters unescaped.
+   */
+  private static final CharSequenceTranslator ESCAPE_HTML = StringEscapeUtils.ESCAPE_HTML4.with(NumericEntityEscaper.above(0x7f));
+  
   /**
    * Escapes HTML.
    * 
@@ -30,7 +39,7 @@ public class EscapeUtil
    */
   public static final String escapeHTML(String html)
   {
-    return StringEscapeUtils.escapeHtml(html);
+    return ESCAPE_HTML.translate(html);
   }
   
   /**
@@ -41,7 +50,7 @@ public class EscapeUtil
    */
   public static final String escapeJS(String js)
   {
-    return StringEscapeUtils.escapeJavaScript(js);
+    return StringEscapeUtils.escapeEcmaScript(js);
   }
   
   /**
@@ -52,8 +61,8 @@ public class EscapeUtil
    */
   public static final String escapeHTMLAndJS(String html)
   {
-    html = StringEscapeUtils.escapeHtml(html);
-    html = StringEscapeUtils.escapeJavaScript(html);
+    html = ESCAPE_HTML.translate(html);
+    html = StringEscapeUtils.escapeEcmaScript(html);
     return html;
   }
 }

@@ -24,7 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang3.LocaleUtils;
 
 import com.runwaysdk.CommonExceptionProcessor;
 import com.runwaysdk.constants.ClientRequestIF;
