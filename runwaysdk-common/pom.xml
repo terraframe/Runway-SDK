@@ -37,6 +37,13 @@
       <artifactId>guice</artifactId>
       <version>7.0.0</version>
     </dependency>
+    <!-- Guice 7.0.0 (the latest Guice release) depends on Guava 31.0.1-jre, which is affected by
+         CVE-2023-2976 (insecure temp file permissions). Override it with a fixed Guava version. -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.7.2-jre</version>
+    </dependency>
 <!-- https://mvnrepository.com/artifact/org.json/json -->
     <dependency>
       <groupId>org.json</groupId>
