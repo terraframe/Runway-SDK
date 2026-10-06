@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.orientechnologies</groupId>
       <artifactId>orientdb-client</artifactId>
-      <version>3.2.51</version>
+      <version>3.2.56</version>
     </dependency>
     <!-- Explicitly override orientdb's version of jackson to reduce security vulnerabilities -->
     <dependency>
