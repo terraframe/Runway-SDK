@@ -19,7 +19,9 @@
 package com.runwaysdk.configuration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.CompositeConfiguration;
@@ -75,7 +77,25 @@ public class CommonsConfigurationResolver implements ConfigurationResolverIF
     
     String sDeployPath;
     
-    URL rootPath = CommonsConfigurationResolver.class.getResource("/");
+    URL rootPath = null;
+    try
+    {
+      Enumeration<URL> roots = CommonsConfigurationResolver.class.getClassLoader().getResources("");
+      while (roots.hasMoreElements())
+      {
+        URL candidate = roots.nextElement();
+        if ("file".equals(candidate.getProtocol()))
+        {
+          rootPath = candidate;
+          break;
+        }
+      }
+    }
+    catch (IOException e)
+    {
+      log.debug("Unable to enumerate classpath roots", e);
+    }
+
     if (rootPath != null && !rootPath.getPath().equals(""))
     {
       sDeployPath = rootPath.getPath();
