@@ -17,9 +17,9 @@
 # License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-FROM maven:3-openjdk-17
+FROM maven:3-eclipse-temurin-25
 
-RUN microdnf -y install wget
+RUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*
 
 ENV DATA_ACCESS=true
 ENV BUSINESS=true

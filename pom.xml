@@ -98,10 +98,13 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <aspectj.version>1.9.22.1</aspectj.version>    
-    <aspectj.plugin.version>1.15.0</aspectj.plugin.version>    
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
+    <maven.compiler.release>25</maven.compiler.release>
+    <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
+    <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
+    <aspectj.version>1.9.25.1</aspectj.version>
+    <aspectj.plugin.version>1.16.1</aspectj.plugin.version>
     <junit.version>4.13.1</junit.version>
     <runway.url>http://www.terraframe.com</runway.url>
     <postgres.version>42.7.13</postgres.version>
@@ -583,6 +586,16 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
