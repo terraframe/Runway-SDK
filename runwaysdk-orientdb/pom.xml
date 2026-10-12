@@ -25,11 +25,12 @@
       <version>2.21.7</version>
     </dependency>
     <!-- Explicitly override orientdb-core's lz4-java 1.11.0 (CVE-2026-59949, NPE / out-of-bounds read
-         in the native XXHash implementation). No orientdb release ships the fixed version yet. -->
+         in the native XXHash implementation; CVE-2026-106449 through CVE-2026-106453, native library
+         temp-file replacement and decompression DoS). No orientdb release ships the fixed version yet. -->
     <dependency>
       <groupId>at.yawk.lz4</groupId>
       <artifactId>lz4-java</artifactId>
-      <version>1.11.1</version>
+      <version>1.11.4</version>
     </dependency>
     
     <dependency>
