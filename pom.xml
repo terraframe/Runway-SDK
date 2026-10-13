@@ -108,6 +108,7 @@
     <junit.version>4.13.1</junit.version>
     <runway.url>http://www.terraframe.com</runway.url>
     <postgres.version>42.7.14</postgres.version>
+    <orientdb.version>3.2.57</orientdb.version>
   </properties>
 
   <url>${runway.url}</url>

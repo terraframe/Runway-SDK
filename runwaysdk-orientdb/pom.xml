@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.orientechnologies</groupId>
       <artifactId>orientdb-client</artifactId>
-      <version>3.2.56</version>
+      <version>${orientdb.version}</version>
     </dependency>
     <!-- Explicitly override orientdb's version of jackson to reduce security vulnerabilities -->
     <dependency>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.orientechnologies</groupId>
       <artifactId>orientdb-lucene</artifactId>
-      <version>3.2.14</version>
+      <version>${orientdb.version}</version>
       <exclusions>
       	<exclusion>
       		<groupId>org.apache.lucene</groupId>
