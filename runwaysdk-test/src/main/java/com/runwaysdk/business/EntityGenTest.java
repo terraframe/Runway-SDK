@@ -1704,7 +1704,7 @@ public class EntityGenTest
     BusinessDAOIF businessDAO = BusinessDAO.get(oid);
     String out = businessDAO.getValue("aJson");
     
-    Assert.assertTrue("Stored and Retrieved Jsons have different values.", out.contains(original.getString("testVAlue")));
+    Assert.assertTrue("Stored and Retrieved Jsons have different values.", out.contains(original.getString("testValue")));
   }
   
   @Request
