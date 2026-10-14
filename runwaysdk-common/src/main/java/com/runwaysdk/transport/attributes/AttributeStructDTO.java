@@ -300,6 +300,14 @@ public class AttributeStructDTO extends AttributeDTO
   }
 
   /**
+   * 
+   */
+  public AttributeJsonDTO getAttributeJsonDTO(String attributeName)
+  {
+    return (AttributeJsonDTO) getAttributeDTO(attributeName);
+  }
+  
+  /**
    * Returns a shallow clone of this attribute struct.
    */
   @Override

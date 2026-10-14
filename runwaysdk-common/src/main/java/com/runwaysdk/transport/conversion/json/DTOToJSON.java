@@ -42,6 +42,7 @@ import com.runwaysdk.transport.attributes.AttributeDecDTO;
 import com.runwaysdk.transport.attributes.AttributeEncryptionDTO;
 import com.runwaysdk.transport.attributes.AttributeEnumerationDTO;
 import com.runwaysdk.transport.attributes.AttributeIntegerDTO;
+import com.runwaysdk.transport.attributes.AttributeJsonDTO;
 import com.runwaysdk.transport.attributes.AttributeLongDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiReferenceDTO;
 import com.runwaysdk.transport.attributes.AttributeMultiTermDTO;

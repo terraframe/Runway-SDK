@@ -37,6 +37,7 @@ import com.runwaysdk.constants.MdAttributeFloatInfo;
 import com.runwaysdk.constants.MdAttributeHashInfo;
 import com.runwaysdk.constants.MdAttributeIndicatorInfo;
 import com.runwaysdk.constants.MdAttributeIntegerInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.constants.MdAttributeLocalCharacterInfo;
 import com.runwaysdk.constants.MdAttributeLocalTextInfo;
 import com.runwaysdk.constants.MdAttributeLongInfo;
@@ -80,6 +81,10 @@ public class AttributeDTOFactory
     if (type.equals(MdAttributeCharacterInfo.CLASS))
     {
       attributeDTO = new AttributeCharacterDTO(attributeName, (String) value, readable, writable, modified);
+    }
+    else if (type.equals(MdAttributeJsonInfo.CLASS))
+    {
+      attributeDTO = new AttributeJsonDTO(attributeName, (String) value, readable, writable, modified);
     }
     else if (type.equals(MdAttributeIntegerInfo.CLASS))
     {
