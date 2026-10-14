@@ -18,7 +18,7 @@
  */
 package com.runwaysdk.transport.attributes;
 
-import com.runwaysdk.constants.MdAttributeCharacterInfo;
+import com.runwaysdk.constants.MdAttributeJsonInfo;
 import com.runwaysdk.transport.metadata.AttributeJsonMdDTO;
 import com.runwaysdk.transport.metadata.CommonAttributeFacade;
 
@@ -50,7 +50,7 @@ public class AttributeJsonDTO extends AttributeDTO
   @Override
   public String getType()
   {
-    return MdAttributeCharacterInfo.CLASS;
+    return MdAttributeJsonInfo.CLASS;
   }
   
   @Override
