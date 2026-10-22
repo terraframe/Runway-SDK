@@ -1096,7 +1096,7 @@ public class OrientDBImpl implements GraphDB
       this.populateElement(db, graphObjectDAO, vertex);
       this.populateSequence(db, graphObjectDAO, vertex);
 
-      ORecord record = vertex.save();
+      ORecord record = db.save(vertex);
 
       graphObjectDAO.setRID(record.getIdentity());
       graphObjectDAO.setCommitState();
@@ -1146,7 +1146,7 @@ public class OrientDBImpl implements GraphDB
       this.populateSequence(db, graphObjectDAO, element);
     }
 
-    element.save();
+    db.save(element);
 
     new ResultSetConverter().populateDAO(element, graphObjectDAO);
   }
@@ -1170,7 +1170,7 @@ public class OrientDBImpl implements GraphDB
     OElement element = db.load((ORID) graphObjectDAO.getRID());
     if (element != null)
     {
-      element.delete();
+      db.delete(element.getIdentity());
     }
   }
 
@@ -1314,7 +1314,7 @@ public class OrientDBImpl implements GraphDB
 
     this.populateElement(db, edgeDAO, edge);
 
-    edge.save();
+    db.save(edge);
 
     new ResultSetConverter().populateDAO(edge, edgeDAO);
   }
