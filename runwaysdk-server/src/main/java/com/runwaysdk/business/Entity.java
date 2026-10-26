@@ -20,9 +20,7 @@ package com.runwaysdk.business;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -30,10 +28,6 @@ import java.util.Set;
 import com.runwaysdk.ComponentIF;
 import com.runwaysdk.constants.ComponentInfo;
 import com.runwaysdk.constants.ElementInfo;
-import com.runwaysdk.constants.MdAttributeBooleanUtil;
-import com.runwaysdk.constants.MdAttributeDateTimeUtil;
-import com.runwaysdk.constants.MdAttributeDateUtil;
-import com.runwaysdk.constants.MdAttributeTimeUtil;
 import com.runwaysdk.dataaccess.AttributeEnumerationIF;
 import com.runwaysdk.dataaccess.AttributeMultiReferenceIF;
 import com.runwaysdk.dataaccess.BusinessDAO;
@@ -41,14 +35,8 @@ import com.runwaysdk.dataaccess.BusinessDAOIF;
 import com.runwaysdk.dataaccess.DataAccessException;
 import com.runwaysdk.dataaccess.EntityDAO;
 import com.runwaysdk.dataaccess.EntityDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeBooleanDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeCharDAOIF;
 import com.runwaysdk.dataaccess.MdAttributeConcreteDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDateDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeDateTimeDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeNumberDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
-import com.runwaysdk.dataaccess.MdAttributeTimeDAOIF;
 import com.runwaysdk.dataaccess.MdClassDAOIF;
 import com.runwaysdk.dataaccess.RelationshipDAO;
 import com.runwaysdk.dataaccess.RelationshipDAOIF;
@@ -71,11 +59,6 @@ import com.runwaysdk.query.SelectablePrimitive;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
 
-import ognl.DefaultMemberAccess;
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
 
 /**
  * The root class of the business layer, Entity is the parent of all generated
@@ -583,98 +566,16 @@ public abstract class Entity implements Mutable, Serializable
       }
     }
 
-    // Time to process the expression attributes.
+    // Expression attributes were evaluated with OGNL, which has been removed.
+    // Fail loudly rather than silently leaving the attribute unpopulated.
     List<? extends MdAttributeConcreteDAOIF> mdAttrList = this.getMdAttributeDAOs();
 
     for (MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF : mdAttrList)
     {
-      if (mdAttributeConcreteDAOIF instanceof MdAttributePrimitiveDAOIF)
+      if (mdAttributeConcreteDAOIF instanceof MdAttributePrimitiveDAOIF && ( (MdAttributePrimitiveDAOIF) mdAttributeConcreteDAOIF ).isExpression())
       {
-        MdAttributePrimitiveDAOIF mdAttributePrimitiveDAOIF = (MdAttributePrimitiveDAOIF) mdAttributeConcreteDAOIF;
-
-        if (mdAttributePrimitiveDAOIF.isExpression())
-        {
-          String attributeName = mdAttributePrimitiveDAOIF.definesAttribute();
-          // Clear the existing value
-          entityDAO.setValue(attributeName, "");
-
-          String expressionString = mdAttributePrimitiveDAOIF.getExpression();
-
-          try
-          {
-            Object expression;
-            try
-            {
-              expression = Ognl.parseExpression(expressionString);
-            }
-            catch (ExpressionSyntaxException e)
-            {
-              String devMessage = "The attribute [" + mdAttributePrimitiveDAOIF.definesAttribute() + "] has an invalid expression syntax:\n" + e.getLocalizedMessage();
-              throw new InvalidExpressionSyntaxException(devMessage, mdAttributePrimitiveDAOIF, e);
-            }
-
-            OgnlContext ognlContext = new OgnlContext(null, null, new DefaultMemberAccess(true));
-
-            Object expressionValue;
-
-            try
-            {
-              // I am offended that I even have to do this. OGNL stores
-              // reflection method definitions which cause
-              // problems when classes are reloaded.
-              // OgnlClassResolver.clearOgnlRuntimeMethodCache();
-              expressionValue = Ognl.getValue(expression, ognlContext, this);
-            }
-            catch (RuntimeException e)
-            {
-              String devMessage = "The expression on attribute [" + mdAttributePrimitiveDAOIF.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
-              throw new ExpressionException(devMessage, mdAttributePrimitiveDAOIF, e);
-            }
-
-            Object setterValue;
-
-            if (mdAttributePrimitiveDAOIF instanceof MdAttributeNumberDAOIF && ( expressionValue instanceof Integer || expressionValue instanceof Long || expressionValue instanceof Float || expressionValue instanceof Double || expressionValue instanceof BigDecimal ))
-            {
-              setterValue = expressionValue.toString();
-            }
-            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeDateTimeDAOIF && expressionValue instanceof Date)
-            {
-              setterValue = MdAttributeDateTimeUtil.getTypeUnsafeValue((Date) expressionValue);
-            }
-            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeDateDAOIF && expressionValue instanceof Date)
-            {
-              setterValue = MdAttributeDateUtil.getTypeUnsafeValue((Date) expressionValue);
-            }
-            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeTimeDAOIF && expressionValue instanceof Date)
-            {
-              setterValue = MdAttributeTimeUtil.getTypeUnsafeValue((Date) expressionValue);
-            }
-            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeBooleanDAOIF && expressionValue instanceof Integer)
-            {
-              setterValue = MdAttributeBooleanUtil.format((Integer) expressionValue);
-            }
-            else if (mdAttributePrimitiveDAOIF instanceof MdAttributeCharDAOIF && expressionValue instanceof String)
-            {
-              setterValue = expressionValue;
-            }
-            else if (expressionValue == null)
-            {
-              setterValue = "";
-            }
-            else
-            {
-              setterValue = expressionValue.toString();
-            }
-
-            // Clear the existing value
-            entityDAO.setValue(attributeName, setterValue);
-          }
-          catch (OgnlException e)
-          {
-            String devMessage = "The expression on attribute [" + mdAttributePrimitiveDAOIF.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
-            throw new ExpressionException(devMessage, mdAttributePrimitiveDAOIF, e);
-          }
-        }
+        String devMessage = "The attribute [" + mdAttributeConcreteDAOIF.definesAttribute() + "] is an expression attribute, which is no longer supported.";
+        throw new ExpressionException(devMessage, mdAttributeConcreteDAOIF, new UnsupportedOperationException("Expression attributes are no longer supported."));
       }
     }
 

@@ -23,18 +23,12 @@ import java.util.Map;
 
 import com.runwaysdk.business.ComponentDTOIF;
 import com.runwaysdk.business.ExpressionException;
-import com.runwaysdk.business.InvalidExpressionSyntaxException;
 import com.runwaysdk.constants.IndicatorCompositeInfo;
 import com.runwaysdk.constants.MathOperatorInfo;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
 import com.runwaysdk.dataaccess.metadata.DeleteContext;
 import com.runwaysdk.dataaccess.metadata.InvalidIndicatorDefinition;
 
-import ognl.DefaultMemberAccess;
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlContext;
-import ognl.OgnlException;
 
 public class IndicatorCompositeDAO extends IndicatorElementDAO implements IndicatorCompositeDAOIF
 {
@@ -101,11 +95,10 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
 
       String operatorSymbol = operator.getAttributeIF(MathOperatorInfo.OPERATOR_SYMBOL).getValue();
 
-      String expressionString = leftObjectValue.toString() + " " + operatorSymbol + " " + rightObjectValue.toString();
-
-      if (this.isPercentage())
+      if (!operatorSymbol.equals("/"))
       {
-        expressionString = expressionString + " * 100";
+        String devMessage = "The indicator on attribute [" + _mdAttributeIndicator.definesAttribute() + "] uses the unsupported operator [" + operatorSymbol + "]";
+        throw new ExpressionException(devMessage, _mdAttributeIndicator, new UnsupportedOperationException("Unsupported indicator operator [" + operatorSymbol + "]"));
       }
 
       Object returnVal;
@@ -116,52 +109,62 @@ public class IndicatorCompositeDAO extends IndicatorElementDAO implements Indica
       }
       else
       {
-        try
-        {
-
-          Object expression;
-
-          try
-          {
-            expression = Ognl.parseExpression(expressionString);
-          }
-          catch (ExpressionSyntaxException e)
-          {
-            String devMessage = "The attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an invalid expression syntax:\n" + e.getLocalizedMessage();
-            throw new InvalidExpressionSyntaxException(devMessage, _mdAttributeIndicator, e);
-          }
-
-          OgnlContext ognlContext = new OgnlContext(null, null, new DefaultMemberAccess(true));
-
-          Object expressionValue;
-
-          try
-          {
-            // I am offended that I even have to do this. OGNL stores reflection
-            // method definitions which cause
-            // problems when classes are reloaded.
-//            OgnlClassResolver.clearOgnlRuntimeMethodCache();
-            expressionValue = Ognl.getValue(expression, ognlContext, this);
-
-            returnVal = expressionValue;
-          }
-          catch (RuntimeException e)
-          {
-            String devMessage = "The expression on attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
-            throw new ExpressionException(devMessage, _mdAttributeIndicator, e);
-          }
-        }
-        catch (OgnlException e)
-        {
-          String devMessage = "The expression on attribute [" + _mdAttributeIndicator.definesAttribute() + "] has an error:\n" + e.getLocalizedMessage();
-          throw new ExpressionException(devMessage, _mdAttributeIndicator, e);
-        }
+        returnVal = this.divide(leftObjectValue, rightObjectValue, this.isPercentage());
       }
 
       return returnVal;
     }
 
     return null;
+  }
+
+  /**
+   * Divides the operands, multiplying by 100 if this is a percentage. Integral
+   * operands use integer division and everything else uses double division,
+   * matching the OGNL evaluation this replaced.
+   */
+  private Object divide(Object leftObjectValue, Object rightObjectValue, boolean percentage)
+  {
+    int multiplier = percentage ? 100 : 1;
+
+    if (isIntegral(leftObjectValue) && isIntegral(rightObjectValue))
+    {
+      long result = ( toLong(leftObjectValue) / toLong(rightObjectValue) ) * multiplier;
+
+      if (leftObjectValue instanceof Long || rightObjectValue instanceof Long)
+      {
+        return Long.valueOf(result);
+      }
+
+      return Integer.valueOf((int) result);
+    }
+
+    return Double.valueOf(( toDouble(leftObjectValue) / toDouble(rightObjectValue) ) * multiplier);
+  }
+
+  private static boolean isIntegral(Object value)
+  {
+    return value instanceof Integer || value instanceof Long || value instanceof Short || value instanceof Byte || value instanceof Boolean;
+  }
+
+  private static long toLong(Object value)
+  {
+    if (value instanceof Boolean)
+    {
+      return ( (Boolean) value ) ? 1 : 0;
+    }
+
+    return ( (Number) value ).longValue();
+  }
+
+  private static double toDouble(Object value)
+  {
+    if (value instanceof Boolean)
+    {
+      return ( (Boolean) value ) ? 1 : 0;
+    }
+
+    return ( (Number) value ).doubleValue();
   }
 
   private boolean isZero(Object rightObjectValue)
