@@ -29,7 +29,6 @@ import com.runwaysdk.format.LocalizedFormatTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
-  ExpressionAttributeTest.class,
   RBACTest.class,
   EntityGenTest.class,
   EntityMultiReferenceGenTest.class,

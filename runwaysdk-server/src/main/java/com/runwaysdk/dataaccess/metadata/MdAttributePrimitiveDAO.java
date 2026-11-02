@@ -20,29 +20,12 @@ package com.runwaysdk.dataaccess.metadata;
 
 import java.util.Map;
 
-import com.runwaysdk.business.Business;
-import com.runwaysdk.business.BusinessQuery;
-import com.runwaysdk.business.InvalidExpressionSyntaxException;
-import com.runwaysdk.constants.MdAttributeBooleanInfo;
+import com.runwaysdk.business.ExpressionException;
 import com.runwaysdk.constants.MdAttributePrimitiveInfo;
 import com.runwaysdk.dataaccess.AttributeBooleanIF;
-import com.runwaysdk.dataaccess.AttributeIF;
-import com.runwaysdk.dataaccess.MdAttributeDAOIF;
 import com.runwaysdk.dataaccess.MdAttributePrimitiveDAOIF;
-import com.runwaysdk.dataaccess.ProgrammingErrorException;
-import com.runwaysdk.dataaccess.attributes.EmptyValueProblem;
 import com.runwaysdk.dataaccess.attributes.entity.Attribute;
-import com.runwaysdk.query.OIterator;
-import com.runwaysdk.query.QueryFactory;
-import com.runwaysdk.system.metadata.MdAttributePrimitive;
-import com.runwaysdk.system.metadata.MdClass;
-import com.runwaysdk.system.metadata.MdWebForm;
-import com.runwaysdk.system.metadata.MdWebPrimitive;
-import com.runwaysdk.system.metadata.MdWebPrimitiveQuery;
 
-import ognl.ExpressionSyntaxException;
-import ognl.Ognl;
-import ognl.OgnlException;
 
 public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO implements MdAttributePrimitiveDAOIF
 {
@@ -118,87 +101,16 @@ public abstract class MdAttributePrimitiveDAO extends MdAttributeConcreteDAO imp
   
   
   /**
-   * Creates an <code>EmptyValueProblem</code> if this is set to be an expression attribute,
-   * yet no expression is defined.
+   * Throws an <code>ExpressionException</code> if this is set to be an expression attribute.
+   * Expression attributes were evaluated with OGNL, which has been removed.
    * 
    */
   private void validateExpression()
   {
     if (this.isExpression())
     {
-      if (( this.getExpression() == null || this.getExpression().trim().equals("") ))
-      {
-        AttributeIF expressionAttribute = this.getAttributeIF(MdAttributePrimitiveInfo.EXPRESSION);
-        MdAttributeDAOIF mdAttributeDAOIF = expressionAttribute.getMdAttribute();
-      
-        String error = "Attribute [" + MdAttributePrimitiveInfo.EXPRESSION + "] on type [" + MdAttributePrimitiveInfo.CLASS + "] requires a value because [" + MdAttributePrimitiveInfo.IS_EXPRESSION + "] is set to ["+MdAttributeBooleanInfo.TRUE+"]";
-        EmptyValueProblem problem = new EmptyValueProblem(this.getProblemNotificationId(), mdAttributeDAOIF.definedByClass(), mdAttributeDAOIF, error, expressionAttribute);
-        problem.throwIt();
-      }
-      else
-      {
-        String expressionString = this.getExpression();
-        
-        try
-        {
-          Ognl.parseExpression(expressionString);
-        }
-        catch (ExpressionSyntaxException e)
-        {
-          String devMessage = "The attribute ["+this.definesAttribute()+"] has an invalid expression defined:\n"+e.getLocalizedMessage();
-          throw new InvalidExpressionSyntaxException(devMessage, this, e);
-        }
-        catch (OgnlException e)
-        {
-          throw new ProgrammingErrorException(e);
-        }
-      }
-    }
-  }
-  
-  @Override
-  public String apply()
-  {
-    boolean isModified = this.getAttributeIF(MdAttributePrimitive.EXPRESSION).isModified();
-    
-    String newId = super.apply();
-    
-    if (isModified)
-    {
-      this.updateExistingCalculatedAttrs();
-    }
-    
-    return newId;
-  }
-  
-  /**
-   * Queries to find all businesses that use this calculated expression and updates the values.
-   */
-  public void updateExistingCalculatedAttrs()
-  {
-    if (this.isExpression())
-    {
-      MdWebPrimitiveQuery webPrimQ = new MdWebPrimitiveQuery(new QueryFactory());
-      webPrimQ.WHERE(webPrimQ.getDefiningMdAttribute().getOid().EQ(this.getOid()));
-      OIterator<? extends MdWebPrimitive> mdWebPrimIt = webPrimQ.getIterator();
-      
-      while (mdWebPrimIt.hasNext())
-      {
-        MdWebPrimitive mdWebPrim = mdWebPrimIt.next();
-        MdWebForm mdForm = mdWebPrim.getDefiningMdForm();
-        MdClass mdClass = mdForm.getFormMdClass();
-        
-        QueryFactory fac = new QueryFactory();
-        BusinessQuery bq = fac.businessQuery(mdClass.definesType());
-        OIterator<Business> it = bq.getIterator();
-        
-        while (it.hasNext())
-        {
-          Business form = it.next();
-          form.appLock();
-          form.apply();
-        }
-      }
+      String devMessage = "The attribute [" + this.definesAttribute() + "] is defined as an expression attribute, which is no longer supported.";
+      throw new ExpressionException(devMessage, this, new UnsupportedOperationException("Expression attributes are no longer supported."));
     }
   }
 }

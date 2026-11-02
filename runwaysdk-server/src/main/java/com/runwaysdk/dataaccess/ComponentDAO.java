@@ -41,7 +41,7 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
    */
   protected String  componentType;
   
-  protected boolean validate;
+  protected boolean validate = true;
 
   /**
    * The default constructor, does not set any attributes
@@ -49,7 +49,6 @@ public abstract class ComponentDAO implements Comparable<ComponentDAO>, Componen
   public ComponentDAO()
   {
     this.componentType = null;
-    this.validate = true;
   }
 
   /**

@@ -22,8 +22,11 @@
 package com.runwaysdk.business.ontology;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -360,10 +363,11 @@ public abstract class AbstractOntologyStrategyTest
   @Test
   public void testGetAllDescendants() throws Exception
   {
+    // getAllDescendants does not guarantee an order
     List<Term> descendents = TermHolder.getTermA().getAllDescendants(mdTermRelationship.definesType()).getAll();
-    Iterator<Term> it = descendents.iterator();
-    Assert.assertEquals(it.next(), TermHolder.getTermB());
-    Assert.assertEquals(it.next(), TermHolder.getTermC());
+    Assert.assertEquals(2, descendents.size());
+    Assert.assertTrue(descendents.contains(TermHolder.getTermB()));
+    Assert.assertTrue(descendents.contains(TermHolder.getTermC()));
   }
 
   @Request
@@ -594,9 +598,10 @@ public abstract class AbstractOntologyStrategyTest
     bb.addLink(aa, mdTermRelationship.definesType());
     cc.addLink(bb, mdTermRelationship.definesType());
 
+    // getAllDescendants does not guarantee an order
     List<Term> descendents = aa.getAllDescendants(mdTermRelationship.definesType()).getAll();
-    Iterator<Term> it = descendents.iterator();
-    Assert.assertEquals(it.next().getOid(), bb.getOid());
-    Assert.assertEquals(it.next().getOid(), cc.getOid());
+    Set<String> oids = descendents.stream().map(Term::getOid).collect(Collectors.toSet());
+    Assert.assertEquals(2, descendents.size());
+    Assert.assertEquals(new HashSet<String>(Arrays.asList(bb.getOid(), cc.getOid())), oids);
   }
 }
