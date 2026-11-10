@@ -19,6 +19,7 @@
 package com.runwaysdk.dataaccess.transaction;
 
 import com.runwaysdk.dataaccess.EntityDAO;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public aspect ImportProperty percflow(importingRecords())
 {
@@ -33,6 +34,7 @@ public aspect ImportProperty percflow(importingRecords())
    *
    * @return true if this is being called within the context of an import
    */
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   boolean around(EntityDAO entityDAO) : isImport(entityDAO)
   {
     if (entityDAO instanceof LocalTransactionArtifact)

@@ -21,6 +21,7 @@
  *
  */
 package com.runwaysdk.dataaccess.metadata;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 /**
  * @author nathan
@@ -32,6 +33,7 @@ public aspect MdAttribute_delete
   && cflow(execution (* com.runwaysdk.dataaccess.metadata.MdEntityDAO.delete(..)) && target(deleteMdEntity));
 
   //Do not refresh the cache of a class if the class is being deleted anyway  
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(MdEntityDAO collectionMdEntity, MdEntityDAO deleteMdEntity) : updateParentCacheStrategy(collectionMdEntity, deleteMdEntity) 
   {  
     // Do not refresh the cache of a class you are deleting.  That cache collection will be removed anyway.

@@ -58,6 +58,7 @@ import com.runwaysdk.transport.conversion.business.InformationToInformationDTO;
 import com.runwaysdk.transport.conversion.business.ProblemToProblemDTO;
 import com.runwaysdk.transport.conversion.business.SmartExceptionToExceptionDTO;
 import com.runwaysdk.transport.conversion.business.WarningToWarningDTO;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public aspect RequestManagement extends AbstractRequestManagement
 {
@@ -87,6 +88,7 @@ public aspect RequestManagement extends AbstractRequestManagement
   // : nonAnnotizedRequestEntryPoints() || request(Request);
 
   // Initialize session information
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String _sessionId) :  topLevelPermission(_sessionId)
   {
     try
@@ -110,6 +112,7 @@ public aspect RequestManagement extends AbstractRequestManagement
   }
 
   // Process any error message that occurs when logging in.
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() :
     execution (* com.runwaysdk.facade.Facade.login(String, String, Locale[]))  ||
     execution (* com.runwaysdk.facade.Facade.loginUser(String, String))  ||
@@ -130,6 +133,7 @@ public aspect RequestManagement extends AbstractRequestManagement
     }
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() returning : topLevelSession()
   {
 //    System.out.println("After top level session " + thisJoinPoint.getSignature());
@@ -137,6 +141,7 @@ public aspect RequestManagement extends AbstractRequestManagement
     this.getState().afterReturning(thisJoinPoint);
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() throwing : topLevelSession()
   {
 //    System.out.println("Throwing top level session " + thisJoinPoint.getSignature());

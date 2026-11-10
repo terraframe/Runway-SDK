@@ -20,6 +20,7 @@ package com.runwaysdk.logging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public aspect ServerLoggingManagement
 {
@@ -37,6 +38,7 @@ public aspect ServerLoggingManagement
   // return proceed();
   // }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : execution(* com.runwaysdk.facade.Facade.*(..))
   {
     String fullyQualifiedMethodName = thisJoinPointStaticPart.getSignature().getDeclaringTypeName() + "." + thisJoinPointStaticPart.getSignature().getName();

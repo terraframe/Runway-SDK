@@ -17,6 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.database;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 // import java.sql.PreparedStatement;
 
@@ -39,6 +40,7 @@ public aspect LogDatabaseRefactor
 
   protected pointcut logStatements(String sqlStmt)
   :(call (* java.sql.Statement+.executeUpdate(String)) && args(sqlStmt));
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before (String sqlStmt)
   : logStatements(sqlStmt)
   {   

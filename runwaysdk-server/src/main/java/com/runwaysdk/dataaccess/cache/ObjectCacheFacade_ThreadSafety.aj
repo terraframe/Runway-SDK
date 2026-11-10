@@ -23,6 +23,7 @@
 package com.runwaysdk.dataaccess.cache;
 
 import com.runwaysdk.generation.loader.LockHolder;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 /**
  * @author nathan
@@ -49,6 +50,7 @@ public privileged aspect ObjectCacheFacade_ThreadSafety
     : protectedMethods() &&
     !cflowbelow(execution (* ObjectCache.init()));
     
+    @SuppressAjWarnings({"adviceDidNotMatch"})
     before() : initCollections()  
     {
       try

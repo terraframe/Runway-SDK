@@ -17,6 +17,7 @@
  * License along with Runway SDK(tm).  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.runwaysdk.dataaccess.cache;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 /**
  * Aspect is used to tell the {@link ObjectCache} not to write java source and class
@@ -28,6 +29,7 @@ privileged public aspect ObjectCacheFacade_WriteArtifacts
   protected pointcut cacheInit()
   : execution (* com.runwaysdk.util.UpdateDatabaseSourceAndClasses.storeSourceAndClassesInDatabase(..)) || execution (* com.runwaysdk.dataaccess.io.Versioning.main(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : cacheInit()
   {
     ObjectCache.extractDatabaseSourceAndClasses = false;

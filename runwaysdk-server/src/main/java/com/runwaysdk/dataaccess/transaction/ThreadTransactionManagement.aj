@@ -31,6 +31,7 @@ import com.runwaysdk.dataaccess.ProgrammingErrorException;
 import com.runwaysdk.dataaccess.database.Database;
 import com.runwaysdk.logging.RunwayLogUtil;
 import com.runwaysdk.session.ThreadRequestManagement;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public privileged aspect ThreadTransactionManagement extends AbstractTransactionManagement
 {
@@ -49,6 +50,7 @@ public privileged aspect ThreadTransactionManagement extends AbstractTransaction
   protected pointcut rootThreadTransaction(ThreadTransactionState threadTransactionState)
   : transactions() && !cflowbelow(transactions()) && args(threadTransactionState, ..);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(ThreadTransactionState threadTransactionState) :rootThreadTransaction(threadTransactionState)
   {
     this.mainTransactionState = threadTransactionState.getTransactionState();
@@ -87,6 +89,7 @@ public privileged aspect ThreadTransactionManagement extends AbstractTransaction
   protected pointcut afterEntityApply(EntityDAO entityDAO)
   :(execution (* com.runwaysdk.dataaccess.EntityDAO.apply(..)) && target(entityDAO))
    && within(com.runwaysdk.dataaccess.EntityDAO);  
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {     

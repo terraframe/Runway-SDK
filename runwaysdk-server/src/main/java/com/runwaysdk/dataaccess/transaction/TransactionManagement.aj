@@ -46,6 +46,7 @@ import com.runwaysdk.session.PermissionCache;
 import com.runwaysdk.session.RequestManagement;
 import com.runwaysdk.session.Session;
 import com.runwaysdk.session.SessionIF;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public privileged aspect TransactionManagement extends AbstractTransactionManagement
 {
@@ -87,6 +88,7 @@ public privileged aspect TransactionManagement extends AbstractTransactionManage
   :(execution (* com.runwaysdk.dataaccess.EntityDAO.apply(..)) && target(entityDAO))
    && within(com.runwaysdk.dataaccess.EntityDAO);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(EntityDAO entityDAO)
     : afterEntityApply(entityDAO)
   {

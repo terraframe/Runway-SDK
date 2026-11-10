@@ -250,6 +250,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   pointcut getCurrentTransactionState()
   : execution (* com.runwaysdk.dataaccess.transaction.TransactionState.getCurrentTransactionState());
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : getCurrentTransactionState()
   {
     return this.getState();
@@ -258,6 +259,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut getCurrentTransactionCache() :
     call(* com.runwaysdk.dataaccess.transaction.TransactionCache.getCurrentTransactionCache());
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : getCurrentTransactionCache()
   {
     return this.getTransactionCache();
@@ -273,6 +275,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       && target(entity))
   && cflow(topLevelTransactions());
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(Entity entity) : clearAppLock(entity)
   {
     this.getState().addUnsetAppLocksSet(entity.getOid());
@@ -283,6 +286,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     : (execution (* com.runwaysdk.dataaccess.transaction.LockRelationship.recordRelLock(String, String)) && args(parentOid, childOid))
   && cflow(topLevelTransactions());
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(String parentOid, String childOid) :  setRelLock(parentOid, childOid)
   {
     this.getState().addSetAppLocksSet(parentOid);
@@ -295,6 +299,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(Session);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : reloadGlobalPublicPermissions()
   {
     this.getState().setReloadGlobalPermissions(true);
@@ -302,11 +307,13 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   }
 
   // Database deadlock prevention
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(String tableName) :  dmlTableOperations(tableName)
   {
     this.getTransactionCache().addDMLTableName(tableName);
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(String tableName) :  ddlTableOperations(tableName)
   {
     this.getTransactionCache().performDDLTable(tableName);
@@ -316,6 +323,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut saveElementDAO(ElementDAO elementDAO, boolean validateRequired, Date date)
   :(call (* com.runwaysdk.dataaccess.ElementDAO.save(boolean, Date)) && target(elementDAO) && args(validateRequired, date));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(ElementDAO elementDAO, boolean validateRequired, Date date)
     : saveElementDAO(elementDAO, validateRequired, date)
   {
@@ -326,6 +334,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedEntityDAO(EntityDAO entityDAO)
   :(call (* com.runwaysdk.dataaccess.EntityDAO.save(..)) && target(entityDAO));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(EntityDAO entityDAO)
     : updatedEntityDAO(entityDAO)
   {
@@ -384,6 +393,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedRelationshipObject(RelationshipDAO relationshipDAO)
   :(call (* com.runwaysdk.dataaccess.EntityDAO.save(..)) && target(relationshipDAO));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(RelationshipDAO relationshipDAO)
     : updatedRelationshipObject(relationshipDAO)
   {
@@ -404,6 +414,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updateTransientDAO(TransientDAO transientDAO)
   :(call (* com.runwaysdk.dataaccess.TransientDAO.save(..)) && target(transientDAO));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(TransientDAO transientDAO)
     : updateTransientDAO(transientDAO)
   {
@@ -414,6 +425,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedMdAttribute(MdAttributeDAO mdAttribute)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdAttributeDAO.delete(..)) && target(mdAttribute));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdAttributeDAO mdAttribute)
     : deletedMdAttribute(mdAttribute)
   {
@@ -427,6 +439,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdRelationship(MdRelationshipDAO mdRelationship)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdRelationshipDAO.save(..)) && target(mdRelationship));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdRelationshipDAO mdRelationship)
     : updatedMdRelationship(mdRelationship)
   {
@@ -440,6 +453,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedMdRelationship(MdRelationshipDAO mdRelationship)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdRelationshipDAO.delete(..)) && target(mdRelationship));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdRelationshipDAO mdRelationship)
     : deletedMdRelationship(mdRelationship)
   {
@@ -453,6 +467,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedEnumerationAttributeItem(EnumerationAttributeItem enumerationAttributeItem)
   :(execution (* com.runwaysdk.dataaccess.EnumerationAttributeItem.save(..)) && target(enumerationAttributeItem));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(EnumerationAttributeItem enumerationAttributeItem)
     : updatedEnumerationAttributeItem(enumerationAttributeItem)
   {
@@ -468,6 +483,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedEnumerationAttributeItem(EnumerationAttributeItem enumerationAttributeItem)
   :(execution (* com.runwaysdk.dataaccess.EnumerationAttributeItem.delete(..)) && target(enumerationAttributeItem));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(EnumerationAttributeItem enumerationAttributeItem)
     : deletedEnumerationAttributeItem(enumerationAttributeItem)
   {
@@ -481,6 +497,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdMethod(MdMethodDAO mdMethod)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdMethodDAO.save(..)) && target(mdMethod));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdMethodDAO mdMethod)
     : updatedMdMethod(mdMethod)
   {
@@ -494,6 +511,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedMdMethod(MdMethodDAO mdMethod)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdMethodDAO.delete(..)) && target(mdMethod));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdMethodDAO mdMethod)
     : deletedMdMethod(mdMethod)
   {
@@ -507,6 +525,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdParameter(MdParameterDAO mdParameter)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdParameterDAO.save(..)) && target(mdParameter));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdParameterDAO mdParameter)
     : updatedMdParameter(mdParameter)
   {
@@ -520,6 +539,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedMdParameter(MdParameterDAO mdParameter)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdParameterDAO.delete(..)) && target(mdParameter));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdParameterDAO mdParameter)
     : deletedMdParameter(mdParameter)
   {
@@ -533,6 +553,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdType(MdTypeDAO mdType)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdTypeDAO.save(..)) && target(mdType));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdTypeDAO mdType)
     : updatedMdType(mdType)
   {
@@ -550,6 +571,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedMdType(MdTypeDAO mdType)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdTypeDAO.delete(..)) && target(mdType));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdTypeDAO mdType)
     : deletedMdType(mdType)
   {
@@ -559,6 +581,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut deletedEntity(Entity entity)
   :  (execution (* com.runwaysdk.business.Mutable+.delete()) && target(entity));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(Entity entity)
   : deletedEntity(entity)
   {
@@ -610,6 +633,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  (execution (* com.runwaysdk.dataaccess.EntityDAO+.delete(..))
    && target(entityDAO) );
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(EntityDAO entityDAO)
   : beforeDeletedEntityDAO(entityDAO)
   {
@@ -659,6 +683,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   : (execution (* com.runwaysdk.ProblemIF+.throwIt())
   && target(problemIF));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(ProblemIF problemIF) : throwProblem(problemIF)
   {
     List<ProblemIF> problemList = this.getRequestProblemList();
@@ -683,6 +708,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   : (call (* com.runwaysdk.session.PermissionObserver.notify(ActorDAOIF)) && args(actorIF))
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(ActorDAOIF actorIF)
     : refreshActorPermissions(actorIF)
   {
@@ -697,6 +723,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   : (call (* com.runwaysdk.session.PermissionObserver.unregister(PermissionEntity)) && args(permissionEntity))
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(PermissionEntity permissionEntity)
     : unregisterPermissionEntity(permissionEntity)
   {
@@ -708,6 +735,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(TransactionState+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : getDDLConnection()
   {
     return this.getState().getDDLConn();
@@ -718,6 +746,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(TransactionState+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : getDDLGraphRequest()
   {  
     return this.getState().getDDLGraphDBRequest();
@@ -751,6 +780,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  call(Savepoint Database.peekCurrentSavepoint())
   && !within(AbstractTransactionManagement+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Savepoint around() : peekCurrentSavepoint()
   {
     return this.getState().savepointPeek();
@@ -787,6 +817,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !withincode(* com.runwaysdk.dataaccess.database.general.SQLServer.getNextSequenceNumber(..))
   && !withincode(* com.runwaysdk.dataaccess.database.general.AbstractDatabase.executeAsRoot(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : commitTransaction()
   {
     // System.out.println(" Would have commited transaction (but didn't) " +
@@ -819,6 +850,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(RequestState+)
   && !within(com.runwaysdk.dataaccess.transaction.TransactionState+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : commitGraphRequest()
   {
     // NOT committing the Graph DB 
@@ -832,6 +864,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(RequestState+)
   && !within(com.runwaysdk.dataaccess.transaction.TransactionState+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : rollbackGraphRequest()
   {
     // NOT rollingback the Graph DB;
@@ -856,6 +889,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut abortIfProblem()
   : call (@AbortIfProblem * *+.*(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before() : abortIfProblem()
   {
     List<ProblemIF> problemList = this.getRequestProblemList();
@@ -873,6 +907,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut getTransactionRecord()
   :  call(* com.runwaysdk.dataaccess.transaction.TransactionRecordDAO.getCurrentTransactionRecord(..));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : getTransactionRecord()
   {
     if (ServerProperties.logTransactions())
@@ -887,6 +922,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   }
 
   // Rollback the transaction if an error occured
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around() : topLevelTransactions()
   {
     this.getGraphDBRequest().beginTransaction();
@@ -957,6 +993,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     this.getTransactionCache().close();
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() returning : topLevelTransactions()
   {
     try
@@ -978,6 +1015,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     // this.transactionState = null;
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() throwing : topLevelTransactions()
   {
     try
@@ -1007,6 +1045,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && this(callObject);
 
   // do not execute the Command. This aspect will take care of it.
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(Command targetCommand, Object callObject) : commandDoItRecordCommand(targetCommand, callObject)
   {
     // Do nothing if the calling object and the target object are the same.
@@ -1033,6 +1072,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     && this(callObject);
 
   // do not execute the Command. This aspect will take care of it.
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(Command targetCommand, Object callObject) : commandDoIt(targetCommand, callObject)
   {
     // Do nothing if the calling object and the target object are the same.
@@ -1079,6 +1119,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
       && !cflowbelow( metadataDAODeleteLog())
     );
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(EntityDAO entityDAO) returning : deleteDAOLog(entityDAO)
   {
     MdEntityDAOIF mdEntityDAOIF = entityDAO.getMdClassDAO();
@@ -1098,6 +1139,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut afterUpdatedEntityDAO(EntityDAO entityDAO)
   :(call (* com.runwaysdk.dataaccess.EntityDAO.save(..)) && target(entityDAO));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(EntityDAO entityDAO)
     : afterUpdatedEntityDAO(entityDAO)
   {
@@ -1115,6 +1157,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   :  (execution (* com.runwaysdk.dataaccess.database.EntityDAOFactory.delete(..))
    && args(entityDAO) );
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(EntityDAO entityDAO) returning
   : deletedEntityDAO(entityDAO)
   {
@@ -1129,6 +1172,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdAttributeConcreteDAO(MdAttributeConcreteDAO mdAttributeConcreteDAO)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdAttributeConcreteDAO.save(..)) && target(mdAttributeConcreteDAO));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(MdAttributeConcreteDAO mdAttributeConcreteDAO) returning
     : updatedMdAttributeConcreteDAO(mdAttributeConcreteDAO)
   {
@@ -1138,6 +1182,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut refreshEntireCache()
   :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.refreshTheEntireCache());
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around() : refreshEntireCache()
   {
     this.getState().setRefreshEntireCache(true);
@@ -1155,6 +1200,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     :  call (* com.runwaysdk.dataaccess.cache.ObjectCache.getEntityDAO(String))
     && args(oid);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String oid) : getEntityById(oid)
   {
     EntityDAOIF entityDAO = null;
@@ -1179,6 +1225,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
     :  call (* com.runwaysdk.dataaccess.EntityDAO+.get(String, String))
     && args(type, key);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String type, String key) : getEntityByKey(type, key)
   {
     EntityDAOIF entityDAOIF = null;
@@ -1204,6 +1251,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(classType); 
   
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String classType) : getMdClassDAO(classType)
   {
     MdClassDAOIF mdClassDAOIF = null;
@@ -1228,6 +1276,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(tableName); 
   
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String tableName) : getMdClassByTableName(tableName)
   {
     MdClassDAOIF mdClassDAOIF = null;
@@ -1252,6 +1301,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(tableName); 
   
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   boolean around(String tableName) : hasClassByTableName(tableName)
   {
     boolean hasTableName = this.getTransactionCache().hasClassByTableName(tableName);
@@ -1274,6 +1324,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(classRootId);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String classRootId) : getMdClassDAOByRootId(classRootId)
   {
     MdClassDAOIF mdClassDAOIF = null;
@@ -1293,6 +1344,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(mdAttributeKey);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String mdAttributeKey) : getMdAttributeDAOWithKey(mdAttributeKey)
   {
     MdAttributeDAOIF mdAttributeIF = null;
@@ -1328,6 +1380,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(enumerationName);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String enumerationName) : getMdEnumerationDAO(enumerationName)
   {
     MdEnumerationDAOIF mdEnumerationIF = null;
@@ -1352,6 +1405,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(indexName);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String indexName) : getMdIndexDAO(indexName)
   {
     MdIndexDAOIF mdIndexDAOIF = null;
@@ -1373,6 +1427,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(indexName);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String indexName) : getMdAttributeDAOWithIndex(indexName)
   {
     MdAttributeConcreteDAOIF mdAttributeConcreteDAOIF = null;
@@ -1390,6 +1445,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdAttributeKey(MdAttributeDAO mdAttribute)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdAttributeDAO.setAndBuildKey(..)) && target(mdAttribute));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(MdAttributeDAO mdAttribute)
     : updatedMdAttribute(mdAttribute)
   {
@@ -1405,6 +1461,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   protected pointcut updatedMdAttribute(MdAttributeDAO mdAttribute)
   :(execution (* com.runwaysdk.dataaccess.metadata.MdAttributeDAO.save(..)) && target(mdAttribute));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after(MdAttributeDAO mdAttribute)
     : updatedMdAttribute(mdAttribute)
   {
@@ -1424,6 +1481,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && args(roleName);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String roleName) : getRoleIF(roleName)
   {
     RoleDAOIF roleIF = null;
@@ -1451,6 +1509,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Set<String> around(String mdBusinessDAOid)
   : getParentMdRelationshipDAOids(mdBusinessDAOid)
   {
@@ -1470,6 +1529,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Set<String> around(String mdBusinessDAOid)
   : getChildMdRelationshipDAOids(mdBusinessDAOid)
   {
@@ -1489,6 +1549,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Set<String> around(String mdVertexDAOid)
   : getParentMdEdgeDAOids(mdVertexDAOid)
   {
@@ -1508,6 +1569,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionManagement+)
   && !within(AbstractTransactionCache+);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Set<String> around(String mdVertexDAOid)
   : getChildMdEdgeDAOids(mdVertexDAOid)
   {
@@ -1524,6 +1586,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionCache+)
   && args(businessDAOid, relationshipType);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getParents(relationshipCollection, businessDAOid, relationshipType)
   {
@@ -1547,6 +1610,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && !within(AbstractTransactionCache+)
   && args(businessDAOid, relationshipType);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   List<RelationshipDAOIF> around(CacheAllRelationshipDAOStrategy relationshipCollection, String businessDAOid, String relationshipType)
   : getChildren(relationshipCollection, businessDAOid, relationshipType)
   {
@@ -1565,6 +1629,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && (!within(AbstractTransactionManagement+)
       && !within(AbstractTransactionCache+));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(String classType, CacheStrategy collection)
     : addClassTypeCacheStrategy(classType, collection)
   {
@@ -1579,6 +1644,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   && (!within(AbstractTransactionManagement+)
       && !within(AbstractTransactionCache+));
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(String classType)
     : removeClassTypeCacheStrategy(classType)
   {

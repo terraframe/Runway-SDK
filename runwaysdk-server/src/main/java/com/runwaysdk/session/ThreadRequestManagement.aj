@@ -20,6 +20,7 @@ package com.runwaysdk.session;
 
 import com.runwaysdk.dataaccess.transaction.LockObject;
 import com.runwaysdk.dataaccess.transaction.ThreadTransactionState;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public aspect ThreadRequestManagement extends AbstractRequestManagement
 {
@@ -54,6 +55,7 @@ public aspect ThreadRequestManagement extends AbstractRequestManagement
   // : request(Request) && !cflowbelow(threadRequest(Request)) &&
   // args(threadTransactionState, ..);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(ThreadTransactionState threadTransactionState) :rootThreadRequest(threadTransactionState)
   {
     this.getState().beforeThread(threadTransactionState);
@@ -63,11 +65,13 @@ public aspect ThreadRequestManagement extends AbstractRequestManagement
   // && !cflowbelow(sessionRequest(Request, String))
   // ) && args(_sessionId, ..);
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() returning : topLevelSession()
   {
     this.getState().afterReturning();
   }
 
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after() throwing : topLevelSession()
   {
     this.getState().afterThrowing();

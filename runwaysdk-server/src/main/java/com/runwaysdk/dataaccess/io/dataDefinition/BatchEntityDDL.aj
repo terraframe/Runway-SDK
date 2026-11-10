@@ -36,6 +36,7 @@ import com.runwaysdk.dataaccess.metadata.MdIndexDAO;
 import com.runwaysdk.dataaccess.metadata.MdRelationshipDAO;
 import com.runwaysdk.dataaccess.transaction.TransactionCache;
 import com.runwaysdk.dataaccess.transaction.TransactionCacheIF;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 
 public privileged aspect BatchEntityDDL percflow(runImport())
 {
@@ -219,6 +220,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   public pointcut columnExists(String columnName, String tableName)
   : (call (* com.runwaysdk.dataaccess.database.Database.columnExists(String, String)) && args(columnName, tableName)) &&
   !within(BatchEntityDDL);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   Object around(String columnName, String tableName) : columnExists(columnName, tableName)
   {
     if (Database.tableExists(tableName) && Database.columnExists(columnName, tableName))
@@ -259,6 +261,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   public pointcut applyMdEntity(MdEntityDAO mdEntityDAO)
   : (call (* com.runwaysdk.dataaccess.metadata.MdEntityDAO+.apply(..)) && target(mdEntityDAO))
     && within(com.runwaysdk.dataaccess.io.dataDefinition.MdEntityHandler+) ;
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   before(MdEntityDAO mdEntityDAO) : applyMdEntity(mdEntityDAO)
   {
     String type = mdEntityDAO.definesType();
@@ -273,6 +276,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   // Do not create the table in the database if we are going to create the table at the end of the tag.
   protected pointcut createClassTable(MdEntityDAO mdEntityDAO, String tableName)
   :  call (* com.runwaysdk.dataaccess.database.Database.createClassTable(String)) && this(mdEntityDAO) && args(tableName);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(MdEntityDAO mdEntityDAO, String tableName) : createClassTable(mdEntityDAO, tableName)
   {
     String type = mdEntityDAO.definesType();
@@ -286,6 +290,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   protected pointcut createRelationshipTable(MdEntityDAO mdEntityDAO, String tableName, String index1Name, String index2Name, Boolean isUnique)
   :  call (* com.runwaysdk.dataaccess.database.Database.createRelationshipTable(String, String, String, Boolean))
       && this(mdEntityDAO)  && args(tableName, index1Name, index2Name, isUnique);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(MdEntityDAO mdEntityDAO, String tableName, String index1Name, String index2Name, Boolean isUnique) :
     createRelationshipTable(mdEntityDAO, tableName, index1Name, index2Name, isUnique)
   {
@@ -300,6 +305,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
       String tableName, String columnName, String formattedType, MdAttributeConcreteDAO mdAttributeConcreteDAO)
   :  call (* com.runwaysdk.dataaccess.database.Database.addField(String, String, String, MdAttributeConcreteDAO))
       && this(mdAttribute_E) && args(tableName, columnName, formattedType, mdAttributeConcreteDAO);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E mdAttribute_E, String tableName, String columnName, String formattedType, MdAttributeConcreteDAO mdAttributeConcreteDAO) :
     addField(mdAttribute_E, tableName, columnName, formattedType, mdAttributeConcreteDAO)
   {
@@ -341,6 +347,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
       String tableName, String columnName, String indexName)
   :  call (* com.runwaysdk.dataaccess.database.Database.addUniqueIndex(String, String, String))
       && this(mdAttribute_E) && args(tableName, columnName, indexName);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E mdAttribute_E, String tableName, String columnName, String indexName) :
     addUniqueIndex(mdAttribute_E, tableName, columnName, indexName)
   {
@@ -365,6 +372,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
       String tableName, String columnName, String indexName)
   :  call (* com.runwaysdk.dataaccess.database.Database.addNonUniqueIndex(String, String, String))
       && this(mdAttribute_E) && args(tableName, columnName, indexName);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(com.runwaysdk.dataaccess.metadata.MdAttributeConcrete_E mdAttribute_E, String tableName, String columnName, String indexName) :
     addNonUniqueIndex(mdAttribute_E, tableName, columnName, indexName)
   {
@@ -389,6 +397,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
       String tableName, String indexName, List<String> attributeColumnNames, Boolean isUnique)
   :  call (* com.runwaysdk.dataaccess.database.Database.addGroupAttributeIndex(String, String, List<String>, Boolean))
       && this(mdIndexDAO) && args(tableName, indexName, attributeColumnNames, isUnique);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(MdIndexDAO mdIndexDAO, String tableName, String indexName, List<String> attributeColumnNames, Boolean isUnique) :
     addGroupAttributeIndex(mdIndexDAO, tableName, indexName, attributeColumnNames, isUnique)
   {
@@ -414,6 +423,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   :  (execution (* com.runwaysdk.dataaccess.database.Database.addGeometryColumn(String, String, Integer, String, Integer))
        && args(tableName, columnName, srid, geometryType, dimension))
        && !cflow(execution (* com.runwaysdk.dataaccess.io.dataDefinition.BatchEntityDDL.Command.doIt()));
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   void around(String tableName, String columnName, Integer srid, String geometryType, Integer dimension) :
     addGeometryColumn(tableName, columnName, srid, geometryType, dimension)
   {
@@ -433,6 +443,7 @@ public privileged aspect BatchEntityDDL percflow(runImport())
   protected pointcut onEndElement(MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName, TagContext context)
   :  execution (* com.runwaysdk.dataaccess.io.dataDefinition.MdEntityHandler+.onEndElement(String, String, String, TagContext))
     && this(mdEntityHandler) && args(namespaceURI, localName, fullName, context);
+  @SuppressAjWarnings({"adviceDidNotMatch"})
   after (MdEntityHandler mdEntityHandler, String namespaceURI, String localName, String fullName, TagContext context) :
     onEndElement(mdEntityHandler, namespaceURI, localName, fullName, context)
   {
