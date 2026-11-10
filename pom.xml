@@ -37,7 +37,6 @@
     <module>runwaysdk-localization</module>
     <module>runwaysdk-test</module>
     <module>runwaysdk-web</module>
-    <module>runwaysdk-archetype</module>
     <module>runwaysdk-gis</module>
     <module>runwaysdk-solr</module>
     <module>runwaysdk-orientdb</module>

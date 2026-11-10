@@ -374,9 +374,6 @@
               </weaveDependencies>
               <source>${maven.compiler.source}</source>
               <target>${maven.compiler.target}</target>
-              <fork>true</fork>
-              <meminitial>512m</meminitial>
-              <maxmem>1024m</maxmem>
             </configuration>
           </plugin>
         </plugins>
@@ -469,9 +466,6 @@
           </aspectLibraries>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
-          <fork>true</fork>
-          <meminitial>512m</meminitial>
-          <maxmem>1024m</maxmem>
         </configuration>
       </plugin>
 

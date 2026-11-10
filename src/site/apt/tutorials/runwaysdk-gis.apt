@@ -19,7 +19,7 @@
 
 Integrating With Runway GIS
 
-  Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project {{{./examples/your_first_runway.html}generated from archetype.}}
+  Runway SDK provides integration with Geoserver. Perform the following steps on an existing Runway SDK project.
 
 
 * geoserver.properties

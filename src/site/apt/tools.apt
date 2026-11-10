@@ -25,7 +25,7 @@ Runway SDK Tools
 export MAVEN_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=256m"
 +----+
 
-  When running in Eclipse, the default launches deployed with the archetype include sensible defaults for memory options and likely shouldn't need to be changed.
+  When running in Eclipse, the default launches include sensible defaults for memory options and likely shouldn't need to be changed.
   
 * Boot
   
