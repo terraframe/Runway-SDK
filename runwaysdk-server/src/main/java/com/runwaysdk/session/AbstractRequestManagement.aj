@@ -129,48 +129,7 @@ privileged public abstract aspect AbstractRequestManagement percflow(topLevelSes
   // public abstract pointcut request(Request request);
 
   public pointcut nonAnnotizedRequestEntryPoints()
-  :  execution (public * com.runwaysdk.dataaccess.io..*.*(..))
-    || (
-          ( execution (* junit.framework.TestSuite+.*(..)) ||
-            execution (* junit.extensions.TestSetup+.*(..)) ||
-            execution (* junit.framework.TestCase+.*(..))
-          )
-
-        && (
-
-// !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..)))
-// &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceAdapterTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..))) &&
-// !cflow(execution (*
-// com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
-
-//            !cflow(execution (* com.runwaysdk.facade.RMIAdapterTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceAdapterTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceFacadeGenerationTest.*(..))) &&
-//            !cflow(execution (* com.runwaysdk.facade.WebServiceInvokeMethodTest.*(..))) &&
-            !cflow(execution (* com.runwaysdk.facade.JSONWebServiceInvokeMethodTest.*(..)))
-
-           && !within(com.runwaysdk.facade.AdapterTest+)
-           && !within(com.runwaysdk.facade.SessionDTOAdapterTest+)
-           && !within(com.runwaysdk.facade.FacadeGenerationTest+)
-           && !within(com.runwaysdk.facade.InvokeSessionComponentMethodTestBase+)
-           && !within(com.runwaysdk.facade.InvokeMethodTestBase+)
-           && !within(com.runwaysdk.facade.MessageTest+)
-           && !within(com.runwaysdk.facade.*SeleniumTest*)
-           && !within(com.runwaysdk.business.ontology.OntologyFacadeMethodsTest+)
-
-           && !within(com.runwaysdk.DoNotWeave+)
-    ));
-  // suite.addTest(WebServiceAdapterTest.suite());
-  // suite.addTest(WebServiceInvokeMethodTest.suite());
-  // suite.addTest(WebServiceFacadeGenerationTest.suite());
-  // suite.addTest(JSONWebServiceInvokeMethodTest.suite());
-  // suite.addTest(SeleniumTestSuite.suite());
+  :  execution (public * com.runwaysdk.dataaccess.io..*.*(..));
 
   public pointcut allRequestEntryPoints()
   : nonAnnotizedRequestEntryPoints() || nonThreadRequest() || threadRequest(Request);

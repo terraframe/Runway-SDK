@@ -165,16 +165,6 @@ public aspect PolicyEnforcement
 //      && !within(DDLCommand)
 //    : "Use the methods in AbstractDatabase to execute a relational database query.\nThis provides a single point for logging all SQL statements against the database.";
 
-//  declare warning
-//    : call (* com.runwaysdk.dataaccess.EntityDAO.setValue(..))
-//      && (   (within(com.runwaysdk.dataaccess..*.*))
-//          && !within(junit.framework.Test+)
-//          && !within(com.runwaysdk.dataaccess.transaction.AbstractTransactionManagement+)
-//          && !withincode(* com.runwaysdk.dataaccess.metadata.*.setRandomValue(com.runwaysdk.dataaccess.EntityDAO))
-//          && !within(com.runwaysdk.dataaccess.io..*.*)
-//         )
-//    : "Call EntityDAO.setValue(..) within the persistence layer only when necessary.  Use EntityDAO.getAttribute(..).setValue(..) instead.";
-
   declare warning
     : call (* com.runwaysdk.dataaccess.EntityDAO.getValue(..))
       && (   (within(com.runwaysdk.dataaccess..*.*) )
@@ -185,8 +175,7 @@ public aspect PolicyEnforcement
 
   declare warning
     : call (* com.runwaysdk.dataaccess.RelationshipDAO.getValue(..))
-      && (   (within(com.runwaysdk.dataaccess.*) || within(com.runwaysdk.dataaccess.*.*) )
-          && !within(junit.framework.Test+))
+      && (within(com.runwaysdk.dataaccess.*) || within(com.runwaysdk.dataaccess.*.*))
     : "Call Relationship.getValue(..) within the persistence layer only when necessary.  Use Relationship.getAttribute(..).getValue(..) instead.";
 
 }

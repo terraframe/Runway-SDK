@@ -185,15 +185,7 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
 
 
   // State transactions
-    || execution (* com.runwaysdk.dataaccess.BusinessDAO.promote(..))
-
-  // JUnit DDL
-//    || execution (* junit.framework.TestCase+.classSetUp(..))
-//    || execution (* junit.framework.TestCase+.classTearDown(..))
-//    || execution (* junit.framework.TestCase+.setUp(..))
-//    || execution (* junit.framework.TestCase+.tearDown(..))
-
-    || junitTransaction();
+    || execution (* com.runwaysdk.dataaccess.BusinessDAO.promote(..));
 
   public abstract pointcut transactions();
 
@@ -250,30 +242,6 @@ privileged public abstract aspect AbstractTransactionManagement percflow(topLeve
   // || (execution (*
   // com.runwaysdk.dataaccess.database.general.AbstractDatabase+.dropField(String,
   // ..)) && args(tableName, ..))
-
-  @SuppressAjWarnings
-  protected pointcut junitTransaction()
-  : (execution (* junit.framework.TestCase+.classSetUp(..))
-    || execution (* junit.framework.TestCase+.classTearDown(..))
-    || execution (* junit.framework.TestCase+.setUp(..))
-    || execution (* junit.framework.TestCase+.tearDown(..)) )
-    &&
-    (
-//        !within(com.runwaysdk.facade.ConversionTest) &&
-//        !within(com.runwaysdk.facade.AdapterTest+) &&
-//        !within(com.runwaysdk.facade.SessionDTOAdapterTest+) &&
-//        !within(com.runwaysdk.facade.FacadeGenerationTest+) &&
-        !within(com.runwaysdk.facade.InvokeSessionComponentMethodTestBase+) &&
-        !within(com.runwaysdk.facade.InvokeMethodTestBase+) &&
-//        !within(com.runwaysdk.facade.MessageTest+) &&
-//        !within(com.runwaysdk.facade.*SeleniumTest*) &&
-//        !within(com.runwaysdk.facade.RMI*Test) &&
-//        !within(com.runwaysdk.facade.WebService*Test) &&
-//        !within(com.runwaysdk.facade.JSON*Test) &&
-        !within(com.runwaysdk.business.ontology.AbstractOntologyStrategyTest+) &&
-
-        !within(com.runwaysdk.DoNotWeave+)
-    );
 
   public pointcut topLevelTransactions()
   :  transactions()
